@@ -1,0 +1,32 @@
+{
+  "include": [
+    "src",
+    "hono-directives",
+    "hono-signals"
+  ],
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "lib": [
+      "DOM",
+      "ESNext",
+    ],
+    "types": ["vite/client"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "paths": {
+      "@src/*": [
+        "./src/*"
+      ],
+      "@hono-directives": [
+        "./hono-directives/dist/index"
+      ],
+      "@hono-signals": [
+        "./hono-signals/src/index"
+      ]
+    }
+  },
+}
