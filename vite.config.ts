@@ -1,11 +1,14 @@
 // app/vite.config.ts
  
-import path from 'path'
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite'
 import solidPlugin from 'vite-plugin-solid'
+import ssrPlugin from 'vite-ssr-components/plugin'
 import { cloudflare } from '@cloudflare/vite-plugin'
-import honoDirectives from './hono-directives/src/plugin'
+import honoDirectives from './hono-directives/src/plugin.ts'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   resolve: {
@@ -17,7 +20,8 @@ export default defineConfig({
   },
   plugins: [
     cloudflare(),
-    solidPlugin({ include: ['**/*.solid.tsx', '**/*.directive.tsx'] }),
+    ssrPlugin(),
+    solidPlugin({ include: [ '**/*.directive.tsx'] }),
     honoDirectives()
   ]
 })

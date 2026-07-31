@@ -3,7 +3,7 @@
 import type { Plugin } from 'vite'
 import path from 'path'
 import fs from 'fs'
-import { findDirectives, writeGeneratedFiles } from './script'
+import { findDirectives, writeGeneratedFiles } from './script.ts'
 
 export default function directivesPlugin(): Plugin {
   const srcDir = path.join(process.cwd(), 'src')

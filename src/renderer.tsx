@@ -22,7 +22,7 @@ export const renderer = jsxRenderer(({ children }) => {
       <head>
         <Style>{cssGlobal}</Style>
         <ViteClient />
-        <Script src="../hono-directives/src/mount.tsx" />
+        <Script src='/src/script.ts' />
       </head>
       <body>{children}</body>
     </html>
