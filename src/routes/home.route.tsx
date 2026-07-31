@@ -1,7 +1,8 @@
 import { Hono } from 'hono'
-import FAQ from '@src/faq/FAQ'
-import { marked } from 'marked'
-import { counterSolid, counterVanilla } from '@hono-directives'
+// import FAQ from '@src/faq/FAQ'
+// import { marked } from 'marked'
+// import { counterSolid, counterVanilla } from '@hono-directives'
+import Nav from '@src/lib/Nav'
 
 
 const app = new Hono()
@@ -23,7 +24,7 @@ app.get('/', async (c) => {
 
   return c.render(
     <>
-      <h1>Home!</h1>
+      <Nav />
       {/* <div data-directive={counterSolid()}></div>
       <button data-directive={counterVanilla()} type="button"></button>
       <FAQ items={faqItems} />
