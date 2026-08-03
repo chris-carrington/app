@@ -19,7 +19,7 @@ const Nav: FC = () => {
           </div>
         </div>
         <button type="button">Get Involved</button>
-        </div>
+      </div>
     </div>
   </>
 }
@@ -27,10 +27,11 @@ const Nav: FC = () => {
 
 const style = css`
   .nav {
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     right: 0;
+    z-index: var(--z-nav);
     backdrop-filter: blur(4px);
     background-color: rgba(248, 250, 248, 0.95);
     box-shadow: 0px 5px 18px -1px rgba(0, 0, 0, 0.18);

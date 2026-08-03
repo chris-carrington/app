@@ -33,7 +33,13 @@ const style = css`
     --max-width: 123rem;
     --speed: all 0.3s ease;
     --white: rgb(248, 250, 248);
-    --font-family: Arial, Helvetica, sans-serif;
+    --font-family-arial: Arial, Helvetica, sans-serif;
+    --font-family-serif: Georgia, 'Times New Roman', Times, serif;
+
+    --z-nav: 4;
+    --z-hero-content: 3;
+    --z-hero-mask: 2;
+    --z-hero-img: 1;
   }
 
   * {
@@ -54,13 +60,20 @@ const style = css`
     scroll-behavior: smooth;
   }
 
-    body,
-    input,
-    select,
-    textarea,
-    button {
-      line-height: var(--line-height);
-      font-family: var(--font-family);
-      font-size: var(--font-size);
-    }
+  body,
+  input,
+  select,
+  textarea,
+  button {
+    line-height: var(--line-height);
+    font-family: var(--font-family-arial);
+    font-size: var(--font-size);
+  }
+
+  .hr {
+    height: 1px;
+    width: 100%;
+    margin-bottom: var(--space-huge);
+    background: linear-gradient(90deg, transparent 0%, rgba(6, 27, 14, 0.1) 20%, rgba(6, 27, 14, 0.1) 80%, transparent 100%);
+  }
 `

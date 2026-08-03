@@ -2,8 +2,8 @@
 
 import { Hono } from 'hono'
 import { renderer } from './renderer'
-import home from './routes/home.route'
-import about from './routes/about.route'
+import home from './home/home.route'
+import about from './lib/about.route'
 
 const app = new Hono()
 app.use(renderer)
