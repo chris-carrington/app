@@ -11,6 +11,7 @@ const app = new Hono()
 app.get('/', async (c) => {
   return c.render(
     <>
+      <title>Shasta Trades · Home</title>
       <Nav />
       <Hero />
       <Mission />
