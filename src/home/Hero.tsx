@@ -54,7 +54,7 @@ const style = css`
       max-width: var(--max-width);
       padding: var(--space-huge) var(--space) var(--space) var(--space);
       position: relative;
-      z-index: var(--z-hero-mask);
+      z-index: var(--z-mask);
       display: flex;
       gap: calc(var(--space-huge) * 3);
 
@@ -150,7 +150,7 @@ const style = css`
         .top-box,
         .bottom-box {
           position: absolute;
-          z-index: var(--z-hero-content);
+          z-index: var(--z-content);
         }
 
         .border {
@@ -203,14 +203,14 @@ const style = css`
       }
 
       .mask {
-        z-index: var(--z-hero-mask);
+        z-index: var(--z-mask);
         background-image: linear-gradient(to right,rgb(27,48,34),rgba(27,48,34,0.72),rgba(0,0,0,0));
       }
 
       img {
         opacity: 0.3;
         object-fit: cover;
-        z-index: var(--z-hero-img);
+        z-index: var(--z-below-mask);
       }
     }
   }

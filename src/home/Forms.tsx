@@ -25,6 +25,7 @@ const style = css`
 
     .bg {
       position: absolute;
+      z-index: var(--z-mask);
       inset: 0;
       opacity: 0.1;
       background-image: url(/wood-pattern.webp);

@@ -10,7 +10,7 @@ const Mission: FC = () => {
 
     <div class="mission">
       <div class="key">OUR MISSION</div>
-      <div class="value">To help students become licensed contractors through paid apprenticeships, to offer mentors work they love, and to provide affordable, high-quality trade services, to our lovely Mount Shasta community. ❤️</div>
+      <div class="value">To help students become licensed contractors through paid apprenticeships, to offer mentors work they love, and to provide affordable, high-quality trade services, to our lovely Mount Shasta community. 💚</div>
     </div>
   </>
 }

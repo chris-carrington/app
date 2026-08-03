@@ -37,9 +37,9 @@ const style = css`
     --font-family-serif: Georgia, 'Times New Roman', Times, serif;
 
     --z-nav: 4;
-    --z-hero-content: 3;
-    --z-hero-mask: 2;
-    --z-hero-img: 1;
+    --z-content: 3;
+    --z-mask: 2;
+    --z-below-mask: 1;
   }
 
   * {

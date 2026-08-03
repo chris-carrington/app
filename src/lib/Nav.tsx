@@ -11,7 +11,12 @@ const Nav: FC = () => {
     <div class="nav">
       <div class="inner">
         <div class="left">
-          <a href="/" class="name">Shasta Trades</a>
+          <a href="/" class="name">
+            <div class="img">
+              <img src="logo.webp" />
+            </div>
+            <span>Shasta Trades</span>
+          </a>
           <div class="links">
             <a href="/">Home</a>
             <a href="/objectives">Objectives</a>
@@ -51,8 +56,20 @@ const style = css`
         .name {
           font-weight: 700;
           font-size: 3.3rem;
-          color: #061b0e;
+          color: #1B3022;
           text-decoration: none;
+          display: flex;
+          align-items: center;
+          gap: calc(var(--space-lite) / 1.5);
+
+          .img {
+            width: 4.5rem;
+            height: 4.5rem;
+
+            img {
+              width: 100%;
+            }
+          }
         }
 
         .links {
