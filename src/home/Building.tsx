@@ -55,7 +55,7 @@ const style = css`
       .title {
         font-size: 3.2rem;
         font-weight: 700;
-        color: rgb(6 27 14);
+        color: var(--primary);
         margin-bottom: var(--space-lite);
       }
 
@@ -94,7 +94,7 @@ const style = css`
           align-items: center;
           justify-content: center;
           border-radius: calc(var(--radius) * 2);
-          background-color: rgb(27 48 34);
+          background-color: var(--primary);
           margin: 0 auto;
         }
 

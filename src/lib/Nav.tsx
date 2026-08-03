@@ -23,7 +23,7 @@ const Nav: FC = () => {
             <a href="/transparency">Transparency</a>
           </div>
         </div>
-        <button type="button">Get Involved</button>
+        <button type="button">Sign In</button>
       </div>
     </div>
   </>
@@ -47,7 +47,7 @@ const style = css`
       justify-content: space-between;
       margin: 0 auto;
       max-width: var(--max-width);
-      padding: var(--space-lite) var(--space);
+      padding: var(--space-lite);
 
       .left {
         display: flex;
@@ -93,7 +93,7 @@ const style = css`
         border-radius: var(--radius);
         border: none;
         padding: calc(var(--space-lite) / 2) var(--space-lite);
-        background-color: rgb(6, 27, 14);
+        background-color: var(--primary);
       }
     }
   }

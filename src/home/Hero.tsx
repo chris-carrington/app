@@ -26,8 +26,8 @@ const Hero: FC = () => {
           </div>
           <div class="message">Shasta Trades is laying the foundation for a new era of skilled labor. We are currently in our pre-launch phase. So we're establishing the trust, leadership and fundamentals required, to support our lovely Mount Shasta community!</div>
           <div class="ctas">
-            <button type="button" class="primary">JOIN OUR LEADERSHIP</button>
-            <button type="button" class="secondary">OUR MISSION</button>
+            <button type="button" class="primary">JOIN LEADERSHIP</button>
+            <button type="button" class="secondary">SERVICE REQUEST</button>
           </div>
         </div>
         <div class="right">
@@ -46,13 +46,12 @@ const Hero: FC = () => {
 
 const style = css`
   .hero {
-    height: 69rem;
     position: relative;
 
     .content {
       margin: 0 auto;
       max-width: var(--max-width);
-      padding: var(--space-huge) var(--space) var(--space) var(--space);
+      padding: var(--space-huge) var(--space-lite) var(--space-huge) var(--space-lite);
       position: relative;
       z-index: var(--z-mask);
       display: flex;
@@ -117,8 +116,8 @@ const style = css`
             padding: calc(var(--space-lite) * 0.9) calc(var(--space-lite) * 1.5);          }
 
           .primary {
-            color: rgb(102 53 0);
-            background-color: rgb(254 147 44);
+            color: var(--orange-text);
+            background-color: var(--orange);
             border: 2px solid rgb(254 147 44);
           }
 

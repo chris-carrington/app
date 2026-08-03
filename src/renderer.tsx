@@ -32,9 +32,13 @@ const style = css`
     --space-huge: 6.3rem;
     --max-width: 123rem;
     --speed: all 0.3s ease;
-    --white: rgb(248, 250, 248);
     --font-family-arial: Arial, Helvetica, sans-serif;
     --font-family-serif: Georgia, 'Times New Roman', Times, serif;
+
+    --primary: #1B3022;
+    --white: #F9FBF9;
+    --orange: #fe932c;
+    --orange-text: #663500;
 
     --z-nav: 4;
     --z-content: 3;
