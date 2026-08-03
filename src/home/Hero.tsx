@@ -112,6 +112,7 @@ const style = css`
 
           .primary,
           .secondary {
+            font-weight: 600;
             border-radius: var(--radius);
             padding: calc(var(--space-lite) * 0.9) calc(var(--space-lite) * 1.5);          }
 
