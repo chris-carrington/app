@@ -74,6 +74,10 @@ const style = css`
     font-size: var(--font-size);
   }
 
+  body {
+    padding-top: 7.6rem;
+  }
+
   .hr {
     height: 1px;
     width: 100%;

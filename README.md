@@ -1,5 +1,18 @@
 # Shasta Trades App
 
+## Todo
+1. Directive `onUnmount()`
+1. Join Newsletter
+1. Contact Us
+1. Home Mobile CSS
+1. Turso Integration w/ Forms
+1. Cloudflare Email Integration w/ Forms
+1. Sign Up
+1. Sign In
+1. Sign Out
+1. Objectives
+1. Transparency
+
 ## 🔗 Links
 - [Icons](https://icones.js.org/collection/all)
 - [Deployments](https://dash.cloudflare.com/716c70a1fb6b2a5d3bf7e3f90d16abd2/workers/services/view/app/production/deployments)

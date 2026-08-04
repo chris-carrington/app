@@ -26,8 +26,8 @@ const Hero: FC = () => {
           </div>
           <div class="message">Shasta Trades is laying the foundation for a new era of skilled labor. We are currently in our pre-launch phase. So we're establishing the trust, leadership and fundamentals required, to support our lovely Mount Shasta community!</div>
           <div class="ctas">
-            <button type="button" class="primary">JOIN LEADERSHIP</button>
-            <button type="button" class="secondary">SERVICE REQUEST</button>
+            <a href="#service-request" class="primary">SERVICE REQUEST</a>
+            <a href="#join-leadership" class="secondary">JOIN LEADERSHIP</a>
           </div>
         </div>
         <div class="right">
@@ -113,8 +113,10 @@ const style = css`
           .primary,
           .secondary {
             font-weight: 600;
+            text-decoration: none;
             border-radius: var(--radius);
-            padding: calc(var(--space-lite) * 0.9) calc(var(--space-lite) * 1.5);          }
+            padding: calc(var(--space-lite) * 0.9) calc(var(--space-lite) * 1.5);
+          }
 
           .primary {
             color: var(--orange-text);
