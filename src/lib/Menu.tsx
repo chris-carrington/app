@@ -26,8 +26,17 @@ const Menu: FC = () => {
 
 const style = css`
   .menu {
-    &.hidden {
-      display: none;
+    pointer-events: none;
+    &:not(.hidden) { /* Visible state */
+      pointer-events: auto;
+
+      .backdrop {
+        opacity: 0.3;
+      }
+
+      .items {
+        transform: translateY(0);
+      }
     }
 
     .backdrop {
@@ -36,9 +45,10 @@ const style = css`
       inset: 0;
       touch-action: none;
       cursor: pointer;
-      opacity: 0.3;
       background-color: #000;
       border: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
     .items {
@@ -48,6 +58,8 @@ const style = css`
       bottom: 0;
       left: 0;
       background-color: var(--white);
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
 
       .item {
         padding: var(--space);
