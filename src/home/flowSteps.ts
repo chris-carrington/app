@@ -32,7 +32,7 @@ export const flowSteps: FlowStep[] = [
       {
         icon: svgPersonAdd,
         title: 'Apply',
-        description: 'Provide your application to join our team of skilled tradespeople'
+        description: 'Provide your <a href="#join-leadership">application</a> to join our team of skilled tradespeople'
       },
       {
         icon: svgCheck,
