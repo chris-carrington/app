@@ -87,6 +87,10 @@ const style = css`
       justify-content: space-between;
       padding: 0 var(--space-lite) var(--space-huge) var(--space-lite);
 
+      @media (max-width: 600px) {
+        flex-direction: column;
+      }
+
       .step {
         .icon {
           width: 6.3rem;

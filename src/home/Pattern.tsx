@@ -209,7 +209,8 @@ const style = css`
     .buttons {
       display: flex;
       justify-content: center;
-      gap: var(--space);
+      flex-wrap: wrap;
+      gap: var(--space-lite);
       margin-bottom: var(--space);
 
       a,
@@ -239,7 +240,6 @@ const style = css`
       }
     }
 
-
     .flow,
     .forms {
       position: relative;
@@ -248,7 +248,6 @@ const style = css`
       max-width: var(--max-width);
       padding: var(--space-huge) var(--space);
     }
-
 
     .forms {
 
@@ -272,10 +271,19 @@ const style = css`
           display: flex;
           gap: var(--space-huge);
 
+          @media (max-width: 1100px) {
+            flex-direction: column;
+          }
+
           .left,
           .right {
             width: 50%;
             max-width: 50%;
+
+            @media (max-width: 1100px) {
+              width: 100%;
+              max-width: 100%;
+            }
           }
 
           .left {

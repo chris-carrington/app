@@ -62,12 +62,21 @@ const style = css`
         color: rgb(129 153 134);
         max-width: 69%;
         font-size: 1.68rem;
+
+        @media (max-width: 800px) {
+          max-width: 81%;
+        }
       }
     }
 
     .right {
       display: flex;
       gap: calc(var(--space) * 3);
+
+      @media (max-width: 800px) {
+        flex-direction: column;
+        gap: var(--space);
+      }
 
       .title {
         color: var(--orange);
