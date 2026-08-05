@@ -49,6 +49,11 @@ const style = css`
     justify-content: space-between;
     background-color: var(--primary);
 
+    @media (max-width: 510px) {
+      flex-direction: column;
+      gap: var(--space);
+    }
+
     .left {
 
       .title {
@@ -65,6 +70,10 @@ const style = css`
 
         @media (max-width: 800px) {
           max-width: 81%;
+        }
+
+        @media (max-width: 510px) {
+          max-width: 100%;
         }
       }
     }

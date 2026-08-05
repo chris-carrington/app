@@ -63,6 +63,11 @@ const style = css`
           max-width: 69%;
         }
 
+        @media (max-width: 700px) {
+          width: 100%;
+          max-width: 100%;
+        }
+
         .badge {
           display: inline-flex;
           gap: 0.9rem;
@@ -115,6 +120,10 @@ const style = css`
           display: flex;
           gap: var(--space-lite);
 
+          @media (max-width: 540px) {
+            flex-direction: column;
+          }
+
           .primary,
           .secondary {
             white-space: nowrap;
@@ -123,8 +132,8 @@ const style = css`
             border-radius: var(--radius);
             padding: calc(var(--space-lite) * 0.9) calc(var(--space-lite) * 1.5);
 
-            @media (max-width: 500px) {
-              font-size: 1.71rem;
+            @media (max-width: 540px) {
+              text-align: center;
             }
           }
 
@@ -221,6 +230,10 @@ const style = css`
       .mask {
         z-index: var(--z-mask);
         background-image: linear-gradient(to right,rgb(27,48,34),rgba(27,48,34,0.72),rgba(0,0,0,0));
+
+        @media (max-width: 700px) {
+          background-image: linear-gradient(to right,rgb(27,48,34),rgba(27,48,34,0.60));
+        }
       }
 
       img {
