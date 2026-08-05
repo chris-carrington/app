@@ -2,6 +2,7 @@
 
 import type{ FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
+import svgMenu from '@src/svg/menu.svg?raw'
 
 
 const Nav: FC = () => {
@@ -17,13 +18,16 @@ const Nav: FC = () => {
             </div>
             <span>Shasta Trades</span>
           </a>
+
           <div class="links">
             <a href="/">Home</a>
             <a href="/objectives">Objectives</a>
             <a href="/transparency">Transparency</a>
           </div>
         </div>
-        <button type="button">Sign In</button>
+
+        <button class="sign-in" type="button">Sign In</button>
+        <button class="menu" type="button" dangerouslySetInnerHTML={{ __html: svgMenu }} />
       </div>
     </div>
   </>
@@ -40,6 +44,13 @@ const style = css`
     backdrop-filter: blur(4px);
     background-color: rgba(248, 250, 248, 0.95);
     box-shadow: 0px 5px 18px -1px rgba(0, 0, 0, 0.18);
+
+    .inner .left .links,
+    .sign-in {
+      @media (max-width: 760px) {
+        display: none;
+      }
+    }
 
     .inner {
       display: flex;
@@ -86,7 +97,16 @@ const style = css`
         }
       }
 
-      button {
+      .menu,
+      .sign-in {
+        cursor: pointer;
+        transition: all 0.3s;
+        &:hover {
+          scale: 1.05;
+        }
+      }
+
+      .sign-in {
         font-size: 1.71rem;
         color: var(--white);
         font-weight: 600;
@@ -94,6 +114,27 @@ const style = css`
         border: none;
         padding: calc(var(--space-lite) / 2) var(--space-lite);
         background-color: var(--primary);
+      }
+
+      .menu {
+        width: 3.9rem;
+        height: 3.9rem;
+        color: var(--white);
+        border-radius: var(--radius);
+        border: none;
+        background-color: var(--primary);
+        align-items: center;
+        justify-content: center;
+        display: none;
+
+          @media (max-width: 760px) {
+            display: flex;
+          }
+
+          svg {
+            width: 2.7rem;
+            height: 2.7rem;
+          }
       }
     }
   }
