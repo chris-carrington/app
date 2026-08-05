@@ -253,9 +253,21 @@ const style = css`
     .forms {
 
       .form {
-        scroll-margin-top: 18rem;
+        scroll-margin-top: 21rem;
         &.hidden {
           display: none;
+        }
+
+        @media (max-width: 927px) {
+          scroll-margin-top: 28.2rem;
+        }
+
+        @media (max-width: 498px) {
+          scroll-margin-top: 36rem;
+        }
+
+        @media (max-width: 456px) {
+          scroll-margin-top: 42.9rem;
         }
 
         .badge {

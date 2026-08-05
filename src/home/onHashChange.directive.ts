@@ -45,4 +45,3 @@ type Step = {
   domForm: null | HTMLDivElement,
   domAnchor: null | HTMLAnchorElement
 }
-
