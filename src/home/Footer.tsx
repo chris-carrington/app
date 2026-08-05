@@ -24,6 +24,7 @@ const Footer: FC = () => {
             <a href="/">Home</a>
             <a href="/objectives">Objectives</a>
             <a href="/transparency">Transparency</a>
+            <a href="/sign-in">Sign In</a>
           </div>
         </div>
         <div class="socials">

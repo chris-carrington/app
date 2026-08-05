@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import Footer from './Footer'
-import Nav from '@src/lib/Nav'
+import Nav from '@src/nav/Nav'
 import Pattern from './Pattern'
 import Menu from '@src/lib/Menu'
 import Building from './Building'

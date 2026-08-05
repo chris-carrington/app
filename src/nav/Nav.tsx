@@ -1,9 +1,9 @@
-// app/src/lib/Nav.tsx
+// app/src/nav/Nav.tsx
 
 import type{ FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
 import svgMenu from '@src/svg/menu.svg?raw'
-import { onMenuToggle } from '@hono-directives'
+import { onMenuToggle, onHomeClick } from '@hono-directives'
 
 
 const Nav: FC = () => {
@@ -13,7 +13,7 @@ const Nav: FC = () => {
     <div class="nav">
       <div class="inner">
         <div class="left">
-          <a href="/" class="name">
+          <a data-directive={onHomeClick()} href="/" class="logo">
             <div class="img">
               <img src="logo.webp" />
             </div>
@@ -65,7 +65,7 @@ const style = css`
         display: flex;
         align-items: center;
 
-        .name {
+        .logo {
           font-weight: 700;
           font-size: 3.3rem;
           color: #1B3022;

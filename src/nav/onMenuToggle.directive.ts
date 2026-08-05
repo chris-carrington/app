@@ -1,4 +1,4 @@
-// app/src/lib/onMenuToggle.ts
+// app/src/nav/onMenuToggle.directive.ts
 
 export default (el: HTMLButtonElement) => {
   const menu = document.querySelector('.menu')

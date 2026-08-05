@@ -17,6 +17,7 @@ const Menu: FC = () => {
         <a href="/" class="item anchor">Home</a>
         <a href="/objectives" class="item anchor">Objectives</a>
         <a href="/transparency" class="item anchor">Transparency</a>
+        <a href="/sign-in" class="item anchor">Sign In</a>
         <button data-directive={onMenuToggle()} class="item btn" type="button">Close Menu</button>
       </div>
     </div>
@@ -27,8 +28,12 @@ const Menu: FC = () => {
 const style = css`
   .menu {
     pointer-events: none;
-    &:not(.hidden) { /* Visible state */
+    visibility: hidden;
+    transition: visibility 0s 0.3s; /* hide after animation */
+    &:not(.hidden) { /* visible state */
       pointer-events: auto;
+      visibility: visible;
+      transition: visibility 0s 0s; /* show immediately */
 
       .backdrop {
         opacity: 0.3;
@@ -49,6 +54,7 @@ const style = css`
       border: none;
       opacity: 0;
       transition: opacity 0.3s ease;
+      will-change: opacity;
     }
 
     .items {
@@ -58,8 +64,9 @@ const style = css`
       bottom: 0;
       left: 0;
       background-color: var(--white);
-      transform: translateY(100%);
+      transform: translateY(calc(100% + 1px)); /* extra safety */
       transition: transform 0.3s ease;
+      will-change: transform;
 
       .item {
         padding: var(--space);
