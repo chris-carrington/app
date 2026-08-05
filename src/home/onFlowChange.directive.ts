@@ -17,8 +17,8 @@ export default (el: HTMLDivElement) => {
   function onFlowChange(id: string) {
     for (const s of flowSteps) {
       s.domSteps?.style.setProperty('--steps', String(s.steps.length)) // set steps count
-      s.domSteps?.classList[s.id === id ? 'remove' : 'add']('hidden') // set steps hidden class
-      s.domButton?.classList[s.id === id ? 'add' : 'remove']('active') // set button active class
+      s.domSteps?.classList.toggle('hidden', s.id !== id) // set steps hidden class
+      s.domButton?.classList.toggle('active', s.id === id) // set button active class
     }
   }
 

@@ -27,7 +27,7 @@ const Nav: FC = () => {
           </div>
         </div>
 
-        <button class="sign-in-btn" type="button">Sign In</button>
+        <a href="/sign-in" class="sign-in-btn">Sign In</a>
         <button data-directive={onMenuToggle()} class="menu-btn" type="button" dangerouslySetInnerHTML={{ __html: svgMenu }} />
       </div>
     </div>
@@ -115,6 +115,7 @@ const style = css`
         border: none;
         padding: calc(var(--space-lite) / 2) var(--space-lite);
         background-color: var(--primary);
+        text-decoration: none;
       }
 
       .menu-btn {

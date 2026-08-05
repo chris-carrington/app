@@ -1,24 +1,33 @@
 // app/src/renderer.tsx
 
+import Nav from '@src/nav/Nav'
+import Menu from '@src/nav/Menu'
+import Footer from '@src/lib/Footer'
 import { css, Style } from 'hono/css'
 import { jsxRenderer } from 'hono/jsx-renderer'
 import { Script } from 'vite-ssr-components/hono'
 import { ViteClient } from 'vite-ssr-components/hono'
 
 
-export const renderer = jsxRenderer(({ children }) => {
+export const renderer = jsxRenderer(({ children }) => <>
+  <html>
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="theme-color" content="#F9FBF9" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <Style>{style}</Style>
+      <ViteClient />
+      <Script src='/src/script.ts' />
+    </head>
 
-  return <>
-    <html>
-      <head>
-        <Style>{style}</Style>
-        <ViteClient />
-        <Script src='/src/script.ts' />
-      </head>
-      <body>{children}</body>
-    </html>
-  </>
-})
+    <body>
+      <Nav />
+      <Menu />
+      <main>{children}</main>
+      <Footer />
+    </body>
+  </html>
+</>)
 
 
 const style = css`
@@ -78,5 +87,9 @@ const style = css`
 
   body {
     padding-top: 7.6rem;
+  }
+
+  main {
+    min-height: calc(100vh - 30rem);
   }
 `

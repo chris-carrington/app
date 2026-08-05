@@ -1,12 +1,7 @@
 # Shasta Trades App
 
 ## Todo
-1. classList toggle force (`onWrapChange()`)
-1. Directive `onUnmount()`
-1. Directive, multiple on 1 element
-1. Join Newsletter
-1. Contact Us
-1. Home Mobile CSS
+1. Home buttons
 1. Turso Integration w/ Forms
 1. Cloudflare Email Integration w/ Forms
 1. Sign Up
@@ -14,6 +9,7 @@
 1. Sign Out
 1. Objectives
 1. Transparency
+1. Directive, multiple on 1 element
 
 ## 🔗 Links
 - [Icons](https://icones.js.org/collection/all)
@@ -25,3 +21,4 @@
 - [Shrink Image Size](https://squoosh.app/)
 - [PNG to ICO](https://convertio.co/)
 - [SEO Best Practice](https://www.semrush.com/blog/html-tags-for-seo/)
+- [Open Graph Testing](https://www.opengraph.xyz/)

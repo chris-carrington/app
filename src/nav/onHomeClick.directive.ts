@@ -5,6 +5,8 @@ export default (el: HTMLAnchorElement) => {
     if (window.location.pathname === '/') {
       event.preventDefault() // stops the browser from following the href
       window.scrollTo({ top: 0, behavior: 'smooth' })
+
+      if (window.location.hash) history.replaceState(null, '', '/') // IF there is a hash set THEN unset it
     }
   })
 }

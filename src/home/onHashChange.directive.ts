@@ -30,8 +30,8 @@ export default (el: HTMLDivElement) => {
   function updateDOM(id: string, scroll = true) {
     for (const step of steps) {
       if (scroll) steps[0].domForm?.scrollIntoView({ behavior: 'smooth' }) // scroll
-      step.domForm?.classList[id === step.id ? 'remove' : 'add']('hidden') // set form class
-      step.domAnchor?.classList[id === step.id ? 'add' : 'remove']('active') // set button class
+      step.domForm?.classList.toggle('hidden', id !== step.id) // set form class
+      step.domAnchor?.classList.toggle('active', id === step.id) // set button class
     }
   }
 
