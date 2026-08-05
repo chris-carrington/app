@@ -1,4 +1,4 @@
-// app/src/lib/Menu.tsx
+// app/src/nav/Menu.tsx
 
 import type { FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
@@ -70,15 +70,13 @@ const style = css`
 
       .item {
         padding: var(--space);
-        &.title,
-        &.anchor,
-        &.btn {
-          display: block;
-          color: #262626;
-          background-color: transparent;
-          border: none;
-          text-decoration: none;
-        }
+        display: block;
+        color: #262626;
+        background-color: transparent;
+        border: none;
+        text-decoration: none;
+        width: 100%;
+        text-align: left;
         &.anchor,
         &.btn {
           cursor: pointer;

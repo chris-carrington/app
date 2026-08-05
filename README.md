@@ -24,3 +24,4 @@
 - [Gradient CSS Generator](https://html-css-js.com/css/generator/box-shadow/)
 - [Shrink Image Size](https://squoosh.app/)
 - [PNG to ICO](https://convertio.co/)
+- [SEO Best Practice](https://www.semrush.com/blog/html-tags-for-seo/)
