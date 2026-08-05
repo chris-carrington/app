@@ -75,6 +75,10 @@ const style = css`
           height: 1px;
           width: 100%;
           background: linear-gradient(90deg, transparent 0%, rgba(6, 27, 14, 0.1) 20%, rgba(6, 27, 14, 0.1) 80%, transparent 100%);
+
+          @media (max-width: 600px) {
+            display: none;
+          }
         }
       }
     }

@@ -247,7 +247,7 @@ const style = css`
       z-index: var(--z-content);
       margin: 0 auto;
       max-width: var(--max-width);
-      padding: var(--space-huge) var(--space);
+      padding: var(--space-huge) var(--space-lite);
     }
 
     .forms {
@@ -259,13 +259,19 @@ const style = css`
         }
 
         .badge {
-          display: inline-block;
+          width: 24rem;
+          text-align: center;
+          display: block;
           color: rgb(255 220 195);
           background-color: rgb(144 77 0 / 0.1);
           border: 1px solid rgb(144 77 0 / 0.2);
           padding: calc(var(--space-lite) / 2) var(--space-lite);
           border-radius: var(--radius);
           margin-bottom: var(--space-lite);
+
+          @media (max-width: 1100px) {
+            display: none;
+          }
         }
 
         .flex {

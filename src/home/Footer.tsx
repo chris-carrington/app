@@ -44,7 +44,7 @@ const Footer: FC = () => {
 const style = css`
   footer {
     font-size: 1.68rem;
-    padding: var(--space);
+    padding: var(--space) var(--space-lite);
     display: flex;
     justify-content: space-between;
     background-color: var(--primary);
