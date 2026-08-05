@@ -58,6 +58,11 @@ const style = css`
       gap: calc(var(--space-huge) * 3);
 
       .left {
+        @media (max-width: 1080px) {
+          width: 69%;
+          max-width: 69%;
+        }
+
         .badge {
           display: inline-flex;
           gap: 0.9rem;
@@ -112,10 +117,15 @@ const style = css`
 
           .primary,
           .secondary {
+            white-space: nowrap;
             font-weight: 600;
             text-decoration: none;
             border-radius: var(--radius);
             padding: calc(var(--space-lite) * 0.9) calc(var(--space-lite) * 1.5);
+
+            @media (max-width: 500px) {
+              font-size: 1.71rem;
+            }
           }
 
           .primary {
@@ -135,6 +145,10 @@ const style = css`
       .right {
         position: relative;
         transform: translateX(-1.5rem);
+
+        @media (max-width: 1080px) {
+          display: none;
+        }
 
         .img {
           height: 54rem;
