@@ -45,10 +45,14 @@ const Footer: FC = () => {
 const style = css`
   footer {
     font-size: 1.68rem;
-    padding: var(--space) var(--space-lite);
+    padding: var(--space);
     display: flex;
     justify-content: space-between;
     background-color: var(--primary);
+
+    @media (max-width: 1230px) {
+      padding: var(--space) var(--space-lite);
+    }
 
     @media (max-width: 510px) {
       flex-direction: column;
