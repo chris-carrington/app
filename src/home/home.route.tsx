@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 import Footer from './Footer'
 import Nav from '@src/lib/Nav'
 import Pattern from './Pattern'
+import Menu from '@src/lib/Menu'
 import Building from './Building'
 import Hero from '@src/home/Hero'
 import Mission from '@src/home/Mission'
@@ -18,6 +19,7 @@ app.get('/', async (c) => {
       <meta property="og:image" content="https:/shastatrades.org/og/home.webp" />
 
       <Nav />
+      <Menu />
       <Hero />
       <Mission />
       <Pattern />

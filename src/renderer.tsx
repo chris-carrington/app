@@ -40,6 +40,8 @@ const style = css`
     --orange: #fe932c;
     --orange-text: #663500;
 
+    --z-modal: 6;
+    --z-backdrop: 5;
     --z-nav: 4;
     --z-content: 3;
     --z-mask: 2;

@@ -3,6 +3,7 @@
 import type{ FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
 import svgMenu from '@src/svg/menu.svg?raw'
+import { onMenuToggle } from '@hono-directives'
 
 
 const Nav: FC = () => {
@@ -26,8 +27,8 @@ const Nav: FC = () => {
           </div>
         </div>
 
-        <button class="sign-in" type="button">Sign In</button>
-        <button class="menu" type="button" dangerouslySetInnerHTML={{ __html: svgMenu }} />
+        <button class="sign-in-btn" type="button">Sign In</button>
+        <button data-directive={onMenuToggle()} class="menu-btn" type="button" dangerouslySetInnerHTML={{ __html: svgMenu }} />
       </div>
     </div>
   </>
@@ -46,7 +47,7 @@ const style = css`
     box-shadow: 0px 5px 18px -1px rgba(0, 0, 0, 0.18);
 
     .inner .left .links,
-    .sign-in {
+    .sign-in-btn {
       @media (max-width: 760px) {
         display: none;
       }
@@ -97,8 +98,8 @@ const style = css`
         }
       }
 
-      .menu,
-      .sign-in {
+      .menu-btn,
+      .sign-in-btn {
         cursor: pointer;
         transition: all 0.3s;
         &:hover {
@@ -106,7 +107,7 @@ const style = css`
         }
       }
 
-      .sign-in {
+      .sign-in-btn {
         font-size: 1.71rem;
         color: var(--white);
         font-weight: 600;
@@ -116,7 +117,7 @@ const style = css`
         background-color: var(--primary);
       }
 
-      .menu {
+      .menu-btn {
         width: 3.9rem;
         height: 3.9rem;
         color: var(--white);
