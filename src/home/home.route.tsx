@@ -11,7 +11,7 @@ import Mission from '@src/home/Mission'
 const app = new Hono()
 
 app.get('/', async (c) => {
-  const description = 'We are dedicated to help students become licensed contractors through paid apprenticeships, to offer mentors work they love, and to provide affordable, high-quality trade services, to our lovely Mount Shasta community. 💚'
+  const description = 'We provide affordable, high-quality trade services, to our lovely Mount Shasta community. 💚'
 
   return c.render(
     <>
