@@ -51,11 +51,15 @@ const style = css`
     .content {
       margin: 0 auto;
       max-width: var(--max-width);
-      padding: var(--space-huge) var(--space-lite) var(--space-huge) var(--space-lite);
+      padding: var(--space-huge) var(--space-lite);
       position: relative;
       z-index: var(--z-mask);
       display: flex;
       gap: calc(var(--space-huge) * 3);
+
+      @media (max-width: 1080px) {
+        padding: var(--space) var(--space-lite);
+      }
 
       .left {
         @media (max-width: 1080px) {

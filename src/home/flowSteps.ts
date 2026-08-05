@@ -61,8 +61,8 @@ export const flowSteps: FlowStep[] = [
     steps: []
   },
   {
-    id: 'supportor',
-    button: 'SUPPORTOR',
+    id: 'supporter',
+    button: 'SUPPORTER',
     steps: []
   }
 ]

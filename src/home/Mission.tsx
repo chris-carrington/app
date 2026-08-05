@@ -20,12 +20,13 @@ const style = css`
   .mission {
     text-align: center;
     max-width: var(--max-width);
-    margin: var(--space-huge) auto;
+    margin: 0 auto;
+    padding: calc(var(--space-huge) / 1.8) var(--space-lite);
 
     .key {
       font-weight: 600;
       color: rgb(144 77 0);
-      margin-bottom: var(--space);
+      margin-bottom: var(--space-lite);
     }
 
     .value {
