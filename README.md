@@ -1,6 +1,7 @@
 # Shasta Trades App
 
 ## Todo
+1. classList toggle force (`onWrapChange()`)
 1. Directive `onUnmount()`
 1. Directive, multiple on 1 element
 1. Join Newsletter

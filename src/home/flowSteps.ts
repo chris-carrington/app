@@ -1,5 +1,4 @@
 import svgSmile from '@src/svg/smile.svg?raw'
-import svgCheck from '@src/svg/check.svg?raw'
 import svgMenuBook from '@src/svg/menuBook.svg?raw'
 import svgStoreFront from '@src/svg/storeFront.svg?raw'
 import svgStarAward from '@src/svg/starAward.svg?raw'
@@ -31,13 +30,8 @@ export const flowSteps: FlowStep[] = [
     steps: [
       {
         icon: svgPersonAdd,
-        title: 'Apply',
+        title: 'Apply / Accepted',
         description: 'Provide your <a href="#join-leadership">application</a> to join our team of skilled tradespeople'
-      },
-      {
-        icon: svgCheck,
-        title: 'Accepted',
-        description: 'Pass the interview and background check to secure your spot'
       },
       {
         icon: svgConstruction,

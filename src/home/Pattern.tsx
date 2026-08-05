@@ -7,7 +7,7 @@ import svgTree from '@src/svg/tree.svg?raw'
 import svgMoney from '@src/svg/money.svg?raw'
 import svgFence from '@src/svg/fence.svg?raw'
 import svgConstruction from '@src/svg/construction.svg?raw'
-import { onFlowChange, onHashChange } from '@hono-directives'
+import { onFlowChange, onHashChange, onWrapChange } from '@hono-directives'
 
 
 const Pattern: FC = () => {
@@ -35,11 +35,12 @@ const Flow: FC = () => {
       </div>
 
       {flowSteps.map(step => <>
-        <div class="steps hidden" data-step={step.id}>
+        <div class="steps hidden" data-step={step.id} data-directive={onWrapChange()}>
           <div class="line"></div>
 
-          {step.steps.map(s => <>
+          {step.steps.map((s, i) => <>
             <div class="step">
+              <div class="count">{i+1}</div>
               <div class="icon" dangerouslySetInnerHTML={{ __html: s.icon }}></div>
               <div class="title">{s.title}</div>
               <div class="description" dangerouslySetInnerHTML={{ __html: s.description }} />
@@ -412,10 +413,17 @@ const style = css`
         display: flex;
         justify-content: center;
         align-items: start;
+        flex-wrap: wrap;
         gap: var(--space);
         position: relative;
         &.hidden {
           display: none;
+        }
+        &.wrapped .line {
+          display: none;
+        }
+        &.wrapped .step .count {
+          display: flex;
         }
 
         .line {
@@ -439,6 +447,22 @@ const style = css`
           justify-content: center;
           text-align: center;
           font-size: 1.68rem;
+          min-width: 18rem;
+
+          .count {
+            display: none;
+            position: absolute;
+            top: 0;
+            transform: translate(-1.2rem, -0.99rem);
+            background-color: var(--orange);
+            color: #181818;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            width: 2.1rem;
+            height: 2.1rem;
+            opacity: 0.3;
+          }
 
           .icon {
             width: 6.3rem;
