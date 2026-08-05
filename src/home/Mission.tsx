@@ -32,13 +32,6 @@ const style = css`
       color: rgb(6 27 14);
     }
   }
-
-  .hr {
-    height: 1px;
-    width: 100%;
-    margin-bottom: var(--space-huge);
-    background: linear-gradient(90deg, transparent 0%, rgba(6, 27, 14, 0.1) 20%, rgba(6, 27, 14, 0.1) 80%, transparent 100%);
-  }
 `
 
 

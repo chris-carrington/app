@@ -35,7 +35,7 @@ const style = css`
     --font-family-arial: Arial, Helvetica, sans-serif;
     --font-family-serif: Georgia, 'Times New Roman', Times, serif;
 
-    --primary: #1B3022;
+    --primary: #1b3022;
     --white: #F9FBF9;
     --orange: #fe932c;
     --orange-text: #663500;
@@ -76,12 +76,5 @@ const style = css`
 
   body {
     padding-top: 7.6rem;
-  }
-
-  .hr {
-    height: 1px;
-    width: 100%;
-    margin-bottom: var(--space-huge);
-    background: linear-gradient(90deg, transparent 0%, rgba(6, 27, 14, 0.1) 20%, rgba(6, 27, 14, 0.1) 80%, transparent 100%);
   }
 `

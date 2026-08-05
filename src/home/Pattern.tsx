@@ -1,32 +1,75 @@
-// app/src/lib/Forms.tsx
+// app/src/lib/Pattern.tsx
 
 import type{ FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
+import { flowSteps } from './flowSteps'
 import svgTree from '@src/svg/tree.svg?raw'
-import { hashChange } from '@hono-directives'
 import svgMoney from '@src/svg/money.svg?raw'
 import svgFence from '@src/svg/fence.svg?raw'
 import svgConstruction from '@src/svg/construction.svg?raw'
+import { onFlowChange, onHashChange } from '@hono-directives'
 
 
-const Forms: FC = () => {
+const Pattern: FC = () => {
   return <>
     <Style>{style}</Style>
 
-    <div class="forms" data-directive={hashChange()}>
+    <div class="pattern">
       <div class="bg" />
 
-      <div class="content">
-        <div class="buttons">
-          <a href="#service-request">SERVICE REQUEST</a>
-          <a href="#join-leadership">JOIN LEADERSHIP</a>
-          <a href="#join-newsletter">JOIN NEWSLETTER</a>
-          <a href="#contact-us">CONTACT US</a>
-        </div>
+      <Flow />
+      <div class="hr"></div>
+      <Forms />
+    </div>
+  </>
+}
 
-        <ServiceRequest />
-        <JoinLeadership />
+
+const Flow: FC = () => {
+  return <>
+    <div class="flow" data-directive={onFlowChange()}>
+      <div class="explain">🤔 How does Shasta Trades work?</div>
+
+      <div class="buttons">
+        {flowSteps.map(step => <button type="button" data-step={step.id}>{step.button}</button>)}
       </div>
+
+      {flowSteps.map(step => <>
+        <div class="steps hidden" data-step={step.id}>
+          <div class="line"></div>
+
+          {step.steps.map(s => <>
+            <div class="step">
+              <div class="icon" dangerouslySetInnerHTML={{ __html: s.icon }}></div>
+              <div class="title">{s.title}</div>
+              <div class="description" dangerouslySetInnerHTML={{ __html: s.description }} />
+            </div>
+          </>)}
+        </div>
+      </>)}
+    </div>
+  </>
+}
+
+
+const Forms: FC = () => {
+  const achors = [
+    { href: '#service-request', title: 'SERVICE REQUEST' },
+    { href: '#join-leadership', title: 'JOIN LEADERSHIP' },
+    { href: '#join-newsletter', title: 'JOIN NEWSLETTER' },
+    { href: '#contact-us', title: 'CONTACT US' },
+  ]
+
+  return <>
+    <div class="forms" data-directive={onHashChange()}>
+      <div class="explain">🤝 Want to connect with us?</div>
+
+      <div class="buttons">
+        {achors.map(a => <a href={a.href}>{a.title}</a>)}
+      </div>
+
+      <ServiceRequest />
+      <JoinLeadership />
     </div>
   </>
 }
@@ -46,17 +89,15 @@ const ServiceRequest: FC = () => {
           <div class="title">Professional Services</div>
           <div class="description">Our master trades professionals lead every project, ensuring lovely results and hands-on education. Our services include:</div>
           <div class="items">
-            {items.map(item => {
-              return <>
-                <div class="item">
-                  <div class="icon" dangerouslySetInnerHTML={{ __html: item.icon }}></div>
-                  <div class="info">
-                    <div class="primary">{item.title}</div>
-                    <div class="secondary">{item.description}</div>
-                  </div>
+            {items.map(item => <>
+              <div class="item">
+                <div class="icon" dangerouslySetInnerHTML={{ __html: item.icon }}></div>
+                <div class="info">
+                  <div class="primary">{item.title}</div>
+                  <div class="secondary">{item.description}</div>
                 </div>
-              </>
-            })}
+              </div>
+            </> )}
           </div>
         </div>
 
@@ -98,17 +139,15 @@ const JoinLeadership: FC = () => {
           <div class="title">Join Leadership Team</div>
           <div class="description">We are uniting a visionary Board and dedicated Staff to lead by example! Current openings include:</div>
           <div class="items">
-            {items.map(item => {
-              return <>
-                <div class="item">
-                  <div class="icon" dangerouslySetInnerHTML={{__html: item.icon}}></div>
-                  <div class="info">
-                    <div class="primary">{item.title}</div>
-                    <div class="secondary">{item.description}</div>
-                  </div>
+            {items.map(item => <>
+              <div class="item">
+                <div class="icon" dangerouslySetInnerHTML={{__html: item.icon}}></div>
+                <div class="info">
+                  <div class="primary">{item.title}</div>
+                  <div class="secondary">{item.description}</div>
                 </div>
-              </>
-            })}
+              </div>
+            </> )}
           </div>
         </div>
 
@@ -137,7 +176,7 @@ const JoinLeadership: FC = () => {
 
 
 const style = css`
-  .forms {
+  .pattern {
     width: 100%;
     min-height: 69rem;
     margin-bottom: var(--space-huge);
@@ -152,40 +191,66 @@ const style = css`
       background-image: url(/wood-pattern.webp);
     }
 
-    .content {
+    .hr {
+      height: 0.2rem;
+      width: 100%;
+      background: linear-gradient(90deg, transparent 0%, rgba(194, 194, 193, 0.1) 50%, transparent 100%);
+    }
+
+    .explain {
+      text-align: center;
+      color: var(--orange);
+      opacity: 0.6;
+      filter: grayscale(1);
+      font-weight: 600;
+      margin-bottom: var(--space-lite);
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: var(--space);
+      margin-bottom: var(--space);
+
+      a,
+      button {
+        font-weight: 600;
+        font-size: 1.71rem;
+        text-decoration: none;
+        border-radius: calc(var(--radius) * 2);
+        color: var(--white);
+        padding: var(--space-lite) var(--space);
+        border: 1px solid rgb(255 255 255 / 0.2);
+        background-color: transparent;
+        cursor: pointer;
+        transition: all 0.3s;
+        &:hover {
+          scale: 1.02;
+          background-color: rgb(255 255 255 / 0.1);
+        }
+        &.active {
+          color: var(--orange-text);
+          background-color: var(--orange);
+          border-color: var(--orange);
+          &:hover {
+            cursor: default;
+          }
+        }
+      }
+    }
+
+
+    .flow,
+    .forms {
       position: relative;
       z-index: var(--z-content);
       margin: 0 auto;
       max-width: var(--max-width);
       padding: var(--space-huge) var(--space);
+    }
 
-      .buttons {
-        display: flex;
-        justify-content: center;
-        gap: var(--space);
-        margin-bottom: var(--space);
 
-        a {
-          font-weight: 600;
-          font-size: 1.71rem;
-          text-decoration: none;
-          border-radius: calc(var(--radius) * 2);
-          color: var(--white);
-          padding: var(--space-lite) var(--space);
-          border: 1px solid rgb(255 255 255 / 0.2);
-          &:hover {
-            background-color: rgb(255 255 255 / 0.1);
-          }
-          &.active {
-            color: var(--orange-text);
-            background-color: var(--orange);
-            border-color: var(--orange);
-            &:hover {
-              cursor: default;
-            }
-          }
-        }
-      }
+    .forms {
 
       .form {
         scroll-margin-top: 18rem;
@@ -333,8 +398,89 @@ const style = css`
         }
       }
     }
+
+    .flow {
+      .steps {
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        gap: var(--space);
+        position: relative;
+        &.hidden {
+          display: none;
+        }
+
+        .line {
+          height: 0.3rem;
+          position: absolute;
+          z-index: var(--z-mask);
+          top: 3.15rem;
+          background: linear-gradient(90deg, transparent 0%, #fe932c 50%, transparent 100%);
+          background-size: 200% 100%;
+          animation: flowLine 6s linear infinite;
+          width: calc((var(--steps) - 1) / var(--steps) * (100% + var(--space)));
+        }
+
+        .step {
+          flex: 1;
+          position: relative;
+          z-index: var(--z-content);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          font-size: 1.68rem;
+
+          .icon {
+            width: 6.3rem;
+            height: 6.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: var(--orange);
+            background-color: var(--primary);
+            margin-bottom: var(--space-lite);
+            box-shadow: 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 20px rgba(254, 147, 44, 0.3);
+
+            svg {
+              width: 2.7rem;
+              height: 2.7rem;
+            }
+          }
+
+          .title {
+            color: white;
+            font-weight: 600;
+            margin-bottom: calc(var(--space-lite) / 4);
+          }
+
+          .description {
+            color: rgb(180 205 184);
+
+            a {
+              color: var(--orange);
+              text-decoration: none;
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @keyframes flowLine {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: 0 0;
+    }
   }
 `
 
 
-export default Forms
+export default Pattern

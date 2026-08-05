@@ -72,7 +72,9 @@ const style = css`
         }
 
         .hr {
-          margin-bottom: 0;
+          height: 1px;
+          width: 100%;
+          background: linear-gradient(90deg, transparent 0%, rgba(6, 27, 14, 0.1) 20%, rgba(6, 27, 14, 0.1) 80%, transparent 100%);
         }
       }
     }

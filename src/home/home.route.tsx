@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
-import Forms from './Forms'
 import Footer from './Footer'
 import Nav from '@src/lib/Nav'
+import Pattern from './Pattern'
 import Building from './Building'
 import Hero from '@src/home/Hero'
 import Mission from '@src/home/Mission'
@@ -20,7 +20,7 @@ app.get('/', async (c) => {
       <Nav />
       <Hero />
       <Mission />
-      <Forms />
+      <Pattern />
       <Building />
       <Footer />
     </>

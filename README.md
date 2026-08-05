@@ -2,6 +2,7 @@
 
 ## Todo
 1. Directive `onUnmount()`
+1. Directive, multiple on 1 element
 1. Join Newsletter
 1. Contact Us
 1. Home Mobile CSS
