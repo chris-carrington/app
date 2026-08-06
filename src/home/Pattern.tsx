@@ -229,7 +229,7 @@ const JoinNewsletter: FC = () => {
 const ContactUs: FC = () => {
   const items = [
     { icon: svgLock, title: 'Security', description: 'Contact names, emails and messages are encrypted using industry-standard AEAD algorithms' },
-    { icon: svgFrequency, title: 'Frequency', description: 'We will receive an email once you fill out the form and get back to you w/in 24 hours' },
+    { icon: svgFrequency, title: 'Frequency', description: 'We will receive an email once you fill out the form and get back to you within 24 hours' },
   ]
 
   return <>
@@ -441,7 +441,6 @@ const style = css`
 
                   .secondary {
                     color: rgb(180 205 184);
-                    font-family: var(--font-family-serif);
                     font-size: 1.68rem;
                   }
                 }
