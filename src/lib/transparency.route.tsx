@@ -1,22 +1,46 @@
 // app/src/lib/transparency.route.tsx
 
 import { Hono } from 'hono'
-import { marked } from 'marked'
 import { css, Style } from 'hono/css'
+import { marked, Tokens } from 'marked'
 import schema from '@src/md/schema.md?raw'
+
 
 const app = new Hono()
 
 
 app.get('/', async (c) => {
+  marked.use({
+    renderer: {
+      table: (token: Tokens.Table) => {
+        const headerHtml = token.header
+          .map(cell => `<th>${cell.text}</th>`)
+          .join('')
+
+        const bodyHtml = token.rows
+          .map(row => `<tr>${row.map(cell => `<td>${cell.text}</td>`).join('')}</tr>`)
+          .join('')
+
+        const tableHtml = `
+          <table>
+            <thead><tr>${headerHtml}</tr></thead>
+            <tbody>${bodyHtml}</tbody>
+          </table>
+        `
+
+        return `<div class="responsive">${tableHtml}</div>` // wrap in a responsive container
+      }
+    }
+  })
+
   const htmlSchema = await marked.parse(schema)
 
   const buttons = [
     { href: '#schema', title: 'Schema' },
     { href: '#trust-document', title: 'Trust Document' },
     { href: '#bylaws', title: 'Bylaws' },
-    { href: '#aoi', title: 'Articles of Incorporation' },
-    { href: '#coi', title: 'Conflict of Interest Policy' },
+    { href: '#articles-of-incorporation', title: 'Articles of Incorporation' },
+    { href: '#conflict-of-interest-policy', title: 'Conflict of Interest Policy' },
     { href: '#whistleblower', title: 'Whistleblower Policy' },
     { href: '#nine-ninety', title: 'Form 990' },
   ]
@@ -54,8 +78,8 @@ const style = css`
     padding: var(--space) var(--space-lite) var(--space-huge) var(--space-lite);
 
     h1,
-    h2,
-    h3 {
+    h2 {
+      margin-top: 0;
       font-weight: 700;
       color: var(--primary);
     }
@@ -66,7 +90,6 @@ const style = css`
     }
 
     h2 {
-      margin-top: 0;
       font-size: 2.4rem;
       margin-bottom: calc(var(--space-lite) / 2);
     }
@@ -90,7 +113,6 @@ const style = css`
         justify-content: space-between;
 
         .sub-title {
-          color: rgb(67 72 67);
           font-family: var(--font-family-serif);;
           width: 168rem;
         }
@@ -156,42 +178,48 @@ const style = css`
         margin: var(--space-huge) 0;
       }
 
-      table {
+      .responsive {
         width: 100%;
-        margin-bottom: 1rem;
-        color: #212529;
-        background-color: #fff;
-        border-collapse: separate; /* required for border-radius to work */
-        border-spacing: 0; /* remove gaps between cells */
-        overflow: hidden; /* clips the corners to create the round effect */
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
         border-radius: var(--radius);
         border: 1px solid #dee2e6;
 
-        th, td {
-          padding: 0.6rem;
-          vertical-align: top;
-          width: 33%;
-          border-top: 1px solid #dee2e6;
-          border-left: 1px solid #dee2e6;
-          &:first-child {
-            border-left: none; /* Remove left border from the very first column */
-          }
-        }
+        table {
+          width: 100%;
+          margin-bottom: 1rem;
+          color: #212529;
+          background-color: #fff;
+          border-collapse: separate; /* required for border-radius to work */
+          border-spacing: 0; /* remove gaps between cells */
 
-        tr:first-child { /* Remove top border from the very first row */
           th, td {
-            border-top: none;
+            padding: 0.6rem;
+            vertical-align: top;
+            width: 33%;
+            border-top: 1px solid #dee2e6;
+            border-left: 1px solid #dee2e6;
+            white-space: nowrap;
+            &:first-child {
+              border-left: none; /* Remove left border from the very first column */
+            }
           }
-        }
 
-        th {
-          padding: 0.9rem 0.6rem;
-          text-align: left;
-          border-bottom: 2px solid #dee2e6;
-        }
+          tr:first-child { /* Remove top border from the very first row */
+            th, td {
+              border-top: none;
+            }
+          }
 
-        tbody tr:nth-of-type(odd) { /* striped rows */
-          background-color: rgba(0, 0, 0, 0.05);
+          th {
+            padding: 0.9rem 0.6rem;
+            text-align: left;
+            border-bottom: 2px solid #dee2e6;
+          }
+
+          tbody tr:nth-of-type(odd) { /* striped rows */
+            background-color: rgba(0, 0, 0, 0.05);
+          }
         }
       }
     }

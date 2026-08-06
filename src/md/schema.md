@@ -25,12 +25,12 @@
 ## Person
 Store all people in our system (students, mentors, customers, trustees, board members, employees, vendors, etc.,)
 
-| Field     | Type    | Constraints       |
-|-----------|---------|-------------------|
-| id        | INTEGER | PK, AI            |
-| firstName | TEXT    | NOT NULL          |
-| lastName  | TEXT    | NOT NULL          |
-| contactId | INTEGER | FK -> Contact(id) |
+| Field     | Type    | Constraints               |
+|-----------|---------|---------------------------|
+| id        | INTEGER | PK, AI                    |
+| firstName | TEXT    | NOT NULL                  |
+| lastName  | TEXT    | NOT NULL                  |
+| contactId | INTEGER | FK &rarr; **Contact**(id) |
 
 ---
 
@@ -51,8 +51,8 @@ Store contact details for each **Person**
 ## ContactUsMessage
 Store messages that are filled out with our Contact Us website form
 
-| Field    | Type    | Constraints      |
-|----------|---------|------------------|
-| id       | INTEGER | PK, AI           |
-| message  | TEXT    | NOT NULL         |
-| personId | INTEGER | FK -> Person(id) |
+| Field    | Type    | Constraints              |
+|----------|---------|--------------------------|
+| id       | INTEGER | PK, AI                   |
+| message  | TEXT    | NOT NULL                 |
+| personId | INTEGER | FK &rarr; **Person**(id) |
