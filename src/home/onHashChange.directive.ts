@@ -21,6 +21,12 @@ export default (el: HTMLDivElement) => {
       case '#join-leadership':
         updateDOM('join-leadership')
         break
+      case '#join-newsletter':
+        updateDOM('join-newsletter')
+        break
+      case '#contact-us':
+        updateDOM('contact-us')
+        break
       default:
         updateDOM('service-request', false)
         break

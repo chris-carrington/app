@@ -34,7 +34,7 @@ export const flowSteps: FlowStep[] = [
     steps: [
       {
         icon: svgPersonAdd,
-        title: 'Apply + Accepted',
+        title: 'Apply + Accept',
         description: 'Provide your <a href="#join-leadership">application</a> & join our team of skilled tradespeople'
       },
       {
@@ -65,7 +65,7 @@ export const flowSteps: FlowStep[] = [
     steps: [
       {
         icon: svgPersonAdd,
-        title: 'Apply + Accepted',
+        title: 'Apply + Accept',
         description: 'Provide your <a href="#join-leadership">application</a> & join our team of skilled mentors'
       },
       {

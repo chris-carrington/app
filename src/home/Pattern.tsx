@@ -3,9 +3,11 @@
 import type{ FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
 import { flowSteps } from './flowSteps'
+import svgLock from '@src/svg/lock.svg?raw'
 import svgTree from '@src/svg/tree.svg?raw'
 import svgMoney from '@src/svg/money.svg?raw'
 import svgFence from '@src/svg/fence.svg?raw'
+import svgFrequency from '@src/svg/frequency.svg?raw'
 import svgConstruction from '@src/svg/construction.svg?raw'
 import { onFlowChange, onHashChange, onWrapChange } from '@hono-directives'
 
@@ -71,6 +73,8 @@ const Forms: FC = () => {
 
       <ServiceRequest />
       <JoinLeadership />
+      <JoinNewsletter />
+      <ContactUs />
     </div>
   </>
 }
@@ -87,7 +91,7 @@ const ServiceRequest: FC = () => {
       <div class="badge">COMMUNITY SERVICES</div>
       <div class="flex">
         <div class="left">
-          <div class="title">Professional Services</div>
+          <div class="title">Professional Service</div>
           <div class="description">Our master trades professionals lead every project, ensuring lovely results and hands-on education. Our services include:</div>
           <div class="items">
             {items.map(item => <>
@@ -134,10 +138,10 @@ const JoinLeadership: FC = () => {
 
   return <>
     <div id="join-leadership" class="form hidden">
-      <div class="badge">LEAD BY EXAMPLE</div>
+      <div class="badge">BE THE LEADER YOU'D FOLLOW</div>
       <div class="flex">
         <div class="left">
-          <div class="title">Join Leadership Team</div>
+          <div class="title">Lead by Example</div>
           <div class="description">We are uniting a visionary Board and dedicated Staff to lead by example! Current openings include:</div>
           <div class="items">
             {items.map(item => <>
@@ -174,6 +178,100 @@ const JoinLeadership: FC = () => {
     </div>
   </>
 }
+
+
+const JoinNewsletter: FC = () => {
+  const items = [
+    { icon: svgLock, title: 'Security', description: 'Newsletter recipient names & emails are encrypted using industry-standard AEAD algorithms' },
+    { icon: svgFrequency, title: 'Frequency', description: 'We respect you, we respect your inbox and so we rarely send out more then one email a month' },
+  ]
+
+  return <>
+    <div id="join-newsletter" class="form hidden">
+      <div class="badge">STAY INFORMED</div>
+      <div class="flex">
+        <div class="left">
+          <div class="title">Flowing Together</div>
+          <div class="description">Stay informed about upcoming opportunities, community restoration projects, and success stories from the workbench.</div>
+          <div class="items">
+            {items.map(item => <>
+              <div class="item">
+                <div class="icon" dangerouslySetInnerHTML={{ __html: item.icon }}></div>
+                <div class="info">
+                  <div class="primary">{item.title}</div>
+                  <div class="secondary">{item.description}</div>
+                </div>
+              </div>
+            </>)}
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="mask"></div>
+          <div class="inputs">
+            <div class="title">Join Newsletter</div>
+            <form>
+              <div class="two">
+                <input type="text" name="firstName" placeholder="First Name" />
+                <input type="text" name="lastName" placeholder="Last Name" />
+              </div>
+              <input type="email" name="email" placeholder="Email" />
+              <button type="submit">Join Newsletter</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </>
+}
+
+
+const ContactUs: FC = () => {
+  const items = [
+    { icon: svgLock, title: 'Security', description: 'Contact names, emails and messages are encrypted using industry-standard AEAD algorithms' },
+    { icon: svgFrequency, title: 'Frequency', description: 'We will receive an email once you fill out the form and get back to you w/in 24 hours' },
+  ]
+
+  return <>
+    <div id="contact-us" class="form hidden">
+      <div class="badge">UNITED WE STAND</div>
+      <div class="flex">
+        <div class="left">
+          <div class="title">Let's Connect</div>
+          <div class="description">We're all ears, and we'd love to hear from you because it takes a village, to raise a Mount Shasta!</div>
+          <div class="items">
+            {items.map(item => <>
+              <div class="item">
+                <div class="icon" dangerouslySetInnerHTML={{ __html: item.icon }}></div>
+                <div class="info">
+                  <div class="primary">{item.title}</div>
+                  <div class="secondary">{item.description}</div>
+                </div>
+              </div>
+            </>)}
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="mask"></div>
+          <div class="inputs">
+            <div class="title">Contact Us</div>
+            <form>
+              <div class="two">
+                <input type="text" name="firstName" placeholder="First Name" />
+                <input type="text" name="lastName" placeholder="Last Name" />
+              </div>
+              <input type="email" name="email" placeholder="Email" />
+              <textarea name="message" placeholder="Message" />
+              <button type="submit">Contact Us</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </>
+}
+
 
 
 const style = css`
@@ -271,9 +369,8 @@ const style = css`
         }
 
         .badge {
-          width: 24rem;
           text-align: center;
-          display: block;
+          display: inline-block;
           color: rgb(255 220 195);
           background-color: rgb(144 77 0 / 0.1);
           border: 1px solid rgb(144 77 0 / 0.2);
@@ -390,7 +487,8 @@ const style = css`
               }
 
               input,
-              select {
+              select,
+              textarea {
                 width: 100%;
                 display: block;
                 color: var(--white);
@@ -404,6 +502,10 @@ const style = css`
                   outline: 0;
                   box-shadow: 0 0 0 0.3rem rgba(0, 123, 255, 0.6);
                 }
+              }
+
+              textarea {
+                height: 9rem;
               }
 
               button {
