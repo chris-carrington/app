@@ -21,3 +21,8 @@
 - [PNG to ICO](https://convertio.co/)
 - [SEO Best Practice](https://www.semrush.com/blog/html-tags-for-seo/)
 - [Open Graph Testing](https://www.opengraph.xyz/)
+- [Turso + Drizzle](https://docs.turso.tech/sdk/ts/orm/drizzle)
+- [Cloudflare Secrets](https://developers.cloudflare.com/workers/configuration/secrets/)
+- [Hono Vite Secrets](https://developers.cloudflare.com/workers/vite-plugin/reference/secrets/)
+- [Send Emails](https://developers.cloudflare.com/email-service/api/send-emails/workers-api/)
+- [Markdown Table Generator](https://tableconvert.com/markdown-generator)

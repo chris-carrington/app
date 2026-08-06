@@ -3,10 +3,13 @@
 import type{ FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
 import svgMenu from '@src/svg/menu.svg?raw'
+import { useRequestContext } from 'hono/jsx-renderer'
 import { onMenuToggle, onHomeClick } from '@hono-directives'
 
 
 const Nav: FC = () => {
+  const c = useRequestContext()
+
   return <>
     <Style>{style}</Style>
 
@@ -21,9 +24,9 @@ const Nav: FC = () => {
           </a>
 
           <div class="links">
-            <a href="/">Home</a>
-            <a href="/objectives">Objectives</a>
-            <a href="/transparency">Transparency</a>
+            <a href="/" class={c.req.path === '/' ? 'active' : ''}>Home</a>
+            <a href="/objectives" class={c.req.path === '/objectives' ? 'active' : ''}>Objectives</a>
+            <a href="/transparency" class={c.req.path === '/transparency' ? 'active' : ''}>Transparency</a>
           </div>
         </div>
 
@@ -91,8 +94,13 @@ const style = css`
             font-weight: 600;
             font-size: 1.71rem;
             padding-left: var(--space);
+            transition: all 0.3s;
+            display: inline-block;
             &:hover {
-              color: rgb(6 27 14);
+              scale: 1.05;
+            }
+            &.active {
+              color: var(--primary);
             }
           }
         }
