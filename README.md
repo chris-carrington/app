@@ -1,7 +1,6 @@
 # Shasta Trades App
 
 ## Todo
-1. Home buttons
 1. Turso Integration w/ Forms
 1. Cloudflare Email Integration w/ Forms
 1. Sign Up
