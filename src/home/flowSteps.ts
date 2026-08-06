@@ -1,8 +1,9 @@
 import svgSmile from '@src/svg/smile.svg?raw'
 import svgMenuBook from '@src/svg/menuBook.svg?raw'
-import svgStoreFront from '@src/svg/storeFront.svg?raw'
 import svgStarAward from '@src/svg/starAward.svg?raw'
 import svgPersonAdd from '@src/svg/personAdd.svg?raw'
+import svgStoreFront from '@src/svg/storeFront.svg?raw'
+import svgSupervisor from '@src/svg/supervisor.svg?raw'
 import svgConstruction from '@src/svg/construction.svg?raw'
 import svgToolsClipboard from '@src/svg/toolsClipboard.svg?raw'
 
@@ -36,7 +37,7 @@ export const flowSteps: FlowStep[] = [
       {
         icon: svgConstruction,
         title: 'Paid to Learn',
-        description: `Receive guidance from experienced mentors and gain California exam experience hours`
+        description: 'Receive guidance from experienced mentors and gain California exam experience hours'
       },
       {
         icon: svgMenuBook,
@@ -58,7 +59,18 @@ export const flowSteps: FlowStep[] = [
   {
     id: 'mentor',
     button: 'MENTOR',
-    steps: []
+    steps: [
+      {
+        icon: svgPersonAdd,
+        title: 'Apply / Accepted',
+        description: 'Provide your <a href="#join-leadership">application</a> to join our team of skilled mentors'
+      },
+      {
+        icon: svgSupervisor,
+        title: 'Lead',
+        description: 'Lead projects, share wisdom and earn a competitive salary'
+      },
+    ]
   },
   {
     id: 'supporter',
