@@ -35,9 +35,9 @@ export default (el: HTMLDivElement) => {
 
   function updateDOM(id: string, scroll = true) {
     for (const step of steps) {
-      if (scroll) steps[0].domForm?.scrollIntoView({ behavior: 'smooth' }) // scroll
       step.domForm?.classList.toggle('hidden', id !== step.id) // set form class
       step.domAnchor?.classList.toggle('active', id === step.id) // set button class
+      if (scroll) step.domForm?.scrollIntoView({ behavior: 'smooth' }) // scroll 🚨 post hidden toggle so we scroll to the correct place
     }
   }
 
