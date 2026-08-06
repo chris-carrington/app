@@ -1,10 +1,13 @@
 import svgSmile from '@src/svg/smile.svg?raw'
+import svgPayments from '@src/svg/payments.svg?raw'
 import svgMenuBook from '@src/svg/menuBook.svg?raw'
 import svgStarAward from '@src/svg/starAward.svg?raw'
 import svgPersonAdd from '@src/svg/personAdd.svg?raw'
 import svgStoreFront from '@src/svg/storeFront.svg?raw'
 import svgSupervisor from '@src/svg/supervisor.svg?raw'
 import svgConstruction from '@src/svg/construction.svg?raw'
+import svgBarLineChart from '@src/svg/barLineChart.svg?raw'
+import svgLineMagnifier from '@src/svg/lineMagnifier.svg?raw'
 import svgToolsClipboard from '@src/svg/toolsClipboard.svg?raw'
 
 
@@ -31,8 +34,8 @@ export const flowSteps: FlowStep[] = [
     steps: [
       {
         icon: svgPersonAdd,
-        title: 'Apply / Accepted',
-        description: 'Provide your <a href="#join-leadership">application</a> to join our team of skilled tradespeople'
+        title: 'Apply + Accepted',
+        description: 'Provide your <a href="#join-leadership">application</a> & join our team of skilled tradespeople'
       },
       {
         icon: svgConstruction,
@@ -62,12 +65,12 @@ export const flowSteps: FlowStep[] = [
     steps: [
       {
         icon: svgPersonAdd,
-        title: 'Apply / Accepted',
-        description: 'Provide your <a href="#join-leadership">application</a> to join our team of skilled mentors'
+        title: 'Apply + Accepted',
+        description: 'Provide your <a href="#join-leadership">application</a> & join our team of skilled mentors'
       },
       {
         icon: svgSupervisor,
-        title: 'Lead',
+        title: 'Mentor',
         description: 'Lead projects, share wisdom and earn a competitive salary'
       },
     ]
@@ -75,7 +78,23 @@ export const flowSteps: FlowStep[] = [
   {
     id: 'supporter',
     button: 'SUPPORTER',
-    steps: []
+    steps: [
+      {
+        icon: svgPayments,
+        title: 'Support',
+        description: 'Direct your donation to specific trade programs (tools, apprentices, low income families, etc.,)'
+      },
+      {
+        icon: svgBarLineChart,
+        title: 'Track Spending',
+        description: 'Monitor how your contribution is used in real-time'
+      },
+      {
+        icon: svgLineMagnifier,
+        title: 'Impact Analytics',
+        description: 'Receive detailed reports on the community value and careers created thanks to your support'
+      },
+    ]
   }
 ]
 
