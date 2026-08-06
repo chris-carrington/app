@@ -108,6 +108,9 @@ const style = css`
             &:last-child {
               margin-bottom: 0;
             }
+            &:hover {
+              text-decoration: underline;
+            }
           }
         }
       }
@@ -116,6 +119,14 @@ const style = css`
         .links {
           display: flex;
           gap: var(--space-lite);
+
+          a {
+            transition: all 0.3s;
+            text-decoration: none;
+            &:hover {
+              scale: 1.05;
+            }
+          }
         }
       }
     }

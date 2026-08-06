@@ -133,8 +133,12 @@ const style = css`
             white-space: nowrap;
             font-weight: 600;
             text-decoration: none;
+            transition: all 0.3s;
             border-radius: var(--radius);
             padding: calc(var(--space-lite) * 0.9) calc(var(--space-lite) * 1.5);
+            &:hover {
+              scale: 1.02;
+            }
 
             @media (max-width: 540px) {
               text-align: center;
