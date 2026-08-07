@@ -18,7 +18,7 @@ const Nav: FC = () => {
         <div class="left">
           <a data-directive={onHomeClick()} href="/" class="logo">
             <div class="img">
-              <img src="logo.webp" />
+              <img src="/logo.webp" />
             </div>
             <span>Shasta Trades</span>
           </a>

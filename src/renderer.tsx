@@ -90,6 +90,6 @@ const style = css`
   }
 
   main {
-    min-height: calc(100vh - 30rem);
+    min-height: calc(100vh - 27rem);
   }
 `

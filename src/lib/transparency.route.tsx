@@ -2,52 +2,21 @@
 
 import { Hono } from 'hono'
 import { css, Style } from 'hono/css'
-import { marked, Tokens } from 'marked'
+import { md2html } from '@src/lib/md2html'
 import schema from '@src/md/schema.md?raw'
+import byLaws from '@src/md/bylaws.md?raw'
+import trustDocument from '@src/md/trust-document.md?raw'
+import whistleblowerPolicy from '@src/md/whistleblower-policy.md?raw'
+import articlesOfIncorporation from '@src/md/articles-of-incorporation.md?raw'
+import conflictOfInterestPolicy from '@src/md/conflict-of-interest-policy.md?raw'
 
 
 const app = new Hono()
 
-app.get('/', async (c) => {
-  marked.use({ // wrap table w/ .responsive div
-    renderer: {
-      table (token: Tokens.Table) {
-        const headerHtml = token.header
-          .map((cell) => `<th>${this.parser.parseInline(cell.tokens)}</th>`)
-          .join('')
-
-        const bodyHtml = token.rows
-          .map((tableCells) => {
-            const strTableCells = tableCells
-              .map((cell) => `<td>${this.parser.parseInline(cell.tokens)}</td>`)
-              .join('')
-
-            return `<tr>${strTableCells}</tr>`
-          })
-          .join('')
-
-        const tableHtml = `
-          <table>
-            <thead><tr>${headerHtml}</tr></thead>
-            <tbody>${bodyHtml}</tbody>
-          </table>
-        `
-
-        return `<div class="responsive">${tableHtml}</div>`
-      }
-    }
-  })
-
-  const htmlSchema = await marked.parse(schema)
-
-  const buttons = [
-    { href: '#schema', title: 'Schema' },
-    { href: '#trust-document', title: 'Trust Document' },
-    { href: '#bylaws', title: 'Bylaws' },
-    { href: '#articles-of-incorporation', title: 'Articles of Incorporation' },
-    { href: '#conflict-of-interest-policy', title: 'Conflict of Interest Policy' },
-    { href: '#whistleblower', title: 'Whistleblower Policy' },
-  ]
+app.get('/:id?', async (c) => {
+  const paramId = c.req.param('id') ?? documents[0].id
+  const current = documents.find(b => b.id === paramId)
+  const html = current ? await md2html(current.md, current.wrapTables) : ''
 
   return c.render(
     <>
@@ -63,16 +32,26 @@ app.get('/', async (c) => {
         </div>
 
         <div class="buttons">
-          {buttons.map((a, i) => <a class={i === 0 ? 'active' : ''} href={a.href}>{a.title}</a>)}
+          {documents.map((a, i) => <a class={paramId === a.id ? 'active' : ''} href={'/transparency/' + a.id}>{a.title}</a>)}
         </div>
 
         <div class="schema">
-          <div dangerouslySetInnerHTML={{ __html: htmlSchema }}></div>
+          <div dangerouslySetInnerHTML={{ __html: html }}></div>
         </div>
       </div>
     </>
   )
 })
+
+
+const documents = [
+  { id: 'trust-document', title: 'Trust Document', md: trustDocument, wrapTables: false },
+  { id: 'bylaws', title: 'Bylaws', md: byLaws, wrapTables: false },
+  { id: 'articles-of-incorporation', title: 'Articles of Incorporation', md: articlesOfIncorporation, wrapTables: false },
+  { id: 'conflict-of-interest-policy', title: 'Conflict of Interest Policy', md: conflictOfInterestPolicy, wrapTables: false },
+  { id: 'whistleblower-policy', title: 'Whistleblower Policy', md: whistleblowerPolicy, wrapTables: false },
+  { id: 'schema', title: 'Schema', md: schema, wrapTables: true },
+]
 
 
 const style = css`
