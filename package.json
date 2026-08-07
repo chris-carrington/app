@@ -19,8 +19,5 @@
     "vite-plugin-solid": "^2.11.14",
     "vite-ssr-components": "^0.6.1",
     "wrangler": "^4.119.0"
-  },
-  "overrides": {
-    "undici": "7.29.0"
   }
 }

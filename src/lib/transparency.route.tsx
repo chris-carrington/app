@@ -18,7 +18,8 @@ app.get('/', async (c) => {
           .join('')
 
         const bodyHtml = token.rows
-          .map(row => `<tr>${row.map(cell => `<td>${cell.text}</td>`).join('')}</tr>`)
+          .map(row => `<tr>${row.map(cell => `<td>${cell.text}</td>`)
+          .join('')}</tr>`)
           .join('')
 
         const tableHtml = `
