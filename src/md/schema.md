@@ -30,7 +30,7 @@ Store all people in our system (students, mentors, customers, trustees, board me
 | id        | INTEGER | PK, AI                    |
 | firstName | TEXT    | NOT NULL                  |
 | lastName  | TEXT    | NOT NULL                  |
-| contactId | INTEGER | FK &rarr; **Contact**(id) |
+| contactId | INTEGER | FK &rarr; **Contact(id)** |
 
 ---
 
@@ -55,4 +55,4 @@ Store messages that are filled out with our Contact Us website form
 |----------|---------|--------------------------|
 | id       | INTEGER | PK, AI                   |
 | message  | TEXT    | NOT NULL                 |
-| personId | INTEGER | FK &rarr; **Person**(id) |
+| personId | INTEGER | FK &rarr; **Person(id)** |

@@ -8,18 +8,22 @@ import schema from '@src/md/schema.md?raw'
 
 const app = new Hono()
 
-
 app.get('/', async (c) => {
-  marked.use({
+  marked.use({ // wrap table w/ .responsive div
     renderer: {
-      table: (token: Tokens.Table) => {
+      table (token: Tokens.Table) {
         const headerHtml = token.header
-          .map(cell => `<th>${cell.text}</th>`)
+          .map((cell) => `<th>${this.parser.parseInline(cell.tokens)}</th>`)
           .join('')
 
         const bodyHtml = token.rows
-          .map(row => `<tr>${row.map(cell => `<td>${cell.text}</td>`)
-          .join('')}</tr>`)
+          .map((tableCells) => {
+            const strTableCells = tableCells
+              .map((cell) => `<td>${this.parser.parseInline(cell.tokens)}</td>`)
+              .join('')
+
+            return `<tr>${strTableCells}</tr>`
+          })
           .join('')
 
         const tableHtml = `
@@ -29,7 +33,7 @@ app.get('/', async (c) => {
           </table>
         `
 
-        return `<div class="responsive">${tableHtml}</div>` // wrap in a responsive container
+        return `<div class="responsive">${tableHtml}</div>`
       }
     }
   })
@@ -43,7 +47,6 @@ app.get('/', async (c) => {
     { href: '#articles-of-incorporation', title: 'Articles of Incorporation' },
     { href: '#conflict-of-interest-policy', title: 'Conflict of Interest Policy' },
     { href: '#whistleblower', title: 'Whistleblower Policy' },
-    { href: '#nine-ninety', title: 'Form 990' },
   ]
 
   return c.render(
@@ -143,7 +146,7 @@ const style = css`
         font-size: 1.71rem;
         text-decoration: none;
         border-radius: calc(var(--radius) * 2);
-        padding: var(--space-lite) var(--space);
+        padding: var(--space-lite) 2.1rem;
         border: 1px solid #dee2e6;
         background-color: transparent;
         cursor: pointer;
