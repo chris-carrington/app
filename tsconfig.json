@@ -16,7 +16,11 @@
       "DOM",
       "ESNext",
     ],
-    "types": ["vite/client"],
+    "types": [
+      "vite/client",
+      "./worker-configuration.d.ts",
+      "node"
+    ],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
     "paths": {

@@ -12,7 +12,6 @@ app.use(renderer)
 
 app.route('/', home)
 app.route('/sign-in', signIn)
-app.route('/sign-in', signIn)
 app.route('/transparency', transparency)
 app.route('/objectives', objectives)
 

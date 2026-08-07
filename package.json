@@ -6,9 +6,14 @@
     "build": "vite build",
     "preview": "$npm_execpath run build && vite preview",
     "deploy": "$npm_execpath run build && wrangler deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
+    "types": "npx wrangler types",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@libsql/client": "^0.17.4",
+    "drizzle-orm": "^0.45.2",
     "hono": "^4.12.32",
     "marked": "^18.0.7"
   },
