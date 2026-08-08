@@ -20,6 +20,8 @@
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.51.0",
     "@types/node": "^26.1.2",
+    "dotenv": "^17.4.2",
+    "drizzle-kit": "^0.31.10",
     "vite": "^8.1.4",
     "vite-plugin-solid": "^2.11.14",
     "vite-ssr-components": "^0.6.1",

@@ -19,7 +19,7 @@
 ## Person
 Store all people in our system (students, mentors, customers, trustees, board members, employees, vendors, etc.,)
 
-| Field     | Type    | Constraints               |
+| Field     | Type    | Notes                     |
 |-----------|---------|---------------------------|
 | id        | INTEGER | PK, AI                    |
 | firstName | TEXT    | NOT NULL                  |
@@ -31,7 +31,7 @@ Store all people in our system (students, mentors, customers, trustees, board me
 ## Contact
 Store contact details for each **Person**
 
-| Field                    | Type    | Constraints |
+| Field                    | Type    | Notes       |
 |--------------------------|---------|-------------|
 | id                       | INTEGER | PK, AI      |
 | email                    | TEXT    | UNIQUE      |
@@ -45,7 +45,7 @@ Store contact details for each **Person**
 ## ContactUsMessage
 Store messages that are filled out with our Contact Us website form
 
-| Field    | Type    | Constraints              |
+| Field    | Type    | Notes                    |
 |----------|---------|--------------------------|
 | id       | INTEGER | PK, AI                   |
 | message  | TEXT    | NOT NULL                 |

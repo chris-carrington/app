@@ -2,7 +2,8 @@
   "include": [
     "src",
     "hono-directives",
-    "hono-signals"
+    "hono-signals",
+    "drizzle.config.ts"
   ],
   "compilerOptions": {
     "target": "ESNext",

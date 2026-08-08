@@ -14,7 +14,8 @@
 ---
 
 ## What is prohibition on private inurement?
-- Private inurement means using Nonprofit assets or earnings for the personal benefit of insiders
+- Prohibition is an order to stop
+- Private inurement is using Nonprofit assets or earnings for the personal benefit of insiders
 - Staff pay must be reasonable for the work being done, comparable to what others in similar roles earn and approved by the board
 - Nonprofits get special tax benefits because they exist to serve the public good, not private interests
 - The private inurement prohibition ensures that the organization's money stays focused on its mission, not on enriching insiders
