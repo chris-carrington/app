@@ -16,12 +16,6 @@
 
 ---
 
-## Why is this schema public?
-- When a donor or foundation visits our website and sees our entire database blueprint, they think: "Wow, they track everything (low-income thresholds, youth demographics, trade hours, etc.,). We can see exactly where our money is going. We know they aren't wasting funds."
-- The world is full of smart people (accountants, database experts, nonprofit veterans, etc.,). Someone might email us and say: "You forgot to track xyz for your tax returns!" or "You should add a field for abc!" The community helps us improve!
-
----
-
 ## Person
 Store all people in our system (students, mentors, customers, trustees, board members, employees, vendors, etc.,)
 
