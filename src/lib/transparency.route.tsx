@@ -23,19 +23,22 @@ app.get('/:id?', async (c) => {
       <Style>{style}</Style>
 
       <div class="transparency">
-        <div class="header">
-          <h1>Transparency</h1>
-          <div class="flex">
-            <div class="sub-title">We believe trust is built by sharing everything (our challenges, our successes, and our commitments). This Transparency page is our promise to you that Shasta Trades will always operate with <strong>honesty</strong>, <strong>accountability</strong>, and an <strong>open heart</strong>.</div>
-            <div class="hr"></div>
+        <div class="pattern">
+          <div class="bg"></div>
+          <div class="header">
+            <h1>Transparency</h1>
+            <div class="flex">
+              <div class="sub-title">We believe trust is built by sharing everything (i.e., our challenges, our successes, and our commitments). This Transparency page is our promise to you that Shasta Trades will always operate with <strong>honesty</strong>, <strong>accountability</strong>, and an <strong>open heart</strong>.</div>
+              <div class="hr"></div>
+            </div>
+          </div>
+
+          <div class="buttons">
+            {documents.map((a, i) => <a class={paramId === a.id ? 'active' : ''} href={'/transparency/' + a.id}>{a.title}</a>)}
           </div>
         </div>
 
-        <div class="buttons">
-          {documents.map((a, i) => <a class={paramId === a.id ? 'active' : ''} href={'/transparency/' + a.id}>{a.title}</a>)}
-        </div>
-
-        <div class="schema">
+        <div class="md">
           <div dangerouslySetInnerHTML={{ __html: html }}></div>
         </div>
       </div>
@@ -56,9 +59,6 @@ const documents = [
 
 const style = css`
   .transparency {
-    margin: 0 auto;
-    max-width: var(--max-width);
-    padding: var(--space) var(--space-lite) var(--space-huge) var(--space-lite);
 
     h1,
     h2 {
@@ -77,76 +77,101 @@ const style = css`
       margin-bottom: calc(var(--space-lite) / 2);
     }
 
-    .header {
+    .pattern {
+      width: 100%;
+      padding: var(--space) var(--space-lite) calc(var(--space) * 1.41) var(--space-lite);
+      margin-bottom: var(--space-huge);
+      background-color: var(--primary);
+      position: relative;
+
+      .bg {
+        position: absolute;
+        z-index: var(--z-mask);
+        inset: 0;
+        opacity: 0.1;
+        background-image: url(/wood-pattern.webp);
+      }
+
+      .header,
+      .buttons {
+        position: relative;
+        z-index: var(--z-content);
+      }
+
+      .header {
+        margin: 0 auto;
+        max-width: var(--max-width);
+        padding: 0 var(--space-lite) var(--space) var(--space-lite);
+
+        h1 {
+          font-size: 3.2rem;
+          font-weight: 700;
+          color: var(--white);
+          margin-bottom: var(--space-lite);
+        }
+
+        .flex {
+          display: flex;
+          gap: var(--space);
+          align-items: center;
+          justify-content: space-between;
+
+          .sub-title {
+            color: #dcdfdc;
+            font-family: var(--font-family-serif);;
+            width: 168rem;
+          }
+
+          .hr {
+            height: 1px;
+            width: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(6, 27, 14, 0.1) 20%, rgba(6, 27, 14, 0.1) 80%, transparent 100%);
+
+            @media (max-width: 600px) {
+              display: none;
+            }
+          }
+        }
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: var(--space-lite);
+
+        a,
+        button {
+          font-weight: 600;
+          font-size: 1.71rem;
+          text-decoration: none;
+          border-radius: calc(var(--radius) * 2);
+          color: var(--white);
+          padding: var(--space-lite) 2.1rem;
+          border: 1px solid rgb(255 255 255 / 0.2);
+          background-color: transparent;
+          cursor: pointer;
+          transition: all 0.3s;
+          &:hover {
+            scale: 1.02;
+            background-color: rgb(255 255 255 / 0.1);
+          }
+          &.active {
+            color: var(--orange-text);
+            background-color: var(--orange);
+            border-color: var(--orange);
+            &:hover {
+              cursor: default;
+            }
+          }
+        }
+      }
+    }
+
+    .md {
       margin: 0 auto;
       max-width: var(--max-width);
       padding: 0 var(--space-lite) var(--space-huge) var(--space-lite);
-
-      h1 {
-        font-size: 3.2rem;
-        font-weight: 700;
-        color: var(--primary);
-        margin-bottom: var(--space-lite);
-      }
-
-      .flex {
-        display: flex;
-        gap: var(--space);
-        align-items: center;
-        justify-content: space-between;
-
-        .sub-title {
-          font-family: var(--font-family-serif);;
-          width: 168rem;
-        }
-
-        .hr {
-          height: 1px;
-          width: 100%;
-          background: linear-gradient(90deg, transparent 0%, rgba(6, 27, 14, 0.1) 20%, rgba(6, 27, 14, 0.1) 80%, transparent 100%);
-
-          @media (max-width: 600px) {
-            display: none;
-          }
-        }
-      }
-    }
-
-    .buttons {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: var(--space-lite);
-      margin-bottom: var(--space-huge);
-
-      a,
-      button {
-        font-weight: 600;
-        font-size: 1.71rem;
-        text-decoration: none;
-        border-radius: calc(var(--radius) * 2);
-        padding: var(--space-lite) 2.1rem;
-        border: 1px solid #dee2e6;
-        background-color: transparent;
-        cursor: pointer;
-        transition: all 0.3s;
-        color: var(--primary);
-        &:hover {
-          scale: 1.02;
-          background-color: rgb(255 255 255 / 0.1);
-        }
-        &.active {
-          color: var(--white);
-          background-color: var(--primary);
-          border-color: var(--primary);
-          &:hover {
-            cursor: default;
-          }
-        }
-      }
-    }
-
-    .schema {
 
       p,
       ul {
