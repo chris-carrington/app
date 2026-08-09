@@ -69,7 +69,7 @@ const style = css`
       will-change: transform;
 
       .item {
-        padding: var(--space);
+        padding: var(--space-lite);
         display: block;
         color: #262626;
         background-color: transparent;

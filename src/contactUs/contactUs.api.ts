@@ -4,8 +4,8 @@ import { Hono } from 'hono'
 import { db } from '@src/db'
 import { contactUsMessage } from '@src/db/schema'
 import { upsertPerson } from '@src/db/upsertPerson'
-import { upsertContact } from '@src/db/upsertContact'
 import { vValidator } from '@hono/valibot-validator'
+import { upsertContact } from '@src/db/upsertContact'
 import { ContactUsSchema } from './contactUs.validator'
 
 

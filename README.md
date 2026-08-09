@@ -11,19 +11,34 @@
 1. Directive, multiple on 1 element
 
 ## 🔗 Links
-- [Icons](https://icones.js.org/collection/all)
-- [Deployments](https://dash.cloudflare.com/716c70a1fb6b2a5d3bf7e3f90d16abd2/workers/services/view/app/production/deployments)
-- [Wireframes](https://stitch.withgoogle.com/projects/3160024551414333094)
-- [Hono Best Practices](https://hono.dev/docs/guides/best-practices)
-- [Hono CSS](https://hono.dev/docs/helpers/css)
-- [Gradient CSS Generator](https://html-css-js.com/css/generator/box-shadow/)
-- [Shrink Image Size](https://squoosh.app/)
-- [PNG to ICO](https://convertio.co/)
-- [SEO Best Practice](https://www.semrush.com/blog/html-tags-for-seo/)
-- [Open Graph Testing](https://www.opengraph.xyz/)
-- [Turso + Drizzle](https://docs.turso.tech/sdk/ts/orm/drizzle)
-- [Cloudflare Secrets](https://developers.cloudflare.com/workers/configuration/secrets/)
-- [Cloudflare Types](https://developers.cloudflare.com/workers/languages/typescript)
-- [Send Emails](https://developers.cloudflare.com/email-service/api/send-emails/workers-api/)
-- [Markdown Table Generator](https://tableconvert.com/markdown-generator)
-- [Hono Validator](https://hono.dev/docs/guides/validation#with-valibot)
+- Turso
+    - [Pricing](https://turso.tech/pricing)
+    - [Drizzle](https://docs.turso.tech/sdk/ts/orm/drizzle)
+    - [Encryption](https://docs.turso.tech/tursodb/encryption)
+- Cloudflare
+    - [Types](https://developers.cloudflare.com/workers/languages/typescript)
+    - [Emails](https://developers.cloudflare.com/email-service/api/send-emails/workers-api/)
+    - [Pricing](https://developers.cloudflare.com/workers/platform/pricing/)
+    - [Secrets](https://developers.cloudflare.com/workers/configuration/secrets/)
+- Hono
+    - [JSX](https://hono.dev/docs/guides/jsx)
+    - [CSS](https://hono.dev/docs/helpers/css)
+    - [Best Practices](https://hono.dev/docs/guides/best-practices)
+    - [Valibot Validator](https://www.npmjs.com/package/@hono/valibot-validator)
+- Drizzle
+    - [Schema](https://orm.drizzle.team/docs/sqlite/sql-schema-declaration)
+    - [Transactions](https://orm.drizzle.team/docs/transactions)
+    - [Select](https://orm.drizzle.team/docs/sqlite/select)
+    - [Insert](https://orm.drizzle.team/docs/sqlite/insert)
+    - [Update](https://orm.drizzle.team/docs/sqlite/update)
+    - [Delete](https://orm.drizzle.team/docs/sqlite/delete)
+    - [Operators](https://orm.drizzle.team/docs/sqlite/operators)
+- Tools
+    - [Icons](https://icones.js.org/collection/all)
+    - [Squoosh](https://squoosh.app/)
+    - [PNG to ICO](https://convertio.co/)
+    - [Open Graph Testing](https://www.opengraph.xyz/)
+    - [Gradient CSS Generator](https://html-css-js.com/css/generator/box-shadow/)
+    - [Markdown Table Generator](https://tableconvert.com/markdown-generator)
+- Blogs
+    - [SEO Best Practices](https://www.semrush.com/blog/html-tags-for-seo/)
