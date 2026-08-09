@@ -13,7 +13,7 @@ export default (el: HTMLFormElement) => {
 
     const result = form.validateForm()
 
-    if (!result.success) return
+    if (!result.success) return 
 
     const loading = new Loading(el)
 
@@ -34,7 +34,7 @@ export default (el: HTMLFormElement) => {
 
       form.resetForm()
 
-      showToast({ value: 'Success!', variant: 'success', position: 'bottomRight' })
+      showToast({ value: 'Success!', variant: 'success', position: 'topCenter' })
     } catch (error) {
       console.error('❌ Submission error:', error)
       showToast({ value: String(error), variant: 'danger' })
