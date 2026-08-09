@@ -13,6 +13,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@src': path.resolve(__dirname, 'src'),
+      '@hono-toast': path.resolve(__dirname, 'hono-toast/index'),
       '@hono-security': path.resolve(__dirname, 'hono-security/index'),
       '@hono-directives': path.resolve(__dirname, 'hono-directives/dist/index'),
     },

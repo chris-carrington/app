@@ -1,6 +1,7 @@
 {
   "include": [
     "src",
+    "hono-toast",
     "hono-directives",
     "hono-security",
     "drizzle.config.ts"
@@ -27,6 +28,9 @@
     "paths": {
       "@src/*": [
         "./src/*"
+      ],
+      "@hono-toast": [
+        "./hono-toast/index"
       ],
       "@hono-directives": [
         "./hono-directives/dist/index"

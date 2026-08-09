@@ -4,6 +4,7 @@ import Nav from '@src/nav/Nav'
 import Menu from '@src/nav/Menu'
 import Footer from '@src/lib/Footer'
 import { css, Style } from 'hono/css'
+import { honoToastStyle } from '@hono-toast'
 import { jsxRenderer } from 'hono/jsx-renderer'
 import { Script } from 'vite-ssr-components/hono'
 import { ViteClient } from 'vite-ssr-components/hono'
@@ -16,6 +17,7 @@ export const renderer = jsxRenderer(({ children }) => <>
       <meta name="theme-color" content="#F9FBF9" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <Style>{style}</Style>
+      <Style>{honoToastStyle}</Style>
       <ViteClient />
       <Script src='/src/script.ts' />
     </head>
@@ -48,6 +50,30 @@ const style = css`
     --white: #F9FBF9;
     --orange: #fe932c;
     --orange-text: #663500;
+    --muted-foreground: oklch(0.63 0 0);
+
+    --popover: oklch(0.21 0.034 264.665);
+    --popover-foreground: oklch(100% 0 0);
+
+    --easing: ease-in-out;
+    --duration-fast: 120ms;
+    --duration-normal: 300ms;
+    --fast-transition: all var(--duration-fast) var(--easing);
+    --transition: all var(--duration-normal) var(--easing);
+    --prop-transition: var(--duration-normal) var(--easing);
+    --fast-prop-transition: var(--duration-fast) var(--easing);
+
+    --shadow-subtle:
+      0 0.2rem 1rem rgba(0, 0, 0, 0.35),
+      0 1px 0.3rem rgba(255, 255, 255, 0.05) inset;
+    --shadow-big: 
+      0 0.4rem 10.8rem oklch(84.194% 0.16831 90.435 / 0.27),
+      0 0 8rem oklch(83.275% 0.17076 95.709 / 0.12),
+      0 0 15rem oklch(83.275% 0.17076 95.709 / 0.06),
+      inset 0 1px 0.3rem oklch(100% 0.00011 271.152 / 0.35),
+      inset 0 -0.3rem 0.6rem oklch(0% 0 0 / 0.55);
+
+    --toast-width: 45rem;
 
     --z-modal: 6;
     --z-backdrop: 5;
