@@ -1,3 +1,5 @@
+// app/src/db/schema.ts
+
 import { integer, text, sqliteTable } from 'drizzle-orm/sqlite-core'
 
 export const contact = sqliteTable('Contact', {
