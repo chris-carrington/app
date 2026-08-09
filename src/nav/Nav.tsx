@@ -95,7 +95,9 @@ const style = css`
             font-size: 1.71rem;
             padding-left: var(--space);
             transition: all 0.3s;
-            display: inline-block;
+            display: inline-flex;
+            height: 4.6rem;
+            align-items: center;
             &:hover {
               scale: 1.05;
             }
