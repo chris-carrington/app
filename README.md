@@ -26,3 +26,4 @@
 - [Cloudflare Types](https://developers.cloudflare.com/workers/languages/typescript)
 - [Send Emails](https://developers.cloudflare.com/email-service/api/send-emails/workers-api/)
 - [Markdown Table Generator](https://tableconvert.com/markdown-generator)
+- [Hono Validator](https://hono.dev/docs/guides/validation#with-valibot)

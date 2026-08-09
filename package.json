@@ -12,10 +12,12 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@hono/valibot-validator": "^0.6.1",
     "@libsql/client": "^0.17.4",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.12.32",
-    "marked": "^18.0.7"
+    "marked": "^18.0.7",
+    "valibot": "^1.4.2"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.51.0",

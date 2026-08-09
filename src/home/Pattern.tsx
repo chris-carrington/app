@@ -1,15 +1,14 @@
 // app/src/lib/Pattern.tsx
 
 import type{ FC } from 'hono/jsx'
+import { Field } from '@hono-security'
 import { css, Style } from 'hono/css'
 import { flowSteps } from './flowSteps'
 import svgLock from '@src/svg/lock.svg?raw'
-import svgTree from '@src/svg/tree.svg?raw'
-import svgMoney from '@src/svg/money.svg?raw'
-import svgFence from '@src/svg/fence.svg?raw'
 import svgFrequency from '@src/svg/frequency.svg?raw'
-import svgConstruction from '@src/svg/construction.svg?raw'
-import { onFlowChange, onHashChange, onWrapChange } from '@hono-directives'
+import { jsonLeadership } from '@src/json/leadership.json'
+import { jsonServiceRequest } from '@src/json/serviceRequest.json'
+import { onFlowChange, onHashChange, onWrapChange, onContactUsSubmit, onServiceRequestSubmit, onJoinLeadershipSubmit, onJoinNewsletterSubmit } from '@hono-directives'
 
 
 const Pattern: FC = () => {
@@ -81,11 +80,6 @@ const Forms: FC = () => {
 
 
 const ServiceRequest: FC = () => {
-  const items = [
-    { id: "pallets", icon: svgTree, title: 'Reclaimed Lumber Construction', description: `We'll turn wood that's headed to the landfill into beauty (e.g., tables, planters) to reduce new wood harvesting` },
-    { id: "fence", icon: svgFence, title: 'Fence', description: 'Install new or address structural instability, material decay, and/or hardware failures to ensure safety and longevity' },
-  ]
-
   return <>
     <div id="service-request" class="form hidden">
       <div class="badge">COMMUNITY SERVICES</div>
@@ -94,11 +88,11 @@ const ServiceRequest: FC = () => {
           <div class="title">Professional Service</div>
           <div class="description">Our master trades professionals lead every project, ensuring lovely results and hands-on education. Our services include:</div>
           <div class="items">
-            {items.map(item => <>
+            {jsonServiceRequest.map(item => <>
               <div class="item">
                 <div class="icon" dangerouslySetInnerHTML={{ __html: item.icon }}></div>
                 <div class="info">
-                  <div class="primary">{item.title}</div>
+                  <div class="primary">{item.label}</div>
                   <div class="secondary">{item.description}</div>
                 </div>
               </div>
@@ -110,16 +104,14 @@ const ServiceRequest: FC = () => {
           <div class="mask"></div>
           <div class="inputs">
             <div class="title">Hire Trade Professionals</div>
-            <form>
+            <form data-directive={onServiceRequestSubmit()}>
               <div class="two">
-                <input type="text" name="firstName" placeholder="First Name" />
-                <input type="text" name="lastName" placeholder="Last Name" />
+                <Field name="firstName" placeholder="First Name" type="text" prefix="service-request"/>
+                <Field name="lastName" placeholder="Last Name" type="text" prefix="service-request" />
               </div>
-              <input type="email" name="email" placeholder="Email" />
-              <select name="interest">
-                <option value="">Select Interested Service</option>
-                {items.map(item => <option value={item.id}>{item.title}</option>)}
-              </select>
+
+              <Field name="email" placeholder="Email" type="email" prefix="service-request" />
+              <Field name="interest" placeholder="Select Interested Service" type="select" options={jsonServiceRequest} prefix="service-request" />
               <button type="submit">Hire Trade Professionals</button>
             </form>
           </div>
@@ -131,11 +123,6 @@ const ServiceRequest: FC = () => {
 
 
 const JoinLeadership: FC = () => {
-  const items = [
-    { id: "tradesPerson", icon: svgConstruction, title: 'Tradesperson', description: 'An apprentice guided towards a general contractor license or a licensed mentor ready to aid the next generation' },
-    { id: "cfo", icon: svgMoney, title: 'CFO', description: 'Responsible for our fiscal health, guide our financial decisions and ensure all expenses are mission focused' },
-  ]
-
   return <>
     <div id="join-leadership" class="form hidden">
       <div class="badge">BE THE LEADER YOU'D FOLLOW</div>
@@ -144,11 +131,11 @@ const JoinLeadership: FC = () => {
           <div class="title">Lead by Example</div>
           <div class="description">We are uniting a visionary Board and dedicated Staff to lead by example! Current openings include:</div>
           <div class="items">
-            {items.map(item => <>
+            {jsonLeadership.map(item => <>
               <div class="item">
                 <div class="icon" dangerouslySetInnerHTML={{__html: item.icon}}></div>
                 <div class="info">
-                  <div class="primary">{item.title}</div>
+                  <div class="primary">{item.label}</div>
                   <div class="secondary">{item.description}</div>
                 </div>
               </div>
@@ -160,16 +147,14 @@ const JoinLeadership: FC = () => {
           <div class="mask"></div>
           <div class="inputs">
             <div class="title">Join Leadership Team</div>
-            <form>
+            <form data-directive={onJoinLeadershipSubmit()}>
               <div class="two">
-                <input type="text" name="firstName" placeholder="First Name" />
-                <input type="text" name="lastName" placeholder="Last Name" />
+                <Field name="firstName" placeholder="First Name" type="text" prefix="join-leadership" />
+                <Field name="lastName" placeholder="Last Name" type="text" prefix="join-leadership" />
               </div>
-              <input type="email" name="email" placeholder="Email" />
-              <select name="interest">
-                <option value="">Select Interest Area</option>
-                {items.map(item => <option value={item.id}>{item.title}</option>)}
-              </select>
+
+              <Field name="email" placeholder="Email" type="email" prefix="join-leadership" />
+              <Field name="interest" placeholder="Select Interested Position" type="select" options={jsonLeadership} prefix="join-leadership" />
               <button type="submit">Join Leadership Team</button>
             </form>
           </div>
@@ -210,12 +195,13 @@ const JoinNewsletter: FC = () => {
           <div class="mask"></div>
           <div class="inputs">
             <div class="title">Join Newsletter</div>
-            <form>
+            <form data-directive={onJoinNewsletterSubmit()}>
               <div class="two">
-                <input type="text" name="firstName" placeholder="First Name" />
-                <input type="text" name="lastName" placeholder="Last Name" />
+                <Field name="firstName" placeholder="First Name" type="text" prefix="join-newsletter" />
+                <Field name="lastName" placeholder="Last Name" type="text" prefix="join-newsletter" />
               </div>
-              <input type="email" name="email" placeholder="Email" />
+
+              <Field name="email" placeholder="Email" type="email" prefix="join-newsletter" />
               <button type="submit">Join Newsletter</button>
             </form>
           </div>
@@ -256,13 +242,14 @@ const ContactUs: FC = () => {
           <div class="mask"></div>
           <div class="inputs">
             <div class="title">Contact Us</div>
-            <form>
+            <form data-directive={onContactUsSubmit()}>
               <div class="two">
-                <input type="text" name="firstName" placeholder="First Name" />
-                <input type="text" name="lastName" placeholder="Last Name" />
+                <Field name="firstName" placeholder="First Name" type="text" prefix="contact-us" />
+                <Field name="lastName" placeholder="Last Name" type="text" prefix="contact-us" />
               </div>
-              <input type="email" name="email" placeholder="Email" />
-              <textarea name="message" placeholder="Message" />
+
+              <Field name="email" placeholder="Email" type="email" prefix="contact-us" />
+              <Field name="message" placeholder="Message" type="textarea" prefix="contact-us" />
               <button type="submit">Contact Us</button>
             </form>
           </div>
@@ -485,26 +472,43 @@ const style = css`
                 }
               }
 
-              input,
-              select,
-              textarea {
+              .field {
                 width: 100%;
-                display: block;
-                color: var(--white);
-                padding: var(--space-lite);
                 margin-bottom: var(--space-lite);
-                border-radius: var(--radius);
-                background-color: rgb(255 255 255 / 0.05);
-                border: 1px solid rgb(255 255 255 / 0.1);
-                &:focus {
-                  border-color: transparent;
-                  outline: 0;
-                  box-shadow: 0 0 0 0.3rem rgba(0, 123, 255, 0.6);
-                }
-              }
 
-              textarea {
-                height: 9rem;
+                label {
+                  display: none;
+                }
+
+                input,
+                select,
+                textarea {
+                  width: 100%;
+                  display: block;
+                  color: var(--white);
+                  padding: var(--space-lite);
+                  border-radius: var(--radius);
+                  background-color: rgb(255 255 255 / 0.05);
+                  border: 1px solid rgb(255 255 255 / 0.1);
+                  &:focus {
+                    border-color: transparent;
+                    outline: 0;
+                    box-shadow: 0 0 0 0.3rem rgba(0, 123, 255, 0.6);
+                    &.has-error {
+                      box-shadow: 0 0 0 0.3rem rgba(255, 58, 58, 0.45);
+                    }
+                  }
+                }
+
+                textarea {
+                  height: 9rem;
+                }
+
+                .error-message {
+                  color: rgba(255, 58, 58, 0.9);
+                  font-size: 1.44rem;
+                  margin-top: calc(var(--space-lite) / 3);
+                }
               }
 
               button {

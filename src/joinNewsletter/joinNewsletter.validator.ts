@@ -1,0 +1,18 @@
+// app/src/joinNewsletter/joinNewsletter.validator.ts
+
+import * as v from 'valibot'
+import { pipeEmail } from '@src/pipe/email.pipe'
+import { pipeLastName } from '@src/pipe/lastName.pipe'
+import { pipeFirstName } from '@src/pipe/firstName.pipe'
+import { createValidator, type InferValidator } from '@hono-security'
+
+
+export const JoinNewsletterSchema = v.object({
+  firstName: pipeFirstName,
+  lastName: pipeLastName,
+  email: pipeEmail,
+})
+
+export const joinNewsletterValidator = createValidator(JoinNewsletterSchema)
+
+export type JoinNewsletterFormData = InferValidator<typeof joinNewsletterValidator>
