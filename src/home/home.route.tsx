@@ -3,15 +3,11 @@ import Pattern from './Pattern'
 import Building from './Building'
 import Hero from '@src/home/Hero'
 import Mission from '@src/home/Mission'
-import db from '@src/db'
-import { person } from '@src/db/schema'
 
 const app = new Hono()
 
 app.get('/', async (c) => {
   const description = 'Shasta Trades Nonprofit provide affordable, high-quality trade services, to our lovely Mount Shasta community. 💚'
-
-  const result = await db.select().from(person)
 
   return c.render(
     <>
@@ -26,7 +22,6 @@ app.get('/', async (c) => {
       <Mission />
       <Pattern />
       <Building />
-      <div style="display:none" id="test">{JSON.stringify(result)}</div>
     </>
   )
 })
