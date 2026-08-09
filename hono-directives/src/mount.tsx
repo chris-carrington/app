@@ -1,11 +1,13 @@
-// hono-directives/mount.tsx
+// app/hono-directives/src/mount.tsx
 
 type DirectiveFn = (element: Element, ...args: any[]) => void
+
 
 const directiveModules = import.meta.glob<{ default: DirectiveFn }>(
   '../../**/*.directive.{ts,tsx}',
   { eager: false }
 )
+
 
 function buildRegistry() {
   const registry: Record<string, () => Promise<{ default: DirectiveFn }>> = {}
@@ -17,6 +19,7 @@ function buildRegistry() {
   }
   return registry
 }
+
 
 async function applyDirectives() {
   const registry = buildRegistry()
@@ -48,6 +51,7 @@ async function applyDirectives() {
     }
   }
 }
+
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', applyDirectives)

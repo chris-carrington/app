@@ -1,4 +1,4 @@
-// app/hono-toast/style.ts
+// app/hono-toast/src/style.ts
 
 import { css } from 'hono/css'
 

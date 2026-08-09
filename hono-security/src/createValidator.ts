@@ -1,4 +1,4 @@
-// app/hono-security/createValidator.ts
+// app/hono-security/src/createValidator.ts
 
 import * as v from 'valibot'
 

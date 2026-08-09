@@ -1,3 +1,5 @@
+// app/hono-directives/src/script.ts
+
 import fs from 'fs'
 import path from 'path'
 

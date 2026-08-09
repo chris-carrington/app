@@ -1,18 +1,28 @@
+## What is a database?
+- Organized collection of information
+
+---
+
+## What is SQL?
+- The most popular database programming language
+
+---
+
 ## What is a database schema?
-- The blueprint for our entire nonprofits memory
-- All our data goes into encrypted SQL tables (using industry-standard AEAD algorithms). The architecture for these tables is our Schema.
+- All our data goes into an encrypted SQL database. The **architecture** for this database is our schema.
 
 ---
 
 ## Why do we need this detailed of a schema?
-- We are running a nonprofit, a trades school, a construction company, and a grant-funded entity all at once
-- Grantors don't just give us money and walk away, they love financial reports and we this schema provides the data organization to provide reports
+- We are running a trades school, a construction company and a grant-funded nonprofit all at once
+- Grantors don't just give money and walk away
+    - They love financial reports and this schema helps us organize our data so we may provide these reports
 - Instead of using QuickBooks for money, Airtable for clients, and Google Sheets for hours, everything lives in one encrypted SQL database
-- This data lets us run a query to:
-    - Identify our monthly burn rate to know exactly where our money is going
+- Example queries we may run thanks to this schema:
+    - Identify our remaining budget before we say yes to any job
+    - Identify and restrict specific grant funds to specific liabilities
     - Tell an apprentice how many hours they have left until they reach their 4-year CSLB requirement
-    - Identify how many low-income households we've helped this quarter, for grants that want us helping this cohort of our community
-    - Identify our remaining mentor grant budget before we say yes to a homeowner, so we never bankrupt ourself by being too ambitious
+    - Identify how many low-income, medium-income and/or senior citizen households we've helped this quarter, for grants that want us helping this cohort of our community
 
 ---
 

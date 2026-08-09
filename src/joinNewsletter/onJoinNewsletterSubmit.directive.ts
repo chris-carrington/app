@@ -34,7 +34,7 @@ export default (el: HTMLFormElement) => {
 
       form.resetForm()
       
-      showToast({ value: 'Success!', variant: 'success', position: 'topCenter' })
+      showToast({ value: 'Success!', variant: 'success' })
     } catch (error) {
       console.error('❌ Submission error:', error)
       showToast({ value: String(error), variant: 'danger' })

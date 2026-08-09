@@ -1,6 +1,6 @@
-// app/hono-security/FormUtil.ts
+// app/hono-security/src/FormUtil.ts
 
-import type { Validator } from '@hono-security'
+import type { Validator } from './createValidator'
 
 
 export class FormUtil<T_Validator> {

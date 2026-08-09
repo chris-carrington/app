@@ -1,9 +1,10 @@
-// hono-directives/plugin.ts
+// app/hono-directives/src/plugin.ts
 
-import type { Plugin } from 'vite'
-import path from 'path'
 import fs from 'fs'
+import path from 'path'
+import type { Plugin } from 'vite'
 import { findDirectives, writeGeneratedFiles } from './script.ts'
+
 
 export default function directivesPlugin(): Plugin {
   const srcDir = path.join(process.cwd(), 'src')
