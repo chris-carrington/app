@@ -29,34 +29,168 @@
 ## Person
 Store all people in our system (students, mentors, customers, trustees, board members, employees, vendors, etc.,)
 
-| Field     | Type    | Notes                     |
-|-----------|---------|---------------------------|
-| id        | INTEGER | PK, AI                    |
-| firstName | TEXT    | NOT NULL                  |
-| lastName  | TEXT    | NOT NULL                  |
-| contactId | INTEGER | FK &rarr; **Contact(id)** |
+| Field     | Type    | Notes                               |
+|-----------|---------|-------------------------------------|
+| id        | INTEGER | PK, AI                              |
+| contactId | INTEGER | NOT NULL, FK &rarr; **Contact(id)** |
+| firstName | TEXT    | NOT NULL                            |
+| lastName  | TEXT    | NOT NULL                            |
 
 ---
 
 ## Contact
 Store contact details for each **Person**
 
-| Field                    | Type    | Notes       |
-|--------------------------|---------|-------------|
-| id                       | INTEGER | PK, AI      |
-| email                    | TEXT    | UNIQUE      |
-| sendNewsletter           | BOOLEAN | DEFAULT = 1 |
-| sendJobOpportunityEmails | BOOLEAN | DEFAULT = 0 |
-| phoneNumber              | TEXT    |             |
-| sendJobOpportunityTexts  | BOOLEAN | DEFAULT = 0 |
+| Field                    | Type    | Notes            |
+|--------------------------|---------|-----------------|
+| id                       | INTEGER | PK, AI           |
+| email                    | TEXT    | NOT NULL, UNIQUE |
+| sendNewsletter           | BOOLEAN | DEFAULT = 1      |
+| sendJobOpportunityEmails | BOOLEAN | DEFAULT = 0      |
+| phoneNumber              | TEXT    | NULLABLE         |
+| sendJobOpportunityTexts  | BOOLEAN | DEFAULT = 0      |
+| sendServiceEmails        | BOOLEAN | DEFAULT = 0      |
 
 ---
 
 ## ContactUsMessage
 Store messages that are filled out with our Contact Us website form
 
-| Field    | Type    | Notes                    |
-|----------|---------|--------------------------|
-| id       | INTEGER | PK, AI                   |
-| message  | TEXT    | NOT NULL                 |
-| personId | INTEGER | FK &rarr; **Person(id)** |
+| Field     | Type     | Notes                              |
+|-----------|----------|------------------------------------|
+| id        | INTEGER  | PK, AI                             |
+| personId  | INTEGER  | NOT NULL, FK &rarr; **Person(id)** |
+| message   | TEXT     | NOT NULL                           |
+| createdAt | DATETIME | NOT NULL, DEFAULT = NOW            |
+
+---
+
+## Trade
+Trades lookup table
+
+| Field    | Type    | Notes       |
+|----------|---------|-------------|
+| id       | INTEGER | PK, AI      |
+| value    | TEXT    | NOT NULL    |
+| isActive | BOOLEAN | DEFAULT = 1 |
+
+---
+
+## Job
+Store all work projects
+
+| Field       | Type     | Notes                                 |
+|-------------|----------|---------------------------------------|
+| id          | INTEGER  | PK, AI                                |
+| statusId    | INTEGER  | NOT NULL, FK &rarr; **JobStatus(id)** |
+| description | TEXT     | NULLABLE                              |
+| address     | TEXT     | NOT NULL                              |
+| createdAt   | DATETIME | NOT NULL, DEFAULT = NOW               |
+
+---
+
+## Job__Client
+Junction table between **Job** & **Person** (Client)
+
+| Field    | Type    | Notes                              |
+|----------|---------|------------------------------------|
+| id       | INTEGER | PK, AI                             |
+| jobId    | INTEGER | NOT NULL, FK &rarr; **Job(id)**    |
+| clientId | INTEGER | NOT NULL, FK &rarr; **Person(id)** |
+
+---
+
+## JobStatus
+Job status lookup table
+
+| Field    | Type    | Notes       |
+|----------|---------|-------------|
+| id       | INTEGER | PK, AI      |
+| value    | TEXT    | NOT NULL    |
+| isActive | BOOLEAN | DEFAULT = 1 |
+
+---
+
+## ServiceLead
+Store entries from our service request form
+
+| Field     | Type     | Notes                                  |
+|-----------|----------|----------------------------------------|
+| id        | INTEGER  | PK, AI                                 |
+| personId  | INTEGER  | NOT NULL, FK &rarr; **Person(id)**     |
+| tradeId   | INTEGER  | NOT NULL, FK &rarr; **Trade(id)**      |
+| statusId  | INTEGER  | NOT NULL, FK &rarr; **LeadStatus(id)** |
+| jobId     | INTEGER  | NULLABLE, FK &rarr; **Job(id)**        |
+| createdAt | DATETIME | NOT NULL, DEFAULT = NOW                |
+
+---
+
+## LeadStatus
+Lead status lookup table
+
+| Field    | Type    | Notes       |
+|----------|---------|-------------|
+| id       | INTEGER | PK, AI      |
+| value    | TEXT    | NOT NULL    |
+| isActive | BOOLEAN | DEFAULT = 1 |
+
+---
+
+## Trade__ServiceLead
+Junction table between **Trade** & **ServiceLead**
+
+| Field         | Type    | Notes                                   |
+|---------------|---------|-----------------------------------------|
+| id            | INTEGER | PK, AI                                  |
+| tradeId       | INTEGER | NOT NULL, FK &rarr; **Trade(id)**       |
+| serviceLeadId | INTEGER | NOT NULL, FK &rarr; **ServiceLead(id)** |
+
+---
+
+## StaffLead
+Store entries from our staff interest form
+
+| Field           | Type     | Notes                                     |
+|-----------------|----------|-------------------------------------------|
+| id              | INTEGER  | PK, AI                                    |
+| personId        | INTEGER  | NOT NULL, FK &rarr; **Person(id)**        |
+| statusId        | INTEGER  | NOT NULL, FK &rarr; **LeadStatus(id)**    |
+| positionId      | INTEGER  | NOT NULL, FK &rarr; **StaffPosition(id)** |
+| createdAt       | DATETIME | NOT NULL, DEFAULT = NOW                   |
+
+---
+
+## StaffPosition
+Staff position lookup table
+
+| Field    | Type    | Notes       |
+|----------|---------|-------------|
+| id       | INTEGER | PK, AI      |
+| value    | TEXT    | NOT NULL    |
+| isActive | BOOLEAN | DEFAULT = 1 |
+| isHiring | BOOLEAN | DEFAULT = 1 |
+
+---
+
+## StaffTemporal
+Store people's employment periods
+
+| Field       | Type     | Notes                                      |
+|-------------|----------|--------------------------------------------|
+| id          | INTEGER  | PK, AI                                     |
+| personId    | INTEGER  | NOT NULL, FK &rarr; **Person(id)**         |
+| positionId  | INTEGER  | NOT NULL, FK &rarr; **StaffPosition(id)**  |
+| endReasonId | INTEGER  | NULLABLE, FK &rarr; **StaffEndReason(id)** |
+| startDate   | DATETIME | NOT NULL                                   |
+| endDate     | DATETIME | NULLABLE                                   |
+
+---
+
+## StaffEndReason
+Staff end reason lookup table
+
+| Field    | Type    | Notes       |
+|----------|---------|-------------|
+| id       | INTEGER | PK, AI      |
+| value    | TEXT    | NOT NULL    |
+| isActive | BOOLEAN | DEFAULT = 1 |
