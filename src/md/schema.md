@@ -41,16 +41,16 @@ Store all people in our system (students, mentors, customers, trustees, board me
 ## Contact
 Store contact details for each **Person**
 
-| Field                    | Type    | Notes            |
-|--------------------------|---------|-----------------|
-| id                       | INTEGER | PK, AI           |
-| email                    | TEXT    | NOT NULL, UNIQUE |
-| sendNewsletter           | BOOLEAN | DEFAULT = 1      |
-| sendJobOpportunityEmails | BOOLEAN | DEFAULT = 0      |
-| phoneNumber              | TEXT    | NULLABLE         |
-| sendJobOpportunityTexts  | BOOLEAN | DEFAULT = 0      |
-| sendServiceEmails        | BOOLEAN | DEFAULT = 0      |
-| -                        | -       | INDEX(email)     |
+| Field                    | Type    | Notes                  |
+|--------------------------|---------|------------------------|
+| id                       | INTEGER | PK, AI                 |
+| email                    | TEXT    | NOT NULL, UNIQUE INDEX |
+| sendNewsletter           | BOOLEAN | DEFAULT = 1            |
+| sendJobOpportunityEmails | BOOLEAN | DEFAULT = 0            |
+| phoneNumber              | TEXT    | NULLABLE               |
+| sendJobOpportunityTexts  | BOOLEAN | DEFAULT = 0            |
+| sendServiceEmails        | BOOLEAN | DEFAULT = 0            |
+| -                        | -       | INDEX(email)           |
 
 ---
 
@@ -93,14 +93,12 @@ Store all work projects
 ## Job__Client
 Junction table between **Job** & **Person** (Client)
 
-| Field    | Type    | Notes                              |
-|----------|---------|------------------------------------|
-| id       | INTEGER | PK, AI                             |
-| jobId    | INTEGER | NOT NULL, FK &rarr; **Job(id)**    |
-| clientId | INTEGER | NOT NULL, FK &rarr; **Person(id)** |
-| -        | -       | UNIQUE(jobId, clientId)            |
-| -        | -       | INDEX(jobId)                       |
-| -        | -       | INDEX(clientId)                    |
+| Field    | Type    | Notes                                     |
+|----------|---------|-------------------------------------------|
+| id       | INTEGER | PK, AI                                    |
+| jobId    | INTEGER | INDEX, NOT NULL, FK &rarr; **Job(id)**    |
+| clientId | INTEGER | INDEX, NOT NULL, FK &rarr; **Person(id)** |
+| -        | -       | UNIQUE(jobId, clientId)                   |
 
 ---
 
@@ -143,14 +141,12 @@ Lead status lookup table
 ## Trade__ServiceLead
 Junction table between **Trade** & **ServiceLead**
 
-| Field         | Type    | Notes                                   |
-|---------------|---------|-----------------------------------------|
-| id            | INTEGER | PK, AI                                  |
-| tradeId       | INTEGER | NOT NULL, FK &rarr; **Trade(id)**       |
-| serviceLeadId | INTEGER | NOT NULL, FK &rarr; **ServiceLead(id)** |
-| -             | -       | INDEX(tradeId)                          |
-| -             | -       | INDEX(serviceLeadId)                    |
-| -             | -       | UNIQUE(tradeId, serviceLeadId)          |
+| Field         | Type    | Notes                                          |
+|---------------|---------|------------------------------------------------|
+| id            | INTEGER | PK, AI                                         |
+| tradeId       | INTEGER | INDEX, NOT NULL, FK &rarr; **Trade(id)**       |
+| serviceLeadId | INTEGER | INDEX, NOT NULL, FK &rarr; **ServiceLead(id)** |
+| -             | -       | UNIQUE(tradeId, serviceLeadId)                 |
 
 ---
 
