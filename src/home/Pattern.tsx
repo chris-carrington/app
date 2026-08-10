@@ -5,9 +5,9 @@ import { Field } from '@hono-security'
 import { css, Style } from 'hono/css'
 import { flowSteps } from './flowSteps'
 import svgLock from '@src/svg/lock.svg?raw'
+import { jsonStaff } from '@src/json/staff.json'
+import { jsonTrades } from '@src/json/trades.json'
 import svgFrequency from '@src/svg/frequency.svg?raw'
-import { jsonLeadership } from '@src/json/leadership.json'
-import { jsonServiceRequest } from '@src/json/serviceRequest.json'
 import { onFlowChange, onHashChange, onWrapChange, onContactUsSubmit, onServiceRequestSubmit, onJoinLeadershipSubmit, onJoinNewsletterSubmit } from '@hono-directives'
 
 
@@ -88,7 +88,7 @@ const ServiceRequest: FC = () => {
           <div class="title">Professional Service</div>
           <div class="description">Our master trade professionals lead every project, ensuring lovely results and hands-on education. Our services include:</div>
           <div class="items">
-            {jsonServiceRequest.map(item => <>
+            {jsonTrades.map(item => <>
               <div class="item">
                 <div class="icon" dangerouslySetInnerHTML={{ __html: item.icon }}></div>
                 <div class="info">
@@ -113,7 +113,7 @@ const ServiceRequest: FC = () => {
               <Field name="email" placeholder="Email" type="email" prefix="service-request" />
 
               <Field name="description" placeholder="Job Description" type="textarea" prefix="service-request" />
-              <Field name="interest" type="checkbox" options={jsonServiceRequest} prefix="service-request" />
+              <Field name="interest" type="checkbox" options={jsonTrades} prefix="service-request" />
 
               <button type="submit">Hire Trade Professionals</button>
             </form>
@@ -134,7 +134,7 @@ const JoinLeadership: FC = () => {
           <div class="title">Lead by Example</div>
           <div class="description">We are uniting a visionary Board and dedicated Staff to lead by example! Current openings include:</div>
           <div class="items">
-            {jsonLeadership.map(item => <>
+            {jsonStaff.map(item => <>
               <div class="item">
                 <div class="icon" dangerouslySetInnerHTML={{__html: item.icon}}></div>
                 <div class="info">
@@ -157,7 +157,7 @@ const JoinLeadership: FC = () => {
               </div>
 
               <Field name="email" placeholder="Email" type="email" prefix="join-leadership" />
-              <Field name="interest" placeholder="Select Interested Position" type="select" options={jsonLeadership} prefix="join-leadership" />
+              <Field name="interest" placeholder="Select Interested Position" type="select" options={jsonStaff} prefix="join-leadership" />
               <button type="submit">Join Leadership Team</button>
             </form>
           </div>

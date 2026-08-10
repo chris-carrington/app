@@ -1,15 +1,9 @@
-## What is a database?
-- Organized collection of information
-
----
-
-## What is SQL?
-- The most popular database programming language
-
----
-
-## What is a database schema?
-- All our data goes into an encrypted SQL database. The **architecture** for this database is our schema.
+## What is a database, what is SQL and what is a database schema?
+- A database is an organized collection of information
+- SQL is the most popular database programming language
+- A database schema defines how database information is organized (tables, rows, indexes, etc.,)
+    - All our data goes into an encrypted SQL database
+    - The **architecture** of this database is a schema
 
 ---
 
@@ -49,8 +43,6 @@ Store contact details for each **Person**
 | sendJobOpportunityEmails | BOOLEAN | DEFAULT = 0            |
 | phoneNumber              | TEXT    | NULLABLE               |
 | sendJobOpportunityTexts  | BOOLEAN | DEFAULT = 0            |
-| sendServiceEmails        | BOOLEAN | DEFAULT = 0            |
-| -                        | -       | INDEX(email)           |
 
 ---
 
@@ -210,3 +202,5 @@ Staff end reason lookup table
 | id       | INTEGER | PK, AI      |
 | value    | TEXT    | NOT NULL    |
 | isActive | BOOLEAN | DEFAULT = 1 |
+
+---

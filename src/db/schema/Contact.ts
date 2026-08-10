@@ -13,7 +13,6 @@ export const Contact = sqliteTable('Contact', {
   sendJobOpportunityEmails: integer('sendJobOpportunityEmails', { mode: 'boolean' }).default(false),
   phoneNumber: text('phoneNumber'),
   sendJobOpportunityTexts: integer('sendJobOpportunityTexts', { mode: 'boolean' }).default(false),
-  sendServiceEmails: integer('sendServiceEmails', { mode: 'boolean' }).default(false),
 })
 
 
