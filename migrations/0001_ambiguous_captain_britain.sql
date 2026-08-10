@@ -1,1 +1,0 @@
-ALTER TABLE `StaffPosition` ADD `isHiring` integer DEFAULT true;

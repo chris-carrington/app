@@ -1,6 +1,6 @@
 // app/src/db/schema/JobStatus.ts
 
-import { Job } from './Job'
+import { Job } from '@src/db'
 import { relations } from 'drizzle-orm'
 import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
 

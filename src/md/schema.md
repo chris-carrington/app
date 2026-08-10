@@ -80,13 +80,25 @@ Trades lookup table
 ## Job
 Store all work projects
 
-| Field       | Type     | Notes                                 |
-|-------------|----------|---------------------------------------|
-| id          | INTEGER  | PK, AI                                |
-| statusId    | INTEGER  | NOT NULL, FK &rarr; **JobStatus(id)** |
-| description | TEXT     | NULLABLE                              |
-| address     | TEXT     | NOT NULL                              |
-| createdAt   | DATETIME | NOT NULL, DEFAULT = NOW               |
+| Field       | Type     | Notes                                        |
+|-------------|----------|----------------------------------------------|
+| id          | INTEGER  | PK, AI                                       |
+| statusId    | INTEGER  | INDEX, NOT NULL, FK &rarr; **JobStatus(id)** |
+| description | TEXT     | NULLABLE                                     |
+| address     | TEXT     | NOT NULL                                     |
+| createdAt   | DATETIME | NOT NULL, DEFAULT = NOW                      |
+
+---
+
+## Job__Trade
+Junction table between **Job** & **Trade**
+
+| Field         | Type    | Notes                                          |
+|---------------|---------|------------------------------------------------|
+| id            | INTEGER | PK, AI                                         |
+| jobId         | INTEGER | INDEX, NOT NULL, FK &rarr; **Job(id)**         |
+| tradeId       | INTEGER | INDEX, NOT NULL, FK &rarr; **Trade(id)**       |
+| -             | -       | UNIQUE(jobId, tradeId)                         |
 
 ---
 
@@ -113,17 +125,17 @@ Job status lookup table
 
 ---
 
-## ServiceLead
-Store entries from our service request form
+## JobLead
+Store entries from our service (job) request form
 
-| Field       | Type     | Notes                                  |
-|-------------|----------|----------------------------------------|
-| id          | INTEGER  | PK, AI                                 |
-| personId    | INTEGER  | NOT NULL, FK &rarr; **Person(id)**     |
-| statusId    | INTEGER  | NOT NULL, FK &rarr; **LeadStatus(id)** |
-| jobId       | INTEGER  | NULLABLE, FK &rarr; **Job(id)**        |
-| description | TEXT     | NOT NULL                               |
-| createdAt   | DATETIME | NOT NULL, DEFAULT = NOW                |
+| Field       | Type     | Notes                                         |
+|-------------|----------|-----------------------------------------------|
+| id          | INTEGER  | PK, AI                                        |
+| personId    | INTEGER  | NOT NULL, FK &rarr; **Person(id)**            |
+| statusId    | INTEGER  | INDEX, NOT NULL, FK &rarr; **LeadStatus(id)** |
+| jobId       | INTEGER  | UNIQUE INDEX, NULLABLE, FK &rarr; **Job(id)** |
+| description | TEXT     | NOT NULL                                      |
+| createdAt   | DATETIME | NOT NULL, DEFAULT = NOW                       |
 
 ---
 
@@ -138,15 +150,15 @@ Lead status lookup table
 
 ---
 
-## Trade__ServiceLead
-Junction table between **Trade** & **ServiceLead**
+## Trade__JobLead
+Junction table between **Trade** & **JobLead**
 
 | Field         | Type    | Notes                                          |
 |---------------|---------|------------------------------------------------|
 | id            | INTEGER | PK, AI                                         |
 | tradeId       | INTEGER | INDEX, NOT NULL, FK &rarr; **Trade(id)**       |
-| serviceLeadId | INTEGER | INDEX, NOT NULL, FK &rarr; **ServiceLead(id)** |
-| -             | -       | UNIQUE(tradeId, serviceLeadId)                 |
+| jobLeadId     | INTEGER | INDEX, NOT NULL, FK &rarr; **JobLead(id)**     |
+| -             | -       | UNIQUE(tradeId, jobLeadId)                     |
 
 ---
 
@@ -175,17 +187,18 @@ Staff position lookup table
 
 ---
 
-## StaffTemporal
-Store people's employment periods
+## Person__StaffPosition
+Junction table between **Person** & **StaffPosition** that also tracks the employment time and potential reason for ending the position
 
-| Field       | Type     | Notes                                      |
-|-------------|----------|--------------------------------------------|
-| id          | INTEGER  | PK, AI                                     |
-| personId    | INTEGER  | NOT NULL, FK &rarr; **Person(id)**         |
-| positionId  | INTEGER  | NOT NULL, FK &rarr; **StaffPosition(id)**  |
-| endReasonId | INTEGER  | NULLABLE, FK &rarr; **StaffEndReason(id)** |
-| startDate   | DATETIME | NOT NULL                                   |
-| endDate     | DATETIME | NULLABLE                                   |
+| Field       | Type     | Notes                                            |
+|-------------|----------|--------------------------------------------------|
+| id          | INTEGER  | PK, AI                                           |
+| personId    | INTEGER  | INDEX, NOT NULL, FK &rarr; **Person(id)**        |
+| positionId  | INTEGER  | INDEX, NOT NULL, FK &rarr; **StaffPosition(id)** |
+| endReasonId | INTEGER  | NULLABLE, FK &rarr; **StaffEndReason(id)**       |
+| startDate   | DATETIME | NOT NULL                                         |
+| endDate     | DATETIME | NULLABLE                                         |
+| -           | -        | UNIQUE(personId, positionId)                     |
 
 ---
 

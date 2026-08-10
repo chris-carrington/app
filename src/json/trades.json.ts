@@ -1,4 +1,4 @@
-// app/src/json/serviceRequest.json.ts
+// app/src/json/trades.json.ts
 
 import svgTree from '@src/svg/tree.svg?raw'
 import svgDoor from '@src/svg/door.svg?raw'
@@ -16,7 +16,7 @@ import svgSpoonFork from '@src/svg/spoonFork.svg?raw'
 import svgElectrical from '@src/svg/electrical.svg?raw'
 
 
-export const jsonServiceRequest = [
+export const jsonTrades = [
   {
     value: 'bathroom',
     icon: svgFaucet,
@@ -36,9 +36,9 @@ export const jsonServiceRequest = [
     description: `We'll create lasting foundations and surfaces with expert slab pouring, decorative stamped concrete patios and/or crack repairs that restore strength and appearance`
   },
   {
-    value: 'decks',
+    value: 'deck',
     icon: svgStairs,
-    label: 'Decks',
+    label: 'Deck',
     description: `We'll create your dream outdoor living space with custom deck designs, sturdy railing installations and/or premium wood sealing for years of backyard enjoyment`
   },
   {
@@ -62,7 +62,7 @@ export const jsonServiceRequest = [
   {
     value: 'fence',
     icon: svgFence,
-    label: 'Fencing',
+    label: 'Fence',
     description: `We'll install new fencing or address issues like structural instability, material decay, and/or hardware failures`
   },
   {
@@ -72,7 +72,7 @@ export const jsonServiceRequest = [
     description: `We'll refresh every step of your home with eco friendly bamboo, durable vinyl and/or cozy carpet`
   },
   {
-    value: 'kitchen-remodeling',
+    value: 'kitchen',
     icon: svgSpoonFork,
     label: 'Kitchen',
     description: `We'll transform your kitchen into a culinary showpiece with custom cabinet installation, modern countertop upgrades and/or efficient appliance hookups that flow perfectly`

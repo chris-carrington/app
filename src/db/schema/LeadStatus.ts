@@ -1,8 +1,7 @@
 // app/src/db/schema/LeadStatus.ts
 
-import { StaffLead } from './StaffLead'
 import { relations } from 'drizzle-orm'
-import { ServiceLead } from './ServiceLead'
+import { StaffLead, JobLead } from '@src/db'
 import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
 
 
@@ -15,6 +14,6 @@ export const LeadStatus = sqliteTable('LeadStatus', {
 
 
 export const LeadStatusRelations = relations(LeadStatus, ({ many }) => ({
-  serviceLeads: many(ServiceLead),
+  jobLeads: many(JobLead),
   staffLeads: many(StaffLead),
 }))

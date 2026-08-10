@@ -1,1 +1,0 @@
-ALTER TABLE `ServiceLead` ADD `description` text NOT NULL;

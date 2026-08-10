@@ -1,7 +1,6 @@
 // app/src/db/schema/Job__Client.ts
 
-import { Job } from './Job'
-import { Person } from './Person'
+import { Job, Person } from '@src/db'
 import { relations } from 'drizzle-orm'
 import { index, integer, uniqueIndex, sqliteTable } from 'drizzle-orm/sqlite-core'
 

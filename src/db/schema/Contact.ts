@@ -1,8 +1,8 @@
 // app/src/db/schema/Contact.ts
 
-import { Person } from './Person'
+import { Person } from '@src/db'
 import { relations } from 'drizzle-orm'
-import { text, index, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
+import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
 
 
 /** Store contact details for each **Person** */

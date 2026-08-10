@@ -1,13 +1,8 @@
 // app/src/db/schema/Person.ts
 
-import { Contact } from './Contact'
 import { relations } from 'drizzle-orm'
-import { StaffLead } from './StaffLead'
-import { ServiceLead } from './ServiceLead'
-import { Job__Client } from './Job__Client'
-import { StaffTemporal } from './StaffTemporal'
-import { ContactUsMessage } from './ContactUsMessage'
 import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
+import { Contact, StaffLead, JobLead, ContactUsMessage, Job__Client, Person__StaffPosition } from '@src/db'
 
 
 /** Store all people in our system (students, mentors, customers, trustees, board members, employees, vendors, etc.,) */
@@ -28,7 +23,7 @@ export const PersonRelations = relations(Person, ({ one, many }) => ({
   }),
   contactUsMessages: many(ContactUsMessage),
   jobsAsClient: many(Job__Client),
-  serviceLeads: many(ServiceLead),
+  jobLeads: many(JobLead),
   staffLeads: many(StaffLead),
-  staffTemporals: many(StaffTemporal),
+  positions: many(Person__StaffPosition),
 }))

@@ -1,7 +1,7 @@
 // app/src/db/schema/StaffEndReason.ts
 
 import { relations } from 'drizzle-orm'
-import { StaffTemporal } from './StaffTemporal'
+import { Person__StaffPosition } from '@src/db'
 import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
 
 
@@ -14,5 +14,5 @@ export const StaffEndReason = sqliteTable('StaffEndReason', {
 
 
 export const StaffEndReasonRelations = relations(StaffEndReason, ({ many }) => ({
-  staffTemporals: many(StaffTemporal),
+  staffPositions: many(Person__StaffPosition),
 }))

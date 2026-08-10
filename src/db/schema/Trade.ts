@@ -1,7 +1,7 @@
 // app/src/db/schema/Trade.ts
 
 import { relations } from 'drizzle-orm'
-import { Trade__ServiceLead } from './Trade__ServiceLead'
+import { Job__Trade, Trade__JobLead } from '@src/db'
 import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
 
 
@@ -14,5 +14,6 @@ export const Trade = sqliteTable('Trade', {
 
 
 export const TradeRelations = relations(Trade, ({ many }) => ({
-  serviceLeads: many(Trade__ServiceLead),
+  jobLeads: many(Trade__JobLead),
+  jobs: many(Job__Trade),
 }))

@@ -2,7 +2,7 @@
 
 import { relations } from 'drizzle-orm'
 import { StaffLead } from './StaffLead'
-import { StaffTemporal } from './StaffTemporal'
+import { Person__StaffPosition } from '@src/db'
 import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
 
 
@@ -17,5 +17,5 @@ export const StaffPosition = sqliteTable('StaffPosition', {
 
 export const StaffPositionRelations = relations(StaffPosition, ({ many }) => ({
   staffLeads: many(StaffLead),
-  staffTemporals: many(StaffTemporal),
+  people: many(Person__StaffPosition),
 }))
