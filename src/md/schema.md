@@ -44,7 +44,7 @@ Store contact details for each **Person**
 | Field                    | Type    | Notes                  |
 |--------------------------|---------|------------------------|
 | id                       | INTEGER | PK, AI                 |
-| email                    | TEXT    | NOT NULL, UNIQUE INDEX |
+| email                    | TEXT    | UNIQUE INDEX, NOT NULL |
 | sendNewsletter           | BOOLEAN | DEFAULT = 1            |
 | sendJobOpportunityEmails | BOOLEAN | DEFAULT = 0            |
 | phoneNumber              | TEXT    | NULLABLE               |
