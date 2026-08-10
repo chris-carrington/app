@@ -2,10 +2,9 @@
 
 import { Hono } from 'hono'
 import { db } from '@src/db'
-import { upsertPerson } from '@src/db/upsertPerson'
-import { upsertContact } from '@src/db/upsertContact'
 import { vValidator } from '@hono/valibot-validator'
-import { JoinNewsletterSchema } from './joinNewsletter.validator'
+import { upsertPerson, upsertContact } from '@src/db'
+import { JoinNewsletterSchema } from '@src/joinNewsletter/joinNewsletter.validator'
 
 
 const app = new Hono()

@@ -195,7 +195,6 @@ const style = css`
 
         table {
           width: 100%;
-          margin-bottom: 1rem;
           color: #212529;
           background-color: #fff;
           border-collapse: separate; /* required for border-radius to work */

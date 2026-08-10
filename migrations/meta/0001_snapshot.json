@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "cfaf9ec3-b4c3-406e-b3de-eca8faa28c10",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "41d480d4-7880-4281-ab89-30f85f12bfb5",
+  "prevId": "cfaf9ec3-b4c3-406e-b3de-eca8faa28c10",
   "tables": {
     "Contact": {
       "name": "Contact",
@@ -585,6 +585,14 @@
         },
         "isActive": {
           "name": "isActive",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": true
+        },
+        "isHiring": {
+          "name": "isHiring",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,

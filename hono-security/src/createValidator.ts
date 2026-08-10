@@ -13,16 +13,13 @@ import * as v from 'valibot'
 export function createValidator<T extends v.ObjectSchema<any, any>>(schema: T, defaultError = 'Invalid value'): Validator<v.InferOutput<T>> {
   type Output = v.InferOutput<T>
 
-  /**
-   * Validate a single field (for live client feedback).
-   */
-  function validateField<K extends keyof Output>(name: K, value: string): string | null {
+  function validateField<K extends keyof Output>(name: K, value: unknown): string | null {
     const fieldSchema = v.object({
       [name]: schema.entries[name],
     })
-
+  
     const result = v.safeParse(fieldSchema, { [name]: value })
-
+  
     if (!result.success) {
       const issue = result.issues.find((i: any) => i.path?.[0]?.key === name)
       return issue?.message || defaultError
@@ -32,10 +29,8 @@ export function createValidator<T extends v.ObjectSchema<any, any>>(schema: T, d
   }
 
   /** Validate a full object – returns a discriminated union. */
-  function safeParse(arg: HTMLFormElement | unknown): { success: true; data: Output } | { success: false; errors: Record<string, string> } {
-    const data = arg instanceof HTMLFormElement
-      ? Object.fromEntries((new FormData(arg).entries()))
-      : arg
+  function safeParse(arg: HTMLFormElement | unknown): { success: true, data: Output } | { success: false, errors: Record<string, string> } {
+    const data = getSafeParseData(arg)
 
     const result = v.safeParse(schema, data)
 
@@ -62,12 +57,51 @@ export function createValidator<T extends v.ObjectSchema<any, any>>(schema: T, d
 }
 
 
+function getSafeParseData(arg: HTMLFormElement | unknown): Record<string, any> {
+  let data: Record<string, any> = {}
+
+  if (arg instanceof HTMLFormElement) {
+    const form = arg
+    const formData = new FormData(form)
+
+    const nameInfo = new Map<string, { hasCheckbox: boolean }>()
+    for (const el of form.elements) {
+      const input = el as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+
+      if (input.name) {
+        if (!nameInfo.has(input.name)) {
+          nameInfo.set(input.name, { hasCheckbox: false })
+        }
+
+        if (input.type === 'checkbox') {
+          nameInfo.get(input.name)!.hasCheckbox = true
+        }
+      }
+    }
+
+    for (const [name, info] of nameInfo) {
+      const values = formData.getAll(name)
+
+      if (info.hasCheckbox) {
+        data[name] = values
+      } else {
+        data[name] = values.length > 0 ? values[0] : ''
+      }
+    }
+  } else {
+    data = arg as Record<string, any>
+  }
+
+  return data
+}
+
+
 /** What `createValidator()` provides */
 export type Validator<T> = {
-  validateField: (name: keyof T, value: string) => string | null;
-  safeParse: (data: unknown) => { success: true; data: T } | { success: false; errors: Record<string, string> };
+  validateField: (name: keyof T, value: unknown) => string | null,
+  safeParse: (data: unknown) => { success: true; data: T } | { success: false; errors: Record<string, string> },
 }
 
 
 /** Extract the inferred type from a validator created by `createValidator`. */
-export type InferValidator<T> = T extends Validator<infer U> ? U : never;
+export type InferValidator<T> = T extends Validator<infer U> ? U : never

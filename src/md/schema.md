@@ -50,6 +50,7 @@ Store contact details for each **Person**
 | phoneNumber              | TEXT    | NULLABLE         |
 | sendJobOpportunityTexts  | BOOLEAN | DEFAULT = 0      |
 | sendServiceEmails        | BOOLEAN | DEFAULT = 0      |
+| -                        | -       | INDEX(email)     |
 
 ---
 
@@ -97,6 +98,9 @@ Junction table between **Job** & **Person** (Client)
 | id       | INTEGER | PK, AI                             |
 | jobId    | INTEGER | NOT NULL, FK &rarr; **Job(id)**    |
 | clientId | INTEGER | NOT NULL, FK &rarr; **Person(id)** |
+| -        | -       | UNIQUE(jobId, clientId)            |
+| -        | -       | INDEX(jobId)                       |
+| -        | -       | INDEX(clientId)                    |
 
 ---
 
@@ -114,14 +118,14 @@ Job status lookup table
 ## ServiceLead
 Store entries from our service request form
 
-| Field     | Type     | Notes                                  |
-|-----------|----------|----------------------------------------|
-| id        | INTEGER  | PK, AI                                 |
-| personId  | INTEGER  | NOT NULL, FK &rarr; **Person(id)**     |
-| tradeId   | INTEGER  | NOT NULL, FK &rarr; **Trade(id)**      |
-| statusId  | INTEGER  | NOT NULL, FK &rarr; **LeadStatus(id)** |
-| jobId     | INTEGER  | NULLABLE, FK &rarr; **Job(id)**        |
-| createdAt | DATETIME | NOT NULL, DEFAULT = NOW                |
+| Field       | Type     | Notes                                  |
+|-------------|----------|----------------------------------------|
+| id          | INTEGER  | PK, AI                                 |
+| personId    | INTEGER  | NOT NULL, FK &rarr; **Person(id)**     |
+| statusId    | INTEGER  | NOT NULL, FK &rarr; **LeadStatus(id)** |
+| jobId       | INTEGER  | NULLABLE, FK &rarr; **Job(id)**        |
+| description | TEXT     | NOT NULL                               |
+| createdAt   | DATETIME | NOT NULL, DEFAULT = NOW                |
 
 ---
 
@@ -144,6 +148,9 @@ Junction table between **Trade** & **ServiceLead**
 | id            | INTEGER | PK, AI                                  |
 | tradeId       | INTEGER | NOT NULL, FK &rarr; **Trade(id)**       |
 | serviceLeadId | INTEGER | NOT NULL, FK &rarr; **ServiceLead(id)** |
+| -             | -       | INDEX(tradeId)                          |
+| -             | -       | INDEX(serviceLeadId)                    |
+| -             | -       | UNIQUE(tradeId, serviceLeadId)          |
 
 ---
 

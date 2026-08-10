@@ -86,7 +86,7 @@ const ServiceRequest: FC = () => {
       <div class="flex">
         <div class="left">
           <div class="title">Professional Service</div>
-          <div class="description">Our master trades professionals lead every project, ensuring lovely results and hands-on education. Our services include:</div>
+          <div class="description">Our master trade professionals lead every project, ensuring lovely results and hands-on education. Our services include:</div>
           <div class="items">
             {jsonServiceRequest.map(item => <>
               <div class="item">
@@ -111,7 +111,10 @@ const ServiceRequest: FC = () => {
               </div>
 
               <Field name="email" placeholder="Email" type="email" prefix="service-request" />
-              <Field name="interest" placeholder="Select Interested Service" type="select" options={jsonServiceRequest} prefix="service-request" />
+
+              <Field name="description" placeholder="Job Description" type="textarea" prefix="service-request" />
+              <Field name="interest" type="checkbox" options={jsonServiceRequest} prefix="service-request" />
+
               <button type="submit">Hire Trade Professionals</button>
             </form>
           </div>
@@ -403,6 +406,9 @@ const style = css`
             }
 
             .items {
+              max-height: 39rem;
+              overflow: auto;
+
               .item {
                 padding: var(--space-lite);
                 margin-bottom: var(--space-lite);
@@ -472,15 +478,55 @@ const style = css`
                 }
               }
 
+              .checkboxes {
+                display: flex;
+                flex-wrap: wrap;
+                gap: var(--space-lite);
+                color: var(--white);
+                font-size: 1.8rem;
+                margin-bottom: var(--space-lite);
+
+                .checkbox {
+                  display: flex;
+                  align-items: center;
+
+                  input,
+                  label {
+                    cursor: pointer;
+                  }
+                
+                  input {
+                    margin: 0 calc(var(--space-lite) / 2) 0 0;
+                    width: 1.8rem;
+                    height: 1.8em;
+                  }
+
+                  label {
+                    opacity: 0.81;
+                    user-select: none;
+                  }
+                }
+              }
+
               .field {
                 width: 100%;
                 margin-bottom: var(--space-lite);
+                &.checkboxes {
+                  label {
+                    display: inline-block;
+                  }
+
+                  .error-message {
+                    margin-top: -0.9rem;
+                  }
+                }
 
                 label {
                   display: none;
                 }
 
-                input,
+                input[type="text"],
+                input[type="email"],
                 select,
                 textarea {
                   width: 100%;
@@ -523,6 +569,10 @@ const style = css`
                 cursor: pointer;
                 &:hover {
                   scale: 1.02;
+                }
+                &:disabled {
+                  opacity: 0.81;
+                  cursor: default;
                 }
               }
             }

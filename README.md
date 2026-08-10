@@ -33,6 +33,7 @@
     - [Update](https://orm.drizzle.team/docs/sqlite/update)
     - [Delete](https://orm.drizzle.team/docs/sqlite/delete)
     - [Operators](https://orm.drizzle.team/docs/sqlite/operators)
+    - [Timestamp Default Values](https://orm.drizzle.team/docs/sqlite/guides/timestamp-default-value)
 - Tools
     - [Icons](https://icones.js.org/collection/all)
     - [Squoosh](https://squoosh.app/)

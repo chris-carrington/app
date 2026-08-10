@@ -9,6 +9,8 @@ export const Field: FC<FieldProps> = (props: FieldProps) => {
   const fieldID = props.type +'--'+ props.prefix + '--' + props.name
   const errorID = 'error-message--' + props.prefix + '--' + props.name
 
+  const errorElement = <div id={errorID} data-field={props.name} role="alert" aria-live="polite" class="error-message" />
+
   switch(props.type) {
     case 'text':
     case 'email':
@@ -41,20 +43,39 @@ export const Field: FC<FieldProps> = (props: FieldProps) => {
         </select>
       </>
       break
+    case 'checkbox':
+      field = <>
+        <div class="field checkboxes">
+          {
+            props.options.map(item => {
+              return <>
+                <div class="checkbox">
+                  <input type="checkbox" id={fieldID + '--' + item.value} name={props.name} value={item.value} />
+                  <label for={fieldID + '--' + item.value}>{item.label}</label>
+                </div>
+              </>
+            })
+          }
+          {errorElement}
+        </div>
+      </>
   }
 
-  return <>
-    <div class="field">
-      <label for={fieldID}>{props.label ?? props.placeholder}</label>
-      {field}
-      <div id={errorID} data-field={props.name} role="alert" aria-live="polite" class="error-message" />
-    </div>
-  </>
+  return props.type === 'checkbox'
+    ? field
+    : <>
+        <div class="field">
+          <label for={fieldID}>{props.label ?? props.placeholder}</label>
+          {field}
+          {errorElement}
+        </div>
+      </>
 }
 
 
 export type FieldProps = 
   | FieldPropsSelect
+  | FieldPropsCheckbox
   | FieldPropsBase & { type: 'text' | 'email' | 'textarea' } 
 
 
@@ -69,6 +90,15 @@ type FieldPropsBase = {
 
 type FieldPropsSelect = FieldPropsBase & {
   type: 'select',
+  options: {
+    value: string,
+    label: string
+  }[]
+}
+
+
+type FieldPropsCheckbox = FieldPropsBase & {
+  type: 'checkbox',
   options: {
     value: string,
     label: string
