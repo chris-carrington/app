@@ -1,0 +1,6 @@
+export { pipeArray } from '@src/pipe/array.pipe'
+export { pipeEmail } from '@src/pipe/email.pipe'
+export { pipeEnoughContent } from '@src/pipe/enoughContent.pipe'
+export { pipeFirstName } from '@src/pipe/firstName.pipe'
+export { pipeLastName } from '@src/pipe/lastName.pipe'
+export { pipeSelect } from '@src/pipe/select.pipe'

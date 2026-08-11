@@ -6,7 +6,7 @@ import { Job, Person, LeadStatus, Trade__JobLead } from '@src/db'
 import { text, index, integer, uniqueIndex, sqliteTable } from 'drizzle-orm/sqlite-core'
 
 
-/** Store entries from our service (job) request form */
+/** Store entries from our service request (job lead) form */
 export const JobLead = sqliteTable(
   'JobLead',
   {

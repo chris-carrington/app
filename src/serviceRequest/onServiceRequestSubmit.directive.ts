@@ -1,6 +1,7 @@
 // app/src/serviceRequest/serviceRequest.directive.ts
 
 import { Loading, FormUtil } from '@hono-security'
+import { showToast, showErrorToast } from '@hono-toast'
 import { serviceRequestValidator } from '@src/serviceRequest/serviceRequest.validator'
 
 
@@ -33,10 +34,10 @@ export default (el: HTMLFormElement) => {
 
       form.resetForm()
 
-      alert('✅ Message sent successfully!') // will be a toast notification later
+      showToast({ value: 'Success!', variant: 'success' })
     } catch (error) {
       console.error('❌ Submission error:', error)
-      alert('Something went wrong. Please try again.')
+      showErrorToast(String(error))
     } finally {
       loading.stop()
     }

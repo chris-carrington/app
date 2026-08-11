@@ -1,6 +1,7 @@
 // app/src/joinLeadership/joinLeadership.directive.ts
 
 import { Loading, FormUtil } from '@hono-security'
+import { showToast, showErrorToast } from '@hono-toast'
 import { joinLeadershipValidator } from '@src/joinLeadership/joinLeadership.validator'
 
 
@@ -33,10 +34,10 @@ export default (el: HTMLFormElement) => {
 
       form.resetForm()
 
-      alert('✅ Success!') // will be a toast notification later
+      showToast({ value: 'Success!', variant: 'success' })
     } catch (error) {
       console.error('❌ Submission error:', error)
-      alert('❌ Error!')
+      showErrorToast(String(error))
     } finally {
       loading.stop()
     }

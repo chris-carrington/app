@@ -9,6 +9,7 @@ const trades = [
   { value: 'Concrete' },
   { value: 'Deck' },
   { value: 'Doors' },
+  { value: 'Drywall' },
   { value: 'Electrical' },
   { value: 'Fence' },
   { value: 'Flooring' },

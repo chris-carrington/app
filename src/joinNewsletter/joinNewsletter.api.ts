@@ -1,9 +1,8 @@
 // app/src/joinNewsletter/joinNewsletter.api.ts
 
 import { Hono } from 'hono'
-import { db } from '@src/db'
 import { vValidator } from '@hono/valibot-validator'
-import { upsertPerson, upsertContact } from '@src/db'
+import { db, upsertPerson, upsertContact } from '@src/db'
 import { JoinNewsletterSchema } from '@src/joinNewsletter/joinNewsletter.validator'
 
 

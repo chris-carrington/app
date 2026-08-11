@@ -1,7 +1,7 @@
 // app/src/joinNewsletter/joinNewsletter.directive.ts
 
-import { showToast } from '@hono-toast'
 import { Loading, FormUtil } from '@hono-security'
+import { showToast, showErrorToast } from '@hono-toast'
 import { joinNewsletterValidator } from '@src/joinNewsletter/joinNewsletter.validator'
 
 
@@ -37,7 +37,7 @@ export default (el: HTMLFormElement) => {
       showToast({ value: 'Success!', variant: 'success' })
     } catch (error) {
       console.error('❌ Submission error:', error)
-      showToast({ value: String(error), variant: 'danger' })
+      showErrorToast(String(error))
     } finally {
       loading.stop()
     }

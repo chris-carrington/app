@@ -1,10 +1,9 @@
 // app/src/contactUs/contactUs.api.ts
 
 import { Hono } from 'hono'
-import { db } from '@src/db'
 import { vValidator } from '@hono/valibot-validator'
 import { ContactUsSchema } from './contactUs.validator'
-import { upsertPerson, upsertContact, ContactUsMessage } from '@src/db'
+import { db, upsertPerson, upsertContact, ContactUsMessage } from '@src/db'
 
 
 const app = new Hono()

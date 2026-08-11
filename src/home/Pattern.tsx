@@ -113,7 +113,7 @@ const ServiceRequest: FC = () => {
               <Field name="email" placeholder="Email" type="email" prefix="service-request" />
 
               <Field name="description" placeholder="Job Description" type="textarea" prefix="service-request" />
-              <Field name="interest" type="checkbox" options={jsonTrades} prefix="service-request" />
+              <Field name="trade" type="checkbox" options={jsonTrades} prefix="service-request" />
 
               <button type="submit">Hire Trade Professionals</button>
             </form>
@@ -171,7 +171,7 @@ const JoinLeadership: FC = () => {
 const JoinNewsletter: FC = () => {
   const items = [
     { icon: svgLock, title: 'Security', description: 'Newsletter recipient names & emails are encrypted using industry-standard AEAD algorithms' },
-    { icon: svgFrequency, title: 'Frequency', description: 'We respect you, we respect your inbox and so we rarely send out more then one email a month' },
+    { icon: svgFrequency, title: 'Frequency', description: 'We rarely send out more then one email a month, because we respect you and your inbox' },
   ]
 
   return <>
