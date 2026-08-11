@@ -20,14 +20,14 @@
 ---
 
 ## What is a Trust Document?
-- Legal contract that brings the Trust into existence
+- A Trust Document is a legal contract that brings the Trust into existence
 - Reviewed by the state's Attorney General
 - Defines the Trust's mission, names the Trustee(s) and tells them exactly how they must operate
 
 ---
 
 ## What is a Charitable Trust?
-- The Charitable Trust is a Nonprofit's member (owner)
+- A Charitable Trust is a Nonprofit's member (owner)
 - A standard Nonprofit has a person’s name as the member. Our format is Shasta Trades Trust is the member of Shasta Trades Nonprofit
 - Shasta Trades Trust has a mission
     - We cannot change the Trust's mission unless it becomes "illegal, impossible, or impracticable" to carry out
@@ -35,7 +35,7 @@
     - A Nonprofit mission can be changed with a Board vote
 - Our Trust mission is nearly identical to our Nonprofit mission
     - The Trust mission is more broad (any community) than the Nonprofit mission (Mt Shasta community)
-    - This way if we ever want to expand (Yreka, Dusmuir, Redding, etc.,), we change the Nonprofit mission with a Board vote and the Trust mission remains the same
+    - This way if we ever want to expand (Yreka, Dusmuir, Redding, etc.), we change the Nonprofit mission with a Board vote and the Trust mission remains the same
 - Shasta Trades Trust has 2 Trustees who can veto any Nonprofit idea (e.g., change Nonprofit mission, hire someone, alter a salary, start working on a new project) that does not align with our Trusts mission
 - If a Trustee violates the Trust’s mission, California’s Attorney General will prosecute them
 - **The Nonprofit does the charitable work and the Trust protects the mission forever**
@@ -43,7 +43,7 @@
 ---
 
 ## What is a Trustee?
-- Has a strict legal duty to act in the best interest of the Trust's mission
+- A Trustee has a strict legal duty to act in the best interest of the Trust's mission
 - Must avoid conflicts of interest
 - Cannot use Trust assets (Nonprofit) for their own personal gain
 - **Must follow the Trust Document** exactly as it is written

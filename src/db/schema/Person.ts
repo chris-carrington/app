@@ -5,7 +5,7 @@ import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
 import { Contact, StaffLead, JobLead, ContactUsMessage, Job__Client, Person__StaffPosition } from '@src/db'
 
 
-/** Store all people in our system (students, mentors, customers, trustees, board members, employees, vendors, etc.,) */
+/** Store all people in our system (students, mentors, customers, Trustees, Board members, employees, vendors, etc.) */
 export const Person = sqliteTable('Person', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   contactId: integer('contactId')

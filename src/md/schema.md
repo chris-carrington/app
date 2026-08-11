@@ -1,7 +1,7 @@
 ## What is a database, what is SQL and what is a database schema?
 - A database is an organized collection of information
 - SQL is the most popular database programming language
-- A database schema defines how database information is organized (tables, rows, indexes, etc.,)
+- A database schema defines how database information is organized (tables, rows, indexes, etc.)
     - All our data goes into an encrypted SQL database
     - The **architecture** of this database is a schema
 
@@ -20,7 +20,7 @@
 ---
 
 ## Person
-Store all people in our system (students, mentors, customers, trustees, board members, employees, vendors, etc.,)
+Store all people in our system (students, mentors, customers, Trustees, Board members, employees, vendors, etc.)
 
 | Field     | Type    | Notes                               |
 |-----------|---------|-------------------------------------|

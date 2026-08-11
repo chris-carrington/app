@@ -82,7 +82,7 @@ export const flowSteps: FlowStep[] = [
       {
         icon: svgPayments,
         title: 'Support',
-        description: 'Direct your donation to specific trade programs (tools, apprentices, low income families, etc.,)'
+        description: 'Direct your donation to specific trade programs (tools, apprentices, low income families, etc.)'
       },
       {
         icon: svgBarLineChart,

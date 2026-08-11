@@ -27,7 +27,7 @@ export const jsonTrades = [
     value: '2',
     icon: svgTree,
     label: 'Carpentry',
-    description: `We'll turn lumber yard wood or wood that's headed to the landfill into beauty (tables, planters, etc.,)`
+    description: `We'll turn lumber yard wood or wood that's headed to the landfill into beauty (tables, planters, etc.)`
   },
   {
     value: '3',
