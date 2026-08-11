@@ -16,9 +16,9 @@
     - [Encryption](https://docs.turso.tech/tursodb/encryption)
 - Cloudflare
     - [Types](https://developers.cloudflare.com/workers/languages/typescript)
-    - [Emails](https://developers.cloudflare.com/email-service/api/send-emails/workers-api/)
     - [Pricing](https://developers.cloudflare.com/workers/platform/pricing/)
     - [Secrets](https://developers.cloudflare.com/workers/configuration/secrets/)
+    - [Send Email](https://developers.cloudflare.com/api/resources/email_sending/methods/send/)
 - Hono
     - [JSX](https://hono.dev/docs/guides/jsx)
     - [CSS](https://hono.dev/docs/helpers/css)

@@ -11,6 +11,7 @@ const directiveModules = import.meta.glob<{ default: DirectiveFn }>(
 
 function buildRegistry() {
   const registry: Record<string, () => Promise<{ default: DirectiveFn }>> = {}
+
   for (const path in directiveModules) {
     const fileName = path.split('/').pop() || ''
     // Strip .directive.ts or .directive.tsx
