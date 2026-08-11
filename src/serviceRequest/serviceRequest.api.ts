@@ -20,7 +20,7 @@ app.post(
         const jobLeadId = await insertJobLead(tx, data, personId)
 
         await Promise.all([
-          data.trade.map(tradeId => inserTrade__JobLead({ tx, jobLeadId, tradeId: Number(tradeId) }))
+          data.trade.map(tradeId => insertTrade__JobLead({ tx, jobLeadId, tradeId: Number(tradeId) }))
         ])
       })
     } catch (e) {
@@ -48,7 +48,7 @@ async function insertJobLead(tx: Transaction, data: ServiceRequestFormData, pers
 }
 
 
-async function inserTrade__JobLead(props: { tx: Transaction, tradeId: number, jobLeadId: number }) {
+async function insertTrade__JobLead(props: { tx: Transaction, tradeId: number, jobLeadId: number }) {
   return props.tx
     .insert(Trade__JobLead)
     .values({ tradeId: props.tradeId, jobLeadId: props.jobLeadId })
