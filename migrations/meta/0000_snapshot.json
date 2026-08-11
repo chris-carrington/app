@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "0c849b22-4f7f-45d9-b22e-8cb81fb5cb6b",
+  "id": "8b47fe38-3c5f-482b-b5d7-fdae2759c81f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Contact": {
@@ -46,14 +46,6 @@
         },
         "sendJobOpportunityTexts": {
           "name": "sendJobOpportunityTexts",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": false
-        },
-        "sendServiceEmails": {
-          "name": "sendServiceEmails",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,

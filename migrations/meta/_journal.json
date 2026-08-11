@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1786389740135,
-      "tag": "0000_secret_gorilla_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1786390684763,
-      "tag": "0001_pale_reaper",
+      "when": 1786413383150,
+      "tag": "0000_regular_the_initiative",
       "breakpoints": true
     }
   ]

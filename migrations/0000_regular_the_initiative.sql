@@ -4,8 +4,7 @@ CREATE TABLE `Contact` (
 	`sendNewsletter` integer DEFAULT true,
 	`sendJobOpportunityEmails` integer DEFAULT false,
 	`phoneNumber` text,
-	`sendJobOpportunityTexts` integer DEFAULT false,
-	`sendServiceEmails` integer DEFAULT false
+	`sendJobOpportunityTexts` integer DEFAULT false
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `Contact_email_unique` ON `Contact` (`email`);--> statement-breakpoint
