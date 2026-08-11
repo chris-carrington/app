@@ -9,9 +9,9 @@ import personCheck from '@src/svg/personCheck.svg?raw'
 
 const Building: FC = () => {
   const steps = [
-    { icon: court, title: 'Creating the Business', description: 'We are currently creating the Shasta Trades Trust & Shasta Trades Nonprofit, to ensure long term mission aligned stewardship.' },
-    { icon: people, title: 'Trades Recruitment', description: 'Recruiting our first cohort of tradespeople to bring beauty to our community at a lovely price is a top priority.' },
-    { icon: personCheck, title: 'Executive Search', description: 'Actively seeking committed professionals to guide our operations with transparency, precision and rigor.' },
+    { icon: court, title: 'Creating the Business', description: 'We are currently creating the Shasta Trades Trust & Shasta Trades Nonprofit, to ensure long term mission aligned stewardship' },
+    { icon: people, title: 'Trades Recruitment', description: 'Recruiting our first cohort of tradespeople to bring beauty to our community' },
+    { icon: personCheck, title: 'Executive Search', description: 'Actively seeking committed professionals to guide our operations with rigor, precision an transparency' },
   ]
 
   return <>
@@ -96,6 +96,8 @@ const style = css`
       }
 
       .step {
+        flex: 1;
+
         .icon {
           width: 6.3rem;
           height: 6.3rem;

@@ -13,10 +13,9 @@
     - They love financial reports and this schema helps us organize our data so we may provide these reports
 - Instead of using QuickBooks for money, Airtable for clients, and Google Sheets for hours, everything lives in one encrypted SQL database
 - Example queries we may run thanks to this schema:
-    - Identify our remaining budget before we say yes to any job
     - Identify and restrict specific grant funds to specific liabilities
     - Tell an apprentice how many hours they have left until they reach their 4-year CSLB requirement
-    - Identify how many low-income, medium-income and/or senior citizen households we've helped this quarter, for grants that want us helping this cohort of our community
+    - Identify how many low-income, medium-income and/or senior citizen households we've helped this quarter, for grants that love helping specific cohorts of our community
 
 ---
 
@@ -118,7 +117,7 @@ Job status lookup table
 ---
 
 ## JobLead
-Store entries from our service (job) request form
+Store entries from our service request (job lead) form
 
 | Field       | Type     | Notes                                         |
 |-------------|----------|-----------------------------------------------|
