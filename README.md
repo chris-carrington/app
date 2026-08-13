@@ -1,12 +1,13 @@
 # Shasta Trades App
 
 ## Todo
-1. Cloudflare Email Integration w/ Forms
 1. Sign Up
 1. Sign In
 1. Sign Out
+1. Profile
 1. Objectives
 1. Transparency
+1. Mastery
 1. Directive, multiple on 1 element
 
 ## 🔗 Links
@@ -37,6 +38,7 @@
     - [Icons](https://icones.js.org/collection/all)
     - [Squoosh](https://squoosh.app/)
     - [PNG to ICO](https://convertio.co/)
+    - [Remove Comments](https://commentclean.com/)
     - [Open Graph Testing](https://www.opengraph.xyz/)
     - [Gradient CSS Generator](https://html-css-js.com/css/generator/box-shadow/)
     - [Markdown Table Generator](https://tableconvert.com/markdown-generator)

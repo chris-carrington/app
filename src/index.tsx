@@ -3,7 +3,9 @@
 import { Hono } from 'hono'
 import home from './home/home.route'
 import { renderer } from '@src/renderer'
-import signIn from '@src/lib/signIn.route'
+import signIn from '@src/auth/signIn.route'
+import signUp from '@src/auth/signUp.route'
+import mastery from '@src/lib/mastery.route'
 import objectives from '@src/lib/objectives.route'
 import contactUs from '@src/contactUs/contactUs.api'
 import transparency from '@src/lib/transparency.route'
@@ -18,6 +20,8 @@ app.use(renderer)
 
 app.route('/', home)
 app.route('/sign-in', signIn)
+app.route('/sign-up', signUp)
+app.route('/mastery', mastery)
 app.route('/objectives', objectives)
 app.route('/api/contact-us', contactUs)
 app.route('/transparency', transparency)

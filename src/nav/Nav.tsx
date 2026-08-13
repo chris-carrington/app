@@ -18,15 +18,16 @@ const Nav: FC = () => {
         <div class="left">
           <a data-directive={onHomeClick()} href="/" class="logo">
             <div class="img">
-              <img src="/logo.webp" />
+              <img src="/img/logo.webp" />
             </div>
             <span>Shasta Trades</span>
           </a>
 
           <div class="links">
             <a href="/" class={c.req.path === '/' ? 'active' : ''}>Home</a>
+            <a href="/mastery" class={c.req.path.includes('/mastery') ? 'active' : ''}>Mastery</a>
             <a href="/objectives" class={c.req.path === '/objectives' ? 'active' : ''}>Objectives</a>
-            <a href="/transparency" class={c.req.path === '/transparency' ? 'active' : ''}>Transparency</a>
+            <a href="/transparency" class={c.req.path.includes('/transparency') ? 'active' : ''}>Transparency</a>
           </div>
         </div>
 
@@ -51,7 +52,7 @@ const style = css`
 
     .inner .left .links,
     .sign-in-btn {
-      @media (max-width: 760px) {
+      @media (max-width: 870px) {
         display: none;
       }
     }
@@ -69,7 +70,7 @@ const style = css`
         align-items: center;
 
         .logo {
-          font-weight: 700;
+          font-weight: 600;
           font-size: 3.3rem;
           color: #1B3022;
           text-decoration: none;
@@ -92,7 +93,7 @@ const style = css`
             color: rgb(67 72 67);
             text-decoration: none;
             font-weight: 600;
-            font-size: 1.71rem;
+            font-size: 1.86rem;
             padding-left: var(--space);
             transition: all 0.3s;
             display: inline-flex;
@@ -118,7 +119,7 @@ const style = css`
       }
 
       .sign-in-btn {
-        font-size: 1.71rem;
+        font-size: 1.86rem;
         color: var(--white);
         font-weight: 600;
         border-radius: var(--radius);
@@ -139,7 +140,7 @@ const style = css`
         justify-content: center;
         display: none;
 
-          @media (max-width: 760px) {
+          @media (max-width: 870px) {
             display: flex;
           }
 

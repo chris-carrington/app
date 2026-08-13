@@ -159,10 +159,10 @@ export const honoToastStyle = css`
           svg {
             flex-grow: 0;
             flex-shrink: 0;
-            width: 1.8rem;
-            min-width: 1.8rem;
-            height: 1.8rem;
-            min-height: 1.8rem;
+            width: 1.86rem;
+            min-width: 1.86rem;
+            height: 1.86rem;
+            min-height: 1.86rem;
           }
         }
       }

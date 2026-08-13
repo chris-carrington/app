@@ -277,7 +277,7 @@ const style = css`
       z-index: var(--z-mask);
       inset: 0;
       opacity: 0.1;
-      background-image: url(/wood-pattern.webp);
+      background-image: url(/img/wood-pattern.webp);
     }
 
     .hr {
@@ -305,7 +305,7 @@ const style = css`
       a,
       button {
         font-weight: 600;
-        font-size: 1.71rem;
+        font-size: 1.86rem;
         text-decoration: none;
         border-radius: calc(var(--radius) * 2);
         color: var(--white);
@@ -395,7 +395,7 @@ const style = css`
           .left {
             .title {
               color: var(--white);
-              font-weight: 700;
+              font-weight: 600;
               font-size: 4.8rem;
             }
 
@@ -429,12 +429,12 @@ const style = css`
                 .info {
                   .primary {
                     color: var(--white);
-                    font-weight: 700;
+                    font-weight: 600;
                   }
 
                   .secondary {
                     color: rgb(180 205 184);
-                    font-size: 1.68rem;
+                    font-size: 1.86rem;
                   }
                 }
               }
@@ -459,8 +459,8 @@ const style = css`
 
             .title {
               color: var(--white);
-              font-weight: 700;
-              font-size: 1.68rem;
+              font-weight: 600;
+              font-size: 1.86rem;
               margin-bottom: var(--space-lite);
             }
 
@@ -483,7 +483,7 @@ const style = css`
                 flex-wrap: wrap;
                 gap: var(--space-lite);
                 color: var(--white);
-                font-size: 1.8rem;
+                font-size: 1.86rem;
                 margin-bottom: var(--space-lite);
 
                 .checkbox {
@@ -497,7 +497,7 @@ const style = css`
                 
                   input {
                     margin: 0 calc(var(--space-lite) / 2) 0 0;
-                    width: 1.8rem;
+                    width: 1.86rem;
                     height: 1.8em;
                   }
 
@@ -536,6 +536,7 @@ const style = css`
                   border-radius: var(--radius);
                   background-color: rgb(255 255 255 / 0.05);
                   border: 1px solid rgb(255 255 255 / 0.1);
+                  transition: all 0.15s;
                   &:focus {
                     border-color: transparent;
                     outline: 0;
@@ -619,7 +620,7 @@ const style = css`
           align-items: center;
           justify-content: center;
           text-align: center;
-          font-size: 1.68rem;
+          font-size: 1.86rem;
           min-width: 18rem;
 
           .count {

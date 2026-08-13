@@ -4,6 +4,8 @@
     "hono-toast",
     "hono-directives",
     "hono-security",
+    "hono-security",
+    "send-cloudflare-email",
     "drizzle.config.ts"
   ],
   "compilerOptions": {
@@ -37,6 +39,9 @@
       ],
       "@hono-security": [
         "./hono-security/index"
+      ],
+      "@send-cloudflare-email": [
+        "./send-cloudflare-email/index"
       ]
     }
   },

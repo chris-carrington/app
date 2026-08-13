@@ -63,7 +63,7 @@ const style = css`
     h1,
     h2 {
       margin-top: 0;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--primary);
     }
 
@@ -89,7 +89,7 @@ const style = css`
         z-index: var(--z-mask);
         inset: 0;
         opacity: 0.1;
-        background-image: url(/wood-pattern.webp);
+        background-image: url(/img/wood-pattern.webp);
       }
 
       .header,
@@ -105,7 +105,7 @@ const style = css`
 
         h1 {
           font-size: 3.2rem;
-          font-weight: 700;
+          font-weight: 600;
           color: var(--white);
           margin-bottom: var(--space-lite);
         }
@@ -118,7 +118,6 @@ const style = css`
 
           .sub-title {
             color: #dcdfdc;
-            font-family: var(--font-family-serif);;
             width: 168rem;
           }
 
@@ -143,7 +142,7 @@ const style = css`
         a,
         button {
           font-weight: 600;
-          font-size: 1.71rem;
+          font-size: 1.86rem;
           text-decoration: none;
           border-radius: calc(var(--radius) * 2);
           color: var(--white);

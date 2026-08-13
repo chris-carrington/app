@@ -24,7 +24,7 @@ export const flowSteps: FlowStep[] = [
       {
         icon: svgSmile,
         title: 'Quality at a Discount',
-        description: 'Receive professional results at a discount, thanks to our nonprofit grants'
+        description: 'Receive lovely results at a discount, thanks to our nonprofit grants'
       },
     ]
   },

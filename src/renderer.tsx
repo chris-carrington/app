@@ -16,6 +16,9 @@ export const renderer = jsxRenderer(({ children }) => <>
       <meta charset="UTF-8" />
       <meta name="theme-color" content="#F9FBF9" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="preload" as="font" href="/fonts/proxima_nova_400.woff2" type="font/woff2" crossorigin="anonymous"></link>
+      <link rel="preload" as="font" href="/fonts/proxima_nova_500.woff2" type="font/woff2" crossorigin="anonymous"></link>
+      <link rel="preload" as="font" href="/fonts/proxima_nova_600.woff2" type="font/woff2" crossorigin="anonymous"></link>
       <Style>{style}</Style>
       <Style>{honoToastStyle}</Style>
       <ViteClient />
@@ -34,8 +37,8 @@ export const renderer = jsxRenderer(({ children }) => <>
 
 const style = css`
   :root {
-    --font-size: 1.8rem;
-    --line-height: 1.41;
+    --font-size: 1.86rem;
+    --line-height: 1.5;
     --radius: 0.45rem;
     --space: 3rem;
     --space-lite: 1.5rem;
@@ -43,7 +46,7 @@ const style = css`
     --space-huge: 6.3rem;
     --max-width: 123rem;
     --speed: all 0.3s ease;
-    --font-family-arial: Arial, Helvetica, sans-serif;
+    --font-family-arial: ProximaNova;
     --font-family-serif: Georgia, 'Times New Roman', Times, serif;
 
     --primary: #1b3022;
@@ -109,6 +112,7 @@ const style = css`
     line-height: var(--line-height);
     font-family: var(--font-family-arial);
     font-size: var(--font-size);
+    font-size: 400;
   }
 
   body {
@@ -117,5 +121,23 @@ const style = css`
 
   main {
     min-height: calc(100vh - 27rem);
+  }
+
+  @font-face {
+      font-family: ProximaNova;
+      font-weight: 400;
+      src: url("/fonts/proxima_nova_400.woff2") format("truetype");
+  }
+
+  @font-face {
+      font-family: ProximaNova;
+      font-weight: 500;
+      src: url("/fonts/proxima_nova_500.woff2") format("truetype");
+  }
+
+  @font-face {
+      font-family: ProximaNova;
+      font-weight: 600;
+      src: url("/fonts/proxima_nova_600.woff2") format("truetype");
   }
 `

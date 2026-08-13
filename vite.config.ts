@@ -16,6 +16,7 @@ export default defineConfig({
       '@hono-toast': path.resolve(__dirname, 'hono-toast/index'),
       '@hono-security': path.resolve(__dirname, 'hono-security/index'),
       '@hono-directives': path.resolve(__dirname, 'hono-directives/dist/index'),
+      '@send-cloudflare-email': path.resolve(__dirname, 'send-cloudflare-email/index'),
     },
   },
   plugins: [

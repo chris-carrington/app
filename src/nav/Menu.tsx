@@ -15,6 +15,7 @@ const Menu: FC = () => {
       <div class="items">
         <div class="item title">Menu</div>
         <a href="/" class="item anchor">Home</a>
+        <a href="/mastery" class="item anchor">Mastery</a>
         <a href="/objectives" class="item anchor">Objectives</a>
         <a href="/transparency" class="item anchor">Transparency</a>
         <a href="/sign-in" class="item anchor">Sign In</a>

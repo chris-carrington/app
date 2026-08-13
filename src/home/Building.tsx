@@ -54,7 +54,7 @@ const style = css`
 
       .title {
         font-size: 3.2rem;
-        font-weight: 700;
+        font-weight: 600;
         color: var(--primary);
         margin-bottom: var(--space-lite);
       }
@@ -118,7 +118,6 @@ const style = css`
 
         .description {
           color: rgb(67 72 67);
-          font-family: var(--font-family-serif);
         }
       }
     }

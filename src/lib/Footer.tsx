@@ -22,9 +22,11 @@ const Footer: FC = () => {
           <div class="title">SITE MAP</div>
           <div class="links">
             <a href="/">Home</a>
+            <a href="/mastery">Mastery</a>
             <a href="/objectives">Objectives</a>
             <a href="/transparency">Transparency</a>
             <a href="/sign-in">Sign In</a>
+            <a href="/sign-up">Sign Up</a>
           </div>
         </div>
         <div class="socials">
@@ -44,7 +46,7 @@ const Footer: FC = () => {
 
 const style = css`
   footer {
-    font-size: 1.68rem;
+    font-size: 1.86rem;
     padding: var(--space);
     display: flex;
     justify-content: space-between;
@@ -62,7 +64,7 @@ const style = css`
     .left {
 
       .title {
-        font-weight: 700;
+        font-weight: 600;
         font-size: 2.4rem;
         color: var(--white);
         margin-bottom: var(--space-lite);
@@ -71,7 +73,7 @@ const style = css`
       .dedication {
         color: rgb(129 153 134);
         max-width: 69%;
-        font-size: 1.68rem;
+        font-size: 1.86rem;
 
         @media (max-width: 800px) {
           max-width: 81%;
@@ -85,7 +87,7 @@ const style = css`
 
     .right {
       display: flex;
-      gap: calc(var(--space) * 3);
+      gap: calc(var(--space) * 2.4);
 
       @media (max-width: 800px) {
         flex-direction: column;

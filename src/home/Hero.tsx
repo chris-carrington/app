@@ -11,7 +11,7 @@ const Hero: FC = () => {
     <div class="hero">
       <div class="bg-img">
         <div class="mask"></div>
-        <img src="/mt-shasta.webp" alt="Mount Shasta in Northern California" />
+        <img src="/img/mt-shasta.webp" alt="Mount Shasta in Northern California" />
       </div>
 
       <div class="content">
@@ -32,7 +32,7 @@ const Hero: FC = () => {
         </div>
         <div class="right">
           <div class="img">
-            <img src="/chisel.webp" alt="Craftsman using a chisel to do woodworking" />
+            <img src="/img/chisel.webp" alt="Craftsman using a chisel to do woodworking" />
           </div>
           <div class="border"></div>
           <div class="top-box"></div>
@@ -115,7 +115,7 @@ const style = css`
 
         .message {
           font-size: 2.1rem;
-          font-family: var(--font-family-serif);
+          /* font-family: var(--font-family-serif); */
           color: rgb(180 205 184);
           margin-bottom: var(--space);
         }
