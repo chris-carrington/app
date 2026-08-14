@@ -3,9 +3,11 @@
 import { Hono } from 'hono'
 import home from './home/home.route'
 import { renderer } from '@src/renderer'
-import signIn from '@src/auth/signIn.route'
-import signUp from '@src/auth/signUp.route'
 import mastery from '@src/lib/mastery.route'
+import signInApi from '@src/auth/signIn.api'
+import signUpApi from '@src/auth/signUp.api'
+import signInRoute from '@src/auth/signIn.route'
+import signUpRoute from '@src/auth/signUp.route'
 import objectives from '@src/lib/objectives.route'
 import contactUs from '@src/contactUs/contactUs.api'
 import transparency from '@src/lib/transparency.route'
@@ -19,9 +21,11 @@ const app = new Hono()
 app.use(renderer)
 
 app.route('/', home)
-app.route('/sign-in', signIn)
-app.route('/sign-up', signUp)
 app.route('/mastery', mastery)
+app.route('/sign-in', signInRoute)
+app.route('/sign-up', signUpRoute)
+app.route('/api/sign-in', signInApi)
+app.route('/api/sign-up', signUpApi)
 app.route('/objectives', objectives)
 app.route('/api/contact-us', contactUs)
 app.route('/transparency', transparency)

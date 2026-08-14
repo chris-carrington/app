@@ -4,7 +4,7 @@ import { Hono } from 'hono'
 import { Style } from 'hono/css'
 import { authStyle } from '@src/auth'
 import { Field } from '@hono-security'
-import { signUp } from '@hono-directives'
+import { onSignUpSubmit } from '@hono-directives'
 
 
 const app = new Hono()
@@ -14,7 +14,7 @@ app.get('/', (c) => {
     <>
       <Style>{authStyle}</Style>
 
-      <form data-directive={signUp()} class="auth">
+      <form data-directive={onSignUpSubmit()} class="auth">
         <div class="title">Create your Shasta Trades account</div>
 
         <div class="two">
@@ -26,7 +26,7 @@ app.get('/', (c) => {
 
         <button type="submit">Sign Up</button>
 
-        <a href="/sign-in">Have an account? Then click here to <strong>Sign In</strong>!</a>
+        <a href="/sign-in">Have an account? Then click here to Sign In!</a>
       </form>
     </>
   )

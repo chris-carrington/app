@@ -34,9 +34,12 @@ export const authStyle = css`
       display: block;
     }
 
+    .field {
+      margin-bottom: calc(var(--space-lite) + 0.6rem);
+    }
+
     input {
       width: 100%;
-      margin-bottom: var(--space-lite);
       border-radius: var(--radius);
       border: 1px solid #ced3d6;
       padding: var(--space-lite);
@@ -82,6 +85,13 @@ export const authStyle = css`
       text-align: center;
       color: var(--orange);
       text-decoration: none;
+      font-weight: 500;
+    }
+
+    .error-message {
+      color: #ff3333;
+      font-size: 1.56rem;
+      margin-top: calc(var(--space-lite) - 0.9rem);
     }
   }
 

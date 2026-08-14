@@ -552,8 +552,8 @@ const style = css`
                 }
 
                 .error-message {
+                  font-size: 1.56rem;
                   color: rgba(255, 58, 58, 0.9);
-                  font-size: 1.44rem;
                   margin-top: calc(var(--space-lite) / 3);
                 }
               }
