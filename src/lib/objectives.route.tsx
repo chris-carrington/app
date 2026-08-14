@@ -18,10 +18,7 @@ app.get('/', async (c) => {
           <div class="bg"></div>
           <div class="header">
             <h1>Objectives</h1>
-            <div class="flex">
-              <div class="sub-title">We have nothing to hide, we're making progress and we invite all to see, celebrate, and hold us accountable!</div>
-              <div class="hr"></div>
-            </div>
+            <div class="sub-title">We have nothing to hide, we're making progress and we invite all to see, celebrate, and hold us accountable!</div>
           </div>
         </div>
       </div>

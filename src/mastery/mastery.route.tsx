@@ -26,10 +26,7 @@ app.get('/:id?', async (c) => {
           <div class="bg"></div>
           <div class="header">
             <h1>Mastery</h1>
-            <div class="flex">
-              <div class="sub-title">A public knowledge base designed to help aspiring tradespeople obtain and maintain mastery!</div>
-              <div class="hr"></div>
-            </div>
+            <div class="sub-title">A public knowledge base designed to help aspiring tradespeople obtain and maintain mastery!</div>
           </div>
 
           <div class="buttons">

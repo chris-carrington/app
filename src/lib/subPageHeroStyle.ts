@@ -36,27 +36,10 @@ export const subPageHeroStyle = css`
         color: var(--white);
         margin-bottom: var(--space-lite);
       }
-
-      .flex {
-        display: flex;
-        gap: var(--space);
-        align-items: center;
-        justify-content: space-between;
-
-        .sub-title {
-          color: #dcdfdc;
-          width: 168rem;
-        }
-
-        .hr {
-          height: 1px;
-          width: 100%;
-          background: linear-gradient(90deg, transparent 0%, rgba(6, 27, 14, 0.1) 20%, rgba(6, 27, 14, 0.1) 80%, transparent 100%);
-
-          @media (max-width: 600px) {
-            display: none;
-          }
-        }
+      .sub-title {
+        color: #dcdfdc;
+        width: 100%;
+        max-width: 90rem;
       }
     }
 

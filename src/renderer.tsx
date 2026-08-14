@@ -112,7 +112,7 @@ const style = css`
     line-height: var(--line-height);
     font-family: var(--font-family-arial);
     font-size: var(--font-size);
-    font-size: 400;
+    font-weight: 400;
   }
 
   body {

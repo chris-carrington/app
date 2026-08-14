@@ -30,10 +30,7 @@ app.get('/:id?', async (c) => {
           <div class="bg"></div>
           <div class="header">
             <h1>Transparency</h1>
-            <div class="flex">
-              <div class="sub-title">We believe trust is built by sharing everything (i.e., our challenges, our successes, and our commitments). This Transparency page is our promise to you that Shasta Trades will always operate with <strong>honesty</strong>, <strong>accountability</strong>, and an <strong>open heart</strong>.</div>
-              <div class="hr"></div>
-            </div>
+            <div class="sub-title">These documents keep us focused, remind us why we exist and show all that Shasta Trades is organized, mission focused, and transparent.</div>
           </div>
 
           <div class="buttons">
