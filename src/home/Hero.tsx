@@ -24,7 +24,7 @@ const Hero: FC = () => {
             <div class="top">Building Careers.</div>
             <div class="bottom">Supporting Community.</div>
           </div>
-          <div class="message">Shasta Trades is laying the foundation for a new era of skilled labor. We are currently in our pre-launch phase. So we're establishing the trust, leadership and fundamentals required, to support our lovely Mount Shasta community!</div>
+          <div class="message">We are currently in in the pre-launch phase (building this site, creating Shasta Trades Trust and creating Shasta Trades Nonprofit). We will start offering trade services once California has apporved our Trust and Nonprofit applications!</div>
           <div class="ctas">
             <a href="#service-request" class="primary">SERVICE REQUEST</a>
             <a href="#join-leadership" class="secondary">JOIN LEADERSHIP</a>

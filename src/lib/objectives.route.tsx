@@ -1,16 +1,33 @@
 // app/src/lib/objectives.route.tsx
 
+
 import { Hono } from 'hono'
+import { Style } from 'hono/css'
+import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
+
 
 const app = new Hono()
 
-app.get('/', (c) => {
+app.get('/', async (c) => {
   return c.render(
     <>
-      <h1 style="text-align: center;">Objectives</h1>
-      <h1 style="text-align: center;">😅 Coming Soon!</h1>
+      <Style>{subPageHeroStyle}</Style>
+
+      <div class="mastery">
+        <div class="sub-page-hero">
+          <div class="bg"></div>
+          <div class="header">
+            <h1>Objectives</h1>
+            <div class="flex">
+              <div class="sub-title">We have nothing to hide, we're making progress and we invite all to see, celebrate, and hold us accountable!</div>
+              <div class="hr"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   )
 })
+
 
 export default app

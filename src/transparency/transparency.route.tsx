@@ -1,0 +1,63 @@
+// app/src/lib/transparency.route.tsx
+
+import { Hono } from 'hono'
+import { Style } from 'hono/css'
+import { md2html } from '@src/md/md2html'
+import { mdStyle } from '@src/md/mdStyle'
+import schema from '@src/transparency/schema.md?raw'
+import byLaws from '@src/transparency/bylaws.md?raw'
+import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
+import trustDocument from '@src/transparency/trust-document.md?raw'
+import whistleblowerPolicy from '@src/transparency/whistleblower-policy.md?raw'
+import articlesOfIncorporation from '@src/transparency/articles-of-incorporation.md?raw'
+import conflictOfInterestPolicy from '@src/transparency/conflict-of-interest-policy.md?raw'
+
+
+const app = new Hono()
+
+app.get('/:id?', async (c) => {
+  const paramId = c.req.param('id') ?? documents[0].id
+  const current = documents.find(b => b.id === paramId)
+  const html = current ? await md2html(current.md, current.wrapTables) : ''
+
+  return c.render(
+    <>
+      <Style>{mdStyle}</Style>
+      <Style>{subPageHeroStyle}</Style>
+
+      <div class="transparency">
+        <div class="sub-page-hero">
+          <div class="bg"></div>
+          <div class="header">
+            <h1>Transparency</h1>
+            <div class="flex">
+              <div class="sub-title">We believe trust is built by sharing everything (i.e., our challenges, our successes, and our commitments). This Transparency page is our promise to you that Shasta Trades will always operate with <strong>honesty</strong>, <strong>accountability</strong>, and an <strong>open heart</strong>.</div>
+              <div class="hr"></div>
+            </div>
+          </div>
+
+          <div class="buttons">
+            {documents.map((a, i) => <a class={paramId === a.id ? 'active' : ''} href={'/transparency/' + a.id}>{a.title}</a>)}
+          </div>
+        </div>
+
+        <div class="md">
+          <div dangerouslySetInnerHTML={{ __html: html }}></div>
+        </div>
+      </div>
+    </>
+  )
+})
+
+
+const documents = [
+  { id: 'trust-document', title: 'Trust Document', md: trustDocument, wrapTables: false },
+  { id: 'bylaws', title: 'Bylaws', md: byLaws, wrapTables: false },
+  { id: 'articles-of-incorporation', title: 'Articles of Incorporation', md: articlesOfIncorporation, wrapTables: false },
+  { id: 'conflict-of-interest-policy', title: 'Conflict of Interest Policy', md: conflictOfInterestPolicy, wrapTables: false },
+  { id: 'whistleblower-policy', title: 'Whistleblower Policy', md: whistleblowerPolicy, wrapTables: false },
+  { id: 'schema', title: 'Schema', md: schema, wrapTables: true },
+]
+
+
+export default app
