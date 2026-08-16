@@ -26,8 +26,8 @@ const Hero: FC = () => {
           </div>
           <div class="message">We are currently in in the pre-launch phase (building this site, creating Shasta Trades Trust and creating Shasta Trades Nonprofit). We will start offering trade services once California has apporved our Trust and Nonprofit applications!</div>
           <div class="ctas">
-            <a href="#service-request" class="primary">SERVICE REQUEST</a>
-            <a href="#join-leadership" class="secondary">JOIN LEADERSHIP</a>
+            <a href="#service-request-scroll" class="primary">SERVICE REQUEST</a>
+            <a href="#join-leadership-scroll" class="secondary">JOIN LEADERSHIP</a>
           </div>
         </div>
         <div class="right">
