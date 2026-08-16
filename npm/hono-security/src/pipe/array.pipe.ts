@@ -1,4 +1,4 @@
-// app/src/pipe/array.pipe.ts
+// app/npm/hono-security/src/pipe/array.pipe.ts
 
 import * as v from 'valibot'
 
