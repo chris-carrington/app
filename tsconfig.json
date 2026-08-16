@@ -1,11 +1,7 @@
 {
   "include": [
     "src",
-    "hono-toast",
-    "hono-directives",
-    "hono-security",
-    "hono-security",
-    "send-cloudflare-email",
+    "npm",
     "drizzle.config.ts"
   ],
   "compilerOptions": {
@@ -32,16 +28,16 @@
         "./src/*"
       ],
       "@hono-toast": [
-        "./hono-toast/index"
+        "./npm/hono-toast/index"
       ],
       "@hono-directives": [
-        "./hono-directives/dist/index"
+        "./npm/hono-directives/dist/index"
       ],
       "@hono-security": [
-        "./hono-security/index"
+        "./npm/hono-security/index"
       ],
       "@send-cloudflare-email": [
-        "./send-cloudflare-email/index"
+        "./npm/send-cloudflare-email/index"
       ]
     }
   },

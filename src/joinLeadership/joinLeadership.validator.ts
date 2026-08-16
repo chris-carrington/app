@@ -2,8 +2,7 @@
 
 import * as v from 'valibot'
 import { jsonStaff } from '@src/json/staff.json'
-import { createValidator, type InferValidator } from '@hono-security'
-import { pipeEmail, pipeSelect, pipeLastName, pipeFirstName } from '@src/pipe'
+import { pipeEmail, pipeSelect, pipeLastName, pipeFirstName, createValidator, type InferValidator } from '@hono-security'
 
 
 export const JoinLeadershipSchema = v.object({

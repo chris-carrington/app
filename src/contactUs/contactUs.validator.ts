@@ -1,8 +1,7 @@
 // app/src/contactUs/contactUs.validator.ts
 
 import * as v from 'valibot'
-import { createValidator, type InferValidator } from '@hono-security'
-import { pipeEmail, pipeLastName, pipeFirstName, pipeEnoughContent } from '@src/pipe'
+import { pipeEmail, pipeLastName, pipeFirstName, pipeEnoughContent, createValidator, type InferValidator } from '@hono-security'
 
 
 export const ContactUsSchema = v.object({

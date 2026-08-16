@@ -1,4 +1,4 @@
-// app/send-cloudflare-email/index.ts
+// app/npm/send-cloudflare-email/index.ts
 
 import * as v from 'valibot'
 import { env } from 'cloudflare:workers'

@@ -1,8 +1,7 @@
 // app/src/joinNewsletter/joinNewsletter.validator.ts
 
 import * as v from 'valibot'
-import { pipeEmail, pipeLastName, pipeFirstName } from '@src/pipe'
-import { createValidator, type InferValidator } from '@hono-security'
+import { pipeEmail, pipeLastName, pipeFirstName, createValidator, type InferValidator } from '@hono-security'
 
 
 export const JoinNewsletterSchema = v.object({

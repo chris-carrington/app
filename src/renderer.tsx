@@ -22,7 +22,7 @@ export const renderer = jsxRenderer(({ children }) => <>
       <Style>{style}</Style>
       <Style>{honoToastStyle}</Style>
       <ViteClient />
-      <Script src='/src/script.ts' />
+      <Script src='/src/lib/hono-directives-mount.ts' />
     </head>
 
     <body>

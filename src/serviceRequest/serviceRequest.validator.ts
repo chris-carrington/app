@@ -2,8 +2,7 @@
 
 import * as v from 'valibot'
 import { jsonTrades } from '@src/json/trades.json'
-import { createValidator, type InferValidator } from '@hono-security'
-import { pipeEmail, pipeArray, pipeLastName, pipeFirstName, pipeEnoughContent } from '@src/pipe'
+import { pipeEmail, pipeArray, pipeLastName, pipeFirstName, pipeEnoughContent, createValidator, type InferValidator } from '@hono-security'
 
 
 export const ServiceRequestSchema = v.object({
