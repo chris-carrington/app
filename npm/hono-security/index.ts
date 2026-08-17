@@ -11,8 +11,8 @@ export { Field, type FieldProps } from './src/form/Field'
 export { createValidator, type Validator, type InferValidator } from './src/form/createValidator'
 
 // hash
-export { hashCreate } from './src/hash/hashCreate'
-export { hashValidate } from './src/hash/hashValidate'
+export { hashCreate, type HashCreateProps } from './src/hash/hashCreate'
+export { hashValidate, type HashValidateProps, type HashValidateSuccess, type HashValidateFailure, type HashValidateResponse } from './src/hash/hashValidate'
 
 // jwt
 export type BaseJWTPayload = Record<string, unknown>

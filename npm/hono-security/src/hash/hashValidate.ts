@@ -60,7 +60,12 @@ export async function hashValidate({ password, hash }: HashValidateProps): Promi
 }
 
 
+/** helps standardize error response */
+const error = (errorId: HashValidateFailure['errorId'], errorMessage: string): HashValidateFailure => ({ isValid: false, errorId, errorMessage })
 
+
+
+/** The `props` that are provided to `hashValidate()` */
 export type HashValidateProps = {
   /** The plaintext password to validate agains the hash */
   password: string
@@ -69,17 +74,17 @@ export type HashValidateProps = {
 }
 
 
-
+// The return type for `hashValidate()` when `password` and `hash` match
 export type HashValidateSuccess = { isValid: true }
 
+
+// The return type for `hashValidate()` when `password` and `hash` do not match
 export type HashValidateFailure = {
   isValid: false
   errorId: 'INVALID_ALGORITHM' | 'FALSY_SALT' | 'FALSY_HASH_FN' | 'INVALID_ITERATIONS' | 'INVALID_HASH' | 'INVALID_PASSWORD'
   errorMessage: string
 }
 
+
+// The return type for `hashValidate()`
 export type HashValidateResponse = HashValidateSuccess | HashValidateFailure
-
-
-
-const error = (errorId: HashValidateFailure['errorId'], errorMessage: string): HashValidateFailure => ({isValid: false, errorId, errorMessage })

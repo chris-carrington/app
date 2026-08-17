@@ -38,6 +38,7 @@ export async function hashCreate({ password, saltLength = 16, iterations = 99_99
 }
 
 
+/** The `props` that are provided to `hashCreate()` */
 export type HashCreateProps = {
   /** The plaintext password to hash */
   password: string
