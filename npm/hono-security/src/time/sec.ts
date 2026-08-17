@@ -1,3 +1,5 @@
+// app/npm/hono-security/src/time/sec.ts
+
 /**
  * - 🚨 Important:
  *     - `new Date(ms)`

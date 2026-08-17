@@ -1,4 +1,6 @@
-import { base64UrlEncode } from './base64UrlEncode'
+// app/npm/hono-security/src/createPassword.ts
+
+import { base64UrlEncode } from '@hono-security'
 
 
 export function createPassword() {

@@ -1,4 +1,4 @@
-// app/npm/hono-security/src/jwtCreate.ts
+// app/npm/hono-security/src/jwt/jwtCreate.ts
 
 import { base64UrlEncode, type BaseJWTPayload } from '@hono-security'
 

@@ -1,4 +1,4 @@
-// app/npm/hono-security/src/Loading.ts
+// app/npm/hono-security/src/form/Loading.ts
 
 export class Loading {
   #btn: HTMLButtonElement

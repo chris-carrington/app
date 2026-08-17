@@ -1,4 +1,4 @@
-// app/npm/hono-security/src/jwtValidate.ts
+// app/npm/hono-security/src/jwt/jwtValidate.ts
 
 import { base64UrlDecodeToBinary, base64UrlDecodeToString, type BaseJWTPayload } from '@hono-security'
 
