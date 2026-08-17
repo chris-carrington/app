@@ -36,7 +36,7 @@ function generateIndexDTS(directives: { name: string; filePath: string }[]): str
   decl += `type DirectiveArgs<T> = Parameters<T> extends [any, ...infer Rest] ? Rest : never\n\n`
   for (const { name, filePath } of directives) {
     const rel = path.relative(
-      path.join(process.cwd(), 'hono-directives/src'),
+      path.join(process.cwd(), 'npm/hono-directives/src'),
       filePath
     ).replace(/\\/g, '/').replace(/\.(ts|tsx)$/, '')
     decl += `import type { default as ${name}Directive } from './${rel}'\n`
@@ -50,7 +50,7 @@ function generateIndexDTS(directives: { name: string; filePath: string }[]): str
 }
 
 export function writeGeneratedFiles(directives: { name: string; filePath: string }[]) {
-  const baseDir = path.join(process.cwd(), 'hono-directives/dist')
+  const baseDir = path.join(process.cwd(), 'npm/hono-directives/dist')
   fs.mkdirSync(baseDir, { recursive: true })
   fs.writeFileSync(path.join(baseDir, 'index.js'), generateIndexJS(directives), 'utf-8')
   fs.writeFileSync(path.join(baseDir, 'index.d.ts'), generateIndexDTS(directives), 'utf-8')

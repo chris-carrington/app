@@ -2,7 +2,8 @@
 
 import { Hono } from 'hono'
 import { vValidator } from '@hono/valibot-validator'
-import { SignInSchema } from '@src/auth/signIn.validator'
+import { secWeek, jwtCreate, jwtValidate } from '@hono-security'
+import { SignInSchema, SignInFormData } from '@src/auth/signIn.validator'
 
 
 const app = new Hono()
@@ -15,6 +16,11 @@ app.post(
 
     try {
       console.log('data', data)
+      const jwt = await jwtCreate({ payload: data, ttl: secWeek })
+      console.log('jwt', jwt)
+
+      const validity = await jwtValidate<SignInFormData>({ jwt })
+      console.log('validity', validity)
     } catch (e) {
       return c.json({ success: false, error: String(e) }, 500)
     }
