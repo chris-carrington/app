@@ -1,7 +1,10 @@
 // app/src/auth/signIn.api.ts
 
 import { Hono } from 'hono'
+import { env } from 'cloudflare:workers'
 import { vValidator } from '@hono/valibot-validator'
+import { sendEmail, renderEmail } from '@hono-email'
+import emailTemplate from '@src/emails/magicLink.html?raw'
 import { SignInSchema, type SignInFormData } from '@src/auth/signIn.validator'
 import { secWeek, jwtCreate, jwtValidate, createPassword, hashCreate, hashValidate } from '@hono-security'
 
@@ -29,6 +32,19 @@ app.post(
       console.log('signInPassword', signInPassword)
       console.log('hashedPassword', hashedPassword)
       console.log('hashValidateResponse', hashValidateResponse)
+
+      await sendEmail({
+        accountId: env.CLOUDFLARE_ACCOUNT_ID,
+        apiToken: env.CLOUDFLARE_EMAIL_API_TOKEN,
+        from: 'support@shastatrades.org',
+        to: 'carrington.christopher@gmail.com',
+        subject: 'Sign in!',
+        html: renderEmail(emailTemplate, {
+          firstName: 'Christopher',
+          lastName: 'Carrington',
+          magicLink: 'https://yahoo.com'
+        })
+      })
     } catch (e) {
       return c.json({ success: false, error: String(e) }, 500)
     }

@@ -10,7 +10,7 @@ import * as v from 'valibot'
  * @link https://developers.cloudflare.com/email-service/api/send-emails/rest-api
  * @link https://developers.cloudflare.com/api/resources/email_sending/methods/send/
  */
-export async function sendCloudflareEmail(props: SendEmailProps): Promise<ApiResponse> {
+export async function sendEmail(props: SendEmailProps): Promise<ApiResponse> {
   try {
     const apiResponse = await callApi(props)
     const apiParsed = await parseApiResponse(apiResponse)

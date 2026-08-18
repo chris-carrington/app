@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Email Preview</title>
+  </head>
+
+  <body>
+    <script type="module">
+      import { data } from '/src/emails/data.js'
+      import template from '/src/emails/magicLink.html?raw'
+      import { renderEmail } from '/npm/hono-email/dist/renderEmail.js'
+
+      document.open()
+      document.write(renderEmail(template, data)) // http://localhost:5173/npm/hono-email/preview
+      document.close()
+    </script>
+  </body>
+
+</html>

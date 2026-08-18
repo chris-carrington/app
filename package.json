@@ -10,7 +10,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "npx tsx src/db/seed.ts"
+    "db:seed": "npx tsx src/db/seed.ts",
+    "hono-email:build": "node npm/hono-email/src/build.js"
   },
   "dependencies": {
     "@hono/valibot-validator": "^0.6.1",
@@ -25,6 +26,7 @@
     "@types/node": "^26.1.2",
     "dotenv": "^17.4.2",
     "drizzle-kit": "^0.31.10",
+    "esbuild": "^0.28.2",
     "vite": "^8.1.4",
     "vite-plugin-solid": "^2.11.14",
     "vite-ssr-components": "^0.6.1",

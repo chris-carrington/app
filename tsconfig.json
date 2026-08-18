@@ -36,8 +36,8 @@
       "@hono-security": [
         "./npm/hono-security/index"
       ],
-      "@send-cloudflare-email": [
-        "./npm/send-cloudflare-email/index"
+      "@hono-email": [
+        "./npm/hono-email/index"
       ]
     }
   },

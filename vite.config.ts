@@ -16,12 +16,12 @@ export default defineConfig({
       '@hono-toast': path.resolve(__dirname, 'npm/hono-toast/index'),
       '@hono-security': path.resolve(__dirname, 'npm/hono-security/index'),
       '@hono-directives': path.resolve(__dirname, 'npm/hono-directives/dist/index'),
-      '@send-cloudflare-email': path.resolve(__dirname, 'npm/send-cloudflare-email/index'),
+      '@hono-email': path.resolve(__dirname, 'npm/hono-email/index'),
     },
   },
   plugins: [
     cloudflare(),
     ssrPlugin(),
-    honoDirectives()
+    honoDirectives(),
   ]
 })
