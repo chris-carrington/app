@@ -5,6 +5,7 @@ import home from './home/home.route'
 import { renderer } from '@src/renderer'
 import signInApi from '@src/auth/signIn.api'
 import signUpApi from '@src/auth/signUp.api'
+import sessionApi from '@src/auth/session.api'
 import mastery from '@src/mastery/mastery.route'
 import signInRoute from '@src/auth/signIn.route'
 import signUpRoute from '@src/auth/signUp.route'
@@ -27,6 +28,7 @@ app.route('/sign-up', signUpRoute)
 app.route('/api/sign-in', signInApi)
 app.route('/api/sign-up', signUpApi)
 app.route('/objectives', objectives)
+app.route('/api/session', sessionApi)
 app.route('/api/contact-us', contactUs)
 app.route('/transparency', transparency)
 app.route('/api/join-leadership', joinLeadership)

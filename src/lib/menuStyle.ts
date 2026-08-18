@@ -21,6 +21,36 @@ export const menuStyle = css`
         transform: translateY(0);
       }
     }
+    &[data-auth="undefined"] {
+      .item[data-auth="loading"] {
+        display: block;
+      }
+
+      .item[data-auth="false"],
+      .item[data-auth="true"] {
+        display: none;
+      }
+    }
+    &[data-auth="true"] {
+      .item[data-auth="true"] {
+        display: block;
+      }
+
+      .item[data-auth="false"],
+      .item[data-auth="loading"] {
+        display: none;
+      }
+    }
+    &[data-auth="false"] {
+      .item[data-auth="false"] {
+        display: block;
+      }
+
+      .item[data-auth="true"],
+      .item[data-auth="loading"] {
+        display: none;
+      }
+    }
 
     .backdrop {
       position: fixed;

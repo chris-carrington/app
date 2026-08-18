@@ -5,7 +5,7 @@ import { css, Style } from 'hono/css'
 import svgMenu from '@src/svg/menu.svg?raw'
 import svgPerson from '@src/svg/person.svg?raw'
 import { useRequestContext } from 'hono/jsx-renderer'
-import { onMenuToggle, onHomeClick } from '@hono-directives'
+import { onHomeClick, onNavMenuToggle } from '@hono-directives'
 
 
 export default (() => {
@@ -32,8 +32,8 @@ export default (() => {
           </div>
         </div>
 
-        <button data-directive={onMenuToggle('.auth-menu')} class="auth-menu-btn" type="button" dangerouslySetInnerHTML={{ __html: svgPerson }} />
-        <button data-directive={onMenuToggle('.nav-menu')} class="nav-menu-btn" type="button" dangerouslySetInnerHTML={{ __html: svgMenu }} />
+        <button data-directive={onNavMenuToggle('auth-menu')} class="auth-menu-btn" type="button" dangerouslySetInnerHTML={{ __html: svgPerson }} />
+        <button data-directive={onNavMenuToggle('nav-menu')} class="nav-menu-btn" type="button" dangerouslySetInnerHTML={{ __html: svgMenu }} />
       </div>
     </div>
   </>
