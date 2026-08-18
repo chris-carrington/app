@@ -98,5 +98,21 @@ export const menuStyle = css`
         }
       }
     }
+
+    @media (min-height: 721px) {
+      .items {
+        top: var(--space-huge);
+        left: 50%;
+        right: auto;
+        bottom: auto;
+        width: 100%;
+        max-width: 51rem;
+        transform: translateX(-50%) translateY(calc(-100% - 1px)); /* start above the viewport, horizontally centered */
+      }
+
+      &:not(.hidden) .items {
+        transform: translateX(-50%) translateY(0); /* slide down to its final position */
+      }
+    }
   }
 `

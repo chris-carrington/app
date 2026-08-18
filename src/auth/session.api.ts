@@ -8,8 +8,8 @@ const app = new Hono()
 app.get(
   '/',
   async (c) => {
-    await new Promise(resolve => setTimeout(resolve, 270))
-    return c.json({ authenticated: true })
+    await new Promise(resolve => setTimeout(resolve, 450))
+    return c.json({ authenticated: false })
   }
 )
 
