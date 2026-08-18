@@ -102,6 +102,7 @@ export const menuStyle = css`
     @media (min-height: 721px) {
       .items {
         top: var(--space-huge);
+        border-radius: var(--radius);
         left: 50%;
         right: auto;
         bottom: auto;
@@ -113,6 +114,12 @@ export const menuStyle = css`
       &:not(.hidden) .items {
         transform: translateX(-50%) translateY(0); /* slide down to its final position */
       }
+    }
+  }
+
+  @media (min-height: 721px) and (max-width: 600px) {
+    .items {
+      max-width: calc(100% - var(--space)) !important;
     }
   }
 `
