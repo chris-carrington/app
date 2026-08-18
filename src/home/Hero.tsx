@@ -133,7 +133,7 @@ const style = css`
             white-space: nowrap;
             font-weight: 600;
             text-decoration: none;
-            transition: all 0.3s;
+            transition: var(--transition);
             border-radius: var(--radius);
             padding: calc(var(--space-lite) * 0.9) calc(var(--space-lite) * 1.5);
             &:hover {
@@ -249,12 +249,6 @@ const style = css`
         object-fit: cover;
         z-index: var(--z-below-mask);
       }
-    }
-  }
-
-  @keyframes pulse {
-    50% {
-      opacity: .5;
     }
   }
 `

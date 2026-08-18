@@ -60,7 +60,7 @@ export const subPageHeroStyle = css`
         border: 1px solid rgb(255 255 255 / 0.2);
         background-color: transparent;
         cursor: pointer;
-        transition: all 0.3s;
+        transition: var(--transition);
         &:hover {
           scale: 1.02;
           background-color: rgb(255 255 255 / 0.1);

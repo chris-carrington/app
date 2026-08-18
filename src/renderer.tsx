@@ -76,7 +76,7 @@ const style = css`
       inset 0 1px 0.3rem oklch(100% 0.00011 271.152 / 0.35),
       inset 0 -0.3rem 0.6rem oklch(0% 0 0 / 0.55);
 
-    --toast-width: 45rem;
+    --toast-max-width: 45rem;
 
     --z-modal: 6;
     --z-backdrop: 5;
@@ -124,20 +124,58 @@ const style = css`
   }
 
   @font-face {
-      font-family: ProximaNova;
-      font-weight: 400;
-      src: url("/fonts/proxima_nova_400.woff2") format("truetype");
+    font-family: ProximaNova;
+    font-weight: 400;
+    src: url("/fonts/proxima_nova_400.woff2") format("truetype");
   }
 
   @font-face {
-      font-family: ProximaNova;
-      font-weight: 500;
-      src: url("/fonts/proxima_nova_500.woff2") format("truetype");
+    font-family: ProximaNova;
+    font-weight: 500;
+    src: url("/fonts/proxima_nova_500.woff2") format("truetype");
   }
 
   @font-face {
-      font-family: ProximaNova;
-      font-weight: 600;
-      src: url("/fonts/proxima_nova_600.woff2") format("truetype");
+    font-family: ProximaNova;
+    font-weight: 600;
+    src: url("/fonts/proxima_nova_600.woff2") format("truetype");
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes pulse {
+    50% {
+      opacity: .5;
+    }
+  }
+
+  @keyframes fade-in {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes fade-down {
+    0% {
+      opacity: 0;
+      transform: translateY(-3rem);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-up {
+    0% {
+      opacity: 0;
+      transform: translateY(3rem);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 `

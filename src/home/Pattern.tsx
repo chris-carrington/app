@@ -313,7 +313,7 @@ const style = css`
         border: 1px solid rgb(255 255 255 / 0.2);
         background-color: transparent;
         cursor: pointer;
-        transition: all 0.3s;
+        transition: var(--transition);
         &:hover {
           scale: 1.02;
           background-color: rgb(255 255 255 / 0.1);
@@ -341,7 +341,7 @@ const style = css`
     .forms {
 
       .form {
-        scroll-margin-top: 21rem;
+        scroll-margin-top: 24rem;
         &.hidden {
           display: none;
         }
@@ -536,7 +536,7 @@ const style = css`
                   border-radius: var(--radius);
                   background-color: rgb(255 255 255 / 0.05);
                   border: 1px solid rgb(255 255 255 / 0.1);
-                  transition: all 0.15s;
+                  transition: var(--fast-transition);
                   &:focus {
                     border-color: transparent;
                     outline: 0;
@@ -566,7 +566,7 @@ const style = css`
                 border-radius: var(--radius);
                 padding: calc(var(--space-lite) * 0.9) calc(var(--space-lite) * 1.5); 
                 color: var(--orange-text);
-                transition: all 0.3s;
+                transition: var(--transition);
                 cursor: pointer;
                 &:hover {
                   scale: 1.02;
@@ -607,7 +607,7 @@ const style = css`
           top: 3.15rem;
           background: linear-gradient(90deg, transparent 0%, #fe932c 50%, transparent 100%);
           background-size: 200% 100%;
-          animation: flowLine 6s linear infinite;
+          animation: flow-line 6s linear infinite;
           width: calc((var(--steps) - 1) / var(--steps) * (100% + var(--space)));
         }
 
@@ -678,7 +678,7 @@ const style = css`
     }
   }
 
-  @keyframes flowLine {
+  @keyframes flow-line {
     0% {
       background-position: 200% 0;
     }

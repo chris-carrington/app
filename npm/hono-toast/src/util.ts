@@ -177,7 +177,7 @@ function buildToastStyle(props: ShowToastProps): CSSProperties {
   const propsDivStyle = props.$div?.style || {}
   const variantStyle = defaultStyleForVariant(props.variant)
 
-  if (props.width) propsStyle['--toast-width'] = props.width
+  if (props.width) propsStyle['--toast-max-width'] = props.width
   if (props.foreground) propsStyle['--popover-foreground'] = props.foreground
   if (props.background) propsStyle['--popover'] = props.background
   if (props.boxShadow) propsStyle['--shadow-subtle'] = props.boxShadow

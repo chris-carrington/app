@@ -13,7 +13,7 @@ export const authStyle = css`
     background-color: #fff;
     border: 1px solid #dae0e4;
     margin: var(--space-huge) auto;
-    animation: fadeSlideDown 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation: fade-down var(--prop-transition) forwards;
 
     .title {
       font-size: 2.4rem;
@@ -46,7 +46,7 @@ export const authStyle = css`
       border: 1px solid #ced3d6;
       padding: var(--space-lite);
       color: #495057;
-      transition: all .15s ease-in-out;
+      transition: var(--fast-transition);
       &:focus {
         outline: 0;
         border-color: transparent;
@@ -60,7 +60,7 @@ export const authStyle = css`
 
     a,
     button {
-      transition: all 0.3s;
+      transition: var(--transition);
       &:hover {
         scale: 1.02;
       }
@@ -94,17 +94,6 @@ export const authStyle = css`
       color: #ff3333;
       font-size: 1.56rem;
       margin-top: calc(var(--space-lite) - 0.9rem);
-    }
-  }
-
-  @keyframes fadeSlideDown {
-    0% {
-      opacity: 0;
-      transform: translateY(-6rem);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
     }
   }
 `

@@ -95,7 +95,7 @@ const style = css`
             font-weight: 600;
             font-size: 1.86rem;
             padding-left: var(--space);
-            transition: all 0.3s;
+            transition: var(--transition);
             display: inline-flex;
             height: 4.6rem;
             align-items: center;
@@ -112,7 +112,7 @@ const style = css`
       .menu-btn,
       .sign-in-btn {
         cursor: pointer;
-        transition: all 0.3s;
+        transition: var(--transition);
         &:hover {
           scale: 1.05;
         }

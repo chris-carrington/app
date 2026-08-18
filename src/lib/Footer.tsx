@@ -123,7 +123,7 @@ const style = css`
           gap: var(--space-lite);
 
           a {
-            transition: all 0.3s;
+            transition: var(--transition);
             text-decoration: none;
             &:hover {
               scale: 1.05;

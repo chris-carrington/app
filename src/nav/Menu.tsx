@@ -54,7 +54,7 @@ const style = css`
       background-color: #000;
       border: none;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity var(--prop-transition);
       will-change: opacity;
     }
 
@@ -66,7 +66,7 @@ const style = css`
       left: 0;
       background-color: var(--white);
       transform: translateY(calc(100% + 1px)); /* extra safety */
-      transition: transform 0.3s ease;
+      transition: transform var(--prop-transition);
       will-change: transform;
 
       .item {
@@ -81,7 +81,7 @@ const style = css`
         &.anchor,
         &.btn {
           cursor: pointer;
-          transition: all 0.3s;
+          transition: var(--transition);
           &:hover {
             text-decoration: underline;
           }

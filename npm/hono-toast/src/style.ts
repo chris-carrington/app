@@ -66,19 +66,19 @@ export const honoToastStyle = css`
         align-items: center;
         color: var(--popover-foreground);
         background: var(--popover);
-        animation-duration: 0.9s;
+        animation-duration: var(--duration-normal);
         animation-fill-mode: both;
         transition: var(--transition);
-        max-width: var(--toast-width);
+        max-width: var(--toast-max-width);
         box-shadow: var(--shadow-subtle);
         &:focus {
           outline: none;
         }
         &.toast--top {
-          animation-name: ace-fade-down;
+          animation-name: fade-down;
         }
         &.toast--bottom {
-          animation-name: ace-fade-up;
+          animation-name: fade-up;
         }
 
         .toast__content {
