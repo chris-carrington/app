@@ -56,7 +56,7 @@ function error<T_JWTPayload extends BaseJWTPayload = {}>(errorId: JWTValidateFai
 }
 
 
-/** The `props` provided to `jwtValidate()` */
+/** The `props` that are provided to `jwtValidate()` */
 export type JWTValidateProps = {
   /** The jwt token to verify */
   jwt?: string,

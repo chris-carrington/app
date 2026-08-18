@@ -38,11 +38,11 @@ export async function sendEmail(props: SendEmailProps): Promise<ApiResponse> {
 
 
 async function callApi(props: SendEmailProps): Promise<Response> {
-  return await fetch(`https://api.cloudflare.com/client/v4/accounts/${props.accountId}/email/sending/send`, {
+  return await fetch(`https://api.cloudflare.com/client/v4/accounts/${props.accountId ?? process.env.CLOUDFLARE_ACCOUNT_ID}/email/sending/send`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${props.apiToken}`,
+      'Authorization': `Bearer ${props.apiToken ?? process.env.CLOUDFLARE_EMAIL_API_TOKEN}`,
     },
     body: JSON.stringify({
       from: props.from,
@@ -145,16 +145,18 @@ type ApiSuccessResponse = v.InferOutput<typeof ApiSuccessResponseSchema>
 type ApiErrorResponse = v.InferOutput<typeof ApiErrorResponseSchema>
 
 
+/** The `return value` that are provided by `sendEmail()` */
 export type ApiResponse = v.InferOutput<typeof ApiResponseSchema>
 
 
+/** The `props` that are provided to `sendEmail()` */
 export type SendEmailProps = {
   to: string,
   from: string,
   html: string,
   subject: string,
-  apiToken: string,
-  accountId: string,
+  apiToken?: string,
+  accountId?: string,
   onError?: (response: ApiErrorResponse) => ApiResponse
   onSuccess?: (response: ApiSuccessResponse) => ApiResponse
 }

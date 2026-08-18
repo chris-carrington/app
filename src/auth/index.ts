@@ -5,7 +5,7 @@ import { css } from 'hono/css'
 
 export const authStyle = css`
   .auth {
-    width: 100%;
+    width: calc(100% - var(--space));
     max-width: 51rem;
     padding: var(--space);
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, .1);

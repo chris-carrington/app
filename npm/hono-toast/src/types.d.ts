@@ -26,6 +26,7 @@ export type ToastRecord = {
 }
 
 
+/** The `props` that are provided to `showToast()` */
 export type ShowToastProps = {
   /** Toast content: string, or a function returning HTML string */
   value: string | (() => string),
