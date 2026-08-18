@@ -1,32 +1,9 @@
-// app/src/nav/Menu.tsx
+// app/src/lib/menuStyle.ts
 
-import type { FC } from 'hono/jsx'
-import { css, Style } from 'hono/css'
-import { onMenuToggle } from '@hono-directives'
+import { css } from 'hono/css'
 
 
-const Menu: FC = () => {
-  return <>
-    <Style>{style}</Style>
-
-    <div class="menu hidden">
-      <button data-directive={onMenuToggle()} class="backdrop" type="button" />
-
-      <div class="items">
-        <div class="item title">Menu</div>
-        <a href="/" class="item anchor">Home</a>
-        <a href="/mastery" class="item anchor">Mastery</a>
-        <a href="/objectives" class="item anchor">Objectives</a>
-        <a href="/transparency" class="item anchor">Transparency</a>
-        <a href="/sign-in" class="item anchor">Sign In</a>
-        <button data-directive={onMenuToggle()} class="item btn" type="button">Close Menu</button>
-      </div>
-    </div>
-  </>
-}
-
-
-const style = css`
+export const menuStyle = css`
   .menu {
     pointer-events: none;
     visibility: hidden;
@@ -50,7 +27,7 @@ const style = css`
       z-index: var(--z-backdrop);
       inset: 0;
       touch-action: none;
-      cursor: pointer;
+      cursor: default;
       background-color: #000;
       border: none;
       opacity: 0;
@@ -93,6 +70,3 @@ const style = css`
     }
   }
 `
-
-
-export default Menu

@@ -1,9 +1,10 @@
 // app/src/renderer.tsx
 
 import Nav from '@src/nav/Nav'
-import Menu from '@src/nav/Menu'
 import Footer from '@src/lib/Footer'
 import { css, Style } from 'hono/css'
+import NavMenu from '@src/nav/NavMenu'
+import AuthMenu from '@src/auth/AuthMenu'
 import { honoToastStyle } from '@hono-toast'
 import { jsxRenderer } from 'hono/jsx-renderer'
 import { Script } from 'vite-ssr-components/hono'
@@ -27,7 +28,8 @@ export const renderer = jsxRenderer(({ children }) => <>
 
     <body>
       <Nav />
-      <Menu />
+      <NavMenu />
+      <AuthMenu />
       <main>{children}</main>
       <Footer />
     </body>

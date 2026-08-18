@@ -3,6 +3,7 @@
 import type{ FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
 import svgMenu from '@src/svg/menu.svg?raw'
+import svgPerson from '@src/svg/person.svg?raw'
 import { useRequestContext } from 'hono/jsx-renderer'
 import { onMenuToggle, onHomeClick } from '@hono-directives'
 
@@ -31,8 +32,8 @@ const Nav: FC = () => {
           </div>
         </div>
 
-        <a href="/sign-in" class="sign-in-btn">Sign In</a>
-        <button data-directive={onMenuToggle()} class="menu-btn" type="button" dangerouslySetInnerHTML={{ __html: svgMenu }} />
+        <button data-directive={onMenuToggle('.auth-menu')} class="auth-menu-btn" type="button" dangerouslySetInnerHTML={{ __html: svgPerson }} />
+        <button data-directive={onMenuToggle('.nav-menu')} class="nav-menu-btn" type="button" dangerouslySetInnerHTML={{ __html: svgMenu }} />
       </div>
     </div>
   </>
@@ -51,8 +52,8 @@ const style = css`
     box-shadow: 0px 5px 18px -1px rgba(0, 0, 0, 0.18);
 
     .inner .left .links,
-    .sign-in-btn {
-      @media (max-width: 870px) {
+    .auth-menu-btn {
+      @media (max-width: 819px) {
         display: none;
       }
     }
@@ -109,44 +110,40 @@ const style = css`
         }
       }
 
-      .menu-btn,
-      .sign-in-btn {
+      .nav-menu-btn,
+      .auth-menu-btn {
+        border: none;
+        background-color: transparent;
         cursor: pointer;
         transition: var(--transition);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 4.5rem;
         &:hover {
           scale: 1.05;
         }
+
+        svg {
+          color: var(--primary);
+          width: 3.9rem;
+          height: 3.9rem;
+        }
       }
 
-      .sign-in-btn {
-        font-size: 1.86rem;
-        color: var(--white);
-        font-weight: 600;
-        border-radius: var(--radius);
-        border: none;
-        padding: calc(var(--space-lite) / 2) var(--space-lite);
-        background-color: var(--primary);
-        text-decoration: none;
+      .auth-menu-btn {
+
+        @media (max-width: 819px) {
+          display: none;
+        }
       }
 
-      .menu-btn {
-        width: 3.9rem;
-        height: 3.9rem;
-        color: var(--white);
-        border-radius: var(--radius);
-        border: none;
-        background-color: var(--primary);
-        align-items: center;
-        justify-content: center;
+      .nav-menu-btn {
         display: none;
 
-          @media (max-width: 870px) {
+          @media (max-width: 819px) {
             display: flex;
-          }
-
-          svg {
-            width: 2.7rem;
-            height: 2.7rem;
           }
       }
     }
