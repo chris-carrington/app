@@ -11,7 +11,7 @@ import svgFrequency from '@src/svg/frequency.svg?raw'
 import { onFlowChange, onHashChange, onWrapChange, onContactUsSubmit, onServiceRequestSubmit, onJoinLeadershipSubmit, onJoinNewsletterSubmit } from '@hono-directives'
 
 
-const Pattern: FC = () => {
+export default (() => {
   return <>
     <Style>{style}</Style>
 
@@ -23,7 +23,8 @@ const Pattern: FC = () => {
       <Forms />
     </div>
   </>
-}
+}) satisfies FC
+
 
 
 const Flow: FC = () => {
@@ -288,11 +289,12 @@ const style = css`
 
     .explain {
       text-align: center;
-      color: var(--orange);
-      opacity: 0.6;
+      color: var(--white);
+      opacity: 0.72;
       filter: grayscale(1);
       font-weight: 600;
       margin-bottom: var(--space-lite);
+      font-size: 2.01rem;
     }
 
     .buttons {
@@ -401,7 +403,6 @@ const style = css`
 
             .description {
               color: rgb(180 205 184);
-              font-family: var(--font-family-serif);
               margin-bottom: var(--space);
             }
 
@@ -687,6 +688,3 @@ const style = css`
     }
   }
 `
-
-
-export default Pattern

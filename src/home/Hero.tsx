@@ -4,7 +4,7 @@ import type{ FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
 
 
-const Hero: FC = () => {
+export default (() => {
   return <>
     <Style>{style}</Style>
 
@@ -41,7 +41,7 @@ const Hero: FC = () => {
       </div>
     </div>
   </>
-}
+}) satisfies FC
 
 
 const style = css`
@@ -252,6 +252,3 @@ const style = css`
     }
   }
 `
-
-
-export default Hero

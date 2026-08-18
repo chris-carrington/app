@@ -4,7 +4,7 @@ import type{ FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
 
 
-const Mission: FC = () => {
+export default (() => {
   return <>
     <Style>{style}</Style>
 
@@ -13,7 +13,7 @@ const Mission: FC = () => {
       <div class="value">To help students become licensed contractors through paid apprenticeships, to offer mentors work they love, and to provide affordable, high-quality trade services, to our lovely Mount Shasta community. 💚</div>
     </div>
   </>
-}
+}) satisfies FC
 
 
 const style = css`
@@ -34,6 +34,3 @@ const style = css`
     }
   }
 `
-
-
-export default Mission

@@ -7,7 +7,7 @@ import people from '@src/svg/people.svg?raw'
 import personCheck from '@src/svg/personCheck.svg?raw'
 
 
-const Building: FC = () => {
+export default (() => {
   const steps = [
     { icon: court, title: 'Creating the Business', description: 'We are currently creating the Shasta Trades Trust & Shasta Trades Nonprofit, to ensure long term mission aligned stewardship' },
     { icon: people, title: 'Trades Recruitment', description: 'Recruiting our first cohort of tradespeople to bring beauty to our community' },
@@ -41,7 +41,7 @@ const Building: FC = () => {
       </div>
     </div>
   </>
-}
+}) satisfies FC
 
 
 const style = css`
@@ -123,6 +123,3 @@ const style = css`
     }
   }
 `
-
-
-export default Building

@@ -8,7 +8,7 @@ import { useRequestContext } from 'hono/jsx-renderer'
 import { onMenuToggle, onHomeClick } from '@hono-directives'
 
 
-const Nav: FC = () => {
+export default (() => {
   const c = useRequestContext()
 
   return <>
@@ -37,7 +37,7 @@ const Nav: FC = () => {
       </div>
     </div>
   </>
-}
+}) satisfies FC
 
 
 const style = css`
@@ -149,6 +149,3 @@ const style = css`
     }
   }
 `
-
-
-export default Nav

@@ -1,4 +1,4 @@
-// app/src/nav/Menu.tsx
+// app/src/nav/NavMenu.tsx
 
 import { Style } from 'hono/css'
 import type { FC } from 'hono/jsx'
@@ -6,7 +6,7 @@ import { menuStyle } from '@src/lib/menuStyle'
 import { onMenuToggle } from '@hono-directives'
 
 
-const Menu: FC = () => {
+export default (() => {
   return <>
     <Style>{menuStyle}</Style>
 
@@ -25,7 +25,4 @@ const Menu: FC = () => {
       </div>
     </div>
   </>
-}
-
-
-export default Menu
+}) satisfies FC

@@ -8,7 +8,7 @@ import svgFacebook from '@src/svg/facebook.svg?raw'
 import svgInstagram from '@src/svg/instagram.svg?raw'
 
 
-const Footer: FC = () => {
+export default (() => {
   return <>
     <Style>{style}</Style>
 
@@ -41,7 +41,7 @@ const Footer: FC = () => {
       </div>
     </footer>
   </>
-}
+}) satisfies FC
 
 
 const style = css`
@@ -134,6 +134,3 @@ const style = css`
     }
   }
 `
-
-
-export default Footer
