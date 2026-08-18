@@ -38,10 +38,40 @@ Store contact details for each **Person**
 |--------------------------|---------|------------------------|
 | id                       | INTEGER | PK, AI                 |
 | email                    | TEXT    | UNIQUE INDEX, NOT NULL |
+| emailVerified            | BOOLEAN | DEFAULT = 0            |
 | sendNewsletter           | BOOLEAN | DEFAULT = 1            |
 | sendJobOpportunityEmails | BOOLEAN | DEFAULT = 0            |
 | phoneNumber              | TEXT    | NULLABLE               |
+| phoneNumberVerified      | BOOLEAN | DEFAULT = 0            |
 | sendJobOpportunityTexts  | BOOLEAN | DEFAULT = 0            |
+
+---
+
+## Session
+Stores authentication details between a **Person** and our application
+
+| Field           | Type     | Notes                                    |
+|-----------------|----------|------------------------------------------|
+| id              | INTEGER  | PK, AI                                   |
+| personId        | INTEGER  | INDEX, NOT NULL, FK &arr; **Person(id)** |
+| refreshTokenHash | TEXT     | INDEX, NOT NULL                          |
+| expiresAt       | DATETIME | NOT NULL                                 |
+| ipAddress       | TEXT     | NOT NULL                                 |
+
+---
+
+## MagicToken
+Before a **Session** is created we send a **Person** an email w/ a **MagicToken** (*passwordless / magic link authenticatio*)
+
+| Field     | Type     | Notes                                    |
+|-----------|----------|------------------------------------------|
+| id        | INTEGER  | PK, AI                                   |
+| personId  | INTEGER  | INDEX, NOT NULL, FK &arr; **Person(id)** |
+| tokenHash | TEXT     | INDEX, NOT NULL                          |
+| expiresAt | DATETIME | NOT NULL                                 |
+| used      | BOOLEAN  | NOT NULL, DEFAULT = 0                    |
+
+
 
 ---
 

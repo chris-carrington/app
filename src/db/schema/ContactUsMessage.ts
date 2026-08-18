@@ -1,8 +1,7 @@
 // app/src/db/schema/ContactUsMessage.ts
 
 import { Person } from '@src/db'
-import { sql } from 'drizzle-orm'
-import { relations } from 'drizzle-orm'
+import { sql, relations } from 'drizzle-orm'
 import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
 
 

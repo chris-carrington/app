@@ -9,9 +9,11 @@ import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
 export const Contact = sqliteTable('Contact', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   email: text('email').unique().notNull(),
+  emailVerified: integer('emailVerified', { mode: 'boolean' }).default(false),
   sendNewsletter: integer('sendNewsletter', { mode: 'boolean' }).default(true),
   sendJobOpportunityEmails: integer('sendJobOpportunityEmails', { mode: 'boolean' }).default(false),
   phoneNumber: text('phoneNumber'),
+  phoneNumberVerified: integer('phoneNumberVerified', { mode: 'boolean' }).default(false),
   sendJobOpportunityTexts: integer('sendJobOpportunityTexts', { mode: 'boolean' }).default(false),
 })
 

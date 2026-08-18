@@ -1,7 +1,6 @@
 // app/src/db/schema/StaffLead.ts
 
-import { sql } from 'drizzle-orm'
-import { relations } from 'drizzle-orm'
+import { sql, relations } from 'drizzle-orm'
 import { Person, LeadStatus, StaffPosition } from '@src/db'
 import { sqliteTable, integer } from 'drizzle-orm/sqlite-core'
 

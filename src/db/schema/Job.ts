@@ -1,7 +1,6 @@
 // app/src/db/schema/Job.ts
 
-import { sql } from 'drizzle-orm'
-import { relations } from 'drizzle-orm'
+import { sql, relations } from 'drizzle-orm'
 import { JobStatus, JobLead, Job__Trade, Job__Client } from '@src/db'
 import { text, index, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
 
