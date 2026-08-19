@@ -1,12 +1,14 @@
 // app/src/auth/signIn.api.ts
 
 import { Hono } from 'hono'
+import { eq } from 'drizzle-orm'
 import { env } from 'cloudflare:workers'
 import { vValidator } from '@hono/valibot-validator'
 import { sendEmail, renderEmail } from '@hono-email'
+import { db, Person, Contact, MagicToken } from '@src/db'
+import { SignInSchema } from '@src/auth/signIn.validator'
 import emailTemplate from '@src/emails/magicLink.html?raw'
-import { SignInSchema, type SignInFormData } from '@src/auth/signIn.validator'
-import { secWeek, jwtCreate, jwtValidate, createPassword, hashCreate, hashValidate } from '@hono-security'
+import { createPassword, hashCreate, msMinute } from '@hono-security'
 
 
 const app = new Hono()
@@ -18,32 +20,34 @@ app.post(
     const data = c.req.valid('json')
 
     try {
-      console.log('data', data)
+      const result = await db // get contact + person
+        .select()
+        .from(Person)
+        .innerJoin(Contact, eq(Person.contactId, Contact.id))
+        .where(eq(Contact.email, data.email))
+        .limit(1)
 
-      const jwt = await jwtCreate({ payload: data, ttl: secWeek })
-      console.log('jwt', jwt)
+      if (result.length !== 1) return c.json({ success: true }) // prevents email enumeration
 
-      const validity = await jwtValidate<SignInFormData>({ jwt })
-      console.log('validity', validity)
+      const { Person: person, Contact: contact } = result[0]
+      const token = createPassword()
+      const tokenHash = await hashCreate({ password: token })
 
-      const signInPassword = createPassword()
-      const hashedPassword = await hashCreate({ password: signInPassword })
-      const hashValidateResponse = await hashValidate({ password: signInPassword, hash: hashedPassword })
-      console.log('signInPassword', signInPassword)
-      console.log('hashedPassword', hashedPassword)
-      console.log('hashValidateResponse', hashValidateResponse)
+      await db // insert magic token
+        .insert(MagicToken)
+        .values({
+          personId: person.id,
+          tokenHash,
+          expiresAt: new Date(Date.now() + (msMinute * 15))
+        })
+
+      const magicLink = `${env.APP_URL}/magic-link?token=${token}`
 
       await sendEmail({
-        accountId: env.CLOUDFLARE_ACCOUNT_ID,
-        apiToken: env.CLOUDFLARE_EMAIL_API_TOKEN,
-        from: 'support@shastatrades.org',
-        to: 'carrington.christopher@gmail.com',
+        to: contact.email,
         subject: 'Sign in!',
-        html: renderEmail(emailTemplate, {
-          firstName: 'Christopher',
-          lastName: 'Carrington',
-          magicLink: 'https://yahoo.com'
-        })
+        from: 'support@shastatrades.org',
+        html: renderEmail(emailTemplate, { magicLink, firstName: person.firstName, lastName: person.lastName })
       })
     } catch (e) {
       return c.json({ success: false, error: String(e) }, 500)
