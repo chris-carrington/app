@@ -9,6 +9,7 @@ import { setSignedCookie } from 'hono/cookie'
 import type { JSX } from 'hono/jsx/jsx-runtime'
 import { hashCreate, msWeek } from '@hono-security'
 import { db, Person, Contact, MagicToken, Session } from '@src/db'
+import { setSessionCookie } from './setSessionCookie'
 
 
 export default new Hono()
@@ -60,13 +61,7 @@ export default new Hono()
           return session
         })
 
-        await setSignedCookie(c, 'session', String(session.id), env.COOKIE_SECRET, { // create cookie
-          path: '/',
-          httpOnly: true,
-          sameSite: 'Lax',
-          maxAge: secExpiry,
-          secure: env.ENVIRONMENT === 'production',
-        })
+        await setSessionCookie(c, String(session.id)) // create cookie
       } catch (error) {
         console.error(error)
 

@@ -21,6 +21,7 @@ export { jwtValidate, type FullJWTPayload, type JWTValidateFailure, type JWTVali
 
 // pipe
 export { pipeArray } from './src/pipe/array.pipe'
+export { pipeBoolean } from './src/pipe/boolean.pipe'
 export { pipeEmail } from './src/pipe/email.pipe'
 export { pipeEnoughContent } from './src/pipe/enoughContent.pipe'
 export { pipeFirstName } from './src/pipe/firstName.pipe'

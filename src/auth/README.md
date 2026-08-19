@@ -33,9 +33,9 @@
 
 
 ## `GET: /api/session`
-1. IF no `session.id` in cookie THEN redirect to `/sign-in`
+1. IF no `session.id` in cookie THEN respond w/ a `401 unauthorized`
 1. Get `Session` from db
-1. IF db says `Session` is expired THEN delete cookie and redirect to `/sign-in`
+1. IF db says `Session` is undefined OR expired THEN delete cookie and redirect to `/sign-in`
 1. IF db says `Session` expires in less then 1 week then:
     - Update cookie maxAge to `9 weeks` from now
     - Update `Session.expiresAt` in db to `9 weeks` from now
