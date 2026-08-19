@@ -2,6 +2,7 @@
 
 import { Hono } from 'hono'
 import home from './home/home.route'
+import guest from '@src/auth/guest.api'
 import { renderer } from '@src/renderer'
 import profile from '@src/lib/profile.route'
 import signInApi from '@src/auth/signIn.api'
@@ -24,6 +25,7 @@ const app = new Hono()
   .route('/', home)
   .route('/profile', profile)
   .route('/mastery', mastery)
+  .route('/api/guest', guest)
   .route('/sign-in', signInRoute)
   .route('/sign-up', signUpRoute)
   .route('/api/sign-in', signInApi)

@@ -1,21 +1,37 @@
 // app/src/auth/session.api.ts
 
 import { Hono } from 'hono'
+import * as v from 'valibot'
 import { eq } from 'drizzle-orm'
 import { urlBE } from '@src/url/urlBE'
-import { msWeek } from '@hono-security'
 import { env } from 'cloudflare:workers'
-import { SessionSchema } from './session.validator'
 import { vValidator } from '@hono/valibot-validator'
+import { msWeek, pipeBoolean } from '@hono-security'
 import { db, Session, Person, Contact } from '@src/db'
 import { deleteCookie, getSignedCookie } from 'hono/cookie'
 import { setSessionCookie } from '@src/auth/setSessionCookie'
 
 
 export default new Hono()
+  .delete(
+    '/:id',
+    vValidator('param', v.object({
+      id: v.pipe(v.string(), v.nonEmpty()),
+    })),
+    async (c) => {
+      await db.delete(Session) // delete session from db
+        .where(eq(Session.id, Number(c.req.valid('param').id)))
+
+      deleteCookie(c, 'session', { path: '/' }) // delete session in cookie
+
+      return c.json({ success: true })
+    }
+  )
   .get(
     '/', 
-    vValidator('query', SessionSchema),
+    vValidator('query', v.object({
+      includePersonAndContact: pipeBoolean(true),
+    })),
     async (c) => {
       const { includePersonAndContact } = c.req.valid('query')
 
@@ -71,4 +87,5 @@ export default new Hono()
       }
 
       return c.json({ success: true, response: sessionWithPersonAndContact ?? session })
-    })
+    }
+  )

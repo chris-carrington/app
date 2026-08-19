@@ -33,7 +33,7 @@
 
 
 ## `GET: /api/session`
-1. IF no `session.id` in cookie THEN respond w/ a `401 unauthorized`
+1. IF no `session.id` in cookie THEN respond w/ a `401 { success: false, error: 'unauthorized' }`
 1. Get `Session` from db
 1. IF db says `Session` is undefined OR expired THEN delete cookie and redirect to `/sign-in`
 1. IF db says `Session` expires in less then 1 week then:
@@ -42,7 +42,7 @@
 
 
 ## `GET: /api/guest`
-1. IF `session.id` in cookie THEN redirect to `/profile`
+1. IF `session.id` in cookie THEN respond w/ a `403 { success: false, error: 'authenticated' }`
 
 
 ## `GET: /api/sessions`
@@ -50,7 +50,7 @@
 - Powers the "view / delete a session" UI
 
 
-## `DELETE: /api/sessions/:id`
+## `DELETE: /api/session/:id`
 1. IF owner or certain staff THEN
     - Delete session cookie
     - Delete session in db
