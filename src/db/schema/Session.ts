@@ -1,7 +1,7 @@
 // app/src/db/schema/Session.ts
 
 import { Person } from '@src/db'
-import { relations } from 'drizzle-orm'
+import { sql, relations } from 'drizzle-orm'
 import { text, index, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
 
 
@@ -13,13 +13,12 @@ export const Session = sqliteTable(
     personId: integer('personId')
       .notNull()
       .references(() => Person.id),
-    refreshTokenHash: text('refreshTokenHash').notNull(),
     expiresAt: integer('expiresAt', { mode: 'timestamp_ms' }).notNull(),
     ipAddress: text('ipAddress').notNull(),
+    createdAt: integer('createdAt', { mode: 'timestamp_ms' }).notNull().default(sql`(unixepoch() * 1000)`)
   },
   (table) => [
     index('Session__personId__index').on(table.personId),
-    index('Session__refreshTokenHash__index').on(table.refreshTokenHash),
   ])
 
 

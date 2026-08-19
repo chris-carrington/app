@@ -7,6 +7,8 @@
     "preview": "$npm_execpath run build && vite preview",
     "deploy": "$npm_execpath run build && wrangler deploy",
     "cf:types": "npx wrangler types",
+    "cf:secret:put": "npx wrangler secret put",
+    "cf:secret:delete": "npx wrangler secret delete",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",

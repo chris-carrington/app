@@ -1,6 +1,6 @@
 // app/src/lib/Footer.tsx
 
-import type{ FC } from 'hono/jsx'
+import type { FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
 import { urlBE } from '@src/url/urlBE'
 import svgTikTok from '@src/svg/tikTok.svg?raw'

@@ -30,7 +30,7 @@ export default new Hono()
 
         const { Person: person, Contact: contact } = result[0]
         const token = createPassword()
-        const tokenHash = await hashCreate({ password: token, saltLength: 0 }) // now salt makes the hash deterministic (db queryable)
+        const tokenHash = await hashCreate({ password: token, saltLength: 0, iterations: 1, hashFn: 'SHA-256' }) // no salt makes the hash deterministic (db queryable) & 1 iteration is fine b/c this is a random password (hard to guess, not password123)
 
         await db // insert magic token
           .insert(MagicToken)

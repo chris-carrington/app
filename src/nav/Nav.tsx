@@ -1,6 +1,6 @@
 // app/src/nav/Nav.tsx
 
-import type{ FC } from 'hono/jsx'
+import type { FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
 import { urlBE } from '@src/url/urlBE'
 import svgMenu from '@src/svg/menu.svg?raw'

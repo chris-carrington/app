@@ -1,44 +1,109 @@
 // app/src/auth/magicLink.route.tsx
 
 import { Hono } from 'hono'
-import { eq } from 'drizzle-orm'
+import { eq, and } from 'drizzle-orm'
 import { css, Style } from 'hono/css'
 import { urlBE } from '@src/url/urlBE'
-import { db, MagicToken } from '@src/db'
-import { hashCreate } from '@hono-security'
+import { env } from 'cloudflare:workers'
+import { setSignedCookie } from 'hono/cookie'
+import type { JSX } from 'hono/jsx/jsx-runtime'
+import { hashCreate, msWeek } from '@hono-security'
+import { db, Person, Contact, MagicToken, Session } from '@src/db'
 
 
 export default new Hono()
   .get('/:token', async (c) => {
-    const tokenHash = await hashCreate({ password: c.req.param('token'), saltLength: 0 })
+    const tokenHash = await hashCreate({ password: c.req.param('token'), saltLength: 0, iterations: 1, hashFn: 'SHA-256' })
 
-    const [magicToken] = await db // get magicToken
+    const [result] = await db // get magicToken
       .select()
       .from(MagicToken)
+      .innerJoin(Person, eq(MagicToken.personId, Person.id))
       .where(eq(MagicToken.tokenHash, tokenHash))
       .limit(1)
+
+    const res = validate(result.MagicToken)
+
+    if (res.isValid) {
+      const ipAddress = c.req.header('cf-connecting-ip')
+      if (!ipAddress) throw new Error('!ipAddress')
+
+      const msExpiry = msWeek * 9
+      const secExpiry = msExpiry / 1000
+
+      try {
+        const session = await db.transaction(async (tx) => {
+          const [[session], [magicToken]] = await Promise.all([
+            tx.insert(Session) // insert Session
+              .values({
+                ipAddress,
+                personId: result.Person.id,
+                expiresAt: new Date(Date.now() + msExpiry),
+              })
+              .returning({ id: Session.id }),
+            tx.update(MagicToken) // MagicToken.used -> true
+              .set({ used: true })
+              .where(
+                and(
+                  eq(MagicToken.id, result.MagicToken.id),
+                  eq(MagicToken.used, false)
+                )
+              )
+              .returning({ id: MagicToken.id }),
+            tx.update(Contact) // Contact.emailVerified -> true
+              .set({ emailVerified: true })
+              .where(eq(Contact.id, result.Person.contactId))
+          ])
+
+          if (!magicToken) throw new Error('Magic token already used')
+
+          return session
+        })
+
+        await setSignedCookie(c, 'session', String(session.id), env.COOKIE_SECRET, { // create cookie
+          path: '/',
+          httpOnly: true,
+          sameSite: 'Lax',
+          maxAge: secExpiry,
+          secure: env.ENVIRONMENT === 'production',
+        })
+      } catch (error) {
+        console.error(error)
+
+        return c.render(
+          <>
+            <Style>{style}</Style>
+            <h1>Something went wrong. Please <a href={urlBE()['sign-in'].$url().href}>sign in</a> again.</h1>
+          </>
+        )
+      }
+
+      const redirect: string = urlBE().profile.$url().href // string cast breaks circular depenency error
+
+      return c.redirect(redirect)
+    }
 
     return c.render(
       <>
         <Style>{style}</Style>
-        {getTemplate(magicToken)}
+        {res.template}
       </>
     )
   })
 
 
-function getTemplate(magicToken: typeof MagicToken.$inferSelect) {
+function validate(magicToken: typeof MagicToken.$inferSelect): { isValid: true } | { isValid: false, template: JSX.Element } {
   // invalid token
-  if (!magicToken) return <h1>Link is invalid, please attempt to <a href={urlBE()['sign-in'].$url().href}>sign in</a> again.</h1>
+  if (!magicToken) return { isValid: false, template: <h1>Link is invalid, please attempt to <a href={urlBE()['sign-in'].$url().href}>sign in</a> again.</h1> }
 
   // used token
-  if (magicToken.used) return <h1>Link has already been clicked, please attempt to <a href={urlBE()['sign-in'].$url().href}>sign in</a> again.</h1>
+  if (magicToken.used) return { isValid: false, template: <h1>Link has already been clicked, please attempt to <a href={urlBE()['sign-in'].$url().href}>sign in</a> again.</h1> }
 
   // expiration is NOT before now
-  if (magicToken?.expiresAt.getTime() < Date.now()) return <h1> Link is expired, they are only valid for 9 minutes, please attempt to <a href={urlBE()['sign-in'].$url().href}>sign in</a> again.</h1>
+  if (magicToken?.expiresAt.getTime() < Date.now()) return { isValid: false, template: <h1> Link is expired, they are only valid for 9 minutes, please attempt to <a href={urlBE()['sign-in'].$url().href}>sign in</a> again.</h1> }
 
   // valid
-  return <h1>Valid Token</h1>
+  return { isValid: true }
 }
 
 

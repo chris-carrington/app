@@ -3,7 +3,6 @@
 import { base64UrlEncode } from '@hono-security'
 
 
-
 /**
  * ### Hash a password in node or on the Edge (Cloudflare Workers)
  * - We recommend a secret that is at least 64 bytes so you get the full 512 bits of key entropy, to create a secret we recommend, bash: `openssl rand -base64 64`
@@ -14,7 +13,7 @@ import { base64UrlEncode } from '@hono-security'
   const hash = await hashCreate({ password: 'example' })
   ```
  * @param props.password - The plaintext password to hash
- * @param props.saltLength - The National Institute of Standards and Technology (NIST) recommends a random salt length of 16 so we do to. `(default is 16)`
+ * @param props.saltLength - Optional, to create a deterministic token (hash always produces the same result) use a saltLength of 0. The National Institute of Standards and Technology (NIST) recommends a random salt length of 16 `(default is 16)`. The only reason to add iterations is to make guessing the input more expensive. If the token is randomly generated `1` is fine, if the password is user generated we suggest a high number to make a brute force attack an expensive oepration.
  * @param props.iterations - We recommend 300_000 to 1_000_000 iterations in Node for high security & fast performance `(default is 99_999)`. The default is 99_999 b/c that is the max allowed in the browser, aka @ Cloudflare Workers. More iterations = More security = Slower performance, Test & time, a good ballpark time is 100 to 300ms
  * @param props.hashFn - `SHA-512 (default)` w/ default saltLength & iterations is far beyond classical brute-force capabilities. SHA-256 is slightly weaker but faster.
  * @returns A hashed password using `SHA-256` or `SHA-512`
