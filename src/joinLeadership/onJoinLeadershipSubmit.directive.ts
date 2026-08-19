@@ -1,5 +1,6 @@
 // app/src/joinLeadership/joinLeadership.directive.ts
 
+import { urlFE } from '@src/url/urlFE'
 import { Loading, FormUtil } from '@hono-security'
 import { showToast, showErrorToast } from '@hono-toast'
 import { joinLeadershipValidator } from '@src/joinLeadership/joinLeadership.validator'
@@ -20,11 +21,7 @@ export default (el: HTMLFormElement) => {
     try {
       loading.start()
 
-      const response = await fetch('/api/join-leadership', {
-        method: 'POST',
-        body: JSON.stringify(result.data),
-        headers: { 'Content-Type': 'application/json' },
-      })
+      const response = await urlFE().api['join-leadership'].$post({ json: result.data })
 
       loading.stop()
 

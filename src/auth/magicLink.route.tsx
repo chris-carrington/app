@@ -3,9 +3,9 @@
 import { Hono } from 'hono'
 import { eq } from 'drizzle-orm'
 import { css, Style } from 'hono/css'
+import { urlBE } from '@src/url/urlBE'
 import { db, MagicToken } from '@src/db'
 import { hashCreate } from '@hono-security'
-import { createUrl } from '@src/lib/createUrl'
 
 
 export default new Hono()
@@ -29,13 +29,13 @@ export default new Hono()
 
 function getTemplate(magicToken: typeof MagicToken.$inferSelect) {
   // invalid token
-  if (!magicToken) return <h1>Link is invalid, please attempt to <a href={createUrl()['sign-in'].$url().href}>sign in</a> again.</h1>
+  if (!magicToken) return <h1>Link is invalid, please attempt to <a href={urlBE()['sign-in'].$url().href}>sign in</a> again.</h1>
 
   // used token
-  if (magicToken.used) return <h1>Link has already been clicked, please attempt to <a href={createUrl()['sign-in'].$url().href}>sign in</a> again.</h1>
+  if (magicToken.used) return <h1>Link has already been clicked, please attempt to <a href={urlBE()['sign-in'].$url().href}>sign in</a> again.</h1>
 
   // expiration is NOT before now
-  if (magicToken?.expiresAt.getTime() < Date.now()) return <h1> Link is expired, they are only valid for 9 minutes, please attempt to <a href={createUrl()['sign-in'].$url().href}>sign in</a> again.</h1>
+  if (magicToken?.expiresAt.getTime() < Date.now()) return <h1> Link is expired, they are only valid for 9 minutes, please attempt to <a href={urlBE()['sign-in'].$url().href}>sign in</a> again.</h1>
 
   // valid
   return <h1>Valid Token</h1>

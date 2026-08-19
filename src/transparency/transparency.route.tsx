@@ -2,9 +2,9 @@
 
 import { Hono } from 'hono'
 import { Style } from 'hono/css'
+import { urlBE } from '@src/url/urlBE'
 import { md2html } from '@src/md/md2html'
 import { mdStyle } from '@src/md/mdStyle'
-import { createUrl } from '@src/lib/createUrl'
 import schema from '@src/transparency/schema.md?raw'
 import byLaws from '@src/transparency/bylaws.md?raw'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
@@ -16,7 +16,7 @@ import conflictOfInterestPolicy from '@src/transparency/conflict-of-interest-pol
 
 export default new Hono()
   .get('/:id?', async (c) => {
-    const url = createUrl()
+    const url = urlBE()
     const paramId = c.req.param('id') ?? documents[0].id
     const current = documents.find(b => b.id === paramId)
     const html = current ? await md2html(current.md, current.wrapTables) : ''

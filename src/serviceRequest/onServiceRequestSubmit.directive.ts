@@ -1,5 +1,6 @@
 // app/src/serviceRequest/serviceRequest.directive.ts
 
+import { urlFE } from '@src/url/urlFE'
 import { Loading, FormUtil } from '@hono-security'
 import { showToast, showErrorToast } from '@hono-toast'
 import { serviceRequestValidator } from '@src/serviceRequest/serviceRequest.validator'
@@ -20,11 +21,7 @@ export default (el: HTMLFormElement) => {
     try {
       loading.start()
 
-      const response = await fetch('/api/service-request', {
-        method: 'POST',
-        body: JSON.stringify(result.data),
-        headers: { 'Content-Type': 'application/json' },
-      })
+      const response = await urlFE().api['service-request'].$post({ json: result.data })
 
       loading.stop()
 

@@ -2,13 +2,13 @@
 
 import { Style } from 'hono/css'
 import type { FC } from 'hono/jsx'
-import { createUrl } from '@src/lib/createUrl'
+import { urlBE } from '@src/url/urlBE'
 import { menuStyle } from '@src/lib/menuStyle'
 import { onNavMenuToggle } from '@hono-directives'
 
 
 export default (() => {
-  const url = createUrl()
+  const url = urlBE()
 
   return <>
     <Style>{menuStyle}</Style>

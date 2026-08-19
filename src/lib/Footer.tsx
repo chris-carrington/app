@@ -2,7 +2,7 @@
 
 import type{ FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
-import { createUrl } from '@src/lib/createUrl'
+import { urlBE } from '@src/url/urlBE'
 import svgTikTok from '@src/svg/tikTok.svg?raw'
 import svgYoutube from '@src/svg/youtube.svg?raw'
 import svgFacebook from '@src/svg/facebook.svg?raw'
@@ -10,7 +10,7 @@ import svgInstagram from '@src/svg/instagram.svg?raw'
 
 
 export default (() => {
-  const url = createUrl()
+  const url = urlBE()
 
   return <>
     <Style>{style}</Style>

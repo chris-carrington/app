@@ -1,5 +1,6 @@
 // app/src/contactUs/contactUs.directive.ts
 
+import { urlFE } from '@src/url/urlFE'
 import { Loading, FormUtil } from '@hono-security'
 import { showToast, showErrorToast } from '@hono-toast'
 import { contactUsValidator } from '@src/contactUs/contactUs.validator'
@@ -20,11 +21,7 @@ export default (el: HTMLFormElement) => {
     try {
       loading.start()
 
-      const response = await fetch('/api/contact-us', {
-        method: 'POST',
-        body: JSON.stringify(result.data),
-        headers: { 'Content-Type': 'application/json' },
-      })
+      const response = await urlFE().api['contact-us'].$post({ json: result.data })
 
       loading.stop()
 

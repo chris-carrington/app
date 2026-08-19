@@ -2,15 +2,15 @@
 
 import type{ FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
+import { urlBE } from '@src/url/urlBE'
 import svgMenu from '@src/svg/menu.svg?raw'
-import { createUrl } from '@src/lib/createUrl'
 import svgPerson from '@src/svg/person.svg?raw'
 import { useRequestContext } from 'hono/jsx-renderer'
 import { onHomeClick, onNavMenuToggle } from '@hono-directives'
 
 
 export default (() => {
-  const url = createUrl()
+  const url = urlBE()
   const c = useRequestContext()
 
   return <>

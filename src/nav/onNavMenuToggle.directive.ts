@@ -1,5 +1,8 @@
 // app/src/nav/onNavMenuToggle.directive.ts
 
+import { urlFE } from '@src/url/urlFE'
+
+
 export default (el: HTMLButtonElement, id: string) => {
   const menu = document.getElementById(id)
 
@@ -10,8 +13,8 @@ export default (el: HTMLButtonElement, id: string) => {
 
     if (menu.classList.contains('hidden')) setTimeout(() => menu.dataset.auth = 'undefined', 600)
     else {
-      const res = await fetch('/api/session')
-      const json = await res.json() as { authenticated: boolean }
+      const response = await urlFE().api.session.$get()
+      const json = await response.json()
 
       menu.dataset.auth = String(json.authenticated)
     }

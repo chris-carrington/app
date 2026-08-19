@@ -1,8 +1,10 @@
 // app/src/auth/onSignUpSubmit.directive.ts
 
+import { urlFE } from '@src/url/urlFE'
 import { FormUtil, Loading } from '@hono-security'
 import { showToast, showErrorToast } from '@hono-toast'
 import { signUpValidator } from '@src/auth/signUp.validator'
+
 
 export default (el: HTMLFormElement) => {
   const form = new FormUtil(el, signUpValidator)
@@ -19,11 +21,7 @@ export default (el: HTMLFormElement) => {
     try {
       loading.start()
 
-      const response = await fetch('/api/sign-up', {
-        method: 'POST',
-        body: JSON.stringify(result.data),
-        headers: { 'Content-Type': 'application/json' },
-      })
+      const response = await urlFE().api['sign-up'].$post({ json: result.data })
 
       loading.stop()
 

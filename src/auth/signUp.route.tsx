@@ -4,7 +4,7 @@ import { Hono } from 'hono'
 import { Style } from 'hono/css'
 import { authStyle } from '@src/auth'
 import { Field } from '@hono-security'
-import { createUrl } from '@src/lib/createUrl'
+import { urlBE } from '@src/url/urlBE'
 import { onSignUpSubmit } from '@hono-directives'
 
 
@@ -26,7 +26,7 @@ export default new Hono()
 
           <button type="submit">Sign Up</button>
 
-          <a href={createUrl()['sign-in'].$url().href}>Have an account? Then click here to Sign In!</a>
+          <a href={urlBE()['sign-in'].$url().href}>Have an account? Then click here to Sign In!</a>
         </form>
       </>
     )

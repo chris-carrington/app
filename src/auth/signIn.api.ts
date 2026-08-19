@@ -2,7 +2,7 @@
 
 import { Hono } from 'hono'
 import { eq } from 'drizzle-orm'
-import { createUrl } from '@src/lib/createUrl'
+import { urlBE } from '@src/url/urlBE'
 import { vValidator } from '@hono/valibot-validator'
 import { sendEmail, renderEmail } from '@hono-email'
 import { db, Person, Contact, MagicToken } from '@src/db'
@@ -40,7 +40,7 @@ export default new Hono()
             expiresAt: new Date(Date.now() + (msMinute * 15))
           })
 
-        const magicLink = createUrl()['magic-link'][':token']
+        const magicLink = urlBE()['magic-link'][':token']
           .$url({ param: {token} })
           .href
 

@@ -1,5 +1,6 @@
 // app/src/joinNewsletter/joinNewsletter.directive.ts
 
+import { urlFE } from '@src/url/urlFE'
 import { Loading, FormUtil } from '@hono-security'
 import { showToast, showErrorToast } from '@hono-toast'
 import { joinNewsletterValidator } from '@src/joinNewsletter/joinNewsletter.validator'
@@ -20,11 +21,7 @@ export default (el: HTMLFormElement) => {
     try {
       loading.start()
 
-      const response = await fetch('/api/join-newsletter', {
-        method: 'POST',
-        body: JSON.stringify(result.data),
-        headers: { 'Content-Type': 'application/json' },
-      })
+      const response = await urlFE().api['join-newsletter'].$post({ json: result.data })
 
       loading.stop()
 

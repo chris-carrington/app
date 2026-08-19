@@ -1,5 +1,6 @@
 // app/src/auth/onSignInSubmit.directive.ts
 
+import { urlFE } from '@src/url/urlFE'
 import { FormUtil, Loading } from '@hono-security'
 import { showToast, showErrorToast } from '@hono-toast'
 import { signInValidator } from '@src/auth/signIn.validator'
@@ -20,11 +21,7 @@ export default (el: HTMLFormElement) => {
     try {
       loading.start()
 
-      const response = await fetch('/api/sign-in', {
-        method: 'POST',
-        body: JSON.stringify(result.data),
-        headers: { 'Content-Type': 'application/json' },
-      })
+      const response = await urlFE().api['sign-in'].$post({ json: result.data })
 
       loading.stop()
 
