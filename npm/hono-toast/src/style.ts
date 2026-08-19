@@ -83,7 +83,7 @@ export const honoToastStyle = css`
 
         .toast__content {
           flex: auto;
-          margin-inline: calc(var(--space) * 2);
+          margin-right: var(--space-lite);
 
           ul,
           ol {
@@ -106,7 +106,7 @@ export const honoToastStyle = css`
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-inline: 0 var(--space);
+          margin-right: var(--space-lite);
 
           .toast__icon {
             display: flex;

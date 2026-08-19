@@ -1,3 +1,5 @@
+// app/src/auth/onSignUpSubmit.directive.ts
+
 import { FormUtil, Loading } from '@hono-security'
 import { showToast, showErrorToast } from '@hono-toast'
 import { signUpValidator } from '@src/auth/signUp.validator'

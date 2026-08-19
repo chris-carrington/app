@@ -20,14 +20,14 @@ app.post(
     const data = c.req.valid('json')
 
     try {
-      const result = await db // get contact + person
+      const result = await db // get person + contact
         .select()
         .from(Person)
         .innerJoin(Contact, eq(Person.contactId, Contact.id))
         .where(eq(Contact.email, data.email))
         .limit(1)
 
-      if (result.length !== 1) return c.json({ success: true }) // prevents email enumeration
+      if (result.length !== 1) return c.json({ success: true }) // prevent email enumeration
 
       const { Person: person, Contact: contact } = result[0]
       const token = createPassword()
