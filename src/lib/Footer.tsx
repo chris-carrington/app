@@ -2,6 +2,7 @@
 
 import type{ FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
+import { createUrl } from '@src/lib/createUrl'
 import svgTikTok from '@src/svg/tikTok.svg?raw'
 import svgYoutube from '@src/svg/youtube.svg?raw'
 import svgFacebook from '@src/svg/facebook.svg?raw'
@@ -9,6 +10,8 @@ import svgInstagram from '@src/svg/instagram.svg?raw'
 
 
 export default (() => {
+  const url = createUrl()
+
   return <>
     <Style>{style}</Style>
 
@@ -21,12 +24,12 @@ export default (() => {
         <div class="site-map">
           <div class="title">SITE MAP</div>
           <div class="links">
-            <a href="/">Home</a>
-            <a href="/mastery">Mastery</a>
-            <a href="/objectives">Objectives</a>
-            <a href="/transparency">Transparency</a>
-            <a href="/sign-in">Sign In</a>
-            <a href="/sign-up">Sign Up</a>
+            <a href={url['index'].$url().href}>Home</a>
+            <a href={url['mastery'][':id?'].$url({ param: { id: '' } }).href}>Mastery</a>
+            <a href={url['objectives'].$url().href}>Objectives</a>
+            <a href={url['transparency'][':id?'].$url({ param: { id: '' } }).href}>Transparency</a>
+            <a href={url['sign-in'].$url().href}>Sign In</a>
+            <a href={url['sign-up'].$url().href}>Sign Up</a>
           </div>
         </div>
         <div class="socials">
@@ -104,6 +107,7 @@ const style = css`
         .links {
           a {
             display: block;
+            filter: grayscale(0.4);
             text-decoration: none;
             color: rgb(129 153 134);
             margin-bottom: calc(var(--space-lite) / 2);
@@ -123,10 +127,14 @@ const style = css`
           gap: var(--space-lite);
 
           a {
-            transition: var(--transition);
+            opacity: 0.6;
+            filter: grayscale(0.45);
+            transition: var(--fast-transition);
             text-decoration: none;
             &:hover {
               scale: 1.05;
+              opacity: 1;
+              filter: none;
             }
           }
         }

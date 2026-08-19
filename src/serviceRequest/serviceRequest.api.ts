@@ -6,30 +6,29 @@ import { db, upsertPerson, upsertContact, JobLead, Trade__JobLead, type Transact
 import { ServiceRequestFormData, ServiceRequestSchema } from '@src/serviceRequest/serviceRequest.validator'
 
 
-const app = new Hono()
+export default new Hono()
+  .post(
+    '/',
+    vValidator('json', ServiceRequestSchema),
+    async (c) => {
+      const data = c.req.valid('json')
 
-app.post(
-  '/',
-  vValidator('json', ServiceRequestSchema),
-  async (c) => {
-    const data = c.req.valid('json')
+      try {
+        await db.transaction(async (tx) => { // atomic
+          const personId = await upserts(tx, data)
+          const jobLeadId = await insertJobLead(tx, data, personId)
 
-    try {
-      await db.transaction(async (tx) => { // atomic
-        const personId = await upserts(tx, data)
-        const jobLeadId = await insertJobLead(tx, data, personId)
+          await Promise.all([
+            data.trade.map(tradeId => insertTrade__JobLead({ tx, jobLeadId, tradeId: Number(tradeId) }))
+          ])
+        })
+      } catch (e) {
+        return c.json({ success: false, error: String(e) }, 500)
+      }
 
-        await Promise.all([
-          data.trade.map(tradeId => insertTrade__JobLead({ tx, jobLeadId, tradeId: Number(tradeId) }))
-        ])
-      })
-    } catch (e) {
-      return c.json({ success: false, error: String(e) }, 500)
+      return c.json({ success: true })
     }
-
-    return c.json({ success: true })
-  }
-)
+  )
 
 
 async function upserts(tx: Transaction, data: ServiceRequestFormData) {
@@ -54,6 +53,3 @@ async function insertTrade__JobLead(props: { tx: Transaction, tradeId: number, j
     .values({ tradeId: props.tradeId, jobLeadId: props.jobLeadId })
     .returning({ id: Trade__JobLead.id })
 }
-
-
-export default app

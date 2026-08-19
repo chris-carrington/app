@@ -4,6 +4,7 @@ import { Hono } from 'hono'
 import { Style } from 'hono/css'
 import { md2html } from '@src/md/md2html'
 import { mdStyle } from '@src/md/mdStyle'
+import { createUrl } from '@src/lib/createUrl'
 import schema from '@src/transparency/schema.md?raw'
 import byLaws from '@src/transparency/bylaws.md?raw'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
@@ -13,38 +14,38 @@ import articlesOfIncorporation from '@src/transparency/articles-of-incorporation
 import conflictOfInterestPolicy from '@src/transparency/conflict-of-interest-policy.md?raw'
 
 
-const app = new Hono()
+export default new Hono()
+  .get('/:id?', async (c) => {
+    const url = createUrl()
+    const paramId = c.req.param('id') ?? documents[0].id
+    const current = documents.find(b => b.id === paramId)
+    const html = current ? await md2html(current.md, current.wrapTables) : ''
 
-app.get('/:id?', async (c) => {
-  const paramId = c.req.param('id') ?? documents[0].id
-  const current = documents.find(b => b.id === paramId)
-  const html = current ? await md2html(current.md, current.wrapTables) : ''
+    return c.render(
+      <>
+        <Style>{mdStyle}</Style>
+        <Style>{subPageHeroStyle}</Style>
 
-  return c.render(
-    <>
-      <Style>{mdStyle}</Style>
-      <Style>{subPageHeroStyle}</Style>
+        <div class="transparency">
+          <div class="sub-page-hero">
+            <div class="bg"></div>
+            <div class="header">
+              <h1>Transparency</h1>
+              <div class="sub-title">These documents keep us focused, remind us why we exist and show all that Shasta Trades is organized, mission focused, and transparent.</div>
+            </div>
 
-      <div class="transparency">
-        <div class="sub-page-hero">
-          <div class="bg"></div>
-          <div class="header">
-            <h1>Transparency</h1>
-            <div class="sub-title">These documents keep us focused, remind us why we exist and show all that Shasta Trades is organized, mission focused, and transparent.</div>
+            <div class="buttons">
+              {documents.map((a, i) => <a class={paramId === a.id ? 'active' : ''} href={url.transparency[':id?'].$url({param: {id: a.id}}).href}>{a.title}</a>)}
+            </div>
           </div>
 
-          <div class="buttons">
-            {documents.map((a, i) => <a class={paramId === a.id ? 'active' : ''} href={'/transparency/' + a.id}>{a.title}</a>)}
+          <div class="md">
+            <div dangerouslySetInnerHTML={{ __html: html }}></div>
           </div>
         </div>
-
-        <div class="md">
-          <div dangerouslySetInnerHTML={{ __html: html }}></div>
-        </div>
-      </div>
-    </>
-  )
-})
+      </>
+    )
+  })
 
 
 const documents = [
@@ -55,6 +56,3 @@ const documents = [
   { id: 'whistleblower-policy', title: 'Whistleblower Policy', md: whistleblowerPolicy, wrapTables: false },
   { id: 'schema', title: 'Schema', md: schema, wrapTables: true },
 ]
-
-
-export default app

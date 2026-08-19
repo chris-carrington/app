@@ -3,12 +3,14 @@
 import type{ FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
 import svgMenu from '@src/svg/menu.svg?raw'
+import { createUrl } from '@src/lib/createUrl'
 import svgPerson from '@src/svg/person.svg?raw'
 import { useRequestContext } from 'hono/jsx-renderer'
 import { onHomeClick, onNavMenuToggle } from '@hono-directives'
 
 
 export default (() => {
+  const url = createUrl()
   const c = useRequestContext()
 
   return <>
@@ -25,10 +27,10 @@ export default (() => {
           </a>
 
           <div class="links">
-            <a href="/" class={c.req.path === '/' ? 'active' : ''}>Home</a>
-            <a href="/mastery" class={c.req.path.includes('/mastery') ? 'active' : ''}>Mastery</a>
-            <a href="/objectives" class={c.req.path === '/objectives' ? 'active' : ''}>Objectives</a>
-            <a href="/transparency" class={c.req.path.includes('/transparency') ? 'active' : ''}>Transparency</a>
+            <a href={url['index'].$url().href} class={c.req.path === '/' ? 'active' : ''}>Home</a>
+            <a href={url['mastery'][':id?'].$url({ param: { id: '' } }).href} class={c.req.path.includes('/mastery') ? 'active' : ''}>Mastery</a>
+            <a href={url['objectives'].$url().href} class={c.req.path === '/objectives' ? 'active' : ''}>Objectives</a>
+            <a href={url['transparency'][':id?'].$url({ param: { id: '' } }).href} class={c.req.path.includes('/transparency') ? 'active' : ''}>Transparency</a>
           </div>
         </div>
 
