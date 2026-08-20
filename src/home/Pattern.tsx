@@ -407,8 +407,13 @@ const style = css`
             }
 
             .items {
-              max-height: 39rem;
+              max-height: 50.1rem;
               overflow: auto;
+              -ms-overflow-style: none;  /* IE and Edge */
+              scrollbar-width: none;     /* Firefox */
+              &::-webkit-scrollbar {
+                display: none;           /* Chrome, Safari, and Opera */
+              }
 
               .item {
                 padding: var(--space-lite);

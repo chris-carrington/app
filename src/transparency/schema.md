@@ -139,11 +139,12 @@ Junction table between **Job** & **Person** (Client)
 ## JobStatus
 Job status lookup table
 
-| Field    | Type    | Notes       |
-|----------|---------|-------------|
-| id       | INTEGER | PK, AI      |
-| value    | TEXT    | NOT NULL    |
-| isActive | BOOLEAN | DEFAULT = 1 |
+| Field       | Type    | Notes       |
+|-------------|---------|-------------|
+| id          | INTEGER | PK, AI      |
+| value       | TEXT    | NOT NULL    |
+| description | TEXT    | NOT NULL    |
+| isActive    | BOOLEAN | DEFAULT = 1 |
 
 ---
 
