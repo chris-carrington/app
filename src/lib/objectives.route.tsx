@@ -12,7 +12,7 @@ export default new Hono()
       <>
         <Style>{subPageHeroStyle}</Style>
 
-        <div class="mastery">
+        <div class="objectives">
           <div class="sub-page-hero">
             <div class="bg"></div>
             <div class="header">

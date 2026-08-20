@@ -28,8 +28,6 @@ export default (() => {
             <a href={url['mastery'][':id?'].$url({ param: { id: '' } }).href}>Mastery</a>
             <a href={url['objectives'].$url().href}>Objectives</a>
             <a href={url['transparency'][':id?'].$url({ param: { id: '' } }).href}>Transparency</a>
-            <a href={url['sign-in'].$url().href}>Sign In</a>
-            <a href={url['sign-up'].$url().href}>Sign Up</a>
           </div>
         </div>
         <div class="socials">
