@@ -26,7 +26,7 @@ export default (() => {
         <a data-auth="false" href={url['sign-in'].$url().href} class="item anchor">Sign In</a>
         <a data-auth="false" href={url['sign-up'].$url().href} class="item anchor">Sign Up</a>
         <a data-auth="true" href={url.profile.$url().href} class="item anchor">Profile</a>
-        <a data-auth="true" href={url['index'].$url().href} class="item anchor">Sign Out</a>
+        <a data-auth="true" href={url['sign-out'].$url().href} class="item anchor">Sign Out</a>
         <button data-directive={onNavMenuToggle('nav-menu')} class="item btn" type="button">Close Navigation Menu</button>
       </div>
     </div>
