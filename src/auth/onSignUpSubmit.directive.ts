@@ -31,7 +31,7 @@ export default (el: HTMLFormElement) => {
 
       form.resetForm()
       
-      showToast({ value: 'Success!', variant: 'success' })
+      showToast({ value: 'Success! Please click the "Sign In" button w/in your email inbox/spam folder w/in the next 9 minutes!', variant: 'success', ms: Infinity })
     } catch (error) {
       console.error('❌ Submission error:', error)
       showErrorToast(String(error))

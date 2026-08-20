@@ -4,6 +4,7 @@ import { eq } from 'drizzle-orm'
 import type { Context } from 'hono'
 import { db, Session } from '@src/db'
 import { env } from 'cloudflare:workers'
+import { sessionCookieName } from '@src/lib/vars'
 import { deleteCookie, getSignedCookie } from 'hono/cookie'
 
 
@@ -14,12 +15,12 @@ import { deleteCookie, getSignedCookie } from 'hono/cookie'
 export async function signOut(c: Context, sessionId?: string) {
   const currentSessionId = sessionId
     ? null
-    : await getSignedCookie(c, env.COOKIE_SECRET, 'session')
+    : await getSignedCookie(c, env.COOKIE_SECRET, sessionCookieName)
 
   if (sessionId || currentSessionId) {
     await db.delete(Session) // delete session from db
       .where(eq(Session.id, Number(sessionId || currentSessionId)))
 
-    if (currentSessionId) deleteCookie(c, 'session', { path: '/' }) // delete session in cookie
+    if (currentSessionId) deleteCookie(c, sessionCookieName, { path: '/' }) // delete session in cookie
   }
 }

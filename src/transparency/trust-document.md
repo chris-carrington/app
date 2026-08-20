@@ -32,10 +32,12 @@
 - Shasta Trades Trust has a mission
     - We cannot change the Trust's mission unless it becomes "illegal, impossible, or impracticable" to carry out
 - Shasta Trades Nonprofit has a mission
+    - Current: **To help students become licensed contractors through paid apprenticeships, to offer mentors work they love, and to provide affordable, high-quality trade services, to our lovely Mount Shasta community.**
     - A Nonprofit mission can be changed with a Board vote
 - Our Trust mission is nearly identical to our Nonprofit mission
-    - The Trust mission is more broad (any community) than the Nonprofit mission (Mt Shasta community)
-    - This way if we ever want to expand (Yreka, Dusmuir, Redding, etc.), we change the Nonprofit mission with a Board vote and the Trust mission remains the same
+    - Current: **To help students become licensed contractors through paid apprenticeships, to offer mentors work they love, and to provide affordable, high-quality trade services.**
+    - The Trust mission is more broad (**any community**) than the Nonprofit mission (**Mt. Shasta community**)
+    - This way, if we ever want to expand Shasta Trades beyond Mt. Shasta (Yreka, Dusmuir, etc.) then we change our Nonprofit's mission (more focused) and the Trust's mission remains the same (more broad)
 - Shasta Trades Trust has 2 Trustees who can veto any Nonprofit idea (e.g., change Nonprofit mission, hire someone, alter a salary, start working on a new project) that does not align with our Trusts mission
 - If a Trustee violates the Trust’s mission, California’s Attorney General will prosecute them
 - **The Nonprofit does the charitable work and the Trust protects the mission forever**

@@ -22,54 +22,55 @@
 ## Person
 Store all people in our system (students, mentors, customers, Trustees, Board members, employees, vendors, etc.)
 
-| Field     | Type    | Notes                               |
-|-----------|---------|-------------------------------------|
-| id        | INTEGER | PK, AI                              |
-| contactId | INTEGER | NOT NULL, FK &rarr; **Contact(id)** |
-| firstName | TEXT    | NOT NULL                            |
-| lastName  | TEXT    | NOT NULL                            |
+| Field     | Type    | Notes                 |
+|-----------|---------|-----------------------|
+| id        | INTEGER | PK, AI                |
+| firstName | TEXT    | NOT NULL              |
+| lastName  | TEXT    | NOT NULL              |
+| isActive  | BOOLEAN | NOT NULL, DEFAULT = 1 |
 
 ---
 
 ## Contact
 Store contact details for each **Person**
 
-| Field                    | Type    | Notes                  |
-|--------------------------|---------|------------------------|
-| id                       | INTEGER | PK, AI                 |
-| email                    | TEXT    | UNIQUE INDEX, NOT NULL |
-| emailVerified            | BOOLEAN | DEFAULT = 0            |
-| sendNewsletter           | BOOLEAN | DEFAULT = 1            |
-| sendJobOpportunityEmails | BOOLEAN | DEFAULT = 0            |
-| phoneNumber              | TEXT    | NULLABLE               |
-| phoneNumberVerified      | BOOLEAN | DEFAULT = 0            |
-| sendJobOpportunityTexts  | BOOLEAN | DEFAULT = 0            |
+| Field                    | Type    | Notes                                                            |
+|--------------------------|---------|------------------------------------------------------------------|
+| id                       | INTEGER | PK, AI                                                           |
+| personId                 | INTEGER | UNIQUE INDEX, NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE |
+| email                    | TEXT    | UNIQUE INDEX, NOT NULL                                           |
+| emailVerified            | BOOLEAN | DEFAULT = 0                                                      |
+| sendNewsletter           | BOOLEAN | DEFAULT = 1                                                      |
+| sendJobOpportunityEmails | BOOLEAN | DEFAULT = 0                                                      |
+| phoneNumber              | TEXT    | NULLABLE                                                         |
+| phoneNumberVerified      | BOOLEAN | DEFAULT = 0                                                      |
+| sendJobOpportunityTexts  | BOOLEAN | DEFAULT = 0                                                      |
 
 ---
 
 ## Session
 Stores authentication details between a **Person** and our application
 
-| Field           | Type     | Notes                                    |
-|-----------------|----------|------------------------------------------|
-| id              | INTEGER  | PK, AI                                   |
-| personId        | INTEGER  | INDEX, NOT NULL, FK &arr; **Person(id)** |
-| refreshTokenHash | TEXT     | INDEX, NOT NULL                          |
-| expiresAt       | DATETIME | NOT NULL                                 |
-| ipAddress       | TEXT     | NOT NULL                                 |
+| Field           | Type     | Notes                                                     |
+|-----------------|----------|-----------------------------------------------------------|
+| id              | INTEGER  | PK, AI                                                    |
+| personId        | INTEGER  | INDEX, NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE |
+| expiresAt       | DATETIME | NOT NULL                                                  |
+| createdAt       | DATETIME | NOT NULL                                                  |
+| ipAddress       | TEXT     | NOT NULL                                                  |
 
 ---
 
 ## MagicToken
-Before a **Session** is created we send a **Person** an email w/ a **MagicToken** (*passwordless / magic link authenticatio*)
+Before a **Session** is created we send a **Person** an email w/ a **MagicToken** (*passwordless / magic link authentication*)
 
-| Field     | Type     | Notes                                    |
-|-----------|----------|------------------------------------------|
-| id        | INTEGER  | PK, AI                                   |
-| personId  | INTEGER  | INDEX, NOT NULL, FK &arr; **Person(id)** |
-| tokenHash | TEXT     | INDEX, NOT NULL                          |
-| expiresAt | DATETIME | NOT NULL                                 |
-| used      | BOOLEAN  | NOT NULL, DEFAULT = 0                    |
+| Field     | Type     | Notes                                                     |
+|-----------|----------|-----------------------------------------------------------|
+| id        | INTEGER  | PK, AI                                                    |
+| personId  | INTEGER  | INDEX, NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE |
+| tokenHash | TEXT     | INDEX, NOT NULL                                           |
+| expiresAt | DATETIME | NOT NULL                                                  |
+| used      | BOOLEAN  | NOT NULL, DEFAULT = 0                                     |
 
 
 
@@ -78,12 +79,12 @@ Before a **Session** is created we send a **Person** an email w/ a **MagicToken*
 ## ContactUsMessage
 Store messages that are filled out with our Contact Us website form
 
-| Field     | Type     | Notes                              |
-|-----------|----------|------------------------------------|
-| id        | INTEGER  | PK, AI                             |
-| personId  | INTEGER  | NOT NULL, FK &rarr; **Person(id)** |
-| message   | TEXT     | NOT NULL                           |
-| createdAt | DATETIME | NOT NULL, DEFAULT = NOW            |
+| Field     | Type     | Notes                                              |
+|-----------|----------|----------------------------------------------------|
+| id        | INTEGER  | PK, AI                                             |
+| personId  | INTEGER  | NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE |
+| message   | TEXT     | NOT NULL                                           |
+| createdAt | DATETIME | NOT NULL, DEFAULT = NOW                            |
 
 ---
 
@@ -114,24 +115,24 @@ Store all work projects
 ## Job__Trade
 Junction table between **Job** & **Trade**
 
-| Field         | Type    | Notes                                          |
-|---------------|---------|------------------------------------------------|
-| id            | INTEGER | PK, AI                                         |
-| jobId         | INTEGER | INDEX, NOT NULL, FK &rarr; **Job(id)**         |
-| tradeId       | INTEGER | INDEX, NOT NULL, FK &rarr; **Trade(id)**       |
-| -             | -       | UNIQUE(jobId, tradeId)                         |
+| Field         | Type    | Notes                                                  |
+|---------------|---------|--------------------------------------------------------|
+| id            | INTEGER | PK, AI                                                 |
+| jobId         | INTEGER | INDEX, NOT NULL, FK &rarr; **Job(id)**, CASCADE DELETE |
+| tradeId       | INTEGER | INDEX, NOT NULL, FK &rarr; **Trade(id)**               |
+| -             | -       | UNIQUE(jobId, tradeId)                                 |
 
 ---
 
 ## Job__Client
 Junction table between **Job** & **Person** (Client)
 
-| Field    | Type    | Notes                                     |
-|----------|---------|-------------------------------------------|
-| id       | INTEGER | PK, AI                                    |
-| jobId    | INTEGER | INDEX, NOT NULL, FK &rarr; **Job(id)**    |
-| clientId | INTEGER | INDEX, NOT NULL, FK &rarr; **Person(id)** |
-| -        | -       | UNIQUE(jobId, clientId)                   |
+| Field    | Type    | Notes                                                     |
+|----------|---------|-----------------------------------------------------------|
+| id       | INTEGER | PK, AI                                                    |
+| jobId    | INTEGER | INDEX, NOT NULL, FK &rarr; **Job(id)**, CASCADE DELETE    |
+| clientId | INTEGER | INDEX, NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE |
+| -        | -       | UNIQUE(jobId, clientId)                                   |
 
 ---
 
@@ -149,14 +150,14 @@ Job status lookup table
 ## JobLead
 Store entries from our service request (job lead) form
 
-| Field       | Type     | Notes                                         |
-|-------------|----------|-----------------------------------------------|
-| id          | INTEGER  | PK, AI                                        |
-| personId    | INTEGER  | NOT NULL, FK &rarr; **Person(id)**            |
-| statusId    | INTEGER  | INDEX, NOT NULL, FK &rarr; **LeadStatus(id)** |
-| jobId       | INTEGER  | UNIQUE INDEX, NULLABLE, FK &rarr; **Job(id)** |
-| description | TEXT     | NOT NULL                                      |
-| createdAt   | DATETIME | NOT NULL, DEFAULT = NOW                       |
+| Field       | Type     | Notes                                                         |
+|-------------|----------|---------------------------------------------------------------|
+| id          | INTEGER  | PK, AI                                                        |
+| personId    | INTEGER  | NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE            |
+| jobId       | INTEGER  | UNIQUE INDEX, NULLABLE, FK &rarr; **Job(id)**, CASCADE DELETE |
+| statusId    | INTEGER  | INDEX, NOT NULL, FK &rarr; **LeadStatus(id)**                 |
+| description | TEXT     | NOT NULL                                                      |
+| createdAt   | DATETIME | NOT NULL, DEFAULT = NOW                                       |
 
 ---
 
@@ -174,25 +175,25 @@ Lead status lookup table
 ## Trade__JobLead
 Junction table between **Trade** & **JobLead**
 
-| Field         | Type    | Notes                                          |
-|---------------|---------|------------------------------------------------|
-| id            | INTEGER | PK, AI                                         |
-| tradeId       | INTEGER | INDEX, NOT NULL, FK &rarr; **Trade(id)**       |
-| jobLeadId     | INTEGER | INDEX, NOT NULL, FK &rarr; **JobLead(id)**     |
-| -             | -       | UNIQUE(tradeId, jobLeadId)                     |
+| Field         | Type    | Notes                                                      |
+|---------------|---------|------------------------------------------------------------|
+| id            | INTEGER | PK, AI                                                     |
+| jobLeadId     | INTEGER | INDEX, NOT NULL, FK &rarr; **JobLead(id)**, CASCADE DELETE |
+| tradeId       | INTEGER | INDEX, NOT NULL, FK &rarr; **Trade(id)**                   |
+| -             | -       | UNIQUE(tradeId, jobLeadId)                                 |
 
 ---
 
 ## StaffLead
 Store entries from our staff interest form
 
-| Field           | Type     | Notes                                     |
-|-----------------|----------|-------------------------------------------|
-| id              | INTEGER  | PK, AI                                    |
-| personId        | INTEGER  | NOT NULL, FK &rarr; **Person(id)**        |
-| statusId        | INTEGER  | NOT NULL, FK &rarr; **LeadStatus(id)**    |
-| positionId      | INTEGER  | NOT NULL, FK &rarr; **StaffPosition(id)** |
-| createdAt       | DATETIME | NOT NULL, DEFAULT = NOW                   |
+| Field           | Type     | Notes                                              |
+|-----------------|----------|----------------------------------------------------|
+| id              | INTEGER  | PK, AI                                             |
+| personId        | INTEGER  | NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE |
+| statusId        | INTEGER  | NOT NULL, FK &rarr; **LeadStatus(id)**             |
+| positionId      | INTEGER  | NOT NULL, FK &rarr; **StaffPosition(id)**          |
+| createdAt       | DATETIME | NOT NULL, DEFAULT = NOW                            |
 
 ---
 
@@ -211,15 +212,15 @@ Staff position lookup table
 ## Person__StaffPosition
 Junction table between **Person** & **StaffPosition** that also tracks the employment time and potential reason for ending the position
 
-| Field       | Type     | Notes                                            |
-|-------------|----------|--------------------------------------------------|
-| id          | INTEGER  | PK, AI                                           |
-| personId    | INTEGER  | INDEX, NOT NULL, FK &rarr; **Person(id)**        |
-| positionId  | INTEGER  | INDEX, NOT NULL, FK &rarr; **StaffPosition(id)** |
-| endReasonId | INTEGER  | NULLABLE, FK &rarr; **StaffEndReason(id)**       |
-| startDate   | DATETIME | NOT NULL                                         |
-| endDate     | DATETIME | NULLABLE                                         |
-| -           | -        | UNIQUE(personId, positionId)                     |
+| Field       | Type     | Notes                                                     |
+|-------------|----------|-----------------------------------------------------------|
+| id          | INTEGER  | PK, AI                                                    |
+| personId    | INTEGER  | INDEX, NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE |
+| positionId  | INTEGER  | INDEX, NOT NULL, FK &rarr; **StaffPosition(id)**          |
+| endReasonId | INTEGER  | NULLABLE, FK &rarr; **StaffEndReason(id)**                |
+| startDate   | DATETIME | NOT NULL                                                  |
+| endDate     | DATETIME | NULLABLE                                                  |
+| -           | -        | UNIQUE(personId, positionId)                              |
 
 ---
 

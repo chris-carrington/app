@@ -15,7 +15,7 @@ export const Trade__JobLead = sqliteTable(
       .references(() => Trade.id),
     jobLeadId: integer('jobLeadId')
       .notNull()
-      .references(() => JobLead.id),
+      .references(() => JobLead.id, { onDelete: 'cascade' }),
   },
   (table) => [
     index('Trade__JobLead__tradeId__index').on(table.tradeId),

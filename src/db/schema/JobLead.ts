@@ -12,12 +12,12 @@ export const JobLead = sqliteTable(
     id: integer('id').primaryKey({ autoIncrement: true }),
     personId: integer('personId')
       .notNull()
-      .references(() => Person.id),
+      .references(() => Person.id, { onDelete: 'cascade' }),
     statusId: integer('statusId')
       .notNull()
       .references(() => LeadStatus.id),
     jobId: integer('jobId')
-      .references(() => Job.id),
+      .references(() => Job.id, { onDelete: 'cascade' }),
     description: text('description')
       .notNull(),
     createdAt: integer('createdAt', { mode: 'timestamp_ms' })

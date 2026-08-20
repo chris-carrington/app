@@ -2,7 +2,7 @@
 
 import { Hono } from 'hono'
 import { vValidator } from '@hono/valibot-validator'
-import { db, upsertPerson, upsertContact, JobLead, Trade__JobLead, type Transaction } from '@src/db'
+import { db, upsertPersonContact, JobLead, Trade__JobLead, type Transaction } from '@src/db'
 import { ServiceRequestFormData, ServiceRequestSchema } from '@src/serviceRequest/serviceRequest.validator'
 
 
@@ -15,7 +15,11 @@ export default new Hono()
 
       try {
         await db.transaction(async (tx) => { // atomic
-          const personId = await upserts(tx, data)
+          const { personId } = await upsertPersonContact(tx, {
+            person: { firstName: data.firstName, lastName: data.lastName },
+            contact: { email: data.email }
+          })
+
           const jobLeadId = await insertJobLead(tx, data, personId)
 
           await Promise.all([
@@ -29,12 +33,6 @@ export default new Hono()
       return c.json({ success: true })
     }
   )
-
-
-async function upserts(tx: Transaction, data: ServiceRequestFormData) {
-  const contactId = await upsertContact(data, tx)
-  return await upsertPerson(data, contactId, tx)
-}
 
 
 async function insertJobLead(tx: Transaction, data: ServiceRequestFormData, personId: number) {

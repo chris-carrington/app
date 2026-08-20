@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1786413383150,
-      "tag": "0000_regular_the_initiative",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1787028903881,
-      "tag": "0001_workable_gressill",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1787184566494,
-      "tag": "0002_lyrical_fenris",
+      "when": 1787248636756,
+      "tag": "0000_lovely_inhumans",
       "breakpoints": true
     }
   ]

@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "8b47fe38-3c5f-482b-b5d7-fdae2759c81f",
+  "id": "20caf803-8437-40dc-a4c0-347ae6568cce",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Contact": {
@@ -14,12 +14,27 @@
           "notNull": true,
           "autoincrement": true
         },
+        "personId": {
+          "name": "personId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "email": {
           "name": "email",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "emailVerified": {
+          "name": "emailVerified",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
         },
         "sendNewsletter": {
           "name": "sendNewsletter",
@@ -44,6 +59,14 @@
           "notNull": false,
           "autoincrement": false
         },
+        "phoneNumberVerified": {
+          "name": "phoneNumberVerified",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
+        },
         "sendJobOpportunityTexts": {
           "name": "sendJobOpportunityTexts",
           "type": "integer",
@@ -54,6 +77,13 @@
         }
       },
       "indexes": {
+        "Contact_personId_unique": {
+          "name": "Contact_personId_unique",
+          "columns": [
+            "personId"
+          ],
+          "isUnique": true
+        },
         "Contact_email_unique": {
           "name": "Contact_email_unique",
           "columns": [
@@ -62,7 +92,21 @@
           "isUnique": true
         }
       },
-      "foreignKeys": {},
+      "foreignKeys": {
+        "Contact_personId_Person_id_fk": {
+          "name": "Contact_personId_Person_id_fk",
+          "tableFrom": "Contact",
+          "tableTo": "Person",
+          "columnsFrom": [
+            "personId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -112,7 +156,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -262,7 +306,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "JobLead_statusId_LeadStatus_id_fk": {
@@ -288,7 +332,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -388,7 +432,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "Job__Client_clientId_Person_id_fk": {
@@ -401,7 +445,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -469,7 +513,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "Job__Trade_tradeId_Trade_id_fk": {
@@ -522,6 +566,81 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "MagicToken": {
+      "name": "MagicToken",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "personId": {
+          "name": "personId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tokenHash": {
+          "name": "tokenHash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expiresAt": {
+          "name": "expiresAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "used": {
+          "name": "used",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
+        }
+      },
+      "indexes": {
+        "MagicToken__personId__index": {
+          "name": "MagicToken__personId__index",
+          "columns": [
+            "personId"
+          ],
+          "isUnique": false
+        },
+        "MagicToken__tokenHash__index": {
+          "name": "MagicToken__tokenHash__index",
+          "columns": [
+            "tokenHash"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "MagicToken_personId_Person_id_fk": {
+          "name": "MagicToken_personId_Person_id_fk",
+          "tableFrom": "MagicToken",
+          "tableTo": "Person",
+          "columnsFrom": [
+            "personId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "Person": {
       "name": "Person",
       "columns": {
@@ -531,13 +650,6 @@
           "primaryKey": true,
           "notNull": true,
           "autoincrement": true
-        },
-        "contactId": {
-          "name": "contactId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
         },
         "firstName": {
           "name": "firstName",
@@ -552,24 +664,18 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "isActive": {
+          "name": "isActive",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "Person_contactId_Contact_id_fk": {
-          "name": "Person_contactId_Contact_id_fk",
-          "tableFrom": "Person",
-          "tableTo": "Contact",
-          "columnsFrom": [
-            "contactId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -655,7 +761,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "Person__StaffPosition_positionId_StaffPosition_id_fk": {
@@ -682,6 +788,74 @@
             "id"
           ],
           "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "Session": {
+      "name": "Session",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "personId": {
+          "name": "personId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expiresAt": {
+          "name": "expiresAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ipAddress": {
+          "name": "ipAddress",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch() * 1000)"
+        }
+      },
+      "indexes": {
+        "Session__personId__index": {
+          "name": "Session__personId__index",
+          "columns": [
+            "personId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "Session_personId_Person_id_fk": {
+          "name": "Session_personId_Person_id_fk",
+          "tableFrom": "Session",
+          "tableTo": "Person",
+          "columnsFrom": [
+            "personId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -773,7 +947,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "StaffLead_statusId_LeadStatus_id_fk": {
@@ -952,7 +1126,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },

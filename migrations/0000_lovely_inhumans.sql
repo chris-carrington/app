@@ -1,19 +1,24 @@
 CREATE TABLE `Contact` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`personId` integer NOT NULL,
 	`email` text NOT NULL,
+	`emailVerified` integer DEFAULT false,
 	`sendNewsletter` integer DEFAULT true,
 	`sendJobOpportunityEmails` integer DEFAULT false,
 	`phoneNumber` text,
-	`sendJobOpportunityTexts` integer DEFAULT false
+	`phoneNumberVerified` integer DEFAULT false,
+	`sendJobOpportunityTexts` integer DEFAULT false,
+	FOREIGN KEY (`personId`) REFERENCES `Person`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX `Contact_personId_unique` ON `Contact` (`personId`);--> statement-breakpoint
 CREATE UNIQUE INDEX `Contact_email_unique` ON `Contact` (`email`);--> statement-breakpoint
 CREATE TABLE `ContactUsMessage` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`personId` integer NOT NULL,
 	`message` text NOT NULL,
 	`createdAt` integer DEFAULT (unixepoch() * 1000) NOT NULL,
-	FOREIGN KEY (`personId`) REFERENCES `Person`(`id`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`personId`) REFERENCES `Person`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE TABLE `Job` (
@@ -33,9 +38,9 @@ CREATE TABLE `JobLead` (
 	`jobId` integer,
 	`description` text NOT NULL,
 	`createdAt` integer DEFAULT (unixepoch() * 1000) NOT NULL,
-	FOREIGN KEY (`personId`) REFERENCES `Person`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`personId`) REFERENCES `Person`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`statusId`) REFERENCES `LeadStatus`(`id`) ON UPDATE no action ON DELETE no action,
-	FOREIGN KEY (`jobId`) REFERENCES `Job`(`id`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`jobId`) REFERENCES `Job`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE INDEX `JobLead__statusId__index` ON `JobLead` (`statusId`);--> statement-breakpoint
@@ -50,8 +55,8 @@ CREATE TABLE `Job__Client` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`jobId` integer NOT NULL,
 	`clientId` integer NOT NULL,
-	FOREIGN KEY (`jobId`) REFERENCES `Job`(`id`) ON UPDATE no action ON DELETE no action,
-	FOREIGN KEY (`clientId`) REFERENCES `Person`(`id`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`jobId`) REFERENCES `Job`(`id`) ON UPDATE no action ON DELETE cascade,
+	FOREIGN KEY (`clientId`) REFERENCES `Person`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE INDEX `Job__Client__jobId__index` ON `Job__Client` (`jobId`);--> statement-breakpoint
@@ -61,7 +66,7 @@ CREATE TABLE `Job__Trade` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`jobId` integer NOT NULL,
 	`tradeId` integer NOT NULL,
-	FOREIGN KEY (`jobId`) REFERENCES `Job`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`jobId`) REFERENCES `Job`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`tradeId`) REFERENCES `Trade`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
@@ -74,12 +79,22 @@ CREATE TABLE `LeadStatus` (
 	`isActive` integer DEFAULT true
 );
 --> statement-breakpoint
+CREATE TABLE `MagicToken` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`personId` integer NOT NULL,
+	`tokenHash` text NOT NULL,
+	`expiresAt` integer NOT NULL,
+	`used` integer DEFAULT false,
+	FOREIGN KEY (`personId`) REFERENCES `Person`(`id`) ON UPDATE no action ON DELETE cascade
+);
+--> statement-breakpoint
+CREATE INDEX `MagicToken__personId__index` ON `MagicToken` (`personId`);--> statement-breakpoint
+CREATE INDEX `MagicToken__tokenHash__index` ON `MagicToken` (`tokenHash`);--> statement-breakpoint
 CREATE TABLE `Person` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`contactId` integer NOT NULL,
 	`firstName` text NOT NULL,
 	`lastName` text NOT NULL,
-	FOREIGN KEY (`contactId`) REFERENCES `Contact`(`id`) ON UPDATE no action ON DELETE no action
+	`isActive` integer DEFAULT true NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE `Person__StaffPosition` (
@@ -89,7 +104,7 @@ CREATE TABLE `Person__StaffPosition` (
 	`endReasonId` integer,
 	`startDate` integer NOT NULL,
 	`endDate` integer,
-	FOREIGN KEY (`personId`) REFERENCES `Person`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`personId`) REFERENCES `Person`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`positionId`) REFERENCES `StaffPosition`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`endReasonId`) REFERENCES `StaffEndReason`(`id`) ON UPDATE no action ON DELETE no action
 );
@@ -97,6 +112,16 @@ CREATE TABLE `Person__StaffPosition` (
 CREATE INDEX `Person__StaffPosition__personId__index` ON `Person__StaffPosition` (`personId`);--> statement-breakpoint
 CREATE INDEX `Person__StaffPosition__positionId__index` ON `Person__StaffPosition` (`positionId`);--> statement-breakpoint
 CREATE UNIQUE INDEX `Person__StaffPosition__personId__positionId__unique` ON `Person__StaffPosition` (`personId`,`positionId`);--> statement-breakpoint
+CREATE TABLE `Session` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`personId` integer NOT NULL,
+	`expiresAt` integer NOT NULL,
+	`ipAddress` text NOT NULL,
+	`createdAt` integer DEFAULT (unixepoch() * 1000) NOT NULL,
+	FOREIGN KEY (`personId`) REFERENCES `Person`(`id`) ON UPDATE no action ON DELETE cascade
+);
+--> statement-breakpoint
+CREATE INDEX `Session__personId__index` ON `Session` (`personId`);--> statement-breakpoint
 CREATE TABLE `StaffEndReason` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`value` text NOT NULL,
@@ -109,7 +134,7 @@ CREATE TABLE `StaffLead` (
 	`statusId` integer NOT NULL,
 	`positionId` integer NOT NULL,
 	`createdAt` integer DEFAULT (unixepoch() * 1000) NOT NULL,
-	FOREIGN KEY (`personId`) REFERENCES `Person`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`personId`) REFERENCES `Person`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`statusId`) REFERENCES `LeadStatus`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`positionId`) REFERENCES `StaffPosition`(`id`) ON UPDATE no action ON DELETE no action
 );
@@ -132,7 +157,7 @@ CREATE TABLE `Trade__JobLead` (
 	`tradeId` integer NOT NULL,
 	`jobLeadId` integer NOT NULL,
 	FOREIGN KEY (`tradeId`) REFERENCES `Trade`(`id`) ON UPDATE no action ON DELETE no action,
-	FOREIGN KEY (`jobLeadId`) REFERENCES `JobLead`(`id`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`jobLeadId`) REFERENCES `JobLead`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE INDEX `Trade__JobLead__tradeId__index` ON `Trade__JobLead` (`tradeId`);--> statement-breakpoint

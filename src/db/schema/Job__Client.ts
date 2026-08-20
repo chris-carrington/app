@@ -12,10 +12,10 @@ export const Job__Client = sqliteTable(
     id: integer('id').primaryKey({ autoIncrement: true }),
     jobId: integer('jobId')
       .notNull()
-      .references(() => Job.id),
+      .references(() => Job.id, { onDelete: 'cascade' }),
     clientId: integer('clientId')
       .notNull()
-      .references(() => Person.id),
+      .references(() => Person.id, { onDelete: 'cascade' }),
   },
   (table) => [
     index('Job__Client__jobId__index').on(table.jobId),

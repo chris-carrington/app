@@ -2,7 +2,7 @@
 
 import { Hono } from 'hono'
 import { vValidator } from '@hono/valibot-validator'
-import { db, upsertPerson, upsertContact, StaffLead, type Transaction } from '@src/db'
+import { db, upsertPersonContact, StaffLead, type Transaction } from '@src/db'
 import { JoinLeadershipSchema, JoinLeadershipFormData } from '@src/joinLeadership/joinLeadership.validator'
 
 export default new Hono()
@@ -14,7 +14,11 @@ export default new Hono()
 
       try {
         await db.transaction(async (tx) => { // atomic
-          const personId = await upserts(tx, data)
+          const { personId } = await upsertPersonContact(tx, {
+            person: { firstName: data.firstName, lastName: data.lastName },
+            contact: { email: data.email }
+          })
+
           await insertStaffLead(tx, data, personId)
         })
       } catch (e) {
@@ -24,12 +28,6 @@ export default new Hono()
       return c.json({ success: true })
     }
   )
-
-
-async function upserts(tx: Transaction, data: JoinLeadershipFormData) {
-  const contactId = await upsertContact(data, tx)
-  return await upsertPerson(data, contactId, tx)
-}
 
 
 async function insertStaffLead(tx: Transaction, data: JoinLeadershipFormData, personId: number) {

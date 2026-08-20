@@ -50,7 +50,7 @@
 - Powers the "view / delete a session" UI
 
 
-## `DELETE: /api/session/:id`
-1. IF owner or certain staff THEN
-    - Delete session cookie
-    - Delete session in db
+## `/sign-out`
+1. Delete session cookie
+1. Delete session in db
+1. Redirect to `/sign-in`

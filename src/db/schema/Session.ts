@@ -12,7 +12,7 @@ export const Session = sqliteTable(
     id: integer('id').primaryKey({ autoIncrement: true }),
     personId: integer('personId')
       .notNull()
-      .references(() => Person.id),
+      .references(() => Person.id, { onDelete: 'cascade' }),
     expiresAt: integer('expiresAt', { mode: 'timestamp_ms' }).notNull(),
     ipAddress: text('ipAddress').notNull(),
     createdAt: integer('createdAt', { mode: 'timestamp_ms' }).notNull().default(sql`(unixepoch() * 1000)`)

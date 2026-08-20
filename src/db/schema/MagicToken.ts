@@ -12,7 +12,7 @@ export const MagicToken = sqliteTable(
     id: integer('id').primaryKey({ autoIncrement: true }),
     personId: integer('personId')
       .notNull()
-      .references(() => Person.id),
+      .references(() => Person.id, { onDelete: 'cascade' }),
     tokenHash: text('tokenHash').notNull(),
     expiresAt: integer('expiresAt', { mode: 'timestamp_ms' }).notNull(),
     used: integer('used', { mode: 'boolean' }).default(false),

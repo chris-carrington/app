@@ -15,8 +15,7 @@ export const db = drizzle(createClient({
 
 
 // queries
-export { upsertPerson } from '@src/db/upsertPerson'
-export { upsertContact } from '@src/db/upsertContact'
+export { upsertPersonContact } from '@src/db/upsertPersonContact'
 
 
 // tables

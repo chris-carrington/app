@@ -10,7 +10,7 @@ export const ContactUsMessage = sqliteTable('ContactUsMessage', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   personId: integer('personId')
     .notNull()
-    .references(() => Person.id),
+    .references(() => Person.id, { onDelete: 'cascade' }),
   message: text('message').notNull(),
   createdAt: integer('createdAt', { mode: 'timestamp_ms' })
     .notNull()

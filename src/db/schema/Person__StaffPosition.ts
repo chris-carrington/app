@@ -12,7 +12,7 @@ export const Person__StaffPosition = sqliteTable(
     id: integer('id').primaryKey({ autoIncrement: true }),
     personId: integer('personId')
       .notNull()
-      .references(() => Person.id),
+      .references(() => Person.id, { onDelete: 'cascade' }),
     positionId: integer('positionId')
       .notNull()
       .references(() => StaffPosition.id),

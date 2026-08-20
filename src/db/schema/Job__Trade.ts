@@ -12,7 +12,7 @@ export const Job__Trade = sqliteTable(
     id: integer('id').primaryKey({ autoIncrement: true }),
     jobId: integer('jobId')
       .notNull()
-      .references(() => Job.id),
+      .references(() => Job.id, { onDelete: 'cascade' }),
     tradeId: integer('tradeId')
       .notNull()
       .references(() => Trade.id),
