@@ -97,11 +97,14 @@ export const menuStyle = css`
           opacity: 0.6;
         }
         &.header {
-          opacity: 0.6;
           display: flex;
           justify-content: space-between;
           box-shadow: 0px 6px 9px 3px rgba(0, 0, 0, 0.06);
           font-weight: 500;
+
+          span {
+            opacity: 0.6;
+          }
 
           .close {
             padding: 0;
@@ -118,6 +121,7 @@ export const menuStyle = css`
             svg {
               width: 100%;
               height: 100%;
+              color: rgba(0, 123, 255, 0.63);
             }
           }
         }
