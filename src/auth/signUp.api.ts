@@ -3,9 +3,12 @@
 import { Hono } from 'hono'
 import { eq } from 'drizzle-orm'
 import { signIn } from './signIn'
-import { db, Person, Contact, Trade } from '@src/db'
+import { Person, Contact, Trade } from '@src/db'
 import { vValidator } from '@hono/valibot-validator'
 import { SignUpSchema } from '@src/auth/signUp.validator'
+import { drizzle } from 'drizzle-orm/libsql'
+import { createClient, type ResultSet } from '@libsql/client/web'
+import { env } from 'cloudflare:workers'
 
 
 export default new Hono()
@@ -16,6 +19,11 @@ export default new Hono()
       const data = c.req.valid('json')
 
       try {
+        const db = drizzle(createClient({
+          url: env.TURSO_DATABASE_URL,
+          authToken: env.TURSO_AUTH_TOKEN,
+        }))
+
         const test = await db
           .select()
           .from(Trade)
