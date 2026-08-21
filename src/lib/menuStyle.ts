@@ -100,7 +100,8 @@ export const menuStyle = css`
           opacity: 0.6;
           display: flex;
           justify-content: space-between;
-          border-bottom: 1px solid rgba(0,0,0,0.21);
+          box-shadow: 0px 6px 9px 3px rgba(0, 0, 0, 0.06);
+          font-weight: 500;
 
           .close {
             padding: 0;
