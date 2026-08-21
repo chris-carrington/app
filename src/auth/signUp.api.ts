@@ -19,6 +19,9 @@ export default new Hono()
       const data = c.req.valid('json')
 
       try {
+        console.log('TURSO_DATABASE_URL:', env.TURSO_DATABASE_URL);
+        console.log('TURSO_AUTH_TOKEN:', env.TURSO_AUTH_TOKEN.slice(-3));
+
         const db = drizzle(createClient({
           url: env.TURSO_DATABASE_URL,
           authToken: env.TURSO_AUTH_TOKEN,
