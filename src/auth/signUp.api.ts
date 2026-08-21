@@ -3,12 +3,9 @@
 import { Hono } from 'hono'
 import { eq } from 'drizzle-orm'
 import { signIn } from './signIn'
-import { Person, Contact, Trade } from '@src/db'
+import { db, Person, Contact } from '@src/db'
 import { vValidator } from '@hono/valibot-validator'
 import { SignUpSchema } from '@src/auth/signUp.validator'
-import { drizzle } from 'drizzle-orm/libsql'
-import { createClient, type ResultSet } from '@libsql/client/web'
-import { env } from 'cloudflare:workers'
 
 
 export default new Hono()
