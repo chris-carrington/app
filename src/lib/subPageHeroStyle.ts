@@ -6,10 +6,10 @@ import { css } from 'hono/css'
 export const subPageHeroStyle = css`
   .sub-page-hero {
     width: 100%;
-    padding: var(--space) var(--space-lite) calc(var(--space) * 1.41) var(--space-lite);
-    margin-bottom: var(--space-huge);
-    background-color: var(--primary);
     position: relative;
+    margin-bottom: var(--space);
+    background-color: var(--primary);
+    padding: var(--space) 0 calc(var(--space) * 1.8) 0;
 
     .bg {
       position: absolute;
@@ -23,12 +23,12 @@ export const subPageHeroStyle = css`
     .buttons {
       position: relative;
       z-index: var(--z-content);
+      padding: 0 var(--space-lite);
     }
 
     .header {
       margin: 0 auto;
       max-width: var(--max-width);
-      padding: 0 var(--space-lite) var(--space) var(--space-lite);
 
       h1 {
         font-size: 3.2rem;
@@ -45,9 +45,11 @@ export const subPageHeroStyle = css`
 
     .buttons {
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
+      justify-content: center;
       gap: var(--space-lite);
+      margin: var(--space) auto 0 auto;
+      max-width: var(--max-width);
 
       a,
       button {
