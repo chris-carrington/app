@@ -18,6 +18,7 @@ export default new Hono()
       ? c.redirect(redirect)
       : c.render(
         <>
+          <title>Shasta Trades · Profile</title>
           <Style>{subPageHeroStyle}</Style>
 
           <div class="profile">

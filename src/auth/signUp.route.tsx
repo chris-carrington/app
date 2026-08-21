@@ -12,6 +12,7 @@ export default new Hono()
   .get('/', (c) => {
     return c.render(
       <>
+        <title>Shasta Trades · Sign Up</title>
         <Style>{authStyle}</Style>
 
         <form data-directive={onSignUpSubmit()} class="auth">

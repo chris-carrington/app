@@ -3,14 +3,15 @@
 
 import { Hono } from 'hono'
 import { css, Style } from 'hono/css'
-import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import { onObjectivesPageLoad } from '@hono-directives'
+import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 
 
 export default new Hono()
   .get('/', async (c) => {
     return c.render(
       <>
+        <title>Shasta Trades · Objectives</title>
         <Style>{style}</Style>
         <Style>{subPageHeroStyle}</Style>
 

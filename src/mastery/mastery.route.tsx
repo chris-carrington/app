@@ -12,13 +12,14 @@ import mdYoutubeUniversity from '@src/mastery/youtubeUniversity.md?raw'
 export default new Hono()
   .get('/:id?', async (c) => {
     const paramId = c.req.param('id') ?? documents[0].id
-    const current = documents.find(b => b.id === paramId)
-    const html = current ? await md2html(current.md, current.wrapTables) : ''
+    const current = documents.find(b => b.id === paramId) ?? documents[0]
+    const html = await md2html(current.md, current.wrapTables)
 
     return c.render(
       <>
         <Style>{mdStyle}</Style>
         <Style>{subPageHeroStyle}</Style>
+        <title>Shasta Trades · Mastery · {current.title}</title>
 
         <div class="mastery">
           <div class="sub-page-hero">

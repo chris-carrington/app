@@ -64,6 +64,7 @@ export default new Hono()
 
         return c.render(
           <>
+            <title>Shasta Trades · Magic Link</title>
             <Style>{style}</Style>
             <h1>Something went wrong. Please <a href={urlBE()['sign-in'].$url().href}>sign in</a> again.</h1>
           </>
