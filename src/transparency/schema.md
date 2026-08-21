@@ -242,8 +242,8 @@ Stores objectives on our Kanban
 | Field       | Type     | Notes                                             |
 |-------------|----------|---------------------------------------------------|
 | id          | INTEGER  | PK, AI                                            |
-| columnId    | INTEGER  | INDEX, NOT NULL, FK &arr; **ObjectiveColumn(id)** |
-| createdBy   | INTEGER  | NOT NULL, FK &arr; **Person(id)**, CASCADE DELETE |
+| columnId    | INTEGER  | INDEX, NOT NULL, FK &arrr; **ObjectiveColumn(id)** |
+| createdBy   | INTEGER  | NOT NULL, FK &arrr; **Person(id)**, CASCADE DELETE |
 | title       | TEXT     | UNQUE INDEX, NOT NULL                             |
 | description | TEXT     |                                                   |
 | order       | DECIMAL  | INDEX, NOT NULL                                   |
@@ -305,7 +305,7 @@ Store **Objective** comments
 |-------------|----------|--------------------------------------------------------------|
 | id          | INTEGER  | PK, AI                                                       |
 | objectiveId | INTEGER  | INDEX, NOT NULL, FK &rarr; **Objective(id)**, CASCADE DELETE |
-| createdBy   | INTEGER  | NOT NULL, FK &arr; **Person(id)**, CASCADE DELETE            |
+| createdBy   | INTEGER  | NOT NULL, FK &arrr; **Person(id)**, CASCADE DELETE            |
 | value       | TEXT     | NOT NULL                                                     |
 | createdAt   | DATETIME | NOT NULL, DEFAULT = NOW                                      |
 
