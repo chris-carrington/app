@@ -91,6 +91,7 @@ const style = css`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     width: 100%;
+    padding: 0 var(--space-lite);
   }
 
   /* ===== KANBAN BOARD – SCROLL CONTAINER ===== */
