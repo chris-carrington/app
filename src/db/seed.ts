@@ -76,7 +76,7 @@ const jobStatuses = [
 ]
 
 const objectiveColumns = [
-  { value: 'Backlog' },
+  { value: 'To Do' },
   { value: 'In Progress' },
   { value: 'Completed' },
 ]
