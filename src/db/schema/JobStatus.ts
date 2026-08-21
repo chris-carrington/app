@@ -1,7 +1,5 @@
 // app/src/db/schema/JobStatus.ts
 
-import { Job } from '@src/db'
-import { relations } from 'drizzle-orm'
 import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
 
 
@@ -10,10 +8,5 @@ export const JobStatus = sqliteTable('JobStatus', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   value: text('value').notNull(),
   description: text('description').notNull(),
-  isActive: integer('isActive', { mode: 'boolean' }).default(true),
+  isActive: integer('isActive', { mode: 'boolean' }).notNull().default(true),
 })
-
-
-export const JobStatusRelations = relations(JobStatus, ({ many }) => ({
-  jobs: many(Job),
-}))

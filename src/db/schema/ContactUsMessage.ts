@@ -1,7 +1,7 @@
 // app/src/db/schema/ContactUsMessage.ts
 
 import { Person } from '@src/db'
-import { sql, relations } from 'drizzle-orm'
+import { sql } from 'drizzle-orm'
 import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
 
 
@@ -16,11 +16,3 @@ export const ContactUsMessage = sqliteTable('ContactUsMessage', {
     .notNull()
     .default(sql`(unixepoch() * 1000)`),
 })
-
-
-export const ContactUsMessageRelations = relations(ContactUsMessage, ({ one }) => ({
-  person: one(Person, {
-    fields: [ContactUsMessage.personId],
-    references: [Person.id],
-  }),
-}))

@@ -1,11 +1,8 @@
 # Shasta Trades App
 
 ## Todo
-1. Sign Up
-1. Sign In
-1. Sign Out
-1. Profile
 1. Objectives
+1. Profile
 1. Transparency
 1. Mastery
 1. Directive, multiple on 1 element

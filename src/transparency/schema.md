@@ -91,11 +91,11 @@ Store messages that are filled out with our Contact Us website form
 ## Trade
 Trades lookup table
 
-| Field    | Type    | Notes       |
-|----------|---------|-------------|
-| id       | INTEGER | PK, AI      |
-| value    | TEXT    | NOT NULL    |
-| isActive | BOOLEAN | DEFAULT = 1 |
+| Field    | Type    | Notes                 |
+|----------|---------|-----------------------|
+| id       | INTEGER | PK, AI                |
+| value    | TEXT    | NOT NULL              |
+| isActive | BOOLEAN | NOT NULL, DEFAULT = 1 |
 
 ---
 
@@ -115,12 +115,12 @@ Store all work projects
 ## Job__Trade
 Junction table between **Job** & **Trade**
 
-| Field         | Type    | Notes                                                  |
-|---------------|---------|--------------------------------------------------------|
-| id            | INTEGER | PK, AI                                                 |
-| jobId         | INTEGER | INDEX, NOT NULL, FK &rarr; **Job(id)**, CASCADE DELETE |
-| tradeId       | INTEGER | INDEX, NOT NULL, FK &rarr; **Trade(id)**               |
-| -             | -       | UNIQUE(jobId, tradeId)                                 |
+| Field         | Type    | Notes                                           |
+|---------------|---------|-------------------------------------------------|
+| id            | INTEGER | PK, AI                                          |
+| jobId         | INTEGER | NOT NULL, FK &rarr; **Job(id)**, CASCADE DELETE |
+| tradeId       | INTEGER | INDEX, NOT NULL, FK &rarr; **Trade(id)**        |
+| -             | -       | UNIQUE(jobId, tradeId)                          |
 
 ---
 
@@ -130,7 +130,7 @@ Junction table between **Job** & **Person** (Client)
 | Field    | Type    | Notes                                                     |
 |----------|---------|-----------------------------------------------------------|
 | id       | INTEGER | PK, AI                                                    |
-| jobId    | INTEGER | INDEX, NOT NULL, FK &rarr; **Job(id)**, CASCADE DELETE    |
+| jobId    | INTEGER | NOT NULL, FK &rarr; **Job(id)**, CASCADE DELETE           |
 | clientId | INTEGER | INDEX, NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE |
 | -        | -       | UNIQUE(jobId, clientId)                                   |
 
@@ -139,12 +139,12 @@ Junction table between **Job** & **Person** (Client)
 ## JobStatus
 Job status lookup table
 
-| Field       | Type    | Notes       |
-|-------------|---------|-------------|
-| id          | INTEGER | PK, AI      |
-| value       | TEXT    | NOT NULL    |
-| description | TEXT    | NOT NULL    |
-| isActive    | BOOLEAN | DEFAULT = 1 |
+| Field       | Type    | Notes                 |
+|-------------|---------|-----------------------|
+| id          | INTEGER | PK, AI                |
+| value       | TEXT    | NOT NULL              |
+| description | TEXT    | NOT NULL              |
+| isActive    | BOOLEAN | NOT NULL, DEFAULT = 1 |
 
 ---
 
@@ -165,73 +165,160 @@ Store entries from our service request (job lead) form
 ## LeadStatus
 Lead status lookup table
 
-| Field    | Type    | Notes       |
-|----------|---------|-------------|
-| id       | INTEGER | PK, AI      |
-| value    | TEXT    | NOT NULL    |
-| isActive | BOOLEAN | DEFAULT = 1 |
+| Field    | Type    | Notes                 |
+|----------|---------|-----------------------|
+| id       | INTEGER | PK, AI                |
+| value    | TEXT    | NOT NULL              |
+| isActive | BOOLEAN | NOT NULL, DEFAULT = 1 |
 
 ---
 
 ## Trade__JobLead
 Junction table between **Trade** & **JobLead**
 
-| Field         | Type    | Notes                                                      |
-|---------------|---------|------------------------------------------------------------|
-| id            | INTEGER | PK, AI                                                     |
-| jobLeadId     | INTEGER | INDEX, NOT NULL, FK &rarr; **JobLead(id)**, CASCADE DELETE |
-| tradeId       | INTEGER | INDEX, NOT NULL, FK &rarr; **Trade(id)**                   |
-| -             | -       | UNIQUE(tradeId, jobLeadId)                                 |
+| Field     | Type    | Notes                                               |
+|-----------|---------|-----------------------------------------------------|
+| id        | INTEGER | PK, AI                                              |
+| jobLeadId | INTEGER | NOT NULL, FK &rarr; **JobLead(id)**, CASCADE DELETE |
+| tradeId   | INTEGER | INDEX, NOT NULL, FK &rarr; **Trade(id)**            |
+| -         | -       | UNIQUE(tradeId, jobLeadId)                          |
 
 ---
 
 ## StaffLead
 Store entries from our staff interest form
 
-| Field           | Type     | Notes                                              |
-|-----------------|----------|----------------------------------------------------|
-| id              | INTEGER  | PK, AI                                             |
-| personId        | INTEGER  | NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE |
-| statusId        | INTEGER  | NOT NULL, FK &rarr; **LeadStatus(id)**             |
-| positionId      | INTEGER  | NOT NULL, FK &rarr; **StaffPosition(id)**          |
-| createdAt       | DATETIME | NOT NULL, DEFAULT = NOW                            |
+| Field      | Type     | Notes                                              |
+|------------|----------|----------------------------------------------------|
+| id         | INTEGER  | PK, AI                                             |
+| personId   | INTEGER  | NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE |
+| statusId   | INTEGER  | NOT NULL, FK &rarr; **LeadStatus(id)**             |
+| positionId | INTEGER  | NOT NULL, FK &rarr; **StaffPosition(id)**          |
+| createdAt  | DATETIME | NOT NULL, DEFAULT = NOW                            |
 
 ---
 
 ## StaffPosition
 Staff position lookup table
 
-| Field    | Type    | Notes       |
-|----------|---------|-------------|
-| id       | INTEGER | PK, AI      |
-| value    | TEXT    | NOT NULL    |
-| isActive | BOOLEAN | DEFAULT = 1 |
-| isHiring | BOOLEAN | DEFAULT = 1 |
+| Field    | Type    | Notes                 |
+|----------|---------|-----------------------|
+| id       | INTEGER | PK, AI                |
+| value    | TEXT    | NOT NULL              |
+| isActive | BOOLEAN | NOT NULL, DEFAULT = 1 |
+| isHiring | BOOLEAN | NOT NULL, DEFAULT = 1 |
 
 ---
 
 ## Person__StaffPosition
 Junction table between **Person** & **StaffPosition** that also tracks the employment time and potential reason for ending the position
 
-| Field       | Type     | Notes                                                     |
-|-------------|----------|-----------------------------------------------------------|
-| id          | INTEGER  | PK, AI                                                    |
-| personId    | INTEGER  | INDEX, NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE |
-| positionId  | INTEGER  | INDEX, NOT NULL, FK &rarr; **StaffPosition(id)**          |
-| endReasonId | INTEGER  | NULLABLE, FK &rarr; **StaffEndReason(id)**                |
-| startDate   | DATETIME | NOT NULL                                                  |
-| endDate     | DATETIME | NULLABLE                                                  |
-| -           | -        | UNIQUE(personId, positionId)                              |
+| Field       | Type     | Notes                                              |
+|-------------|----------|----------------------------------------------------|
+| id          | INTEGER  | PK, AI                                             |
+| personId    | INTEGER  | NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE |
+| positionId  | INTEGER  | INDEX, NOT NULL, FK &rarr; **StaffPosition(id)**   |
+| endReasonId | INTEGER  | NULLABLE, FK &rarr; **StaffEndReason(id)**         |
+| startDate   | DATETIME | NOT NULL                                           |
+| endDate     | DATETIME | NULLABLE                                           |
+| -           | -        | UNIQUE(personId, positionId)                       |
 
 ---
 
 ## StaffEndReason
 Staff end reason lookup table
 
-| Field    | Type    | Notes       |
-|----------|---------|-------------|
-| id       | INTEGER | PK, AI      |
-| value    | TEXT    | NOT NULL    |
-| isActive | BOOLEAN | DEFAULT = 1 |
+| Field    | Type    | Notes                 |
+|----------|---------|-----------------------|
+| id       | INTEGER | PK, AI                |
+| value    | TEXT    | NOT NULL              |
+| isActive | BOOLEAN | NOT NULL, DEFAULT = 1 |
+
+---
+
+## Objective
+Stores objectives on our Kanban
+
+| Field       | Type     | Notes                                             |
+|-------------|----------|---------------------------------------------------|
+| id          | INTEGER  | PK, AI                                            |
+| columnId    | INTEGER  | INDEX, NOT NULL, FK &arr; **ObjectiveColumn(id)** |
+| createdBy   | INTEGER  | NOT NULL, FK &arr; **Person(id)**, CASCADE DELETE |
+| title       | TEXT     | UNQUE INDEX, NOT NULL                             |
+| description | TEXT     |                                                   |
+| order       | DECIMAL  | INDEX, NOT NULL                                   |
+| createdAt   | DATETIME | NOT NULL, DEFAULT = NOW                           |
+
+---
+
+## Objective__Assignee
+Junction table between **Objective** & **Person**
+
+| Field       | Type    | Notes                                                     |
+|-------------|---------|-----------------------------------------------------------|
+| id          | INTEGER | PK, AI                                                    |
+| objectiveId | INTEGER | NOT NULL, FK &rarr; **Objective(id)**, CASCADE DELETE     |
+| personId    | INTEGER | INDEX, NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE |
+| -           | -       | UNIQUE(objectiveId, personId)                             |
+
+---
+
+## ObjectiveColumn
+Objective column (on Kanban) lookup table
+
+| Field    | Type    | Notes                 |
+|----------|---------|-----------------------|
+| id       | INTEGER | PK, AI                |
+| value    | TEXT    | NOT NULL              |
+| isActive | BOOLEAN | NOT NULL, DEFAULT = 1 |
+
+---
+
+## ObjectiveTag
+Objective tag lookup table (more specific then **ObjectiveColumn**)
+
+| Field    | Type    | Notes                 |
+|----------|---------|-----------------------|
+| id       | INTEGER | PK, AI                |
+| value    | TEXT    | NOT NULL              |
+| isActive | BOOLEAN | NOT NULL, DEFAULT = 1 |
+| order    | INTEGER | NOT NULL              |
+
+---
+
+## Objective__Tag
+Junction table between **Objective** & **ObjectiveTag**
+
+| Field       | Type    | Notes                                                 |
+|-------------|---------|-------------------------------------------------------|
+| id          | INTEGER | PK, AI                                                |
+| objectiveId | INTEGER | NOT NULL, FK &rarr; **Objective(id)**, CASCADE DELETE |
+| tagId       | INTEGER | INDEX, NOT NULL, FK &rarr; **ObjectiveTag(id)**       |
+| -           | -       | UNIQUE(objectiveId, tagId)                            |
+
+---
+
+## ObjectiveComment
+Store **Objective** comments
+
+| Field       | Type     | Notes                                                        |
+|-------------|----------|--------------------------------------------------------------|
+| id          | INTEGER  | PK, AI                                                       |
+| objectiveId | INTEGER  | INDEX, NOT NULL, FK &rarr; **Objective(id)**, CASCADE DELETE |
+| createdBy   | INTEGER  | NOT NULL, FK &arr; **Person(id)**, CASCADE DELETE            |
+| value       | TEXT     | NOT NULL                                                     |
+| createdAt   | DATETIME | NOT NULL, DEFAULT = NOW                                      |
+
+---
+
+## ObjectiveComment__Assignee
+Junction table between **ObjectiveComment** & **Person**. If someone is assigned to an **Objective** then **DO NOT** store an entry for them here. **ObjectiveComment__Assignee** is for notifying people about an **ObjectiveComment** that are **NOT** assigned to an **Objective** when we'd love for them to know about a comment.
+
+| Field       | Type    | Notes                                                        |
+|-------------|---------|--------------------------------------------------------------|
+| id          | INTEGER | PK, AI                                                       |
+| commentId   | INTEGER | NOT NULL, FK &rarr; **ObjectiveComment(id)**, CASCADE DELETE |
+| personId    | INTEGER | INDEX, NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE    |
+| -           | -       | UNIQUE(commentId, personId)                                  |
 
 ---

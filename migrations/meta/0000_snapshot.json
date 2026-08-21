@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "20caf803-8437-40dc-a4c0-347ae6568cce",
+  "id": "71733fd0-7540-4865-8c68-dc9527217ea5",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Contact": {
@@ -77,15 +77,15 @@
         }
       },
       "indexes": {
-        "Contact_personId_unique": {
-          "name": "Contact_personId_unique",
+        "Contact__personId__unique": {
+          "name": "Contact__personId__unique",
           "columns": [
             "personId"
           ],
           "isUnique": true
         },
-        "Contact_email_unique": {
-          "name": "Contact_email_unique",
+        "Contact__email__unique": {
+          "name": "Contact__email__unique",
           "columns": [
             "email"
           ],
@@ -357,11 +357,18 @@
           "notNull": true,
           "autoincrement": false
         },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "isActive": {
           "name": "isActive",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": true
         }
@@ -398,13 +405,6 @@
         }
       },
       "indexes": {
-        "Job__Client__jobId__index": {
-          "name": "Job__Client__jobId__index",
-          "columns": [
-            "jobId"
-          ],
-          "isUnique": false
-        },
         "Job__Client__clientId__index": {
           "name": "Job__Client__clientId__index",
           "columns": [
@@ -486,13 +486,6 @@
           ],
           "isUnique": false
         },
-        "Job__Trade__jobId__index": {
-          "name": "Job__Trade__jobId__index",
-          "columns": [
-            "jobId"
-          ],
-          "isUnique": false
-        },
         "Job__Trade__jobId__tradeId__unique": {
           "name": "Job__Trade__jobId__tradeId__unique",
           "columns": [
@@ -555,7 +548,7 @@
           "name": "isActive",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": true
         }
@@ -634,6 +627,489 @@
             "id"
           ],
           "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "Objective": {
+      "name": "Objective",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "columnId": {
+          "name": "columnId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdBy": {
+          "name": "createdBy",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "order": {
+          "name": "order",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch() * 1000)"
+        }
+      },
+      "indexes": {
+        "Objective__columnId__index": {
+          "name": "Objective__columnId__index",
+          "columns": [
+            "columnId"
+          ],
+          "isUnique": false
+        },
+        "Objective__order__index": {
+          "name": "Objective__order__index",
+          "columns": [
+            "order"
+          ],
+          "isUnique": false
+        },
+        "Objective__title__unique": {
+          "name": "Objective__title__unique",
+          "columns": [
+            "title"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "Objective_columnId_ObjectiveColumn_id_fk": {
+          "name": "Objective_columnId_ObjectiveColumn_id_fk",
+          "tableFrom": "Objective",
+          "tableTo": "ObjectiveColumn",
+          "columnsFrom": [
+            "columnId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "Objective_createdBy_Person_id_fk": {
+          "name": "Objective_createdBy_Person_id_fk",
+          "tableFrom": "Objective",
+          "tableTo": "Person",
+          "columnsFrom": [
+            "createdBy"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "ObjectiveColumn": {
+      "name": "ObjectiveColumn",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "isActive": {
+          "name": "isActive",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "ObjectiveComment": {
+      "name": "ObjectiveComment",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "objectiveId": {
+          "name": "objectiveId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdBy": {
+          "name": "createdBy",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch() * 1000)"
+        }
+      },
+      "indexes": {
+        "ObjectiveComment__objectiveId__index": {
+          "name": "ObjectiveComment__objectiveId__index",
+          "columns": [
+            "objectiveId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "ObjectiveComment_objectiveId_Objective_id_fk": {
+          "name": "ObjectiveComment_objectiveId_Objective_id_fk",
+          "tableFrom": "ObjectiveComment",
+          "tableTo": "Objective",
+          "columnsFrom": [
+            "objectiveId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "ObjectiveComment_createdBy_Person_id_fk": {
+          "name": "ObjectiveComment_createdBy_Person_id_fk",
+          "tableFrom": "ObjectiveComment",
+          "tableTo": "Person",
+          "columnsFrom": [
+            "createdBy"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "ObjectiveComment__Assignee": {
+      "name": "ObjectiveComment__Assignee",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "commentId": {
+          "name": "commentId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "personId": {
+          "name": "personId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "ObjectiveComment__Assignee__personId__index": {
+          "name": "ObjectiveComment__Assignee__personId__index",
+          "columns": [
+            "personId"
+          ],
+          "isUnique": false
+        },
+        "ObjectiveComment__Assignee__commentId__personId__unique": {
+          "name": "ObjectiveComment__Assignee__commentId__personId__unique",
+          "columns": [
+            "commentId",
+            "personId"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "ObjectiveComment__Assignee_commentId_ObjectiveComment_id_fk": {
+          "name": "ObjectiveComment__Assignee_commentId_ObjectiveComment_id_fk",
+          "tableFrom": "ObjectiveComment__Assignee",
+          "tableTo": "ObjectiveComment",
+          "columnsFrom": [
+            "commentId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "ObjectiveComment__Assignee_personId_Person_id_fk": {
+          "name": "ObjectiveComment__Assignee_personId_Person_id_fk",
+          "tableFrom": "ObjectiveComment__Assignee",
+          "tableTo": "Person",
+          "columnsFrom": [
+            "personId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "ObjectiveTag": {
+      "name": "ObjectiveTag",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "isActive": {
+          "name": "isActive",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "Objective__Assignee": {
+      "name": "Objective__Assignee",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "objectiveId": {
+          "name": "objectiveId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "personId": {
+          "name": "personId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "Objective__Assignee__personId__index": {
+          "name": "Objective__Assignee__personId__index",
+          "columns": [
+            "personId"
+          ],
+          "isUnique": false
+        },
+        "Objective__Assignee__objectiveId__personId__unique": {
+          "name": "Objective__Assignee__objectiveId__personId__unique",
+          "columns": [
+            "objectiveId",
+            "personId"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "Objective__Assignee_objectiveId_Objective_id_fk": {
+          "name": "Objective__Assignee_objectiveId_Objective_id_fk",
+          "tableFrom": "Objective__Assignee",
+          "tableTo": "Objective",
+          "columnsFrom": [
+            "objectiveId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "Objective__Assignee_personId_Person_id_fk": {
+          "name": "Objective__Assignee_personId_Person_id_fk",
+          "tableFrom": "Objective__Assignee",
+          "tableTo": "Person",
+          "columnsFrom": [
+            "personId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "Objective__Tag": {
+      "name": "Objective__Tag",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "objectiveId": {
+          "name": "objectiveId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tagId": {
+          "name": "tagId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "Objective__Tag__tagId__index": {
+          "name": "Objective__Tag__tagId__index",
+          "columns": [
+            "tagId"
+          ],
+          "isUnique": false
+        },
+        "Objective__Tag__objectiveId__tagId__unique": {
+          "name": "Objective__Tag__objectiveId__tagId__unique",
+          "columns": [
+            "objectiveId",
+            "tagId"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "Objective__Tag_objectiveId_Objective_id_fk": {
+          "name": "Objective__Tag_objectiveId_Objective_id_fk",
+          "tableFrom": "Objective__Tag",
+          "tableTo": "Objective",
+          "columnsFrom": [
+            "objectiveId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "Objective__Tag_tagId_ObjectiveTag_id_fk": {
+          "name": "Objective__Tag_tagId_ObjectiveTag_id_fk",
+          "tableFrom": "Objective__Tag",
+          "tableTo": "ObjectiveTag",
+          "columnsFrom": [
+            "tagId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
@@ -727,13 +1203,6 @@
         }
       },
       "indexes": {
-        "Person__StaffPosition__personId__index": {
-          "name": "Person__StaffPosition__personId__index",
-          "columns": [
-            "personId"
-          ],
-          "isUnique": false
-        },
         "Person__StaffPosition__positionId__index": {
           "name": "Person__StaffPosition__positionId__index",
           "columns": [
@@ -884,7 +1353,7 @@
           "name": "isActive",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": true
         }
@@ -1002,7 +1471,7 @@
           "name": "isActive",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": true
         },
@@ -1010,7 +1479,7 @@
           "name": "isHiring",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": true
         }
@@ -1042,7 +1511,7 @@
           "name": "isActive",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": true
         }
@@ -1079,13 +1548,6 @@
         }
       },
       "indexes": {
-        "Trade__JobLead__tradeId__index": {
-          "name": "Trade__JobLead__tradeId__index",
-          "columns": [
-            "tradeId"
-          ],
-          "isUnique": false
-        },
         "Trade__JobLead__jobLeadId__index": {
           "name": "Trade__JobLead__jobLeadId__index",
           "columns": [

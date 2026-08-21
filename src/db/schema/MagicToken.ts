@@ -1,7 +1,6 @@
 // app/src/db/schema/MagicToken.ts
 
 import { Person } from '@src/db'
-import { relations } from 'drizzle-orm'
 import { text, index, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
 
 
@@ -21,11 +20,3 @@ export const MagicToken = sqliteTable(
     index('MagicToken__personId__index').on(table.personId),
     index('MagicToken__tokenHash__index').on(table.tokenHash),
   ])
-
-
-export const MagicTokenRelations = relations(MagicToken, ({ one }) => ({
-  person: one(Person, {
-    fields: [MagicToken.personId],
-    references: [Person.id],
-  }),
-}))

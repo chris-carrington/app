@@ -1,6 +1,5 @@
 // app/src/db/schema/Person__StaffPosition.ts
 
-import { relations } from 'drizzle-orm'
 import { Person, StaffPosition, StaffEndReason } from '@src/db'
 import { index, integer, uniqueIndex, sqliteTable } from 'drizzle-orm/sqlite-core'
 
@@ -22,23 +21,6 @@ export const Person__StaffPosition = sqliteTable(
     endDate: integer('endDate', { mode: 'timestamp_ms' }),
   },
   (table) => [
-    index('Person__StaffPosition__personId__index').on(table.personId),
-    index('Person__StaffPosition__positionId__index').on(table.positionId),
+    index('Person__StaffPosition__positionId__index').on(table.positionId),  // index 2nd column of the unique
     uniqueIndex('Person__StaffPosition__personId__positionId__unique').on(table.personId, table.positionId),
   ])
-
-
-export const Person__StaffPositionRelations = relations(Person__StaffPosition, ({ one }) => ({
-  person: one(Person, {
-    fields: [Person__StaffPosition.personId],
-    references: [Person.id],
-  }),
-  position: one(StaffPosition, {
-    fields: [Person__StaffPosition.positionId],
-    references: [StaffPosition.id],
-  }),
-  endReason: one(StaffEndReason, {
-    fields: [Person__StaffPosition.endReasonId],
-    references: [StaffEndReason.id],
-  }),
-}))

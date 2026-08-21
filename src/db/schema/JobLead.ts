@@ -1,7 +1,7 @@
 // app/src/db/schema/JobLead.ts
 
-import { sql, relations } from 'drizzle-orm'
-import { Job, Person, LeadStatus, Trade__JobLead } from '@src/db'
+import { sql } from 'drizzle-orm'
+import { Job, Person, LeadStatus } from '@src/db'
 import { text, index, integer, uniqueIndex, sqliteTable } from 'drizzle-orm/sqlite-core'
 
 
@@ -28,20 +28,3 @@ export const JobLead = sqliteTable(
     index('JobLead__statusId__index').on(table.statusId),
     uniqueIndex('JobLead__jobId__unique').on(table.jobId),
   ])
-
-
-export const JobLeadRelations = relations(JobLead, ({ one, many }) => ({
-  person: one(Person, {
-    fields: [JobLead.personId],
-    references: [Person.id],
-  }),
-  status: one(LeadStatus, {
-    fields: [JobLead.statusId],
-    references: [LeadStatus.id],
-  }),
-  job: one(Job, {
-    fields: [JobLead.jobId],
-    references: [Job.id],
-  }),
-  trades: many(Trade__JobLead),
-}))

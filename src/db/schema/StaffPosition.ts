@@ -1,8 +1,5 @@
 // app/src/db/schema/StaffPosition.ts
 
-import { relations } from 'drizzle-orm'
-import { StaffLead } from './StaffLead'
-import { Person__StaffPosition } from '@src/db'
 import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
 
 
@@ -10,12 +7,6 @@ import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core'
 export const StaffPosition = sqliteTable('StaffPosition', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   value: text('value').notNull(),
-  isActive: integer('isActive', { mode: 'boolean' }).default(true),
-  isHiring: integer('isHiring', { mode: 'boolean' }).default(true),
+  isActive: integer('isActive', { mode: 'boolean' }).notNull().default(true),
+  isHiring: integer('isHiring', { mode: 'boolean' }).notNull().default(true),
 })
-
-
-export const StaffPositionRelations = relations(StaffPosition, ({ many }) => ({
-  staffLeads: many(StaffLead),
-  people: many(Person__StaffPosition),
-}))

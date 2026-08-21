@@ -1,6 +1,5 @@
 // app/src/db/schema/Trade__JobLead.ts
 
-import { relations } from 'drizzle-orm'
 import { Trade, JobLead } from '@src/db'
 import { index, integer, uniqueIndex, sqliteTable } from 'drizzle-orm/sqlite-core'
 
@@ -18,20 +17,7 @@ export const Trade__JobLead = sqliteTable(
       .references(() => JobLead.id, { onDelete: 'cascade' }),
   },
   (table) => [
-    index('Trade__JobLead__tradeId__index').on(table.tradeId),
-    index('Trade__JobLead__jobLeadId__index').on(table.jobLeadId),
+    index('Trade__JobLead__jobLeadId__index').on(table.jobLeadId),  // index 2nd column of the unique
     uniqueIndex('Trade__JobLead__tradeId__jobLeadId__unique').on(table.tradeId, table.jobLeadId),
   ]
 )
-
-
-export const Trade__JobLeadRelations = relations(Trade__JobLead, ({ one }) => ({
-  trade: one(Trade, {
-    fields: [Trade__JobLead.tradeId],
-    references: [Trade.id],
-  }),
-  jobLead: one(JobLead, {
-    fields: [Trade__JobLead.jobLeadId],
-    references: [JobLead.id],
-  }),
-}))
