@@ -93,8 +93,32 @@ export const menuStyle = css`
             text-decoration: underline;
           }
         }
-        &.title {
+        &.lite {
           opacity: 0.6;
+        }
+        &.header {
+          opacity: 0.6;
+          display: flex;
+          justify-content: space-between;
+          border-bottom: 1px solid rgba(0,0,0,0.21);
+
+          .close {
+            padding: 0;
+            height: 2.4rem;
+            width: 2.4rem;
+            border: none;
+            cursor: pointer;
+            background: transparent;
+            transition: var(--transition);
+            &:hover {
+              scale: 1.11;
+            }
+
+            svg {
+              width: 100%;
+              height: 100%;
+            }
+          }
         }
       }
     }
@@ -103,6 +127,7 @@ export const menuStyle = css`
       .items {
         top: var(--space-huge);
         border-radius: var(--radius);
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, .1);
         left: 50%;
         right: auto;
         bottom: auto;
