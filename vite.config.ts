@@ -1,8 +1,8 @@
 // app/vite.config.ts
  
 import path from 'path';
-import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite'
+import { fileURLToPath } from 'url'
 import ssrPlugin from 'vite-ssr-components/plugin'
 import { cloudflare } from '@cloudflare/vite-plugin'
 import honoDirectives from './npm/hono-directives/src/plugin.ts'
@@ -13,10 +13,10 @@ export default defineConfig({
   resolve: {
     alias: {
       '@src': path.resolve(__dirname, 'src'),
+      '@hono-email': path.resolve(__dirname, 'npm/hono-email/index'),
       '@hono-toast': path.resolve(__dirname, 'npm/hono-toast/index'),
       '@hono-security': path.resolve(__dirname, 'npm/hono-security/index'),
       '@hono-directives': path.resolve(__dirname, 'npm/hono-directives/dist/index'),
-      '@hono-email': path.resolve(__dirname, 'npm/hono-email/index'),
     },
   },
   plugins: [
