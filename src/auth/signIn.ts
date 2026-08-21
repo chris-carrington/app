@@ -11,13 +11,14 @@ import { emailFrom, magicTokenMaxAge, magicLinkTokenHashCreateProps } from '@src
 
 export async function signIn(email: string): Promise<SignInResult> {
   try {
-    const [result] = await db
+    const result = await db
       .select()
       .from(Person)
       .innerJoin(Contact, eq(Contact.personId, Person.id))
       .where(eq(Contact.email, email))
-      .limit(1);
-
+      .limit(1)
+      .get()
+console.log('result', result)
     if (!result) return { status: 200 } // prevent email enumeration
 
     const token = createPassword()
@@ -35,12 +36,13 @@ export async function signIn(email: string): Promise<SignInResult> {
       .$url({ param: {token} })
       .href
 
-    await sendEmail({
+    const res = await sendEmail({
       from: emailFrom,
       to: result.Contact.email,
       subject: 'Sign in!',
       html: renderEmail(emailTemplate, { magicLink, firstName: result.Person.firstName, lastName: result.Person.lastName })
     })
+    console.log('res', res)
   } catch (e) {
     console.error(e)
     return { status: 500, message: 'An error has occured' }
