@@ -20,6 +20,10 @@ export default new Hono()
     // const kanbanBoard = await getKanbanBoard()
     // console.log('kanbanBoard', JSON.stringify(kanbanBoard, null, 2))
 
+    // const x = kanbanBoard[1][0].assignees[0]
+    // const y = kanbanBoard[1][0].tags[0]
+    // const z = kanbanBoard[0]
+
     const kanbanData: KanbanData = {
       'To Do': [
         { title: 'Design homepage mockup', order: 1 },

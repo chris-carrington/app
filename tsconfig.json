@@ -41,6 +41,9 @@
       ],
       "@hono-modal": [
         "./npm/hono-modal/index"
+      ],
+      "@drizzle-left-join": [
+        "./npm/drizzle-left-join/index"
       ]
     }
   },

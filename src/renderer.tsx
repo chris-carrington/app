@@ -55,9 +55,10 @@ const style = css`
     --primary: #1b3022;
     --white: #F9FBF9;
     --orange: #fe932c;
+    --orange-gradient: linear-gradient(135deg, var(--orange), #fb9838);
     --orange-text: #663500;
     --muted-foreground: oklch(0.63 0 0);
-    --primary-gradient: linear-gradient(135deg, var(--primary), #20462d);
+    --primary-gradient: linear-gradient(135deg, var(--primary), #23422d);
 
     --popover: oklch(0.21 0.034 264.665);
     --popover-foreground: oklch(100% 0 0);
