@@ -1,14 +1,37 @@
-// app/src/lib/objectives.route.tsx
-
+// app/src/objectives/objectives.route.tsx
 
 import { Hono } from 'hono'
 import { css, Style } from 'hono/css'
 import { onObjectivesPageLoad } from '@hono-directives'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
+import type { Column, KanbanData } from '@src/objectives/objectives.types'
 
 
 export default new Hono()
   .get('/', async (c) => {
+    const COLUMNS: Column[] = [
+      { id: 1, value: 'To Do' },
+      { id: 2, value: 'In Progress' },
+      { id: 3, value: 'Completed' }
+    ]
+
+    const kanbanData: KanbanData = {
+      'To Do': [
+        { title: 'Design homepage mockup', order: 1 },
+        { title: 'Write API documentation', order: 2 },
+        { title: 'Setup CI/CD pipeline', order: 3 }
+      ],
+      'In Progress': [
+        { title: 'Implement authentication flow', order: 1 },
+        { title: 'Create database schema', order: 2 }
+      ],
+      'Completed': [
+        { title: 'Project kickoff meeting', order: 1 },
+        { title: 'Requirements gathering', order: 2 },
+        { title: 'Wireframe approval', order: 3 }
+      ]
+    }
+
     return c.render(
       <>
         <title>Shasta Trades · Objectives</title>
@@ -24,35 +47,29 @@ export default new Hono()
             </div>
           </div>
 
-          <div data-directive={onObjectivesPageLoad()} class="kanban-board-wrapper">
-            {/* ===== KANBAN BOARD (scroll container) ===== */}
+          <div data-directive={onObjectivesPageLoad(kanbanData)} class="kanban-board-wrapper">
             <div class="kanban-board" id="kanbanBoard" aria-label="Kanban Board">
               <div class="kanban-board-inner">
-                <section class="kanban-column" data-column-name="To Do" aria-label="To Do column">
-                  <header class="column-header">
-                    <h2 class="column-title">To Do</h2>
-                    <span class="column-task-count" id="count-To Do">0</span>
-                  </header>
-                  <div class="column-body" data-column-body="To Do"></div>
-                </section>
-                <section class="kanban-column" data-column-name="In Progress" aria-label="In Progress column">
-                  <header class="column-header">
-                    <h2 class="column-title">In Progress</h2>
-                    <span class="column-task-count" id="count-In Progress">0</span>
-                  </header>
-                  <div class="column-body" data-column-body="In Progress"></div>
-                </section>
-                <section class="kanban-column" data-column-name="Completed" aria-label="Completed column">
-                  <header class="column-header">
-                    <h2 class="column-title">Completed</h2>
-                    <span class="column-task-count" id="count-Completed">0</span>
-                  </header>
-                  <div class="column-body" data-column-body="Completed"></div>
-                </section>
+                {COLUMNS.map((column) => (
+                  <section class="kanban-column" data-column-name={column.value} aria-label={`${column.value} column`}>
+                    <header class="column-header">
+                      <h2 class="column-title">{column.value}</h2>
+                      <span class="column-task-count" id={`count-${column.value}`}>
+                        {kanbanData[column.value]?.length || 0}
+                      </span>
+                    </header>
+                    <div class="column-body" data-column-body={column.value}>
+                      {kanbanData[column.value].map((task) => (
+                        <div class="task-card" draggable="true" data-task-title={task.title} data-task-order={String(task.order)}>
+                          <span class="task-title">{task.title}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                ))}
               </div>
             </div>
 
-            {/* ===== ADD TASK FORM ===== */}
             <form class="add-task-form" id="addTaskForm" autocomplete="off">
               <h3 class="form-heading">Add New Task</h3>
 
@@ -65,9 +82,11 @@ export default new Hono()
               <div class="form-group">
                 <label class="form-label" for="taskColumnSelect">Column</label>
                 <select class="form-select" id="taskColumnSelect" name="taskColumn" required>
-                  <option value="To Do" selected>To Do</option>
-                  <option value="In Progress">In Progress</option>
-                  <option value="Completed">Completed</option>
+                  {COLUMNS.map((column, idx) => (
+                    <option value={column.value} selected={idx === 0}>
+                      {column.value}
+                    </option>
+                  ))}
                 </select>
               </div>
 

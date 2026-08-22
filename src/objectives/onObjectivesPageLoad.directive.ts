@@ -1,40 +1,9 @@
 // app/src/objectives/onObjectivesPageLoad.directive.ts
 
-type ColumnId = number;
-type ColumnValue = string;
-type Column = { id: ColumnId; value: ColumnValue };
-type Task = { title: string; order: number };
-type KanbanData = Record<ColumnValue, Task[]>;
-type DraggedTaskInfo = { taskTitle: string; sourceColumnValue: ColumnValue };
+import type { Task, ColumnValue, KanbanData, DraggedTaskInfo } from '@src/objectives/objectives.types'
 
-export default (el: HTMLDivElement): void => {
-  // ============================================================
-  // CONSTANTS & INITIAL DATA
-  // ============================================================
 
-  const COLUMNS: Column[] = [
-    { id: 1, value: "To Do" },
-    { id: 2, value: "In Progress" },
-    { id: 3, value: "Completed" }
-  ];
-
-  const kanbanData: KanbanData = {
-    "To Do": [
-      { title: "Design homepage mockup", order: 1 },
-      { title: "Write API documentation", order: 2 },
-      { title: "Setup CI/CD pipeline", order: 3 }
-    ],
-    "In Progress": [
-      { title: "Implement authentication flow", order: 1 },
-      { title: "Create database schema", order: 2 }
-    ],
-    "Completed": [
-      { title: "Project kickoff meeting", order: 1 },
-      { title: "Requirements gathering", order: 2 },
-      { title: "Wireframe approval", order: 3 }
-    ]
-  };
-
+export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
   // ============================================================
   // DRAG AND DROP STATE
   // ============================================================
@@ -178,8 +147,7 @@ export default (el: HTMLDivElement): void => {
     titleSpan.textContent = taskObject.title;
     card.appendChild(titleSpan);
 
-    card.addEventListener('dragstart', handleTaskCardDragStart);
-    card.addEventListener('dragend', handleTaskCardDragEnd);
+    // No direct listeners – we use event delegation on the container.
     return card;
   }
 
@@ -209,14 +177,6 @@ export default (el: HTMLDivElement): void => {
     appendTaskCardsToColumnBody(columnBody, sortedTasks);
   }
 
-  function renderEntireKanbanBoard(): void {
-    COLUMNS.forEach((column: Column) => {
-      renderSingleColumnBody(column.value);
-      updateColumnTaskCountBadge(column.value);
-    });
-    removeDropIndicatorElement();
-  }
-
   function renderBoardAfterTaskMove(
     sourceColumnValue: ColumnValue,
     targetColumnValue: ColumnValue
@@ -227,10 +187,6 @@ export default (el: HTMLDivElement): void => {
     }
     renderSingleColumnBody(targetColumnValue);
     updateColumnTaskCountBadge(targetColumnValue);
-  }
-
-  function updateAllColumnTaskCountBadges(): void {
-    COLUMNS.forEach((column: Column) => updateColumnTaskCountBadge(column.value));
   }
 
   // ============================================================
@@ -311,14 +267,17 @@ export default (el: HTMLDivElement): void => {
   }
 
   // ============================================================
-  // DRAG AND DROP EVENT HANDLERS (delegated + throttled)
+  // DRAG AND DROP EVENT HANDLERS (delegated)
   // ============================================================
 
-  function handleTaskCardDragStart(event: DragEvent): void {
-    const card: HTMLDivElement = event.currentTarget as HTMLDivElement;
-    const taskTitle: string | undefined = card.dataset.taskTitle;
-    const sourceColumnElement: HTMLElement | null = card.closest('.kanban-column');
-    const sourceColumnValue: string | undefined = sourceColumnElement?.dataset.columnName;
+  function handleDelegatedDragStart(event: DragEvent): void {
+    const target = event.target as HTMLElement;
+    const card = target.closest<HTMLDivElement>('.task-card');
+    if (!card) return;
+
+    const taskTitle = card.dataset.taskTitle;
+    const sourceColumnElement = card.closest<HTMLElement>('.kanban-column');
+    const sourceColumnValue = sourceColumnElement?.dataset.columnName;
     if (!taskTitle || !sourceColumnValue) {
       event.preventDefault();
       return;
@@ -338,7 +297,7 @@ export default (el: HTMLDivElement): void => {
     requestAnimationFrame(() => card.classList.add('is-being-dragged'));
   }
 
-  function handleTaskCardDragEnd(event: DragEvent): void {
+  function handleDelegatedDragEnd(event: DragEvent): void {
     cleanupAfterDragOperation();
   }
 
@@ -465,6 +424,8 @@ export default (el: HTMLDivElement): void => {
   function attachDelegatedDragAndDropListeners(): void {
     el.addEventListener('dragover', handleBoardDragOver);
     el.addEventListener('drop', handleBoardDrop);
+    el.addEventListener('dragstart', handleDelegatedDragStart);
+    el.addEventListener('dragend', handleDelegatedDragEnd);
   }
 
   function attachFormSubmissionListener(): void {
@@ -496,8 +457,6 @@ export default (el: HTMLDivElement): void => {
     attachDelegatedDragAndDropListeners();
     attachFormSubmissionListener();
     attachDocumentLevelDragOverPrevention();
-    renderEntireKanbanBoard();
-    updateAllColumnTaskCountBadges();
   }
 
   initializeKanbanBoard();
