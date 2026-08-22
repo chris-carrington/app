@@ -269,7 +269,6 @@ const style = css`
             transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
             user-select: none;
             -webkit-user-select: none;
-            animation: cardFadeIn 0.25s ease;
             position: relative;
             &:hover {
               box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.08);
@@ -382,39 +381,12 @@ const style = css`
           background-size: 200% 100%;
           border-radius: 1rem;
           box-shadow: 0 0 1rem rgba(99, 102, 241, 0.55), 0 0 2.4rem rgba(168, 85, 247, 0.3);
-          animation: indicatorPulse 0.8s ease-in-out infinite alternate;
           margin: 0.1rem 0;
           flex-shrink: 0;
           pointer-events: none;
           transition: all 0.15s ease;
         }
       }
-    }
-  }
-
-  @keyframes indicatorPulse {
-    0% {
-      opacity: 0.7;
-      background-position: 0% 50%;
-      box-shadow: 0 0 0.6rem rgba(99, 102, 241, 0.4);
-    }
-
-    100% {
-      opacity: 1;
-      background-position: 100% 50%;
-      box-shadow: 0 0 1.6rem rgba(168, 85, 247, 0.6);
-    }
-  }
-
-  @keyframes cardFadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-0.8rem);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
     }
   }
 `
