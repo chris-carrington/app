@@ -3,6 +3,7 @@
 import { Hono } from 'hono'
 import { css, Style } from 'hono/css'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
+// import { getKanbanBoard } from '@src/objectives/getKanbanBoard'
 import ObjectivesAddEdit from '@src/objectives/ObjectivesAddEdit'
 import { onModalToggle, onObjectivesPageLoad } from '@hono-directives'
 import type { Column, KanbanData } from '@src/objectives/objectives.types'
@@ -15,6 +16,9 @@ export default new Hono()
       { id: 2, value: 'In Progress' },
       { id: 3, value: 'Completed' }
     ]
+
+    // const kanbanBoard = await getKanbanBoard()
+    // console.log('kanbanBoard', JSON.stringify(kanbanBoard, null, 2))
 
     const kanbanData: KanbanData = {
       'To Do': [

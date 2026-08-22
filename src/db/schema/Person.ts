@@ -9,4 +9,5 @@ export const Person = sqliteTable('Person', {
   firstName: text('firstName').notNull(),
   lastName: text('lastName').notNull(),
   isActive: integer('isActive', { mode: 'boolean' }).notNull().default(true),
+  imageId: text('imageId'),
 })
