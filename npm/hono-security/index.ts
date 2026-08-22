@@ -14,11 +14,6 @@ export { createValidator, type Validator, type InferValidator } from './src/form
 export { hashCreate, type HashCreateProps } from './src/hash/hashCreate'
 export { hashValidate, type HashValidateProps, type HashValidateSuccess, type HashValidateFailure, type HashValidateResponse } from './src/hash/hashValidate'
 
-// jwt
-export type BaseJWTPayload = Record<string, unknown>
-export { jwtCreate, type JwtCreateProps } from './src/jwt/jwtCreate'
-export { jwtValidate, type FullJWTPayload, type JWTValidateFailure, type JWTValidateProps, type JWTValidateResponse, type JWTValidateSuccess } from './src/jwt/jwtValidate'
-
 // pipe
 export { pipeArray } from './src/pipe/array.pipe'
 export { pipeBoolean } from './src/pipe/boolean.pipe'
