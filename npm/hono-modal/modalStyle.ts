@@ -81,15 +81,51 @@ export const modalStyle = css`
         max-height: calc(100vh - 9rem);
       }
 
-      .item {
-        padding: var(--space-lite);
-        display: block;
+      .item,
+      .header {
         color: #262626;
+        padding: var(--space-lite);
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        box-shadow: 0px 6px 9px 3px rgba(0, 0, 0, 0.06);
+        font-weight: 500;
+
+        span {
+          opacity: 0.6;
+          font-weight: 600;
+        }
+
+        .close {
+          padding: 0;
+          height: 2.4rem;
+          width: 2.4rem;
+          border: none;
+          filter: grayscale(1);
+          cursor: pointer;
+          background: transparent;
+          transition: var(--transition);
+          &:hover {
+            scale: 1.11;
+            filter: grayscale(0);
+          }
+
+          svg {
+            width: 100%;
+            height: 100%;
+            color: #d80000;
+            opacity: 0.6;
+          }
+        }
+      }
+
+      .item {
+        display: block;
         background-color: transparent;
         border: none;
         text-decoration: none;
-        width: 100%;
-        text-align: left;
         &.anchor,
         &.btn {
           cursor: pointer;
@@ -100,35 +136,6 @@ export const modalStyle = css`
         }
         &.lite {
           opacity: 0.6;
-        }
-        &.header {
-          display: flex;
-          justify-content: space-between;
-          box-shadow: 0px 6px 9px 3px rgba(0, 0, 0, 0.06);
-          font-weight: 500;
-
-          span {
-            opacity: 0.6;
-          }
-
-          .close {
-            padding: 0;
-            height: 2.4rem;
-            width: 2.4rem;
-            border: none;
-            cursor: pointer;
-            background: transparent;
-            transition: var(--transition);
-            &:hover {
-              scale: 1.11;
-            }
-
-            svg {
-              width: 100%;
-              height: 100%;
-              color: rgba(0, 123, 255, 0.63);
-            }
-          }
         }
       }
     }

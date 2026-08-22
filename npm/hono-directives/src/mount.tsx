@@ -4,7 +4,7 @@ type DirectiveFn = (element: Element, ...args: any[]) => void
 
 
 const directiveModules = import.meta.glob<{ default: DirectiveFn }>(
-  '../../../**/*.directive.{ts,tsx}', // 🚨 must be altered based on where this file is relative to the src directory
+  '../../../../**/*.directive.{ts,tsx}', // 🚨 must be altered based on where this file is relative to the src directory
   { eager: false }
 )
 

@@ -38,6 +38,9 @@
       ],
       "@hono-email": [
         "./npm/hono-email/index"
+      ],
+      "@hono-modal": [
+        "./npm/hono-modal/index"
       ]
     }
   },

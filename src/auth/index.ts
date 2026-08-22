@@ -50,7 +50,7 @@ export const authStyle = css`
       &:focus {
         outline: 0;
         border-color: transparent;
-        box-shadow: 0 0 0 0.3rem rgba(0, 123, 255, .25);
+        box-shadow: 0 0 0 0.3rem rgba(0, 123, 255, 0.25);
       }
     }
 
@@ -73,8 +73,9 @@ export const authStyle = css`
       padding: calc(var(--space-lite) / 1.2);
       margin-bottom: var(--space-lite);
       color: var(--white);
-      background-color: var(--primary);
+      background: var(--primary-gradient);
       border-radius: var(--radius);
+      border: none;
       cursor: pointer;
       font-weight: 500;
       &:disabled {

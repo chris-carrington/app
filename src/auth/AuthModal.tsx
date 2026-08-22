@@ -3,8 +3,8 @@
 import { Style } from 'hono/css'
 import type { FC } from 'hono/jsx'
 import { urlBE } from '@src/url/urlBE'
+import { modalStyle } from '@hono-modal'
 import svgClose from '@src/svg/close.svg?raw'
-import { modalStyle } from '@src/lib/modalStyle'
 import { onNavModalToggle } from '@hono-directives'
 
 
@@ -18,7 +18,7 @@ export default (() => {
       <button data-directive={onNavModalToggle('auth-modal')} class="backdrop" type="button" />
 
       <div class="modal">
-        <div class="item header">
+        <div class="header">
           <span>Auth Options</span>
           <button
             class="close"

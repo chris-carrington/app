@@ -5,14 +5,37 @@ import path from 'path'
 import type { Plugin } from 'vite'
 import { findDirectives, writeGeneratedFiles } from './script.ts'
 
+// Helper to search multiple directories
+function findDirectoriesToSearch(): string[] {
+  const directories = []
+  const cwd = process.cwd()
+
+  // Define directories to search
+  const dirsToSearch = ['src', 'npm']
+
+  for (const dir of dirsToSearch) {
+    const fullPath = path.join(cwd, dir)
+    if (fs.existsSync(fullPath)) {
+      directories.push(fullPath)
+    }
+  }
+
+  return directories
+}
 
 export default function directivesPlugin(): Plugin {
-  const srcDir = path.join(process.cwd(), 'src')
-
   const generate = () => {
-    if (!fs.existsSync(srcDir)) return
-    const directives = findDirectives(srcDir)
-    writeGeneratedFiles(directives)
+    const searchDirs = findDirectoriesToSearch()
+    const allDirectives = []
+
+    for (const dir of searchDirs) {
+      const directives = findDirectives(dir)
+      allDirectives.push(...directives)
+    }
+
+    if (allDirectives.length > 0) {
+      writeGeneratedFiles(allDirectives)
+    }
   }
 
   return {
@@ -21,11 +44,19 @@ export default function directivesPlugin(): Plugin {
     buildStart() { generate() },
     handleHotUpdate({ file, server }) {
       if (/\.directive\.(ts|tsx)$/.test(file)) {
-        generate()
-        const mod = server.moduleGraph.getModuleById(
-          path.join(srcDir, 'directives', 'index.ts')
-        )
-        if (mod) server.moduleGraph.invalidateModule(mod)
+        const searchDirs = findDirectoriesToSearch()
+        const isInSearchDir = searchDirs.some(dir => file.startsWith(dir))
+
+        if (isInSearchDir) {
+          generate()
+
+          // Invalidate all possible index files
+          for (const dir of searchDirs) {
+            const indexPath = path.join(dir, 'directives', 'index.ts')
+            const mod = server.moduleGraph.getModuleById(indexPath)
+            if (mod) server.moduleGraph.invalidateModule(mod)
+          }
+        }
       }
     },
   }

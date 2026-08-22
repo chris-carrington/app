@@ -15,6 +15,7 @@ export default defineConfig({
       '@src': path.resolve(__dirname, 'src'),
       '@hono-email': path.resolve(__dirname, 'npm/hono-email/index'),
       '@hono-toast': path.resolve(__dirname, 'npm/hono-toast/index'),
+      '@hono-modal': path.resolve(__dirname, 'npm/hono-modal/index'),
       '@hono-security': path.resolve(__dirname, 'npm/hono-security/index'),
       '@hono-directives': path.resolve(__dirname, 'npm/hono-directives/dist/index'),
     },

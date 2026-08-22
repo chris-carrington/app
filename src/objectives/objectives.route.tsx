@@ -2,8 +2,9 @@
 
 import { Hono } from 'hono'
 import { css, Style } from 'hono/css'
-import { onObjectivesPageLoad } from '@hono-directives'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
+import ObjectivesAddEdit from '@src/objectives/ObjectivesAddEdit'
+import { onModalToggle, onObjectivesPageLoad } from '@hono-directives'
 import type { Column, KanbanData } from '@src/objectives/objectives.types'
 
 
@@ -45,6 +46,12 @@ export default new Hono()
               <h1>Objectives</h1>
               <div class="sub-title">Our objectives are publicly available here, we're making progress and we invite all to see, celebrate, and hold us accountable!</div>
             </div>
+
+            <div class="buttons">
+              <button data-directive={onModalToggle('objectives-add-edit-modal')} type="button">New</button>
+              <button class="active" type="button">All</button>
+              <button type="button">Mine</button>
+            </div>
           </div>
 
           <div data-directive={onObjectivesPageLoad(kanbanData)} class="kanban-board-wrapper">
@@ -69,33 +76,10 @@ export default new Hono()
                 ))}
               </div>
             </div>
-
-            <form class="add-task-form" id="addTaskForm" autocomplete="off">
-              <h3 class="form-heading">Add New Task</h3>
-
-              <div class="form-group">
-                <label class="form-label" for="taskTitleInput">Task Title</label>
-                <input class="form-input" type="text" id="taskTitleInput" name="taskTitle"
-                  placeholder="Enter a descriptive task title..." required />
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="taskColumnSelect">Column</label>
-                <select class="form-select" id="taskColumnSelect" name="taskColumn" required>
-                  {COLUMNS.map((column, idx) => (
-                    <option value={column.value} selected={idx === 0}>
-                      {column.value}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <button class="form-submit-button" type="submit" id="submitTaskButton">
-                + Add Task to Top
-              </button>
-            </form>
           </div>
         </div>
+
+        <ObjectivesAddEdit COLUMNS={COLUMNS} />
       </>
     )
   })
@@ -111,6 +95,7 @@ const style = css`
     -moz-osx-font-smoothing: grayscale;
     width: 100%;
     padding: 0 var(--space-lite);
+    margin-bottom: var(--space-huge);
   }
 
   /* ===== KANBAN BOARD – SCROLL CONTAINER ===== */
@@ -318,104 +303,5 @@ const style = css`
       opacity: 1;
       transform: translateY(0);
     }
-  }
-
-  /* ===== FORM ===== */
-  .add-task-form {
-    background-color: #ffffff;
-    border-radius: 1.4rem;
-    box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.06), 0 0.2rem 0.4rem rgba(0, 0, 0, 0.04);
-    padding: 2.4rem 2.8rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.8rem;
-    width: 100%;
-    max-width: 56rem;
-    border: 0.2rem solid #e2e8f0;
-    transition: box-shadow 0.25s ease, border-color 0.25s ease;
-    margin-bottom: var(--space-huge);
-  }
-
-  .add-task-form:focus-within {
-    box-shadow: 0 0.8rem 2.4rem rgba(99, 102, 241, 0.12);
-    border-color: #c7d2fe;
-  }
-
-  .form-heading {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 0.2rem;
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-
-  .form-label {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #475569;
-    letter-spacing: 0.01em;
-  }
-
-  .form-input,
-  .form-select {
-    font-size: 1.8rem;
-    font-weight: 400;
-    color: #1e293b;
-    background-color: #f8fafc;
-    border: 0.2rem solid #e2e8f0;
-    border-radius: 0.8rem;
-    padding: 1.2rem 1.6rem;
-    outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-    font-family: inherit;
-    width: 100%;
-  }
-
-  .form-select {
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10'%3E%3Cpath d='M1 1l7 7 7-7' stroke='%23475569' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 1.6rem center;
-    padding-right: 4.4rem;
-  }
-
-  .form-input:focus,
-  .form-select:focus {
-    border-color: #6366f1;
-    background-color: #ffffff;
-    box-shadow: 0 0 0 0.4rem rgba(99, 102, 241, 0.15);
-  }
-
-  .form-submit-button {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #ffffff;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    border: none;
-    border-radius: 0.8rem;
-    padding: 1.3rem 2.4rem;
-    cursor: pointer;
-    transition: box-shadow 0.25s ease, transform 0.2s ease, opacity 0.2s ease;
-    letter-spacing: 0.02em;
-    font-family: inherit;
-    align-self: flex-start;
-  }
-
-  .form-submit-button:hover {
-    box-shadow: 0 0.6rem 2rem rgba(99, 102, 241, 0.35);
-    transform: translateY(-0.2rem);
-  }
-
-  .form-submit-button:active {
-    transform: translateY(0);
-    box-shadow: 0 0.2rem 0.8rem rgba(99, 102, 241, 0.25);
-    opacity: 0.85;
   }
 `
