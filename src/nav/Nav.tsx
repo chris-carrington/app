@@ -6,7 +6,7 @@ import { urlBE } from '@src/url/urlBE'
 import svgMenu from '@src/svg/menu.svg?raw'
 import svgPerson from '@src/svg/person.svg?raw'
 import { useRequestContext } from 'hono/jsx-renderer'
-import { onHomeClick, onNavMenuToggle } from '@hono-directives'
+import { onHomeClick, onNavModalToggle } from '@hono-directives'
 
 
 export default (() => {
@@ -34,8 +34,8 @@ export default (() => {
           </div>
         </div>
 
-        <button data-directive={onNavMenuToggle('auth-menu')} class="auth-menu-btn" type="button" dangerouslySetInnerHTML={{ __html: svgPerson }} />
-        <button data-directive={onNavMenuToggle('nav-menu')} class="nav-menu-btn" type="button" dangerouslySetInnerHTML={{ __html: svgMenu }} />
+        <button data-directive={onNavModalToggle('auth-modal')} class="auth-modal-btn" type="button" dangerouslySetInnerHTML={{ __html: svgPerson }} />
+        <button data-directive={onNavModalToggle('nav-modal')} class="nav-modal-btn" type="button" dangerouslySetInnerHTML={{ __html: svgMenu }} />
       </div>
     </div>
   </>
@@ -54,7 +54,7 @@ const style = css`
     box-shadow: 0px 5px 18px -1px rgba(0, 0, 0, 0.18);
 
     .inner .left .links,
-    .auth-menu-btn {
+    .auth-modal-btn {
       @media (max-width: 819px) {
         display: none;
       }
@@ -112,8 +112,8 @@ const style = css`
         }
       }
 
-      .nav-menu-btn,
-      .auth-menu-btn {
+      .nav-modal-btn,
+      .auth-modal-btn {
         border: none;
         background-color: transparent;
         cursor: pointer;
@@ -134,14 +134,14 @@ const style = css`
         }
       }
 
-      .auth-menu-btn {
+      .auth-modal-btn {
 
         @media (max-width: 819px) {
           display: none;
         }
       }
 
-      .nav-menu-btn {
+      .nav-modal-btn {
         display: none;
 
           @media (max-width: 819px) {

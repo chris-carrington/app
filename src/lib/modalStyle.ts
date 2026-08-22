@@ -1,10 +1,10 @@
-// app/src/lib/menuStyle.ts
+// app/src/lib/modalStyle.ts
 
 import { css } from 'hono/css'
 
 
-export const menuStyle = css`
-  .menu {
+export const modalStyle = css`
+  .modal-wrapper {
     pointer-events: none;
     visibility: hidden;
     transition: visibility 0s 0.3s; /* hide after animation */
@@ -17,7 +17,7 @@ export const menuStyle = css`
         opacity: 0.3;
       }
 
-      .items {
+      .modal {
         transform: translateY(0);
       }
     }
@@ -65,7 +65,7 @@ export const menuStyle = css`
       will-change: opacity;
     }
 
-    .items {
+    .modal {
       position: fixed;
       z-index: var(--z-modal);
       right: 0;
@@ -75,6 +75,11 @@ export const menuStyle = css`
       transform: translateY(calc(100% + 1px)); /* extra safety */
       transition: transform var(--prop-transition);
       will-change: transform;
+
+      .scroll {
+        overflow: auto;
+        max-height: calc(100vh - 9rem);
+      }
 
       .item {
         padding: var(--space-lite);
@@ -129,7 +134,7 @@ export const menuStyle = css`
     }
 
     @media (min-height: 721px) {
-      .items {
+      .modal {
         top: var(--space-huge);
         border-radius: var(--radius);
         box-shadow: 0 0 10px 0 rgba(0, 0, 0, .1);
@@ -141,14 +146,14 @@ export const menuStyle = css`
         transform: translateX(-50%) translateY(calc(-100% - 1px)); /* start above the viewport, horizontally centered */
       }
 
-      &:not(.hidden) .items {
+      &:not(.hidden) .modal {
         transform: translateX(-50%) translateY(0); /* slide down to its final position */
       }
     }
   }
 
   @media (min-height: 721px) and (max-width: 600px) {
-    .items {
+    .modal {
       max-width: calc(100% - var(--space)) !important;
     }
   }

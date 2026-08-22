@@ -3,8 +3,8 @@
 import Nav from '@src/nav/Nav'
 import Footer from '@src/lib/Footer'
 import { css, Style } from 'hono/css'
-import NavMenu from '@src/nav/NavMenu'
-import AuthMenu from '@src/auth/AuthMenu'
+import NavModal from '@src/nav/NavModal'
+import AuthModal from '@src/auth/AuthModal'
 import { honoToastStyle } from '@hono-toast'
 import { jsxRenderer } from 'hono/jsx-renderer'
 import { Script } from 'vite-ssr-components/hono'
@@ -28,10 +28,11 @@ export const renderer = jsxRenderer(({ children }) => <>
 
     <body>
       <Nav />
-      <NavMenu />
-      <AuthMenu />
       <main>{children}</main>
       <Footer />
+
+      <NavModal />
+      <AuthModal />
     </body>
   </html>
 </>)
