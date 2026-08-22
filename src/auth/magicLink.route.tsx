@@ -48,9 +48,11 @@ export default new Hono()
                 )
               )
               .returning({ id: MagicToken.id }),
-            tx.update(Contact) // Contact.emailVerified -> true
-              .set({ emailVerified: true })
-              .where(eq(Contact.id, result.Contact.id))
+            result.Contact.emailVerified === true // Contact.emailVerified -> true
+              ? Promise.resolve()
+              : tx.update(Contact)
+                  .set({ emailVerified: true })
+                  .where(eq(Contact.id, result.Contact.id))
           ])
 
           if (!magicToken) throw new Error('Magic token already used')
