@@ -135,7 +135,9 @@ CREATE TABLE `ObjectiveTag` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`value` text NOT NULL,
 	`isActive` integer DEFAULT true NOT NULL,
-	`order` integer NOT NULL
+	`order` integer NOT NULL,
+	`bgHex` text NOT NULL,
+	`fgHex` text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE `Objective__Assignee` (
@@ -162,7 +164,8 @@ CREATE TABLE `Person` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`firstName` text NOT NULL,
 	`lastName` text NOT NULL,
-	`isActive` integer DEFAULT true NOT NULL
+	`isActive` integer DEFAULT true NOT NULL,
+	`imageId` text
 );
 --> statement-breakpoint
 CREATE TABLE `Person__StaffPosition` (

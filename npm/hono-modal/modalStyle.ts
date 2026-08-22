@@ -84,17 +84,16 @@ export const modalStyle = css`
       .item,
       .header {
         color: #262626;
-        padding: var(--space-lite);
       }
 
       .header {
         display: flex;
+        padding: calc(var(--space-lite) * 1.2) var(--space-lite);
         justify-content: space-between;
         box-shadow: 0px 6px 9px 3px rgba(0, 0, 0, 0.06);
         font-weight: 500;
 
         span {
-          opacity: 0.6;
           font-weight: 600;
         }
 
@@ -126,6 +125,7 @@ export const modalStyle = css`
         background-color: transparent;
         border: none;
         text-decoration: none;
+        padding: var(--space-lite);
         &.anchor,
         &.btn {
           cursor: pointer;

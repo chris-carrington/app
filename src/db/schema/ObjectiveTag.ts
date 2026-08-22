@@ -9,4 +9,6 @@ export const ObjectiveTag = sqliteTable('ObjectiveTag', {
   value: text('value').notNull(),
   isActive: integer('isActive', { mode: 'boolean' }).notNull().default(true),
   order: integer('order').notNull(),
+  bgHex: text('bgHex').notNull(),
+  fgHex: text('fgHex').notNull(),
 })

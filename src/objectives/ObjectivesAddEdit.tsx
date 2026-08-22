@@ -29,23 +29,23 @@ export default (({ COLUMNS }: { COLUMNS: Column[] }) => {
 
         <form id="addTaskForm" autocomplete="off" class="scroll">
           <div class="field">
-            <label for="taskTitleInput">Title</label>
-            <input type="text" id="taskTitleInput" name="taskTitle"
+            <label for="objectiveTitleInput">Title</label>
+            <input type="text" id="objectiveTitleInput" name="objectiveTitleInput"
               placeholder="Add a descriptive title..." required />
           </div>
 
           <div class="field">
-            <label for="taskColumnSelect">Column</label>
-            <select id="taskColumnSelect" name="taskColumn" required>
+            <label for="objectiveColumnSelect">Column</label>
+            <select id="objectiveColumnSelect" name="objectiveColumnSelect" required>
               {COLUMNS.map((column, idx) => (
-                <option value={column.value} selected={idx === 0}>
+                <option value={column.id} selected={idx === 0}>
                   {column.value}
                 </option>
               ))}
             </select>
           </div>
 
-          <button class="form-submit-button" type="submit" id="submitTaskButton">Create Objective</button>
+          <button class="form-submit-button" type="submit">Create Objective</button>
         </form>
       </div>
     </div>

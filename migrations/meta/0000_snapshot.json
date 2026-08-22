@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "71733fd0-7540-4865-8c68-dc9527217ea5",
+  "id": "2639466c-2bea-4ba9-a638-e14898e1714b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Contact": {
@@ -961,6 +961,20 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "bgHex": {
+          "name": "bgHex",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "fgHex": {
+          "name": "fgHex",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -1148,6 +1162,13 @@
           "notNull": true,
           "autoincrement": false,
           "default": true
+        },
+        "imageId": {
+          "name": "imageId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         }
       },
       "indexes": {},

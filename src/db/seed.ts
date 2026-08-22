@@ -82,13 +82,13 @@ const objectiveColumns = [
 ]
 
 const objectiveTags = [
-  { value: 'In Development', order: 1 },
-  { value: 'Ready for QA', order: 2 },
-  { value: 'In QA', order: 3 },
-  { value: 'Failed QA', order: 4 },
-  { value: 'Passed QA', order: 5 },
-  { value: 'Completed', order: 6 },
-  { value: 'Archived', order: 7 },
+  { value: 'In Development', order: 1, bgHex: '#DBEAFE', fgHex: '#1E40AF' },
+  { value: 'Ready for QA', order: 2, bgHex: '#EDE9FE', fgHex: '#5B21B6' },
+  { value: 'In QA', order: 3, bgHex: '#FEF3C7', fgHex: '#92400E' },
+  { value: 'Failed QA', order: 4, bgHex: '#FEE2E2', fgHex: '#991B1B' },
+  { value: 'Passed QA', order: 5, bgHex: '#DCFCE7', fgHex: '#166534' },
+  { value: 'Completed', order: 6, bgHex: '#CFFAFE', fgHex: '#155E75' },
+  { value: 'Archived', order: 7, bgHex: '#F1F5F9', fgHex: '#475569' }
 ]
 
 await Promise.all([

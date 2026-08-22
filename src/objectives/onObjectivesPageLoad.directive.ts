@@ -1,192 +1,227 @@
 // app/src/objectives/onObjectivesPageLoad.directive.ts
 
-import type { Task, ColumnValue, KanbanData, DraggedTaskInfo } from '@src/objectives/objectives.types'
-
+import type { Objective, ColumnId, KanbanData, DraggedObjectiveInfo } from '@src/objectives/objectives.types'
 
 export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
   // ============================================================
   // DRAG AND DROP STATE
   // ============================================================
 
-  let currentlyDraggedTaskInfo: DraggedTaskInfo | null = null;
+  let currentlyDraggedObjectiveInfo: DraggedObjectiveInfo | null = null
+  let dropIndicatorElement: HTMLDivElement | null = null
+  let pendingDragPosition: { columnBody: HTMLDivElement; clientY: number } | null = null
+  let animationFrameId: number | null = null
 
-  // Perf: reusable indicator + rAF throttle
-  let dropIndicatorElement: HTMLDivElement | null = null;
-  let pendingDragPosition: { columnBody: HTMLDivElement; clientY: number } | null = null;
-  let animationFrameId: number | null = null;
+  // Counter for new objective IDs (temporary until DB integration)
+  let nextObjectiveId = 9
 
   // ============================================================
   // ORDER CALCULATION FUNCTIONS
   // ============================================================
 
-  function calculateOrderForTaskInsertedAtTopOfColumn(columnTasks: Task[]): number {
-    if (columnTasks.length === 0) return 1;
-    const firstTaskOrder: number = columnTasks[0].order;
-    return (0 + firstTaskOrder) / 2;
+  function calculateOrderForObjectiveInsertedAtTopOfColumn(columnObjectives: Objective[]): number {
+    if (columnObjectives.length === 0) return 1
+    const firstObjectiveOrder: number = columnObjectives[0].order
+    return (0 + firstObjectiveOrder) / 2
   }
 
-  function calculateOrderForTaskInsertedBetweenTwoTasks(taskAbove: Task, taskBelow: Task): number {
-    return (taskAbove.order + taskBelow.order) / 2;
+  function calculateOrderForObjectiveInsertedBetweenTwoObjectives(above: Objective, below: Objective): number {
+    return (above.order + below.order) / 2
   }
 
-  function calculateOrderForTaskInsertedAtBottomOfColumn(columnTasks: Task[]): number {
-    if (columnTasks.length === 0) return 1;
-    const lastTaskOrder: number = columnTasks[columnTasks.length - 1].order;
-    return lastTaskOrder + 1;
+  function calculateOrderForObjectiveInsertedAtBottomOfColumn(columnObjectives: Objective[]): number {
+    if (columnObjectives.length === 0) return 1
+    const lastObjectiveOrder: number = columnObjectives[columnObjectives.length - 1].order
+    return lastObjectiveOrder + 1
   }
 
-  function calculateOrderForTaskInsertedAtIndex(columnTasks: Task[], insertionIndex: number): number {
-    const hasTaskAbove: boolean = insertionIndex > 0;
-    const hasTaskBelow: boolean = insertionIndex < columnTasks.length;
-    if (!hasTaskAbove && !hasTaskBelow) return 1;
-    if (!hasTaskAbove) return calculateOrderForTaskInsertedAtTopOfColumn(columnTasks);
-    if (!hasTaskBelow) return calculateOrderForTaskInsertedAtBottomOfColumn(columnTasks);
-    return calculateOrderForTaskInsertedBetweenTwoTasks(
-      columnTasks[insertionIndex - 1],
-      columnTasks[insertionIndex]
-    );
+  function calculateOrderForObjectiveInsertedAtIndex(columnObjectives: Objective[], insertionIndex: number): number {
+    const hasObjectiveAbove: boolean = insertionIndex > 0
+    const hasObjectiveBelow: boolean = insertionIndex < columnObjectives.length
+    if (!hasObjectiveAbove && !hasObjectiveBelow) return 1
+    if (!hasObjectiveAbove) return calculateOrderForObjectiveInsertedAtTopOfColumn(columnObjectives)
+    if (!hasObjectiveBelow) return calculateOrderForObjectiveInsertedAtBottomOfColumn(columnObjectives)
+    return calculateOrderForObjectiveInsertedBetweenTwoObjectives(
+      columnObjectives[insertionIndex - 1],
+      columnObjectives[insertionIndex]
+    )
   }
 
   // ============================================================
   // DATA MANIPULATION FUNCTIONS
   // ============================================================
 
-  function getSortedTasksForColumn(columnValue: ColumnValue): Task[] {
-    const tasksForColumn: Task[] = kanbanData[columnValue] || [];
-    return [...tasksForColumn].sort((a: Task, b: Task) => a.order - b.order);
+  function getSortedObjectivesForColumn(columnId: ColumnId): Objective[] {
+    const objectivesForColumn: Objective[] = kanbanData[columnId] || []
+    return [...objectivesForColumn].sort((a: Objective, b: Objective) => a.order - b.order)
   }
 
-  function getTasksForColumn(columnValue: ColumnValue): Task[] {
-    return kanbanData[columnValue] || [];
+  function getObjectivesForColumn(columnId: ColumnId): Objective[] {
+    return kanbanData[columnId] || []
   }
 
-  function addNewTaskToTopOfColumn(taskTitle: string, columnValue: ColumnValue): void {
-    const sortedTasks: Task[] = getSortedTasksForColumn(columnValue);
-    const newOrder: number = calculateOrderForTaskInsertedAtTopOfColumn(sortedTasks);
-    const newTask: Task = { title: taskTitle, order: newOrder };
-    kanbanData[columnValue].push(newTask);
-    sortTasksInColumnByOrder(columnValue);
+  function addNewObjectiveToTopOfColumn(title: string, columnId: ColumnId): void {
+    const sortedObjectives: Objective[] = getSortedObjectivesForColumn(columnId)
+    const newOrder: number = calculateOrderForObjectiveInsertedAtTopOfColumn(sortedObjectives)
+    const newObjective: Objective = { id: nextObjectiveId++, title: title, order: newOrder }
+    kanbanData[columnId].push(newObjective)
+    sortObjectivesInColumnByOrder(columnId)
   }
 
-  function sortTasksInColumnByOrder(columnValue: ColumnValue): void {
-    kanbanData[columnValue].sort((a: Task, b: Task) => a.order - b.order);
+  function sortObjectivesInColumnByOrder(columnId: ColumnId): void {
+    kanbanData[columnId].sort((a: Objective, b: Objective) => a.order - b.order)
   }
 
-  function findTaskIndexInColumnByTitle(taskTitle: string, columnValue: ColumnValue): number {
-    return kanbanData[columnValue].findIndex((task: Task) => task.title === taskTitle);
+  function findObjectiveIndexInColumnById(objectiveId: number, columnId: ColumnId): number {
+    return kanbanData[columnId].findIndex((objective: Objective) => objective.id === objectiveId)
   }
 
-  function removeTaskFromColumnByTitle(taskTitle: string, columnValue: ColumnValue): boolean {
-    const index: number = findTaskIndexInColumnByTitle(taskTitle, columnValue);
+  function removeObjectiveFromColumnById(objectiveId: number, columnId: ColumnId): boolean {
+    const index: number = findObjectiveIndexInColumnById(objectiveId, columnId)
     if (index !== -1) {
-      kanbanData[columnValue].splice(index, 1);
-      return true;
+      kanbanData[columnId].splice(index, 1)
+      return true
     }
-    return false;
+    return false
   }
 
-  function retrieveTaskObjectByTitle(taskTitle: string, columnValue: ColumnValue): Task | null {
-    return kanbanData[columnValue].find((task: Task) => task.title === taskTitle) || null;
+  function retrieveObjectiveById(objectiveId: number, columnId: ColumnId): Objective | null {
+    return kanbanData[columnId].find((objective: Objective) => objective.id === objectiveId) || null
   }
 
-  function insertTaskObjectIntoColumnAtIndex(
-    taskObject: Task,
-    columnValue: ColumnValue,
+  function insertObjectiveIntoColumnAtIndex(
+    objective: Objective,
+    columnId: ColumnId,
     insertionIndex: number
   ): void {
-    kanbanData[columnValue].splice(insertionIndex, 0, taskObject);
-    sortTasksInColumnByOrder(columnValue);
+    kanbanData[columnId].splice(insertionIndex, 0, objective)
+    sortObjectivesInColumnByOrder(columnId)
   }
 
-  function moveTaskBetweenColumns(
-    taskTitle: string,
-    sourceColumnValue: ColumnValue,
-    targetColumnValue: ColumnValue,
+  function moveObjectiveBetweenColumns(
+    objectiveId: number,
+    sourceColumnId: ColumnId,
+    targetColumnId: ColumnId,
     targetInsertionIndex: number
   ): boolean {
-    const taskObject: Task | null = retrieveTaskObjectByTitle(taskTitle, sourceColumnValue);
-    if (!taskObject) return false;
-    removeTaskFromColumnByTitle(taskTitle, sourceColumnValue);
-    const sortedTargetTasks: Task[] = getSortedTasksForColumn(targetColumnValue);
-    const clampedIndex: number = Math.max(0, Math.min(targetInsertionIndex, sortedTargetTasks.length));
-    const newOrder: number = calculateOrderForTaskInsertedAtIndex(sortedTargetTasks, clampedIndex);
-    taskObject.order = newOrder;
-    insertTaskObjectIntoColumnAtIndex(taskObject, targetColumnValue, clampedIndex);
-    return true;
+    const objective: Objective | null = retrieveObjectiveById(objectiveId, sourceColumnId)
+    if (!objective) return false
+    removeObjectiveFromColumnById(objectiveId, sourceColumnId)
+    const sortedTargetObjectives: Objective[] = getSortedObjectivesForColumn(targetColumnId)
+    const clampedIndex: number = Math.max(0, Math.min(targetInsertionIndex, sortedTargetObjectives.length))
+    const newOrder: number = calculateOrderForObjectiveInsertedAtIndex(sortedTargetObjectives, clampedIndex)
+    objective.order = newOrder
+    insertObjectiveIntoColumnAtIndex(objective, targetColumnId, clampedIndex)
+    return true
   }
 
   // ============================================================
   // DOM QUERY HELPER FUNCTIONS
   // ============================================================
 
-  function getColumnBodyElementByName(columnValue: ColumnValue): HTMLDivElement | null {
-    return el.querySelector<HTMLDivElement>(`.column-body[data-column-body="${columnValue}"]`);
+  function getColumnObjectivesContainerElement(columnId: ColumnId): HTMLDivElement | null {
+    return el.querySelector<HTMLDivElement>(`.objectives[data-column-id="${columnId}"]`)
   }
 
-  function getTaskCountBadgeElement(columnValue: ColumnValue): HTMLElement | null {
-    return document.getElementById(`count-${columnValue}`);
+  function getObjectiveCountBadgeElement(columnId: ColumnId): HTMLElement | null {
+    return document.getElementById(`count-${columnId}`)
   }
 
-  function findAllTaskCardElementsInColumnBody(columnBodyElement: HTMLDivElement): HTMLDivElement[] {
-    return Array.from(columnBodyElement.querySelectorAll<HTMLDivElement>('.task-card'));
+  function findAllObjectiveCardElementsInContainer(container: HTMLDivElement): HTMLDivElement[] {
+    return Array.from(container.querySelectorAll<HTMLDivElement>('.objective'))
+  }
+
+  // ============================================================
+  // OBJECTIVE CARD CLONE & POPULATE
+  // ============================================================
+
+  function cloneObjectiveCardTemplate(): HTMLDivElement {
+    const template = document.getElementById('objective-template') as HTMLTemplateElement | null
+    if (!template || !template.content.firstElementChild) {
+      // Fallback (should never happen)
+      const fallback = document.createElement('div')
+      fallback.className = 'objective'
+      fallback.draggable = true
+      return fallback
+    }
+    return template.content.firstElementChild.cloneNode(true) as HTMLDivElement
+  }
+
+  function populateObjectiveCard(card: HTMLDivElement, objective: Objective): void {
+    card.dataset.id = String(objective.id)
+    card.dataset.order = String(objective.order)
+
+    const titleEl = card.querySelector<HTMLSpanElement>('.title')
+    if (titleEl) titleEl.textContent = objective.title
+
+    const tagsContainer = card.querySelector<HTMLDivElement>('.tags')
+    if (tagsContainer) {
+      tagsContainer.innerHTML = ''
+      objective.tags?.forEach((tag) => {
+        const tagEl = document.createElement('span')
+        tagEl.className = 'tag'
+        tagEl.textContent = tag.value
+        tagEl.style.backgroundColor = tag.bgHex
+        tagEl.style.color = tag.fgHex
+        tagsContainer.appendChild(tagEl)
+      })
+    }
+
+    const assigneesContainer = card.querySelector<HTMLDivElement>('.assignees')
+    if (assigneesContainer) {
+      assigneesContainer.innerHTML = ''
+      objective.assignees?.forEach((assignee) => {
+        const img = document.createElement('img')
+        img.className = 'assignee-avatar'
+        img.src = `/avatars/${assignee.imageId}.webp`
+        img.alt = `Assignee ${assignee.id}`
+        assigneesContainer.appendChild(img)
+      })
+    }
   }
 
   // ============================================================
   // RENDERING FUNCTIONS
   // ============================================================
 
-  function createTaskCardElement(taskObject: Task): HTMLDivElement {
-    const card: HTMLDivElement = document.createElement('div');
-    card.className = 'task-card';
-    card.draggable = true;
-    card.dataset.taskTitle = taskObject.title;
-    card.dataset.taskOrder = String(taskObject.order);
-
-    const titleSpan: HTMLSpanElement = document.createElement('span');
-    titleSpan.className = 'task-title';
-    titleSpan.textContent = taskObject.title;
-    card.appendChild(titleSpan);
-
-    // No direct listeners – we use event delegation on the container.
-    return card;
+  function clearColumnObjectivesContainer(container: HTMLDivElement): void {
+    container.innerHTML = ''
   }
 
-  function clearColumnBodyElement(columnBodyElement: HTMLDivElement): void {
-    columnBodyElement.innerHTML = '';
-  }
-
-  function appendTaskCardsToColumnBody(
-    columnBodyElement: HTMLDivElement,
-    taskObjects: Task[]
+  function appendObjectiveCardsToContainer(
+    container: HTMLDivElement,
+    objectives: Objective[]
   ): void {
-    taskObjects.forEach((task: Task) => {
-      columnBodyElement.appendChild(createTaskCardElement(task));
-    });
+    objectives.forEach((objective: Objective) => {
+      const card = cloneObjectiveCardTemplate()
+      populateObjectiveCard(card, objective)
+      container.appendChild(card)
+    })
   }
 
-  function updateColumnTaskCountBadge(columnValue: ColumnValue): void {
-    const badge: HTMLElement | null = getTaskCountBadgeElement(columnValue);
-    if (badge) badge.textContent = String(getTasksForColumn(columnValue).length);
+  function updateColumnObjectiveCountBadge(columnId: ColumnId): void {
+    const badge: HTMLElement | null = getObjectiveCountBadgeElement(columnId)
+    if (badge) badge.textContent = String(getObjectivesForColumn(columnId).length)
   }
 
-  function renderSingleColumnBody(columnValue: ColumnValue): void {
-    const columnBody: HTMLDivElement | null = getColumnBodyElementByName(columnValue);
-    if (!columnBody) return;
-    clearColumnBodyElement(columnBody);
-    const sortedTasks: Task[] = getSortedTasksForColumn(columnValue);
-    appendTaskCardsToColumnBody(columnBody, sortedTasks);
+  function renderSingleColumnObjectives(columnId: ColumnId): void {
+    const container: HTMLDivElement | null = getColumnObjectivesContainerElement(columnId)
+    if (!container) return
+    clearColumnObjectivesContainer(container)
+    const sortedObjectives: Objective[] = getSortedObjectivesForColumn(columnId)
+    appendObjectiveCardsToContainer(container, sortedObjectives)
   }
 
-  function renderBoardAfterTaskMove(
-    sourceColumnValue: ColumnValue,
-    targetColumnValue: ColumnValue
+  function renderBoardAfterObjectiveMove(
+    sourceColumnId: ColumnId,
+    targetColumnId: ColumnId
   ): void {
-    if (sourceColumnValue !== targetColumnValue) {
-      renderSingleColumnBody(sourceColumnValue);
-      updateColumnTaskCountBadge(sourceColumnValue);
+    if (sourceColumnId !== targetColumnId) {
+      renderSingleColumnObjectives(sourceColumnId)
+      updateColumnObjectiveCountBadge(sourceColumnId)
     }
-    renderSingleColumnBody(targetColumnValue);
-    updateColumnTaskCountBadge(targetColumnValue);
+    renderSingleColumnObjectives(targetColumnId)
+    updateColumnObjectiveCountBadge(targetColumnId)
   }
 
   // ============================================================
@@ -194,76 +229,76 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
   // ============================================================
 
   function createDropIndicatorElement(): HTMLDivElement {
-    const indicator: HTMLDivElement = document.createElement('div');
-    indicator.className = 'drop-indicator';
-    indicator.setAttribute('aria-hidden', 'true');
-    return indicator;
+    const indicator: HTMLDivElement = document.createElement('div')
+    indicator.className = 'drop-indicator'
+    indicator.setAttribute('aria-hidden', 'true')
+    return indicator
   }
 
   function removeDropIndicatorElement(): void {
     if (dropIndicatorElement) {
-      dropIndicatorElement.remove();
-      dropIndicatorElement = null;
+      dropIndicatorElement.remove()
+      dropIndicatorElement = null
     }
   }
 
-  function scheduleIndicatorUpdate(columnBody: HTMLDivElement, clientY: number): void {
-    pendingDragPosition = { columnBody, clientY };
+  function scheduleIndicatorUpdate(container: HTMLDivElement, clientY: number): void {
+    pendingDragPosition = { columnBody: container, clientY }
     if (animationFrameId === null) {
-      animationFrameId = requestAnimationFrame(processPendingDragPosition);
+      animationFrameId = requestAnimationFrame(processPendingDragPosition)
     }
   }
 
   function processPendingDragPosition(): void {
-    animationFrameId = null;
-    if (!pendingDragPosition) return;
+    animationFrameId = null
+    if (!pendingDragPosition) return
 
-    const { columnBody, clientY } = pendingDragPosition;
-    pendingDragPosition = null;
+    const { columnBody, clientY } = pendingDragPosition
+    pendingDragPosition = null
 
-    const insertionIndex = determineVisualInsertionIndexFromMouse(columnBody, clientY);
-    const taskCards = findAllTaskCardElementsInColumnBody(columnBody);
-    const clampedIndex = Math.max(0, Math.min(insertionIndex, taskCards.length));
+    const insertionIndex = determineVisualInsertionIndexFromMouse(columnBody, clientY)
+    const objectiveCards = findAllObjectiveCardElementsInContainer(columnBody)
+    const clampedIndex = Math.max(0, Math.min(insertionIndex, objectiveCards.length))
 
     if (!dropIndicatorElement) {
-      dropIndicatorElement = createDropIndicatorElement();
+      dropIndicatorElement = createDropIndicatorElement()
     }
 
-    if (clampedIndex < taskCards.length) {
-      columnBody.insertBefore(dropIndicatorElement, taskCards[clampedIndex]);
+    if (clampedIndex < objectiveCards.length) {
+      columnBody.insertBefore(dropIndicatorElement, objectiveCards[clampedIndex])
     } else {
-      columnBody.appendChild(dropIndicatorElement);
+      columnBody.appendChild(dropIndicatorElement)
     }
   }
 
   function determineInsertionIndexFromMousePosition(
-    columnBodyElement: HTMLDivElement,
+    container: HTMLDivElement,
     mouseYPosition: number,
-    draggedTaskTitle: string
+    draggedObjectiveId: number
   ): number {
-    const allTaskCards: HTMLDivElement[] = findAllTaskCardElementsInColumnBody(columnBodyElement);
-    const visibleTaskCards: HTMLDivElement[] = allTaskCards.filter(
-      (card: HTMLDivElement) => card.dataset.taskTitle !== draggedTaskTitle
-    );
-    for (let i: number = 0; i < visibleTaskCards.length; i++) {
-      const rect: DOMRect = visibleTaskCards[i].getBoundingClientRect();
-      const midY: number = rect.top + rect.height / 2;
-      if (mouseYPosition < midY) return i;
+    const allObjectiveCards: HTMLDivElement[] = findAllObjectiveCardElementsInContainer(container)
+    const visibleObjectiveCards: HTMLDivElement[] = allObjectiveCards.filter(
+      (card: HTMLDivElement) => card.dataset.id !== String(draggedObjectiveId)
+    )
+    for (let i: number = 0; i < visibleObjectiveCards.length; i++) {
+      const rect: DOMRect = visibleObjectiveCards[i].getBoundingClientRect()
+      const midY: number = rect.top + rect.height / 2
+      if (mouseYPosition < midY) return i
     }
-    return visibleTaskCards.length;
+    return visibleObjectiveCards.length
   }
 
   function determineVisualInsertionIndexFromMouse(
-    columnBodyElement: HTMLDivElement,
+    container: HTMLDivElement,
     mouseYPosition: number
   ): number {
-    const allTaskCards: HTMLDivElement[] = findAllTaskCardElementsInColumnBody(columnBodyElement);
-    for (let i: number = 0; i < allTaskCards.length; i++) {
-      const rect: DOMRect = allTaskCards[i].getBoundingClientRect();
-      const midY: number = rect.top + rect.height / 2;
-      if (mouseYPosition < midY) return i;
+    const allObjectiveCards: HTMLDivElement[] = findAllObjectiveCardElementsInContainer(container)
+    for (let i: number = 0; i < allObjectiveCards.length; i++) {
+      const rect: DOMRect = allObjectiveCards[i].getBoundingClientRect()
+      const midY: number = rect.top + rect.height / 2
+      if (mouseYPosition < midY) return i
     }
-    return allTaskCards.length;
+    return allObjectiveCards.length
   }
 
   // ============================================================
@@ -271,150 +306,150 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
   // ============================================================
 
   function handleDelegatedDragStart(event: DragEvent): void {
-    const target = event.target as HTMLElement;
-    const card = target.closest<HTMLDivElement>('.task-card');
-    if (!card) return;
+    const target = event.target as HTMLElement
+    const card = target.closest<HTMLDivElement>('.objective')
+    if (!card) return
 
-    const taskTitle = card.dataset.taskTitle;
-    const sourceColumnElement = card.closest<HTMLElement>('.kanban-column');
-    const sourceColumnValue = sourceColumnElement?.dataset.columnName;
-    if (!taskTitle || !sourceColumnValue) {
-      event.preventDefault();
-      return;
+    const objectiveId = Number(card.dataset.id)
+    const sourceColumnElement = card.closest<HTMLElement>('.column')
+    const sourceColumnId = Number(sourceColumnElement?.dataset.columnId)
+    if (!objectiveId || !sourceColumnId) {
+      event.preventDefault()
+      return
     }
 
-    currentlyDraggedTaskInfo = {
-      taskTitle: taskTitle,
-      sourceColumnValue: sourceColumnValue as ColumnValue
-    };
+    currentlyDraggedObjectiveInfo = {
+      objectiveId,
+      sourceColumnId
+    }
 
     if (event.dataTransfer) {
-      event.dataTransfer.effectAllowed = 'move';
-      event.dataTransfer.setData('text/plain', taskTitle);
-      event.dataTransfer.setData('application/x-kanban-source-column', sourceColumnValue);
+      event.dataTransfer.effectAllowed = 'move'
+      event.dataTransfer.setData('text/plain', String(objectiveId))
+      event.dataTransfer.setData('application/x-kanban-source-column', String(sourceColumnId))
     }
 
-    requestAnimationFrame(() => card.classList.add('is-being-dragged'));
+    requestAnimationFrame(() => card.classList.add('is-being-dragged'))
   }
 
   function handleDelegatedDragEnd(event: DragEvent): void {
-    cleanupAfterDragOperation();
+    cleanupAfterDragOperation()
   }
 
   function handleBoardDragOver(event: DragEvent): void {
-    event.preventDefault();
-    if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+    event.preventDefault()
+    if (event.dataTransfer) event.dataTransfer.dropEffect = 'move'
 
-    const target = event.target as HTMLElement;
-    const columnBody = target.closest<HTMLDivElement>('.column-body');
-    if (columnBody) {
-      scheduleIndicatorUpdate(columnBody, event.clientY);
+    const target = event.target as HTMLElement
+    const container = target.closest<HTMLDivElement>('.objectives[data-column-id]')
+    if (container) {
+      scheduleIndicatorUpdate(container, event.clientY)
     } else {
-      removeDropIndicatorElement();
+      removeDropIndicatorElement()
     }
   }
 
   function handleBoardDrop(event: DragEvent): void {
-    event.preventDefault();
+    event.preventDefault()
 
-    const target = event.target as HTMLElement;
-    const columnBody = target.closest<HTMLDivElement>('.column-body');
-    if (!columnBody || !currentlyDraggedTaskInfo) {
-      cleanupAfterDragOperation();
-      return;
+    const target = event.target as HTMLElement
+    const container = target.closest<HTMLDivElement>('.objectives[data-column-id]')
+    if (!container || !currentlyDraggedObjectiveInfo) {
+      cleanupAfterDragOperation()
+      return
     }
 
-    const draggedTaskTitle = currentlyDraggedTaskInfo.taskTitle;
-    const sourceColumnValue = currentlyDraggedTaskInfo.sourceColumnValue;
-    const targetColumnValue = columnBody.dataset.columnBody as ColumnValue;
+    const draggedObjectiveId = currentlyDraggedObjectiveInfo.objectiveId
+    const sourceColumnId = currentlyDraggedObjectiveInfo.sourceColumnId
+    const targetColumnId = Number(container.dataset.columnId)
 
     const insertionIndex = determineInsertionIndexFromMousePosition(
-      columnBody,
+      container,
       event.clientY,
-      draggedTaskTitle
-    );
+      draggedObjectiveId
+    )
 
-    const success = moveTaskBetweenColumns(
-      draggedTaskTitle,
-      sourceColumnValue,
-      targetColumnValue,
+    const success = moveObjectiveBetweenColumns(
+      draggedObjectiveId,
+      sourceColumnId,
+      targetColumnId,
       insertionIndex
-    );
+    )
 
     if (success) {
-      renderBoardAfterTaskMove(sourceColumnValue, targetColumnValue);
+      renderBoardAfterObjectiveMove(sourceColumnId, targetColumnId)
     }
-    cleanupAfterDragOperation();
+    cleanupAfterDragOperation()
   }
 
   function cleanupAfterDragOperation(): void {
-    currentlyDraggedTaskInfo = null;
-    removeDropIndicatorElement();
+    currentlyDraggedObjectiveInfo = null
+    removeDropIndicatorElement()
 
     if (animationFrameId !== null) {
-      cancelAnimationFrame(animationFrameId);
-      animationFrameId = null;
+      cancelAnimationFrame(animationFrameId)
+      animationFrameId = null
     }
-    pendingDragPosition = null;
+    pendingDragPosition = null
 
-    el.querySelectorAll<HTMLDivElement>('.task-card.is-being-dragged').forEach(
+    el.querySelectorAll<HTMLDivElement>('.objective.is-being-dragged').forEach(
       (card: HTMLDivElement) => card.classList.remove('is-being-dragged')
-    );
+    )
   }
 
   // ============================================================
   // FORM HANDLING FUNCTIONS
   // ============================================================
 
-  function extractTaskTitleFromForm(): string {
-    const input = document.getElementById('taskTitleInput') as HTMLInputElement | null;
-    return input ? input.value.trim() : '';
+  function extractObjectiveTitleFromForm(): string {
+    const input = document.getElementById('objectiveTitleInput') as HTMLInputElement | null
+    return input ? input.value.trim() : ''
   }
 
-  function extractSelectedColumnFromForm(): ColumnValue {
-    const select = document.getElementById('taskColumnSelect') as HTMLSelectElement | null;
-    return (select ? select.value : 'To Do') as ColumnValue;
+  function extractSelectedColumnIdFromForm(): ColumnId {
+    const select = document.getElementById('objectiveColumnSelect') as HTMLSelectElement | null
+    return select ? Number(select.value) : 1
   }
 
-  function clearTaskTitleInputField(): void {
-    const input = document.getElementById('taskTitleInput') as HTMLInputElement | null;
-    if (input) input.value = '';
+  function clearObjectiveTitleInputField(): void {
+    const input = document.getElementById('objectiveTitleInput') as HTMLInputElement | null
+    if (input) input.value = ''
   }
 
   function resetColumnSelectToDefault(): void {
-    const select = document.getElementById('taskColumnSelect') as HTMLSelectElement | null;
-    if (select) select.value = 'To Do';
+    const select = document.getElementById('objectiveColumnSelect') as HTMLSelectElement | null
+    if (select) select.value = '1'
   }
 
-  function resetAddTaskFormFields(): void {
-    clearTaskTitleInputField();
-    resetColumnSelectToDefault();
+  function resetAddObjectiveFormFields(): void {
+    clearObjectiveTitleInputField()
+    resetColumnSelectToDefault()
   }
 
-  function handleAddTaskFormSubmission(event: SubmitEvent): void {
-    event.preventDefault();
-    const title = extractTaskTitleFromForm();
-    const column = extractSelectedColumnFromForm();
+  function handleAddObjectiveFormSubmission(event: SubmitEvent): void {
+    event.preventDefault()
+    const title = extractObjectiveTitleFromForm()
+    const columnId = extractSelectedColumnIdFromForm()
 
     if (!title) {
-      const input = document.getElementById('taskTitleInput') as HTMLInputElement | null;
+      const input = document.getElementById('objectiveTitleInput') as HTMLInputElement | null
       if (input) {
-        input.focus();
-        input.style.borderColor = '#ef4444';
-        input.style.boxShadow = '0 0 0 0.4rem rgba(239,68,68,0.15)';
+        input.focus()
+        input.style.borderColor = '#ef4444'
+        input.style.boxShadow = '0 0 0 0.4rem rgba(239,68,68,0.15)'
         setTimeout(() => {
-          input.style.borderColor = '';
-          input.style.boxShadow = '';
-        }, 800);
+          input.style.borderColor = ''
+          input.style.boxShadow = ''
+        }, 800)
       }
-      return;
+      return
     }
 
-    addNewTaskToTopOfColumn(title, column);
-    renderSingleColumnBody(column);
-    updateColumnTaskCountBadge(column);
-    resetAddTaskFormFields();
-    document.getElementById('taskTitleInput')?.focus();
+    addNewObjectiveToTopOfColumn(title, columnId)
+    renderSingleColumnObjectives(columnId)
+    updateColumnObjectiveCountBadge(columnId)
+    resetAddObjectiveFormFields()
+    document.getElementById('objectiveTitleInput')?.focus()
   }
 
   // ============================================================
@@ -422,31 +457,31 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
   // ============================================================
 
   function attachDelegatedDragAndDropListeners(): void {
-    el.addEventListener('dragover', handleBoardDragOver);
-    el.addEventListener('drop', handleBoardDrop);
-    el.addEventListener('dragstart', handleDelegatedDragStart);
-    el.addEventListener('dragend', handleDelegatedDragEnd);
+    el.addEventListener('dragover', handleBoardDragOver)
+    el.addEventListener('drop', handleBoardDrop)
+    el.addEventListener('dragstart', handleDelegatedDragStart)
+    el.addEventListener('dragend', handleDelegatedDragEnd)
   }
 
   function attachFormSubmissionListener(): void {
-    const form = document.getElementById('addTaskForm') as HTMLFormElement | null;
-    if (form) form.addEventListener('submit', handleAddTaskFormSubmission);
+    const form = document.getElementById('objectives-add-edit-modal') as HTMLFormElement | null
+    if (form) form.addEventListener('submit', handleAddObjectiveFormSubmission)
   }
 
   function attachDocumentLevelDragOverPrevention(): void {
     document.addEventListener('dragover', function (event: DragEvent) {
-      if (!(event.target as HTMLElement)?.closest('.column-body')) {
-        removeDropIndicatorElement();
-        event.preventDefault();
+      if (!(event.target as HTMLElement)?.closest('.objectives[data-column-id]')) {
+        removeDropIndicatorElement()
+        event.preventDefault()
       }
-    });
+    })
 
     document.addEventListener('drop', function (event: DragEvent) {
-      if (!(event.target as HTMLElement)?.closest('.column-body')) {
-        event.preventDefault();
-        cleanupAfterDragOperation();
+      if (!(event.target as HTMLElement)?.closest('.objectives[data-column-id]')) {
+        event.preventDefault()
+        cleanupAfterDragOperation()
       }
-    });
+    })
   }
 
   // ============================================================
@@ -454,10 +489,10 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
   // ============================================================
 
   function initializeKanbanBoard(): void {
-    attachDelegatedDragAndDropListeners();
-    attachFormSubmissionListener();
-    attachDocumentLevelDragOverPrevention();
+    attachDelegatedDragAndDropListeners()
+    attachFormSubmissionListener()
+    attachDocumentLevelDragOverPrevention()
   }
 
-  initializeKanbanBoard();
-};
+  initializeKanbanBoard()
+}
