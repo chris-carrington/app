@@ -1,10 +1,11 @@
 // app/src/lib/transparency.route.tsx
 
 import { Hono } from 'hono'
-import { Style } from 'hono/css'
+import { css, Style } from 'hono/css'
 import { urlBE } from '@src/url/urlBE'
 import { md2html } from '@src/md/md2html'
 import { mdStyle } from '@src/md/mdStyle'
+import { formStyle } from '@src/lib/formStyle'
 import schema from '@src/transparency/schema.md?raw'
 import byLaws from '@src/transparency/bylaws.md?raw'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
@@ -24,7 +25,9 @@ export default new Hono()
     return c.render(
       <>
         <title>Shasta Trades · Transparency · {current.title}</title>
+        <Style>{style}</Style>
         <Style>{mdStyle}</Style>
+        <Style>{formStyle}</Style>
         <Style>{subPageHeroStyle}</Style>
 
         <div class="transparency">
@@ -36,7 +39,7 @@ export default new Hono()
             </div>
 
             <div class="buttons">
-              {documents.map((a, i) => <a class={paramId === a.id ? 'active' : ''} href={url.transparency[':id?'].$url({param: {id: a.id}}).href}>{a.title}</a>)}
+              {documents.map((a, i) => <a class={paramId === a.id ? 'orange big' : 'transparent big'} href={url.transparency[':id?'].$url({param: {id: a.id}}).href}>{a.title}</a>)}
             </div>
           </div>
 
@@ -57,3 +60,10 @@ const documents = [
   { id: 'whistleblower-policy', title: 'Whistleblower Policy', md: whistleblowerPolicy, wrapTables: false },
   { id: 'schema', title: 'Schema', md: schema, wrapTables: true },
 ]
+
+
+const style = css`
+  .sub-page-hero .big {
+    padding: var(--space-lite) 2.1rem;
+  }
+`

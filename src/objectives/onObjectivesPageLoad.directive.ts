@@ -1,6 +1,9 @@
 // app/src/objectives/onObjectivesPageLoad.directive.ts
 
+import { FormUtil } from '@hono-security'
 import type { Objective, ColumnId, KanbanData, DraggedObjectiveInfo } from '@src/objectives/objectives.types'
+import { objectiveAddEditValidator, type ObjectiveAddEditFormData } from '@src/objectives/objectiveAddEdit.validator'
+
 
 export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
   // ============================================================
@@ -401,16 +404,6 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
   // FORM HANDLING FUNCTIONS
   // ============================================================
 
-  function extractObjectiveTitleFromForm(): string {
-    const input = document.getElementById('objectiveTitleInput') as HTMLInputElement | null
-    return input ? input.value.trim() : ''
-  }
-
-  function extractSelectedColumnIdFromForm(): ColumnId {
-    const select = document.getElementById('objectiveColumnSelect') as HTMLSelectElement | null
-    return select ? Number(select.value) : 1
-  }
-
   function clearObjectiveTitleInputField(): void {
     const input = document.getElementById('objectiveTitleInput') as HTMLInputElement | null
     if (input) input.value = ''
@@ -426,28 +419,16 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
     resetColumnSelectToDefault()
   }
 
-  function handleAddObjectiveFormSubmission(event: SubmitEvent): void {
+  function handleAddObjectiveFormSubmission(event: SubmitEvent, form: FormUtil<ObjectiveAddEditFormData>): void {
     event.preventDefault()
-    const title = extractObjectiveTitleFromForm()
-    const columnId = extractSelectedColumnIdFromForm()
 
-    if (!title) {
-      const input = document.getElementById('objectiveTitleInput') as HTMLInputElement | null
-      if (input) {
-        input.focus()
-        input.style.borderColor = '#ef4444'
-        input.style.boxShadow = '0 0 0 0.4rem rgba(239,68,68,0.15)'
-        setTimeout(() => {
-          input.style.borderColor = ''
-          input.style.boxShadow = ''
-        }, 800)
-      }
-      return
-    }
+    const result = form.validateForm()
 
-    addNewObjectiveToTopOfColumn(title, columnId)
-    renderSingleColumnObjectives(columnId)
-    updateColumnObjectiveCountBadge(columnId)
+    if (!result.success) return
+
+    addNewObjectiveToTopOfColumn(result.data.title, Number(result.data.column))
+    renderSingleColumnObjectives(Number(result.data.column))
+    updateColumnObjectiveCountBadge(Number(result.data.column))
     resetAddObjectiveFormFields()
     document.getElementById('objectiveTitleInput')?.focus()
   }
@@ -464,8 +445,11 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
   }
 
   function attachFormSubmissionListener(): void {
-    const form = document.getElementById('objectives-add-edit-modal') as HTMLFormElement | null
-    if (form) form.addEventListener('submit', handleAddObjectiveFormSubmission)
+    const el = document.querySelector<HTMLFormElement>('#objective-add-edit-form')
+    if (!el) throw new Error('!el')
+
+    const form = new FormUtil(el, objectiveAddEditValidator)
+    el.addEventListener('submit', e => handleAddObjectiveFormSubmission(e, form))
   }
 
   function attachDocumentLevelDragOverPrevention(): void {

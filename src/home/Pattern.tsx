@@ -33,7 +33,7 @@ const Flow: FC = () => {
       <div class="explain">🤔 How does Shasta Trades work?</div>
 
       <div class="buttons">
-        {flowSteps.map(step => <button type="button" data-step={step.id}>{step.button}</button>)}
+        {flowSteps.map(step => <button class="transparent big" type="button" data-step={step.id}>{step.button}</button>)}
       </div>
 
       {flowSteps.map(step => <>
@@ -68,7 +68,7 @@ const Forms: FC = () => {
       <div class="explain">🤝 Want to connect with us?</div>
 
       <div class="buttons">
-        {achors.map(a => <a href={a.href}>{a.title}</a>)}
+        {achors.map(a => <a href={a.href} class="transparent big">{a.title}</a>)}
       </div>
 
       <ServiceRequest />
@@ -105,7 +105,7 @@ const ServiceRequest: FC = () => {
           <div class="mask"></div>
           <div class="inputs">
             <div class="title">Hire Trade Professionals</div>
-            <form data-directive={onServiceRequestSubmit()}>
+            <form data-directive={onServiceRequestSubmit()} class="bg-pattern">
               <div class="two">
                 <Field name="firstName" placeholder="First Name" type="text" prefix="service-request"/>
                 <Field name="lastName" placeholder="Last Name" type="text" prefix="service-request" />
@@ -116,7 +116,7 @@ const ServiceRequest: FC = () => {
               <Field name="description" placeholder="Job Description" type="textarea" prefix="service-request" />
               <Field name="trade" type="checkbox" options={jsonTrades} prefix="service-request" />
 
-              <button type="submit">Hire Trade Professionals</button>
+              <button class="orange wide" type="submit">Hire Trade Professionals</button>
             </form>
           </div>
         </div>
@@ -151,7 +151,7 @@ const JoinLeadership: FC = () => {
           <div class="mask"></div>
           <div class="inputs">
             <div class="title">Join Leadership Team</div>
-            <form data-directive={onJoinLeadershipSubmit()}>
+            <form data-directive={onJoinLeadershipSubmit()} class="bg-pattern">
               <div class="two">
                 <Field name="firstName" placeholder="First Name" type="text" prefix="join-leadership" />
                 <Field name="lastName" placeholder="Last Name" type="text" prefix="join-leadership" />
@@ -159,7 +159,7 @@ const JoinLeadership: FC = () => {
 
               <Field name="email" placeholder="Email" type="email" prefix="join-leadership" />
               <Field name="interest" placeholder="Select Interested Position" type="select" options={jsonStaff} prefix="join-leadership" />
-              <button type="submit">Join Leadership Team</button>
+              <button class="orange wide" type="submit">Join Leadership Team</button>
             </form>
           </div>
         </div>
@@ -199,14 +199,14 @@ const JoinNewsletter: FC = () => {
           <div class="mask"></div>
           <div class="inputs">
             <div class="title">Join Newsletter</div>
-            <form data-directive={onJoinNewsletterSubmit()}>
+            <form data-directive={onJoinNewsletterSubmit()} class="bg-pattern">
               <div class="two">
                 <Field name="firstName" placeholder="First Name" type="text" prefix="join-newsletter" />
                 <Field name="lastName" placeholder="Last Name" type="text" prefix="join-newsletter" />
               </div>
 
               <Field name="email" placeholder="Email" type="email" prefix="join-newsletter" />
-              <button type="submit">Join Newsletter</button>
+              <button class="orange wide" type="submit">Join Newsletter</button>
             </form>
           </div>
         </div>
@@ -246,7 +246,7 @@ const ContactUs: FC = () => {
           <div class="mask"></div>
           <div class="inputs">
             <div class="title">Contact Us</div>
-            <form data-directive={onContactUsSubmit()}>
+            <form data-directive={onContactUsSubmit()} class="bg-pattern">
               <div class="two">
                 <Field name="firstName" placeholder="First Name" type="text" prefix="contact-us" />
                 <Field name="lastName" placeholder="Last Name" type="text" prefix="contact-us" />
@@ -254,7 +254,7 @@ const ContactUs: FC = () => {
 
               <Field name="email" placeholder="Email" type="email" prefix="contact-us" />
               <Field name="message" placeholder="Message" type="textarea" prefix="contact-us" />
-              <button type="submit">Contact Us</button>
+              <button class="orange wide" type="submit">Contact Us</button>
             </form>
           </div>
         </div>
@@ -303,32 +303,6 @@ const style = css`
       flex-wrap: wrap;
       gap: var(--space-lite);
       margin-bottom: var(--space);
-
-      a,
-      button {
-        font-weight: 600;
-        font-size: 1.86rem;
-        text-decoration: none;
-        border-radius: calc(var(--radius) * 2);
-        color: var(--white);
-        padding: var(--space-lite) var(--space);
-        border: 1px solid rgb(255 255 255 / 0.2);
-        background-color: transparent;
-        cursor: pointer;
-        transition: var(--transition);
-        &:hover {
-          scale: 1.02;
-          background-color: rgb(255 255 255 / 0.1);
-        }
-        &.active {
-          color: var(--orange-text);
-          background-color: var(--orange);
-          border-color: var(--orange);
-          &:hover {
-            cursor: default;
-          }
-        }
-      }
     }
 
     .flow,
@@ -475,111 +449,14 @@ const style = css`
               position: relative;
               z-index: var(--z-content);
 
-              .two {
-                display: flex;
-                gap: var(--space-lite);
-
-                input {
-                  width: 50%;
-                }
-              }
-
-              .checkboxes {
-                display: flex;
-                flex-wrap: wrap;
-                gap: var(--space-lite);
-                color: var(--white);
-                font-size: 1.86rem;
-                margin-bottom: var(--space-lite);
-
-                .checkbox {
-                  display: flex;
-                  align-items: center;
-
-                  input,
-                  label {
-                    cursor: pointer;
-                  }
-                
-                  input {
-                    margin: 0 calc(var(--space-lite) / 2) 0 0;
-                    width: 1.86rem;
-                    height: 1.8em;
-                  }
-
-                  label {
-                    opacity: 0.81;
-                    user-select: none;
-                  }
-                }
-              }
-
-              .field {
-                width: 100%;
-                margin-bottom: var(--space-lite);
-                &.checkboxes {
-                  label {
-                    display: inline-block;
-                  }
-
-                  .error-message {
-                    margin-top: -0.9rem;
-                  }
-                }
+              .field:not(.checkboxes) {
 
                 label {
                   display: none;
                 }
 
-                input[type="text"],
-                input[type="email"],
-                select,
-                textarea {
-                  width: 100%;
-                  display: block;
-                  color: var(--white);
-                  padding: var(--space-lite);
-                  border-radius: var(--radius);
-                  background-color: rgb(255 255 255 / 0.05);
-                  border: 1px solid rgb(255 255 255 / 0.1);
-                  transition: var(--fast-transition);
-                  &:focus {
-                    border-color: transparent;
-                    outline: 0;
-                    box-shadow: 0 0 0 0.3rem rgba(0, 123, 255, 0.6);
-                    &.has-error {
-                      box-shadow: 0 0 0 0.3rem rgba(255, 58, 58, 0.45);
-                    }
-                  }
-                }
-
                 textarea {
                   height: 9rem;
-                }
-
-                .error-message {
-                  font-size: 1.56rem;
-                  color: rgba(255, 58, 58, 0.9);
-                  margin-top: calc(var(--space-lite) / 3);
-                }
-              }
-
-              button {
-                width: 100%;
-                background-color: var(--orange);
-                border-color: transparent;
-                font-weight: 600;
-                border-radius: var(--radius);
-                padding: calc(var(--space-lite) * 0.9) calc(var(--space-lite) * 1.5); 
-                color: var(--orange-text);
-                transition: var(--transition);
-                cursor: pointer;
-                &:hover {
-                  scale: 1.02;
-                }
-                &:disabled {
-                  opacity: 0.81;
-                  cursor: default;
                 }
               }
             }

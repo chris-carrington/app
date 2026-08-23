@@ -123,8 +123,14 @@ const style = css`
         align-items: center;
         height: 100%;
         width: 4.5rem;
+        border-radius: 50%;
         &:hover {
-          scale: 1.05;
+          box-shadow: 0px 10px 9px 1px rgba(0 ,0, 0, 0.33);
+          transform: translateY(-0.2rem);
+        }
+        &:active {
+          transform: translateY(0) scale(0.98);
+          box-shadow: 0px 9px 3px 0 rgba(0 ,0, 0, 0.33);
         }
 
         svg {

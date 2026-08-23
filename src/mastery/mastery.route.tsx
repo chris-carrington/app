@@ -4,6 +4,7 @@ import { Hono } from 'hono'
 import { Style } from 'hono/css'
 import { md2html } from '@src/md/md2html'
 import { mdStyle } from '@src/md/mdStyle'
+import { formStyle } from '@src/lib/formStyle'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import mdStudyGuide2025 from '@src/mastery/studyGuide2025.md?raw'
 import mdYoutubeUniversity from '@src/mastery/youtubeUniversity.md?raw'
@@ -17,9 +18,10 @@ export default new Hono()
 
     return c.render(
       <>
-        <Style>{mdStyle}</Style>
-        <Style>{subPageHeroStyle}</Style>
         <title>Shasta Trades · Mastery · {current.title}</title>
+        <Style>{mdStyle}</Style>
+        <Style>{formStyle}</Style>
+        <Style>{subPageHeroStyle}</Style>
 
         <div class="mastery">
           <div class="sub-page-hero">
@@ -30,7 +32,7 @@ export default new Hono()
             </div>
 
             <div class="buttons">
-              {documents.map((a, i) => <a class={paramId === a.id ? 'active' : ''} href={'/mastery/' + a.id}>{a.title}</a>)}
+              {documents.map((a, i) => <a class={paramId === a.id ? 'orange big' : 'transparent big'} href={'/mastery/' + a.id}>{a.title}</a>)}
             </div>
           </div>
 

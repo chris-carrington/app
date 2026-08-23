@@ -1,6 +1,8 @@
 // app/src/lib/vars.ts
 
+import type { Column } from '@src/objectives/objectives.types'
 import { msMinute, msWeek, secWeek, type HashCreateProps } from '@hono-security'
+
 
 export const sessionCookieName = 'session'
 
@@ -20,3 +22,9 @@ export const magicLinkTokenHashCreateProps: Omit<HashCreateProps, 'password'> = 
 export const magicTokenMaxAge = msMinute * 9
 
 export const emailFrom = 'support@shastatrades.org'
+
+export const kanbanColumns: Column[] = [
+  { id: 1, value: 'To Do' },
+  { id: 2, value: 'In Progress' },
+  { id: 3, value: 'Completed' }
+]

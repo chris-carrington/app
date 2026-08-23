@@ -5,6 +5,7 @@ import { Style } from 'hono/css'
 import { authStyle } from '@src/auth'
 import { urlBE } from '@src/url/urlBE'
 import { Field } from '@hono-security'
+import { formStyle } from '@src/lib/formStyle'
 import { onSignUpSubmit } from '@hono-directives'
 
 
@@ -14,8 +15,9 @@ export default new Hono()
       <>
         <title>Shasta Trades · Sign Up</title>
         <Style>{authStyle}</Style>
+        <Style>{formStyle}</Style>
 
-        <form data-directive={onSignUpSubmit()} class="auth">
+        <form data-directive={onSignUpSubmit()} class="auth bg-white">
           <div class="title">Create your Shasta Trades account</div>
 
           <div class="two">
@@ -25,7 +27,7 @@ export default new Hono()
 
           <Field name="email" placeholder="Email" type="email" prefix="sign-up" />
 
-          <button type="submit">Sign Up</button>
+          <button class="primary" type="submit">Sign Up</button>
 
           <a href={urlBE()['sign-in'].$url().href}>Have an account? Then click here to Sign In!</a>
         </form>

@@ -1,9 +1,11 @@
 import { Hono } from 'hono'
 import Pattern from './Pattern'
+import { Style } from 'hono/css'
 import Building from './Building'
 import Hero from '@src/home/Hero'
 import Mission from '@src/home/Mission'
 import { env } from 'cloudflare:workers'
+import { formStyle } from '@src/lib/formStyle'
 
 
 export default new Hono()
@@ -18,6 +20,7 @@ export default new Hono()
         <meta property="og:image" content={`${env.ORIGIN}/og/home.webp`} />
         <meta property="og:description" content={description} />
         <meta name="description" content={description} />
+        <Style>{formStyle}</Style>
 
         <Hero />
         <Mission />

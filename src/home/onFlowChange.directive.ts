@@ -18,7 +18,8 @@ export default (el: HTMLDivElement) => {
     for (const s of flowSteps) {
       s.domSteps?.style.setProperty('--steps', String(s.steps.length)) // set steps count
       s.domSteps?.classList.toggle('hidden', s.id !== id) // set steps hidden class
-      s.domButton?.classList.toggle('active', s.id === id) // set button active class
+      s.domButton?.classList.toggle('orange', s.id === id) // set button active class
+      s.domButton?.classList.toggle('transparent', s.id !== id) // set button transparent class
     }
   }
 

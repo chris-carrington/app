@@ -26,8 +26,8 @@ export default (() => {
           </div>
           <div class="message">We are currently in in the pre-launch phase (building this site, creating Shasta Trades Trust and creating Shasta Trades Nonprofit). We will start offering trade services once California has apporved our Trust and Nonprofit applications!</div>
           <div class="ctas">
-            <a href="#service-request-scroll" class="primary">SERVICE REQUEST</a>
-            <a href="#join-leadership-scroll" class="secondary">JOIN LEADERSHIP</a>
+            <a href="#service-request-scroll" class="orange big">SERVICE REQUEST</a>
+            <a href="#join-leadership-scroll" class="transparent big">JOIN LEADERSHIP</a>
           </div>
         </div>
         <div class="right">
@@ -115,7 +115,6 @@ const style = css`
 
         .message {
           font-size: 2.1rem;
-          /* font-family: var(--font-family-serif); */
           color: rgb(180 205 184);
           margin-bottom: var(--space);
         }
@@ -126,35 +125,6 @@ const style = css`
 
           @media (max-width: 540px) {
             flex-direction: column;
-          }
-
-          .primary,
-          .secondary {
-            white-space: nowrap;
-            font-weight: 600;
-            text-decoration: none;
-            transition: var(--transition);
-            border-radius: var(--radius);
-            padding: calc(var(--space-lite) * 0.9) calc(var(--space-lite) * 1.5);
-            &:hover {
-              scale: 1.02;
-            }
-
-            @media (max-width: 540px) {
-              text-align: center;
-            }
-          }
-
-          .primary {
-            color: var(--orange-text);
-            background-color: var(--orange);
-            border: 2px solid rgb(254 147 44);
-          }
-
-          .secondary {
-            color: rgb(255 255 255);
-            background-color: transparent;
-            border: 2px solid rgb(180 205 184);
           }
         }
       }

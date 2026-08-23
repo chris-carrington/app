@@ -27,7 +27,8 @@ export default (el: HTMLDivElement) => {
   function updateDOM(id: string, scroll = true) {
     for (const step of steps) {
       step.domForm?.classList.toggle('hidden', id !== step.id) // set form class
-      step.domAnchor?.classList.toggle('active', id === step.id) // set button class
+      step.domAnchor?.classList.toggle('orange', id === step.id) // set orange class
+      step.domAnchor?.classList.toggle('transparent', id !== step.id) // set transparent class
       if (scroll && id === step.id) step.domForm?.scrollIntoView({ behavior: 'smooth' }) // 🚨 scroll post visiblity toggle so we scroll after our requested div is visible
     }
   }

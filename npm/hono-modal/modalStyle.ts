@@ -90,7 +90,7 @@ export const modalStyle = css`
         display: flex;
         padding: calc(var(--space-lite) * 1.2) var(--space-lite);
         justify-content: space-between;
-        box-shadow: 0px 6px 9px 3px rgba(0, 0, 0, 0.06);
+        box-shadow: 0px 3px 3px 3px rgba(0, 0, 0, 0.03);
         font-weight: 500;
 
         span {
@@ -99,16 +99,25 @@ export const modalStyle = css`
 
         .close {
           padding: 0;
-          height: 2.4rem;
-          width: 2.4rem;
+          height: 3.3rem;
+          width: 3.3rem;
           border: none;
           filter: grayscale(1);
           cursor: pointer;
           background: transparent;
           transition: var(--transition);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           &:hover {
-            scale: 1.11;
             filter: grayscale(0);
+            box-shadow: 0px 10px 9px 1px rgba(0 ,0, 0, 0.33);
+            transform: translateY(-0.2rem);
+          }
+          &:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0px 9px 3px 0 rgba(0 ,0, 0, 0.33);
           }
 
           svg {
@@ -116,6 +125,8 @@ export const modalStyle = css`
             height: 100%;
             color: #d80000;
             opacity: 0.6;
+            height: 2.4rem;
+            width: 2.4rem;
           }
         }
       }

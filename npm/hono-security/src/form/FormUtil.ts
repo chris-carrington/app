@@ -68,27 +68,28 @@ export class FormUtil<T_Validator> {
     this.#el.querySelectorAll('.has-error').forEach((e) => e.classList.remove('has-error'))
 
     for (const [fieldName, errorMessage] of Object.entries(errors)) {
-      if (errorMessage) {
-        const errorEl = this.#el.querySelector<HTMLDivElement>(
-          `div.error-message[data-field="${fieldName}"]`
-        )
-        if (errorEl) errorEl.textContent = errorMessage
+      const errorEl = this.#el.querySelector<HTMLDivElement>(`div.error-message[data-field="${fieldName}"]`)
 
-        // No generic – works on any Element
-        const inputs = this.#el.querySelectorAll(`[name="${fieldName}"]`)
-        inputs.forEach((input) => input.classList.add('has-error'))
+      if (errorEl) {
+        errorEl.textContent = errorMessage ? errorMessage : ''
+        errorEl.style.display = errorMessage ? 'block' : 'none'
+
+        this.#el.querySelectorAll(`[name="${fieldName}"]`).forEach((input) => {
+          input.classList[errorMessage ? 'add' : 'remove']('has-error')
+        })
       }
     }
   }
 
   #clearFieldError(name: string) {
-    const errorEl = this.#el.querySelector<HTMLDivElement>(
-      `div.error-message[data-field="${name}"]`
-    )
-    if (errorEl) errorEl.textContent = ''
+    const errorEl = this.#el.querySelector<HTMLDivElement>(`div.error-message[data-field="${name}"]`)
 
-    const inputs = this.#el.querySelectorAll(`[name="${name}"]`)
-    inputs.forEach((input) => {
+    if (errorEl) {
+      errorEl.textContent = ''
+      errorEl.style.display = 'none'
+    }
+
+    this.#el.querySelectorAll(`[name="${name}"]`).forEach((input) => {
       input.classList.remove('has-error')
       input.removeAttribute('aria-invalid')
     })
@@ -99,13 +100,16 @@ export class FormUtil<T_Validator> {
     if (!group) return
 
     const checkedValues = group.filter((cb) => cb.checked).map((cb) => cb.value)
-    const error = this.#validator.validateField(name as keyof T_Validator, checkedValues)
+    const errorMessage = this.#validator.validateField(name as keyof T_Validator, checkedValues)
 
-    if (error) {
-      const errorEl = this.#el.querySelector<HTMLDivElement>(
-        `div.error-message[data-field="${name}"]`
-      )
-      if (errorEl) errorEl.textContent = error
+    if (errorMessage) {
+      const errorEl = this.#el.querySelector<HTMLDivElement>(`div.error-message[data-field="${name}"]`)
+
+      if (errorEl) {
+        errorEl.textContent = errorMessage
+        errorEl.style.display = 'block'
+      }
+
       group.forEach((cb) => {
         cb.classList.add('has-error')
         cb.setAttribute('aria-invalid', 'true')
@@ -123,11 +127,15 @@ export class FormUtil<T_Validator> {
 
       field.addEventListener('blur', () => {
         const error = this.#validator.validateField(name, field.value)
+
         if (error) {
-          const errorEl = this.#el.querySelector<HTMLDivElement>(
-            `div.error-message[data-field="${String(name)}"]`
-          )
-          if (errorEl) errorEl.textContent = error
+          const errorEl = this.#el.querySelector<HTMLDivElement>(`div.error-message[data-field="${String(name)}"]`)
+
+          if (errorEl) {
+            errorEl.textContent = error
+            errorEl.style.display = 'block'
+          }
+
           field.classList.add('has-error')
           field.setAttribute('aria-invalid', 'true')
         } else {

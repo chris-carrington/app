@@ -3,21 +3,17 @@
 import { Hono } from 'hono'
 import type { FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
+import { kanbanColumns } from '@src/lib/vars'
+import { formStyle } from '@src/lib/formStyle'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
+import ObjectiveAddEdit from '@src/objectives/ObjectiveAddEdit'
 // import { getKanbanBoard } from '@src/objectives/getKanbanBoard'
-import ObjectivesAddEdit from '@src/objectives/ObjectivesAddEdit'
 import { onModalToggle, onObjectivesPageLoad } from '@hono-directives'
-import type { Column, KanbanData, Objective } from '@src/objectives/objectives.types'
+import type { Objective, KanbanData } from '@src/objectives/objectives.types'
 
 
 export default new Hono()
   .get('/', async (c) => {
-    const COLUMNS: Column[] = [
-      { id: 1, value: 'To Do' },
-      { id: 2, value: 'In Progress' },
-      { id: 3, value: 'Completed' }
-    ]
-
     // const kanbanBoard = await getKanbanBoard()
     // console.log('kanbanBoard', JSON.stringify(kanbanBoard, null, 2))
 
@@ -46,6 +42,7 @@ export default new Hono()
       <>
         <title>Shasta Trades · Objectives</title>
         <Style>{style}</Style>
+        <Style>{formStyle}</Style>
         <Style>{subPageHeroStyle}</Style>
 
         <div class="objectives">
@@ -57,16 +54,16 @@ export default new Hono()
             </div>
 
             <div class="buttons">
-              <button data-directive={onModalToggle('objectives-add-edit-modal')} type="button">New</button>
-              <button class="active" type="button">All</button>
-              <button type="button">Mine</button>
+              <button data-directive={onModalToggle('objective-add-edit-modal')} class="transparent big" type="button">New</button>
+              <button class="orange big" type="button">All</button>
+              <button class="transparent big" type="button">Mine</button>
             </div>
           </div>
 
           <div data-directive={onObjectivesPageLoad(kanbanData)} class="kanban-board-wrapper">
             <div class="kanban-board" id="kanbanBoard" aria-label="Kanban Board">
               <div class="kanban-board-inner">
-                {COLUMNS.map((column) => (
+                {kanbanColumns.map((column) => (
                   <section class="column" data-column-id={column.id} aria-label={`${column.value} column`}>
                     <header class="header">
                       <h2 class="title">{column.value}</h2>
@@ -86,7 +83,7 @@ export default new Hono()
           </div>
         </div>
 
-        <ObjectivesAddEdit COLUMNS={COLUMNS} />
+        <ObjectiveAddEdit />
 
         {/* Single source of truth for client-created objective cards */}
         <template id="objective-template">
@@ -314,7 +311,6 @@ const style = css`
                 cursor: pointer;
                 opacity: 0.3;
                 &:hover {
-                  scale: 1.2;
                   opacity: 1;
                   background-color: #f1f5f9;
                 }

@@ -50,32 +50,6 @@ export const subPageHeroStyle = css`
       gap: var(--space-lite);
       margin: var(--space) auto 0 auto;
       max-width: var(--max-width);
-
-      a,
-      button {
-        font-weight: 600;
-        font-size: 1.86rem;
-        text-decoration: none;
-        border-radius: calc(var(--radius) * 2);
-        color: var(--white);
-        padding: var(--space-lite) 2.1rem;
-        border: 1px solid rgb(255 255 255 / 0.2);
-        background-color: transparent;
-        cursor: pointer;
-        transition: var(--transition);
-        &:hover {
-          scale: 1.02;
-          background-color: rgb(255 255 255 / 0.1);
-        }
-        &.active {
-          color: var(--orange-text);
-          background-color: var(--orange);
-          border-color: var(--orange);
-          &:hover {
-            cursor: default;
-          }
-        }
-      }
     }
   }
 `
