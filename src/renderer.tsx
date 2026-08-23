@@ -49,7 +49,7 @@ const style = css`
     --space-huge: 6.3rem;
     --max-width: 123rem;
     --speed: all 0.3s ease;
-    --font-family-arial: ProximaNova;
+    --font-family-arial: ProximaNova 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
     --font-family-serif: Georgia, 'Times New Roman', Times, serif;
 
     --primary: #1b3022;
