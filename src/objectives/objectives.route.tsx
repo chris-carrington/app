@@ -263,7 +263,7 @@ const style = css`
             background-color: #ffffff;
             border: 0.2rem solid #e2e8f0;
             border-radius: 1rem;
-            padding: 1.6rem 1.8rem;
+            padding: 1.5rem 1.5rem 1.6rem 1.5rem;
             box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.04);
             cursor: grab;
             transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
@@ -332,7 +332,7 @@ const style = css`
               display: flex;
               align-items: center;
               justify-content: space-between;
-              gap: 1.2rem;
+              gap: 0.3rem;
               &[data-populated="true"] {
                 margin-top: calc(var(--space-lite) / 2);
               }
@@ -343,15 +343,14 @@ const style = css`
                 gap: 0.6rem;
                 flex: 1;
                 justify-content: flex-start;
-              }
 
-              .tag {
-                font-size: 1.2rem;  /* small but readable, no text smaller than 1.8rem? But tags are decorative; still use 1.2rem? Better 1.4rem */
-                font-weight: 600;
-                padding: 0.4rem 1rem;
-                border-radius: 2rem;
-                white-space: nowrap;
-                letter-spacing: 0.02em;
+                .tag {
+                  font-size: 1.4rem;
+                  font-weight: 600;
+                  padding: 0.45rem 0.9rem;
+                  border-radius: 2rem;
+                  white-space: nowrap;
+                }
               }
 
               .assignees {
@@ -359,6 +358,7 @@ const style = css`
                 align-items: center;
                 gap: 0.4rem;
                 flex-shrink: 0;
+                transform: translateX(0.51rem);
               }
 
               .assignee-avatar {
