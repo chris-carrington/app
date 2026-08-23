@@ -131,19 +131,19 @@ const style = css`
   @font-face {
     font-family: ProximaNova;
     font-weight: 400;
-    src: url("/fonts/proxima_nova_400.woff2") format("truetype");
+    src: url("/fonts/proxima_nova_400.woff2") format("woff2");
   }
 
   @font-face {
     font-family: ProximaNova;
     font-weight: 500;
-    src: url("/fonts/proxima_nova_500.woff2") format("truetype");
+    src: url("/fonts/proxima_nova_500.woff2") format("woff2");
   }
 
   @font-face {
     font-family: ProximaNova;
     font-weight: 600;
-    src: url("/fonts/proxima_nova_600.woff2") format("truetype");
+    src: url("/fonts/proxima_nova_600.woff2") format("woff2");
   }
 
   @keyframes spin {
