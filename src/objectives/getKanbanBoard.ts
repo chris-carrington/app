@@ -16,6 +16,8 @@ export async function getKanbanBoard() {
 
       tagId: ObjectiveTag.id,
       tagValue: ObjectiveTag.value,
+      tagBgHex: ObjectiveTag.bgHex,
+      tagFgHex: ObjectiveTag.fgHex,
 
       assigneeId: Person.id,
       assigneeImageId: Person.imageId,
@@ -48,6 +50,8 @@ export async function getKanbanBoard() {
         shape: row => ({
           id: prop(row.tagId, ObjectiveTag.id),
           value: prop(row.tagValue, ObjectiveTag.value),
+          bgHex: prop(row.tagBgHex, ObjectiveTag.bgHex),
+          fgHex: prop(row.tagFgHex, ObjectiveTag.fgHex),
         }),
       },
       {

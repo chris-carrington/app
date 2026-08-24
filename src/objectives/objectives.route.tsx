@@ -7,36 +7,14 @@ import { kanbanColumns } from '@src/lib/vars'
 import { formStyle } from '@src/lib/formStyle'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import ObjectiveAddEdit from '@src/objectives/ObjectiveAddEdit'
-// import { getKanbanBoard } from '@src/objectives/getKanbanBoard'
+import { getKanbanBoard } from '@src/objectives/getKanbanBoard'
+import type { Objective } from '@src/objectives/objectives.types'
 import { onModalToggle, onObjectivesPageLoad } from '@hono-directives'
-import type { Objective, KanbanData } from '@src/objectives/objectives.types'
 
 
 export default new Hono()
   .get('/', async (c) => {
-    // const kanbanBoard = await getKanbanBoard()
-    // console.log('kanbanBoard', JSON.stringify(kanbanBoard, null, 2))
-
-    // const x = kanbanBoard[1][0].assignees[0]
-    // const y = kanbanBoard[1][0].tags[0]
-    // const z = kanbanBoard[0]
-
-    const kanbanData: KanbanData = {
-      '1': [
-        { id: 1, title: 'Design homepage mockup', order: 1 },
-        { id: 2, title: 'Write API documentation', order: 2 },
-        { id: 3, title: 'Setup CI/CD pipeline', order: 3 }
-      ],
-      '2': [
-        { id: 4, title: 'Implement authentication flow', order: 1, assignees: [{ id: 1, imageId: 'be46a51d-131d-41d6-ac58-df29843d1cc0' }], tags: [{ id: 1, value: 'In Development', bgHex: '#DBEAFE', fgHex: '#1E40AF' }] },
-        { id: 5, title: 'Create database schema', order: 2, assignees: [{ id: 1, imageId: 'be46a51d-131d-41d6-ac58-df29843d1cc0' }, { id: 2, imageId: '7a0e296f-5eda-401a-88fb-80c1577926c6' }], tags: [{ id: 1, value: 'In QA', bgHex: '#FEF3C7', fgHex: '#92400E' }] }
-      ],
-      '3': [
-        { id: 6, title: 'Project kickoff meeting', order: 1, tags: [{ id: 1, value: 'Completed', bgHex: '#CFFAFE', fgHex: '#155E75' }] },
-        { id: 7, title: 'Requirements gathering', order: 2, tags: [{ id: 1, value: 'Completed', bgHex: '#CFFAFE', fgHex: '#155E75' }] },
-        { id: 8, title: 'Wireframe approval', order: 3, tags: [{ id: 1, value: 'Completed', bgHex: '#CFFAFE', fgHex: '#155E75' }] }
-      ]
-    }
+    const kanbanData = await getKanbanBoard()
 
     return c.render(
       <>
@@ -72,7 +50,7 @@ export default new Hono()
                       </span>
                     </header>
                     <div class="objectives" data-column-id={column.id}>
-                      {kanbanData[column.id].map((o) => (
+                      {kanbanData[column.id] && kanbanData[column.id].map((o) => (
                         <ObjectiveCard objective={o} />
                       ))}
                     </div>
