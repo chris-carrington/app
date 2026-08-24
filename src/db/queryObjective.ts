@@ -66,6 +66,7 @@ const children = createChildren(getBaseQuery)
   })
 
 
+/** Get all objectives */
 export async function queryObjectives() {
   return leftJoin(await getBaseQuery(), {
     children,
@@ -74,6 +75,7 @@ export async function queryObjectives() {
 }
 
 
+/** Get an objective by id */
 export async function queryObjective(id: number) {
   const rows = await getBaseQuery()
     .where(eq(Objective.id, id))

@@ -1,4 +1,11 @@
-class DomBuilder<T_Element extends HTMLElement> {
+// app/npm/hono-dom/query.ts
+
+export function query<T_Element extends HTMLElement>(query: string): QueryBuilder<T_Element> {
+  return new QueryBuilder<T_Element>(query);
+}
+
+
+class QueryBuilder<T_Element extends HTMLElement> {
   #root: HTMLElement | Document = document;
   #query: string;
 
@@ -25,8 +32,4 @@ class DomBuilder<T_Element extends HTMLElement> {
     if (!list.length) throw new Error('❌ Not found: ' + this.#query);
     return list;
   }
-}
-
-export function dom<T_Element extends HTMLElement>(query: string): DomBuilder<T_Element> {
-  return new DomBuilder<T_Element>(query);
 }

@@ -1,22 +1,21 @@
 // app/src/home/onHashChange.directive.ts
 
-import { dom } from '@dom'
+import { query } from '@hono-dom'
+import { jsonHomeFormIds } from '@src/json/homeForms.json'
 
 
 export default (el: HTMLDivElement) => {
-  const defaultHashKey = 'service-request'
+  const defaultHashKey = jsonHomeFormIds[0]
 
-  const stepIds = ['service-request', 'join-leadership', 'join-newsletter', 'contact-us']
-
-  const stepsRegex = new RegExp(`^#(${stepIds.join('|')})(?:-(scroll))?$`)
+  const stepsRegex = new RegExp(`^#(${jsonHomeFormIds.join('|')})(?:-(scroll))?$`)
 
   const steps: Step[] = []
 
-  for (const id of stepIds) {
+  for (const id of jsonHomeFormIds) {
     steps.push({
       id,
-      domForm: dom<HTMLDivElement>(`#${id}`).root(el).one(),
-      domAnchor: dom<HTMLAnchorElement>(`a[href="#${id}"]`).root(el).one()
+      domForm: query<HTMLDivElement>(`#${id}`).root(el).one(),
+      domAnchor: query<HTMLAnchorElement>(`a[href="#${id}"]`).root(el).one()
     })
   }
 

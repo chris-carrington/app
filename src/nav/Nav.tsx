@@ -6,6 +6,7 @@ import { urlBE } from '@src/url/urlBE'
 import svgMenu from '@src/svg/menu.svg?raw'
 import svgPerson from '@src/svg/person.svg?raw'
 import { useRequestContext } from 'hono/jsx-renderer'
+import { idNavModal, idAuthModal } from '@src/lib/dom'
 import { onHomeClick, onNavModalToggle } from '@hono-directives'
 
 
@@ -34,8 +35,8 @@ export default (() => {
           </div>
         </div>
 
-        <button data-directive={onNavModalToggle('auth-modal')} class="auth-modal-btn" type="button" dangerouslySetInnerHTML={{ __html: svgPerson }} />
-        <button data-directive={onNavModalToggle('nav-modal')} class="nav-modal-btn" type="button" dangerouslySetInnerHTML={{ __html: svgMenu }} />
+        <button data-directive={onNavModalToggle(idAuthModal().id)} class="auth-modal-btn" type="button" dangerouslySetInnerHTML={{ __html: svgPerson }} />
+        <button data-directive={onNavModalToggle(idNavModal().id)} class="nav-modal-btn" type="button" dangerouslySetInnerHTML={{ __html: svgMenu }} />
       </div>
     </div>
   </>

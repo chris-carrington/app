@@ -1,12 +1,17 @@
 // app/src/home/onFlowChange.directive.ts
 
-import { dom } from '@dom'
+import { query } from '@hono-dom'
 import { flowSteps } from './flowSteps'
+import { datasetFlowStepButton, datasetFlowStepContainer } from '@src/lib/dom'
+
 
 export default (el: HTMLDivElement) => {
+  const datasetButton = datasetFlowStepButton()
+  const datasetContainer = datasetFlowStepContainer()
+
   for (const step of flowSteps) {
-    step.domSteps = dom<HTMLDivElement>(`.steps[data-step="${step.id}"]`).root(el).one()
-    step.domButton = dom<HTMLButtonElement>(`.buttons [data-step="${step.id}"]`).root(el).one()
+    step.domSteps = query<HTMLDivElement>(datasetContainer.query(step.id)).root(el).one()
+    step.domButton = query<HTMLButtonElement>(datasetButton.query(step.id)).root(el).one()
   }
 
   for (const step of flowSteps) {

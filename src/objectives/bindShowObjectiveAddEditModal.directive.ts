@@ -1,16 +1,19 @@
 // app/src/objectives/bindShowObjectiveAddEditModal.directive.ts
 
-import { dom } from '@dom'
+import { query } from '@hono-dom'
 import { urlFE } from '@src/url/urlFE'
+import { idObjectiveAddEditModal, idObjectiveAddEditModalTitle, idObjectiveAddEditModalSubmit, fieldObjectiveAddEditTitle, fieldObjectiveAddEditColumn, datasetObjectiveAddEditShowModal } from '@src/lib/dom'
 
 
 export default (_: HTMLDivElement) => {
-  const modal = dom<HTMLDivElement>('#objective-add-edit-modal').one()
-  const showModalButtons = dom<HTMLButtonElement>('[data-show-modal]').many()
-  const spanModalTitle = dom<HTMLSpanElement>('.header span').root(modal).one()
-  const buttonSubmit = dom<HTMLButtonElement>('button[type="submit"]').root(modal).one()
-  const inputTitle = dom<HTMLInputElement>('#text--objective-add-edit--title').root(modal).one()
-  const selectColumn = dom<HTMLInputElement>('#select--objective-add-edit--column').root(modal).one()
+  const datasetShowModal = datasetObjectiveAddEditShowModal()
+
+  const modal = query<HTMLDivElement>(idObjectiveAddEditModal().query).one()
+  const showModalButtons = query<HTMLButtonElement>(datasetShowModal.query()).many()
+  const spanModalTitle = query<HTMLSpanElement>(idObjectiveAddEditModalTitle().query).root(modal).one()
+  const buttonSubmit = query<HTMLButtonElement>(idObjectiveAddEditModalSubmit().query).root(modal).one()
+  const inputTitle = query<HTMLInputElement>(fieldObjectiveAddEditTitle().query).root(modal).one()
+  const selectColumn = query<HTMLInputElement>(fieldObjectiveAddEditColumn().query).root(modal).one()
 
   const imgEdit = getImg('/img/edit.svg', 'Edit objective')
   const imgLoading = getImg('/img/loading.svg', 'Edit objective modal loading')
@@ -18,7 +21,7 @@ export default (_: HTMLDivElement) => {
   const clientRequest = urlFE().api.objective[':id']
 
   for (const button of showModalButtons) {
-    const id = Number(button.dataset.showModal)
+    const id = Number(button.dataset[datasetShowModal.camel])
 
     button.addEventListener('click', async (e) => {
       if (!id) { // create

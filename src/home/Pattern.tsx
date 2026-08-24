@@ -8,6 +8,8 @@ import svgLock from '@src/svg/lock.svg?raw'
 import { jsonStaff } from '@src/json/staff.json'
 import { jsonTrades } from '@src/json/trades.json'
 import svgFrequency from '@src/svg/frequency.svg?raw'
+import { jsonHomeFormIds, jsonHomeForms } from '@src/json/homeForms.json'
+import { classNameStep, datasetFlowStepButton, datasetFlowStepContainer } from '@src/lib/dom'
 import { onFlowChange, onHashChange, onWrapChange, onContactUsSubmit, onServiceRequestSubmit, onJoinLeadershipSubmit, onJoinNewsletterSubmit } from '@hono-directives'
 
 
@@ -28,20 +30,24 @@ export default (() => {
 
 
 const Flow: FC = () => {
+  const stepClassName = classNameStep()
+  const datasetButton = datasetFlowStepButton()
+  const datasetContainer = datasetFlowStepContainer()
+
   return <>
     <div class="flow" data-directive={onFlowChange()}>
       <div class="explain">🤔 How does Shasta Trades work?</div>
 
       <div class="buttons">
-        {flowSteps.map(step => <button class="transparent big" type="button" data-step={step.id}>{step.button}</button>)}
+        {flowSteps.map(step => <button {...datasetButton.attr(step.id)} class="transparent big" type="button">{step.button}</button>)}
       </div>
 
       {flowSteps.map(step => <>
-        <div class="steps hidden" data-step={step.id} data-directive={onWrapChange()}>
+        <div {...datasetContainer.attr(step.id)} data-directive={onWrapChange()} class="steps hidden">
           <div class="line"></div>
 
           {step.steps.map((s, i) => <>
-            <div class="step">
+            <div class={stepClassName.className}>
               <div class="count">{i+1}</div>
               <div class="icon" dangerouslySetInnerHTML={{ __html: s.icon }}></div>
               <div class="title">{s.title}</div>
@@ -56,19 +62,12 @@ const Flow: FC = () => {
 
 
 const Forms: FC = () => {
-  const achors = [
-    { href: '#service-request', title: 'SERVICE REQUEST' },
-    { href: '#join-leadership', title: 'JOIN LEADERSHIP' },
-    { href: '#join-newsletter', title: 'JOIN NEWSLETTER' },
-    { href: '#contact-us', title: 'CONTACT US' },
-  ]
-
   return <>
     <div class="forms" data-directive={onHashChange()}>
       <div class="explain">🤝 Want to connect with us?</div>
 
       <div class="buttons">
-        {achors.map(a => <a href={a.href} class="transparent big">{a.title}</a>)}
+        {jsonHomeForms.map(a => <a href={'#' + a.id} class="transparent big">{a.title}</a>)}
       </div>
 
       <ServiceRequest />
@@ -81,8 +80,10 @@ const Forms: FC = () => {
 
 
 const ServiceRequest: FC = () => {
+  const id = jsonHomeFormIds[0]
+
   return <>
-    <div id="service-request" class="form hidden">
+    <div id={id} class="form hidden">
       <div class="badge">COMMUNITY SERVICES</div>
       <div class="flex">
         <div class="left">
@@ -107,14 +108,14 @@ const ServiceRequest: FC = () => {
             <div class="title">Hire Trade Professionals</div>
             <form data-directive={onServiceRequestSubmit()} class="bg-pattern">
               <div class="two">
-                <Field name="firstName" placeholder="First Name" type="text" prefix="service-request"/>
-                <Field name="lastName" placeholder="Last Name" type="text" prefix="service-request" />
+                <Field name="firstName" placeholder="First Name" type="text" prefix={id}/>
+                <Field name="lastName" placeholder="Last Name" type="text" prefix={id} />
               </div>
 
-              <Field name="email" placeholder="Email" type="email" prefix="service-request" />
+              <Field name="email" placeholder="Email" type="email" prefix={id} />
 
-              <Field name="description" placeholder="Job Description" type="textarea" prefix="service-request" />
-              <Field name="trade" type="checkbox" options={jsonTrades} prefix="service-request" />
+              <Field name="description" placeholder="Job Description" type="textarea" prefix={id} />
+              <Field name="trade" type="checkbox" options={jsonTrades} prefix={id} />
 
               <button class="orange wide" type="submit">Hire Trade Professionals</button>
             </form>
@@ -127,8 +128,10 @@ const ServiceRequest: FC = () => {
 
 
 const JoinLeadership: FC = () => {
+  const id = jsonHomeFormIds[1]
+
   return <>
-    <div id="join-leadership" class="form hidden">
+    <div id={id} class="form hidden">
       <div class="badge">BE THE LEADER YOU'D FOLLOW</div>
       <div class="flex">
         <div class="left">
@@ -153,12 +156,12 @@ const JoinLeadership: FC = () => {
             <div class="title">Join Leadership Team</div>
             <form data-directive={onJoinLeadershipSubmit()} class="bg-pattern">
               <div class="two">
-                <Field name="firstName" placeholder="First Name" type="text" prefix="join-leadership" />
-                <Field name="lastName" placeholder="Last Name" type="text" prefix="join-leadership" />
+                <Field name="firstName" placeholder="First Name" type="text" prefix={id} />
+                <Field name="lastName" placeholder="Last Name" type="text" prefix={id} />
               </div>
 
-              <Field name="email" placeholder="Email" type="email" prefix="join-leadership" />
-              <Field name="interest" placeholder="Select Interested Position" type="select" options={jsonStaff} prefix="join-leadership" />
+              <Field name="email" placeholder="Email" type="email" prefix={id} />
+              <Field name="interest" placeholder="Select Interested Position" type="select" options={jsonStaff} prefix={id} />
               <button class="orange wide" type="submit">Join Leadership Team</button>
             </form>
           </div>
@@ -170,13 +173,15 @@ const JoinLeadership: FC = () => {
 
 
 const JoinNewsletter: FC = () => {
+  const id = jsonHomeFormIds[2]
+
   const items = [
     { icon: svgLock, title: 'Security', description: 'Newsletter recipient names & emails are encrypted using industry-standard AEAD algorithms' },
     { icon: svgFrequency, title: 'Frequency', description: 'We rarely send out more then one email a month, because we respect you and your inbox' },
   ]
 
   return <>
-    <div id="join-newsletter" class="form hidden">
+    <div id={id} class="form hidden">
       <div class="badge">STAY INFORMED</div>
       <div class="flex">
         <div class="left">
@@ -201,11 +206,11 @@ const JoinNewsletter: FC = () => {
             <div class="title">Join Newsletter</div>
             <form data-directive={onJoinNewsletterSubmit()} class="bg-pattern">
               <div class="two">
-                <Field name="firstName" placeholder="First Name" type="text" prefix="join-newsletter" />
-                <Field name="lastName" placeholder="Last Name" type="text" prefix="join-newsletter" />
+                <Field name="firstName" placeholder="First Name" type="text" prefix={id} />
+                <Field name="lastName" placeholder="Last Name" type="text" prefix={id} />
               </div>
 
-              <Field name="email" placeholder="Email" type="email" prefix="join-newsletter" />
+              <Field name="email" placeholder="Email" type="email" prefix={id} />
               <button class="orange wide" type="submit">Join Newsletter</button>
             </form>
           </div>
@@ -217,13 +222,15 @@ const JoinNewsletter: FC = () => {
 
 
 const ContactUs: FC = () => {
+  const id = jsonHomeFormIds[3]
+
   const items = [
     { icon: svgLock, title: 'Security', description: 'Contact names, emails and messages are encrypted using industry-standard AEAD algorithms' },
     { icon: svgFrequency, title: 'Frequency', description: 'We will receive an email once you fill out the form and get back to you within 24 hours' },
   ]
 
   return <>
-    <div id="contact-us" class="form hidden">
+    <div id={id} class="form hidden">
       <div class="badge">UNITED WE STAND</div>
       <div class="flex">
         <div class="left">
@@ -248,12 +255,12 @@ const ContactUs: FC = () => {
             <div class="title">Contact Us</div>
             <form data-directive={onContactUsSubmit()} class="bg-pattern">
               <div class="two">
-                <Field name="firstName" placeholder="First Name" type="text" prefix="contact-us" />
-                <Field name="lastName" placeholder="Last Name" type="text" prefix="contact-us" />
+                <Field name="firstName" placeholder="First Name" type="text" prefix={id} />
+                <Field name="lastName" placeholder="Last Name" type="text" prefix={id} />
               </div>
 
-              <Field name="email" placeholder="Email" type="email" prefix="contact-us" />
-              <Field name="message" placeholder="Message" type="textarea" prefix="contact-us" />
+              <Field name="email" placeholder="Email" type="email" prefix={id} />
+              <Field name="message" placeholder="Message" type="textarea" prefix={id} />
               <button class="orange wide" type="submit">Contact Us</button>
             </form>
           </div>

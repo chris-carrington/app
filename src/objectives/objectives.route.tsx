@@ -3,10 +3,12 @@
 import { Hono } from 'hono'
 import type { FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
+import type { Dataset } from '@hono-dom'
 import { kanbanColumns } from '@src/lib/vars'
 import { formStyle } from '@src/lib/formStyle'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import ObjectiveAddEdit from '@src/objectives/ObjectiveAddEdit'
+import { datasetObjectiveAddEditShowModal } from '@src/lib/dom'
 import { queryObjectives, type QueryObjective, type QueryObjectives } from '@src/db/queryObjective'
 import { onObjectivesPageLoad, bindShowObjectiveAddEditModal } from '@hono-directives'
 
@@ -14,7 +16,8 @@ import { onObjectivesPageLoad, bindShowObjectiveAddEditModal } from '@hono-direc
 export default new Hono()
   .get('/', async (c) => {
     // const kanbanData = await queryObjectives()
-    const kanbanData: QueryObjectives = {"1":[{"id":1,"columnId":1,"title":"Profile: EditPerson.tsx","order":1,"createdAt":new Date("2026-08-24T03:59:26.000Z"),"tags":[],"assignees":[{"id":1,"imageId":"be46a51d-131d-41d6-ac58-df29843d1cc0","firstName":"Christopher","lastName":"Carrington"}]},{"id":2,"columnId":1,"title":"Profile: ContactUsMessages.tsx","order":2,"createdAt":new Date("2026-08-24T03:59:26.000Z"),"tags":[],"assignees":[{"id":1,"imageId":"be46a51d-131d-41d6-ac58-df29843d1cc0","firstName":"Christopher","lastName":"Carrington"}]}],"2":[{"id":3,"columnId":2,"title":"Create Objectives Page","order":1,"createdAt":new Date("2026-08-24T03:59:26.000Z"),"tags":[{"id":1,"value":"In Development","bgHex":"#DBEAFE","fgHex":"#1E40AF"}],"assignees":[{"id":1,"imageId":"be46a51d-131d-41d6-ac58-df29843d1cc0","firstName":"Christopher","lastName":"Carrington"},{"id":2,"imageId":"7a0e296f-5eda-401a-88fb-80c1577926c6","firstName":"Megha","lastName":"Carrington"}]}]}
+    const kanbanData: QueryObjectives = { "1": [{ "id": 1, "columnId": 1, "title": "Profile: EditPerson.tsx", "order": 1, "createdAt": new Date("2026-08-24T03:59:26.000Z"), "tags": [], "assignees": [{ "id": 1, "imageId": "be46a51d-131d-41d6-ac58-df29843d1cc0", "firstName": "Christopher", "lastName": "Carrington" }] }, { "id": 2, "columnId": 1, "title": "Profile: ContactUsMessages.tsx", "order": 2, "createdAt": new Date("2026-08-24T03:59:26.000Z"), "tags": [], "assignees": [{ "id": 1, "imageId": "be46a51d-131d-41d6-ac58-df29843d1cc0", "firstName": "Christopher", "lastName": "Carrington" }] }], "2": [{ "id": 3, "columnId": 2, "title": "Create Objectives Page", "order": 1, "createdAt": new Date("2026-08-24T03:59:26.000Z"), "tags": [{ "id": 1, "value": "In Development", "bgHex": "#DBEAFE", "fgHex": "#1E40AF" }], "assignees": [{ "id": 1, "imageId": "be46a51d-131d-41d6-ac58-df29843d1cc0", "firstName": "Christopher", "lastName": "Carrington" }, { "id": 2, "imageId": "7a0e296f-5eda-401a-88fb-80c1577926c6", "firstName": "Megha", "lastName": "Carrington" }] }] }
+    const datasetShowModal = datasetObjectiveAddEditShowModal()
 
     return c.render(
       <>
@@ -32,7 +35,7 @@ export default new Hono()
             </div>
 
             <div class="buttons">
-              <button data-show-modal class="transparent big" type="button">New</button>
+              <button {...datasetObjectiveAddEditShowModal().attr()} class="transparent big" type="button">New</button>
               <button class="orange big" type="button">All</button>
               <button class="transparent big" type="button">Mine</button>
             </div>
@@ -51,7 +54,7 @@ export default new Hono()
                     </header>
                     <div class="objectives" data-column-id={column.id}>
                       {kanbanData[column.id] && kanbanData[column.id].map((o) => (
-                        <ObjectiveCard objective={o} />
+                        <ObjectiveCard objective={o} datasetShowModal={datasetShowModal} />
                       ))}
                     </div>
                   </section>
@@ -65,19 +68,19 @@ export default new Hono()
 
         {/* Single source of truth for client-created objective cards */}
         <template id="objective-template">
-          <ObjectiveCard objective={null} />
+          <ObjectiveCard objective={null} datasetShowModal={datasetShowModal} />
         </template>
       </>
     )
   })
 
 
-const ObjectiveCard: FC<{ objective: QueryObjective | null }> = ({ objective }) => {
+const ObjectiveCard: FC<{ objective: QueryObjective | null, datasetShowModal: Dataset }> = ({ objective, datasetShowModal }) => {
   return <>
-    <div class="objective" draggable="true" data-id={objective?.id} data-order={objective ? String(objective.order) : undefined}>
+    <div class="objective" draggable="true" data-order={objective ? String(objective.order) : undefined}>
       <div class="top-row">
         <span class="title">{objective?.title ?? ''}</span>
-        <button data-show-modal={objective?.id} type="button" class="svg">
+        <button {...datasetShowModal.attr(objective?.id)} type="button" class="svg">
           <img src="/img/edit.svg" alt="Edit objective" />
         </button>
       </div>

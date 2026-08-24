@@ -1,10 +1,12 @@
 // app/src/home/onWrapChange.directive.ts
 
-import { dom } from "@dom"
+import { query } from '@hono-dom'
+import { classNameStep } from '@src/lib/dom'
+
 
 export default (el: HTMLElement) => {
   const onWrapChange = () => {
-    const children = dom<HTMLDivElement>('.step').root(el).many()
+    const children = query<HTMLDivElement>(classNameStep().query).root(el).many()
 
     if (children.length === 0) {
       el.classList.remove('wrapped')

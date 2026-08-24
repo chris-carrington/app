@@ -9,6 +9,7 @@ import svgConstruction from '@src/svg/construction.svg?raw'
 import svgBarLineChart from '@src/svg/barLineChart.svg?raw'
 import svgLineMagnifier from '@src/svg/lineMagnifier.svg?raw'
 import svgToolsClipboard from '@src/svg/toolsClipboard.svg?raw'
+import { jsonHomeForms } from '@src/json/homeForms.json'
 
 
 export const flowSteps: FlowStep[] = [
@@ -19,7 +20,7 @@ export const flowSteps: FlowStep[] = [
       {
         icon: svgToolsClipboard,
         title: 'Request a Service',
-        description: `Provide a <a href="#service-request">service request</a> that details the work you'd love done`
+        description: `Provide a <a href="${jsonHomeForms[0].href}">service request</a> that details the work you'd love done`
       },
       {
         icon: svgSmile,

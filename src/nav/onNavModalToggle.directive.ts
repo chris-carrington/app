@@ -1,11 +1,11 @@
 // app/src/nav/onNavModalToggle.directive.ts
 
-import { dom } from '@dom'
+import { query } from '@hono-dom'
 import { urlFE } from '@src/url/urlFE'
 
 
 export default (el: HTMLButtonElement, id: string) => {
-  const modal = dom<HTMLDivElement>(`#${id}`).one()
+  const modal = query<HTMLDivElement>(`#${id}`).one()
 
   el.addEventListener('click', async () => {
     modal.classList.toggle('hidden')

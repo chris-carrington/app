@@ -27,8 +27,8 @@
       "@src/*": [
         "./src/*"
       ],
-      "@dom": [
-        "./npm/dom/index"
+      "@hono-dom": [
+        "./npm/hono-dom/index"
       ],
       "@hono-toast": [
         "./npm/hono-toast/index"
