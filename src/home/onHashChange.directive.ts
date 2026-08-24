@@ -1,20 +1,23 @@
 // app/src/home/onHashChange.directive.ts
 
+import { dom } from '@dom'
+
+
 export default (el: HTMLDivElement) => {
   const defaultHashKey = 'service-request'
 
-  const steps: Step[] = [
-    { id: 'service-request', domForm: null, domAnchor: null },
-    { id: 'join-leadership', domForm: null, domAnchor: null },
-    { id: 'join-newsletter', domForm: null, domAnchor: null },
-    { id: 'contact-us', domForm: null, domAnchor: null },
-  ]
+  const stepIds = ['service-request', 'join-leadership', 'join-newsletter', 'contact-us']
 
-  const stepsRegex = new RegExp(`^#(${steps.map(s => s.id).join('|')})(?:-(scroll))?$`)
+  const stepsRegex = new RegExp(`^#(${stepIds.join('|')})(?:-(scroll))?$`)
 
-  for (const step of steps) {
-    step.domForm = el.querySelector<HTMLDivElement>(`#${step.id}`)
-    step.domAnchor = el.querySelector<HTMLAnchorElement>(`a[href="#${step.id}"]`)
+  const steps: Step[] = []
+
+  for (const id of stepIds) {
+    steps.push({
+      id,
+      domForm: dom<HTMLDivElement>(`#${id}`).root(el).one(),
+      domAnchor: dom<HTMLAnchorElement>(`a[href="#${id}"]`).root(el).one()
+    })
   }
 
   function onHashChange() {
@@ -41,6 +44,6 @@ export default (el: HTMLDivElement) => {
 
 type Step = {
   id: string,
-  domForm: null | HTMLDivElement,
-  domAnchor: null | HTMLAnchorElement
+  domForm: HTMLDivElement,
+  domAnchor: HTMLAnchorElement
 }

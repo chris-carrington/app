@@ -1,11 +1,12 @@
 // app/src/home/onFlowChange.directive.ts
 
+import { dom } from '@dom'
 import { flowSteps } from './flowSteps'
 
 export default (el: HTMLDivElement) => {
   for (const step of flowSteps) {
-    step.domSteps = el.querySelector<HTMLDivElement>(`.steps[data-step="${step.id}"]`)
-    step.domButton = el.querySelector<HTMLButtonElement>(`.buttons [data-step="${step.id}"]`)
+    step.domSteps = dom<HTMLDivElement>(`.steps[data-step="${step.id}"]`).root(el).one()
+    step.domButton = dom<HTMLButtonElement>(`.buttons [data-step="${step.id}"]`).root(el).one()
   }
 
   for (const step of flowSteps) {

@@ -13,6 +13,7 @@ import signUpRoute from '@src/auth/signUp.route'
 import signOutRoute from '@src/auth/signOut.route'
 import contactUs from '@src/contactUs/contactUs.api'
 import magicLinkRoute from '@src/auth/magicLink.route'
+import objective from '@src/objectives/objective.api'
 import objectives from '@src/objectives/objectives.route'
 import transparency from '@src/transparency/transparency.route'
 import serviceRequest from '@src/serviceRequest/serviceRequest.api'
@@ -32,6 +33,7 @@ const app = new Hono()
   .route('/api/sign-up', signUpApi)
   .route('/objectives', objectives)
   .route('/api/session', sessionApi)
+  .route('/api/objective', objective)
   .route('/api/contact-us', contactUs)
   .route('/transparency', transparency)
   .route('/magic-link', magicLinkRoute)

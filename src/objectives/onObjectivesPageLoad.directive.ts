@@ -66,7 +66,7 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
   function addNewObjectiveToTopOfColumn(title: string, columnId: ColumnId): void {
     const sortedObjectives: Objective[] = getSortedObjectivesForColumn(columnId)
     const newOrder: number = calculateOrderForObjectiveInsertedAtTopOfColumn(sortedObjectives)
-    const newObjective: Objective = { id: nextObjectiveId++, title: title, order: newOrder }
+    const newObjective: Objective = { id: nextObjectiveId++, title: title, order: newOrder, columnId, createdAt: (new Date()).toISOString() }
     kanbanData[columnId].push(newObjective)
     sortObjectivesInColumnByOrder(columnId)
   }

@@ -12,12 +12,16 @@ export type Tag = {
 export type Assignee = {
   id: number
   imageId: string
+  firstName: string
+  lastName: string
 }
 
 export type Objective = {
   id: number
   title: string
   order: number
+  columnId: number
+  createdAt: string
   assignees?: Assignee[]
   tags?: Tag[]
 }

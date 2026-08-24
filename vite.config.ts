@@ -13,6 +13,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@src': path.resolve(__dirname, 'src'),
+      '@dom': path.resolve(__dirname, 'npm/dom/index'),
       '@hono-email': path.resolve(__dirname, 'npm/hono-email/index'),
       '@hono-toast': path.resolve(__dirname, 'npm/hono-toast/index'),
       '@hono-modal': path.resolve(__dirname, 'npm/hono-modal/index'),

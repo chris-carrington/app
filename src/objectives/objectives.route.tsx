@@ -7,14 +7,15 @@ import { kanbanColumns } from '@src/lib/vars'
 import { formStyle } from '@src/lib/formStyle'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import ObjectiveAddEdit from '@src/objectives/ObjectiveAddEdit'
-import { getKanbanBoard } from '@src/objectives/getKanbanBoard'
-import type { Objective } from '@src/objectives/objectives.types'
-import { onModalToggle, onObjectivesPageLoad } from '@hono-directives'
+// import { getKanbanBoard } from '@src/objectives/getKanbanBoard'
+import type { KanbanData, Objective } from '@src/objectives/objectives.types'
+import { onModalToggle, onObjectivesPageLoad, bindShowObjectiveAddEditModal } from '@hono-directives'
 
 
 export default new Hono()
   .get('/', async (c) => {
-    const kanbanData = await getKanbanBoard()
+    // const kanbanData = await getKanbanBoard()
+    const kanbanData: KanbanData = {"1":[{"id":1,"columnId":1,"title":"Profile: EditPerson.tsx","order":1,"createdAt":"2026-08-24T03:59:26.000Z","tags":[],"assignees":[{"id":1,"imageId":"be46a51d-131d-41d6-ac58-df29843d1cc0","firstName":"Christopher","lastName":"Carrington"}]},{"id":2,"columnId":1,"title":"Profile: ContactUsMessages.tsx","order":2,"createdAt":"2026-08-24T03:59:26.000Z","tags":[],"assignees":[{"id":1,"imageId":"be46a51d-131d-41d6-ac58-df29843d1cc0","firstName":"Christopher","lastName":"Carrington"}]}],"2":[{"id":3,"columnId":2,"title":"Create Objectives Page","order":1,"createdAt":"2026-08-24T03:59:26.000Z","tags":[{"id":1,"value":"In Development","bgHex":"#DBEAFE","fgHex":"#1E40AF"}],"assignees":[{"id":1,"imageId":"be46a51d-131d-41d6-ac58-df29843d1cc0","firstName":"Christopher","lastName":"Carrington"},{"id":2,"imageId":"7a0e296f-5eda-401a-88fb-80c1577926c6","firstName":"Megha","lastName":"Carrington"}]}]}
 
     return c.render(
       <>
@@ -23,7 +24,7 @@ export default new Hono()
         <Style>{formStyle}</Style>
         <Style>{subPageHeroStyle}</Style>
 
-        <div class="objectives">
+        <div class="objectives" data-directive={bindShowObjectiveAddEditModal()}>
           <div class="sub-page-hero">
             <div class="bg"></div>
             <div class="header">
@@ -32,7 +33,7 @@ export default new Hono()
             </div>
 
             <div class="buttons">
-              <button data-directive={onModalToggle('objective-add-edit-modal')} class="transparent big" type="button">New</button>
+              <button data-show-modal class="transparent big" type="button">New</button>
               <button class="orange big" type="button">All</button>
               <button class="transparent big" type="button">Mine</button>
             </div>
@@ -77,9 +78,9 @@ const ObjectiveCard: FC<{ objective: Objective | null }> = ({ objective }) => {
     <div class="objective" draggable="true" data-id={objective?.id} data-order={objective ? String(objective.order) : undefined}>
       <div class="top-row">
         <span class="title">{objective?.title ?? ''}</span>
-        <div class="svg">
+        <button data-show-modal={objective?.id} type="button" class="svg">
           <img src="/img/edit.svg" alt="Edit objective" />
-        </div>
+        </button>
       </div>
       <div class="bottom-row" data-populated={Number(objective?.tags?.length) > 0 || Number(objective?.assignees?.length) > 0 ? 'true' : 'false'}>
         <div class="tags">
@@ -288,6 +289,8 @@ const style = css`
                 transition: var(--transition);
                 cursor: pointer;
                 opacity: 0.3;
+                border: none;
+                outline: none;
                 &:hover {
                   opacity: 1;
                   background-color: #f1f5f9;

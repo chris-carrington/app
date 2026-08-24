@@ -1,8 +1,10 @@
 // app/src/home/onWrapChange.directive.ts
 
+import { dom } from "@dom"
+
 export default (el: HTMLElement) => {
   const onWrapChange = () => {
-    const children = el.querySelectorAll('.step')
+    const children = dom<HTMLDivElement>('.step').root(el).many()
 
     if (children.length === 0) {
       el.classList.remove('wrapped')
