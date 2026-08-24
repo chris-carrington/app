@@ -12,6 +12,9 @@ export default (_: HTMLDivElement) => {
   const inputTitle = dom<HTMLInputElement>('#text--objective-add-edit--title').root(modal).one()
   const selectColumn = dom<HTMLInputElement>('#select--objective-add-edit--column').root(modal).one()
 
+  const imgEdit = getImg('/img/edit.svg', 'Edit objective')
+  const imgLoading = getImg('/img/loading.svg', 'Edit objective modal loading')
+
   const clientRequest = urlFE().api.objective[':id']
 
   for (const button of showModalButtons) {
@@ -27,6 +30,9 @@ export default (_: HTMLDivElement) => {
         modal.classList.remove('hidden')
       } else { // edit
         e.stopPropagation()
+
+        // start loading indicator
+        button.innerHTML = imgLoading
 
         // get objective from db
         const response = await clientRequest.$get({ param: { id: String(id) } })
@@ -46,7 +52,19 @@ export default (_: HTMLDivElement) => {
 
         // show modal
         modal.classList.remove('hidden')
+
+        setTimeout(() => { // stop loading indicator
+          button.innerHTML = imgEdit
+        }, 120)
       }
     })
   }
+}
+
+
+function getImg(src: string, alt: string) {
+  const imgLoading = document.createElement('img')
+  imgLoading.setAttribute('src', src)
+  imgLoading.setAttribute('alt', alt)
+  return imgLoading.outerHTML
 }
