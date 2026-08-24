@@ -11,5 +11,15 @@
       "enabled": true,
       "invocation_logs": true
     }
-  }
+  },
+  "routes": [
+    {
+      "pattern": "shastatrades.org/*",
+      "zone_name": "shastatrades.org"
+    },
+    {
+      "pattern": "www.shastatrades.org/*",
+      "zone_name": "shastatrades.org"
+    }
+  ]
 }
