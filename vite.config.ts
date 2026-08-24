@@ -19,7 +19,7 @@ export default defineConfig({
       '@hono-modal': path.resolve(__dirname, 'npm/hono-modal/index'),
       '@hono-security': path.resolve(__dirname, 'npm/hono-security/index'),
       '@hono-directives': path.resolve(__dirname, 'npm/hono-directives/dist/index'),
-      '@drizzle-left-join': path.resolve(__dirname, 'npm/drizzle-left-join/index'),
+      '@drizzle-compose': path.resolve(__dirname, 'npm/drizzle-compose/index'),
     },
   },
   plugins: [

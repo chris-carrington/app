@@ -1,11 +1,11 @@
 // app/src/objectives/onObjectivesPageLoad.directive.ts
 
 import { FormUtil } from '@hono-security'
-import type { Objective, ColumnId, KanbanData, DraggedObjectiveInfo } from '@src/objectives/objectives.types'
+import type { QueryObjectives, QueryObjective } from '@src/db/queryObjective'
 import { objectiveAddEditValidator, type ObjectiveAddEditFormData } from '@src/objectives/objectiveAddEdit.validator'
 
 
-export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
+export default (el: HTMLDivElement, kanbanData: QueryObjectives): void => {
   // ============================================================
   // DRAG AND DROP STATE
   // ============================================================
@@ -22,23 +22,23 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
   // ORDER CALCULATION FUNCTIONS
   // ============================================================
 
-  function calculateOrderForObjectiveInsertedAtTopOfColumn(columnObjectives: Objective[]): number {
+  function calculateOrderForObjectiveInsertedAtTopOfColumn(columnObjectives: QueryObjective[]): number {
     if (columnObjectives.length === 0) return 1
     const firstObjectiveOrder: number = columnObjectives[0].order
     return (0 + firstObjectiveOrder) / 2
   }
 
-  function calculateOrderForObjectiveInsertedBetweenTwoObjectives(above: Objective, below: Objective): number {
+  function calculateOrderForObjectiveInsertedBetweenTwoObjectives(above: QueryObjective, below: QueryObjective): number {
     return (above.order + below.order) / 2
   }
 
-  function calculateOrderForObjectiveInsertedAtBottomOfColumn(columnObjectives: Objective[]): number {
+  function calculateOrderForObjectiveInsertedAtBottomOfColumn(columnObjectives: QueryObjective[]): number {
     if (columnObjectives.length === 0) return 1
     const lastObjectiveOrder: number = columnObjectives[columnObjectives.length - 1].order
     return lastObjectiveOrder + 1
   }
 
-  function calculateOrderForObjectiveInsertedAtIndex(columnObjectives: Objective[], insertionIndex: number): number {
+  function calculateOrderForObjectiveInsertedAtIndex(columnObjectives: QueryObjective[], insertionIndex: number): number {
     const hasObjectiveAbove: boolean = insertionIndex > 0
     const hasObjectiveBelow: boolean = insertionIndex < columnObjectives.length
     if (!hasObjectiveAbove && !hasObjectiveBelow) return 1
@@ -54,32 +54,32 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
   // DATA MANIPULATION FUNCTIONS
   // ============================================================
 
-  function getSortedObjectivesForColumn(columnId: ColumnId): Objective[] {
-    const objectivesForColumn: Objective[] = kanbanData[columnId] || []
-    return [...objectivesForColumn].sort((a: Objective, b: Objective) => a.order - b.order)
+  function getSortedObjectivesForColumn(columnId: number): QueryObjective[] {
+    const objectivesForColumn: QueryObjective[] = kanbanData[columnId] || []
+    return [...objectivesForColumn].sort((a: QueryObjective, b: QueryObjective) => a.order - b.order)
   }
 
-  function getObjectivesForColumn(columnId: ColumnId): Objective[] {
+  function getObjectivesForColumn(columnId: number): QueryObjective[] {
     return kanbanData[columnId] || []
   }
 
-  function addNewObjectiveToTopOfColumn(title: string, columnId: ColumnId): void {
-    const sortedObjectives: Objective[] = getSortedObjectivesForColumn(columnId)
+  function addNewObjectiveToTopOfColumn(title: string, columnId: number): void {
+    const sortedObjectives: QueryObjective[] = getSortedObjectivesForColumn(columnId)
     const newOrder: number = calculateOrderForObjectiveInsertedAtTopOfColumn(sortedObjectives)
-    const newObjective: Objective = { id: nextObjectiveId++, title: title, order: newOrder, columnId, createdAt: (new Date()).toISOString() }
+    const newObjective: QueryObjective = { id: nextObjectiveId++, title: title, order: newOrder, columnId, createdAt: new Date(), assignees: [], tags: [] }
     kanbanData[columnId].push(newObjective)
     sortObjectivesInColumnByOrder(columnId)
   }
 
-  function sortObjectivesInColumnByOrder(columnId: ColumnId): void {
-    kanbanData[columnId].sort((a: Objective, b: Objective) => a.order - b.order)
+  function sortObjectivesInColumnByOrder(columnId: number): void {
+    kanbanData[columnId].sort((a: QueryObjective, b: QueryObjective) => a.order - b.order)
   }
 
-  function findObjectiveIndexInColumnById(objectiveId: number, columnId: ColumnId): number {
-    return kanbanData[columnId].findIndex((objective: Objective) => objective.id === objectiveId)
+  function findObjectiveIndexInColumnById(objectiveId: number, columnId: number): number {
+    return kanbanData[columnId].findIndex((objective: QueryObjective) => objective.id === objectiveId)
   }
 
-  function removeObjectiveFromColumnById(objectiveId: number, columnId: ColumnId): boolean {
+  function removeObjectiveFromColumnById(objectiveId: number, columnId: number): boolean {
     const index: number = findObjectiveIndexInColumnById(objectiveId, columnId)
     if (index !== -1) {
       kanbanData[columnId].splice(index, 1)
@@ -88,13 +88,13 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
     return false
   }
 
-  function retrieveObjectiveById(objectiveId: number, columnId: ColumnId): Objective | null {
-    return kanbanData[columnId].find((objective: Objective) => objective.id === objectiveId) || null
+  function retrieveObjectiveById(objectiveId: number, columnId: number): QueryObjective | null {
+    return kanbanData[columnId].find((objective: QueryObjective) => objective.id === objectiveId) || null
   }
 
   function insertObjectiveIntoColumnAtIndex(
-    objective: Objective,
-    columnId: ColumnId,
+    objective: QueryObjective,
+    columnId: number,
     insertionIndex: number
   ): void {
     kanbanData[columnId].splice(insertionIndex, 0, objective)
@@ -103,18 +103,18 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
 
   function moveObjectiveBetweenColumns(
     objectiveId: number,
-    sourceColumnId: ColumnId,
-    targetColumnId: ColumnId,
+    sourcenumber: number,
+    targetnumber: number,
     targetInsertionIndex: number
   ): boolean {
-    const objective: Objective | null = retrieveObjectiveById(objectiveId, sourceColumnId)
+    const objective: QueryObjective | null = retrieveObjectiveById(objectiveId, sourcenumber)
     if (!objective) return false
-    removeObjectiveFromColumnById(objectiveId, sourceColumnId)
-    const sortedTargetObjectives: Objective[] = getSortedObjectivesForColumn(targetColumnId)
+    removeObjectiveFromColumnById(objectiveId, sourcenumber)
+    const sortedTargetObjectives: QueryObjective[] = getSortedObjectivesForColumn(targetnumber)
     const clampedIndex: number = Math.max(0, Math.min(targetInsertionIndex, sortedTargetObjectives.length))
     const newOrder: number = calculateOrderForObjectiveInsertedAtIndex(sortedTargetObjectives, clampedIndex)
     objective.order = newOrder
-    insertObjectiveIntoColumnAtIndex(objective, targetColumnId, clampedIndex)
+    insertObjectiveIntoColumnAtIndex(objective, targetnumber, clampedIndex)
     return true
   }
 
@@ -122,11 +122,11 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
   // DOM QUERY HELPER FUNCTIONS
   // ============================================================
 
-  function getColumnObjectivesContainerElement(columnId: ColumnId): HTMLDivElement | null {
+  function getColumnObjectivesContainerElement(columnId: number): HTMLDivElement | null {
     return el.querySelector<HTMLDivElement>(`.objectives[data-column-id="${columnId}"]`)
   }
 
-  function getObjectiveCountBadgeElement(columnId: ColumnId): HTMLElement | null {
+  function getObjectiveCountBadgeElement(columnId: number): HTMLElement | null {
     return document.getElementById(`count-${columnId}`)
   }
 
@@ -150,7 +150,7 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
     return template.content.firstElementChild.cloneNode(true) as HTMLDivElement
   }
 
-  function populateObjectiveCard(card: HTMLDivElement, objective: Objective): void {
+  function populateObjectiveCard(card: HTMLDivElement, objective: QueryObjective): void {
     card.dataset.id = String(objective.id)
     card.dataset.order = String(objective.order)
 
@@ -194,38 +194,38 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
 
   function appendObjectiveCardsToContainer(
     container: HTMLDivElement,
-    objectives: Objective[]
+    objectives: QueryObjective[]
   ): void {
-    objectives.forEach((objective: Objective) => {
+    objectives.forEach((objective: QueryObjective) => {
       const card = cloneObjectiveCardTemplate()
       populateObjectiveCard(card, objective)
       container.appendChild(card)
     })
   }
 
-  function updateColumnObjectiveCountBadge(columnId: ColumnId): void {
+  function updateColumnObjectiveCountBadge(columnId: number): void {
     const badge: HTMLElement | null = getObjectiveCountBadgeElement(columnId)
     if (badge) badge.textContent = String(getObjectivesForColumn(columnId).length)
   }
 
-  function renderSingleColumnObjectives(columnId: ColumnId): void {
+  function renderSingleColumnObjectives(columnId: number): void {
     const container: HTMLDivElement | null = getColumnObjectivesContainerElement(columnId)
     if (!container) return
     clearColumnObjectivesContainer(container)
-    const sortedObjectives: Objective[] = getSortedObjectivesForColumn(columnId)
+    const sortedObjectives: QueryObjective[] = getSortedObjectivesForColumn(columnId)
     appendObjectiveCardsToContainer(container, sortedObjectives)
   }
 
   function renderBoardAfterObjectiveMove(
-    sourceColumnId: ColumnId,
-    targetColumnId: ColumnId
+    sourcenumber: number,
+    targetnumber: number
   ): void {
-    if (sourceColumnId !== targetColumnId) {
-      renderSingleColumnObjectives(sourceColumnId)
-      updateColumnObjectiveCountBadge(sourceColumnId)
+    if (sourcenumber !== targetnumber) {
+      renderSingleColumnObjectives(sourcenumber)
+      updateColumnObjectiveCountBadge(sourcenumber)
     }
-    renderSingleColumnObjectives(targetColumnId)
-    updateColumnObjectiveCountBadge(targetColumnId)
+    renderSingleColumnObjectives(targetnumber)
+    updateColumnObjectiveCountBadge(targetnumber)
   }
 
   // ============================================================
@@ -316,21 +316,21 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
 
     const objectiveId = Number(card.dataset.id)
     const sourceColumnElement = card.closest<HTMLElement>('.column')
-    const sourceColumnId = Number(sourceColumnElement?.dataset.columnId)
-    if (!objectiveId || !sourceColumnId) {
+    const sourcenumber = Number(sourceColumnElement?.dataset.columnId)
+    if (!objectiveId || !sourcenumber) {
       event.preventDefault()
       return
     }
 
     currentlyDraggedObjectiveInfo = {
       objectiveId,
-      sourceColumnId
+      sourcenumber
     }
 
     if (event.dataTransfer) {
       event.dataTransfer.effectAllowed = 'move'
       event.dataTransfer.setData('text/plain', String(objectiveId))
-      event.dataTransfer.setData('application/x-kanban-source-column', String(sourceColumnId))
+      event.dataTransfer.setData('application/x-kanban-source-column', String(sourcenumber))
     }
 
     requestAnimationFrame(() => card.classList.add('is-being-dragged'))
@@ -364,8 +364,8 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
     }
 
     const draggedObjectiveId = currentlyDraggedObjectiveInfo.objectiveId
-    const sourceColumnId = currentlyDraggedObjectiveInfo.sourceColumnId
-    const targetColumnId = Number(container.dataset.columnId)
+    const sourcenumber = currentlyDraggedObjectiveInfo.sourcenumber
+    const targetnumber = Number(container.dataset.columnId)
 
     const insertionIndex = determineInsertionIndexFromMousePosition(
       container,
@@ -375,13 +375,13 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
 
     const success = moveObjectiveBetweenColumns(
       draggedObjectiveId,
-      sourceColumnId,
-      targetColumnId,
+      sourcenumber,
+      targetnumber,
       insertionIndex
     )
 
     if (success) {
-      renderBoardAfterObjectiveMove(sourceColumnId, targetColumnId)
+      renderBoardAfterObjectiveMove(sourcenumber, targetnumber)
     }
     cleanupAfterDragOperation()
   }
@@ -473,11 +473,16 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
   // INITIALIZATION
   // ============================================================
 
-  function initializeKanbanBoard(): void {
+  function initializeQueryObjectives(): void {
     attachDelegatedDragAndDropListeners()
     attachFormSubmissionListener()
     attachDocumentLevelDragOverPrevention()
   }
 
-  initializeKanbanBoard()
+  initializeQueryObjectives()
+}
+
+type DraggedObjectiveInfo = {
+  objectiveId: number
+  sourcenumber: number
 }

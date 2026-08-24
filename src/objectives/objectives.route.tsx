@@ -7,15 +7,14 @@ import { kanbanColumns } from '@src/lib/vars'
 import { formStyle } from '@src/lib/formStyle'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import ObjectiveAddEdit from '@src/objectives/ObjectiveAddEdit'
-// import { getKanbanBoard } from '@src/objectives/getKanbanBoard'
-import type { KanbanData, Objective } from '@src/objectives/objectives.types'
-import { onModalToggle, onObjectivesPageLoad, bindShowObjectiveAddEditModal } from '@hono-directives'
+import { queryObjectives, type QueryObjective, type QueryObjectives } from '@src/db/queryObjective'
+import { onObjectivesPageLoad, bindShowObjectiveAddEditModal } from '@hono-directives'
 
 
 export default new Hono()
   .get('/', async (c) => {
-    // const kanbanData = await getKanbanBoard()
-    const kanbanData: KanbanData = {"1":[{"id":1,"columnId":1,"title":"Profile: EditPerson.tsx","order":1,"createdAt":"2026-08-24T03:59:26.000Z","tags":[],"assignees":[{"id":1,"imageId":"be46a51d-131d-41d6-ac58-df29843d1cc0","firstName":"Christopher","lastName":"Carrington"}]},{"id":2,"columnId":1,"title":"Profile: ContactUsMessages.tsx","order":2,"createdAt":"2026-08-24T03:59:26.000Z","tags":[],"assignees":[{"id":1,"imageId":"be46a51d-131d-41d6-ac58-df29843d1cc0","firstName":"Christopher","lastName":"Carrington"}]}],"2":[{"id":3,"columnId":2,"title":"Create Objectives Page","order":1,"createdAt":"2026-08-24T03:59:26.000Z","tags":[{"id":1,"value":"In Development","bgHex":"#DBEAFE","fgHex":"#1E40AF"}],"assignees":[{"id":1,"imageId":"be46a51d-131d-41d6-ac58-df29843d1cc0","firstName":"Christopher","lastName":"Carrington"},{"id":2,"imageId":"7a0e296f-5eda-401a-88fb-80c1577926c6","firstName":"Megha","lastName":"Carrington"}]}]}
+    // const kanbanData = await queryObjectives()
+    const kanbanData: QueryObjectives = {"1":[{"id":1,"columnId":1,"title":"Profile: EditPerson.tsx","order":1,"createdAt":new Date("2026-08-24T03:59:26.000Z"),"tags":[],"assignees":[{"id":1,"imageId":"be46a51d-131d-41d6-ac58-df29843d1cc0","firstName":"Christopher","lastName":"Carrington"}]},{"id":2,"columnId":1,"title":"Profile: ContactUsMessages.tsx","order":2,"createdAt":new Date("2026-08-24T03:59:26.000Z"),"tags":[],"assignees":[{"id":1,"imageId":"be46a51d-131d-41d6-ac58-df29843d1cc0","firstName":"Christopher","lastName":"Carrington"}]}],"2":[{"id":3,"columnId":2,"title":"Create Objectives Page","order":1,"createdAt":new Date("2026-08-24T03:59:26.000Z"),"tags":[{"id":1,"value":"In Development","bgHex":"#DBEAFE","fgHex":"#1E40AF"}],"assignees":[{"id":1,"imageId":"be46a51d-131d-41d6-ac58-df29843d1cc0","firstName":"Christopher","lastName":"Carrington"},{"id":2,"imageId":"7a0e296f-5eda-401a-88fb-80c1577926c6","firstName":"Megha","lastName":"Carrington"}]}]}
 
     return c.render(
       <>
@@ -73,7 +72,7 @@ export default new Hono()
   })
 
 
-const ObjectiveCard: FC<{ objective: Objective | null }> = ({ objective }) => {
+const ObjectiveCard: FC<{ objective: QueryObjective | null }> = ({ objective }) => {
   return <>
     <div class="objective" draggable="true" data-id={objective?.id} data-order={objective ? String(objective.order) : undefined}>
       <div class="top-row">
@@ -84,20 +83,20 @@ const ObjectiveCard: FC<{ objective: Objective | null }> = ({ objective }) => {
       </div>
       <div class="bottom-row" data-populated={Number(objective?.tags?.length) > 0 || Number(objective?.assignees?.length) > 0 ? 'true' : 'false'}>
         <div class="tags">
-          {objective?.tags?.map((tag) => (
+          {objective?.tags?.map((tag) => <>
             <span class="tag" style={`background-color: ${tag.bgHex}; color: ${tag.fgHex};`}>
               {tag.value}
             </span>
-          ))}
+          </>)}
         </div>
         <div class="assignees">
-          {objective?.assignees?.map((assignee) => (
+          {objective?.assignees?.map((assignee) => <>
             <img
               class="avatar"
               src={`https://r2.shastatrades.org/${assignee.imageId}.webp`}
               alt={`Assignee ${assignee.id}`}
             />
-          ))}
+          </>)}
         </div>
       </div>
     </div>
