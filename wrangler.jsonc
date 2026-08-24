@@ -14,11 +14,7 @@
   },
   "routes": [
     {
-      "pattern": "shastatrades.org/*",
-      "zone_id": "29031d04d1493e499d5a56001c093079"
-    },
-    {
-      "pattern": "www.shastatrades.org/*",
+      "pattern": "*/*",
       "zone_id": "29031d04d1493e499d5a56001c093079"
     }
   ]
