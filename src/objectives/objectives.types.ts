@@ -11,7 +11,7 @@ export type Tag = {
 
 export type Assignee = {
   id: number
-  imageId: number
+  imageId: string
 }
 
 export type Objective = {

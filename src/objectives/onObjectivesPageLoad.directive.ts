@@ -171,12 +171,13 @@ export default (el: HTMLDivElement, kanbanData: KanbanData): void => {
     }
 
     const assigneesContainer = card.querySelector<HTMLDivElement>('.assignees')
+
     if (assigneesContainer) {
       assigneesContainer.innerHTML = ''
       objective.assignees?.forEach((assignee) => {
         const img = document.createElement('img')
-        img.className = 'assignee-avatar'
-        img.src = `/avatars/${assignee.imageId}.webp`
+        img.className = 'avatar'
+        img.src = `https://r2.shastatrades.org/${assignee.imageId}.webp`
         img.alt = `Assignee ${assignee.id}`
         assigneesContainer.appendChild(img)
       })
