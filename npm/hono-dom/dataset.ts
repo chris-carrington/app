@@ -1,6 +1,6 @@
 // app/npm/hono-dom/dataset.ts
 
-export function dataset(camel: string): Dataset {
+export function dataset(camel: string): DatasetReturn {
   const kebab = camel.replace(/([A-Z])/g, '-$1').toLowerCase() // camelCase to kebab-case
   const domAttr = `data-${kebab}`
 
@@ -15,7 +15,7 @@ export function dataset(camel: string): Dataset {
   }
 }
 
-export type Dataset = {
+export type DatasetReturn = {
   camel: string,
   query(value?: string | number): string,
   attr(value?: unknown): {

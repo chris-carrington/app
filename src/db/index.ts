@@ -15,9 +15,10 @@ export const db = drizzle(createClient({
 
 
 // queries
-export { queryPeople } from '@src/db/queryPeople'
-export { queryObjective } from '@src/db/queryObjective'
+export { queryTags, type QueryTags } from '@src/db/queryTags'
 export { upsertPersonContact } from '@src/db/upsertPersonContact'
+export { queryPeople, type QueryPeople } from '@src/db/queryPeople'
+export { queryObjective, type QueryObjective, type QueryObjectives } from '@src/db/queryObjective'
 
 
 // tables

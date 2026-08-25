@@ -5,6 +5,10 @@ export const formStyle = css`
   form {
     &.bg-white {
       .field {
+        &.checkboxes {
+          border: 1px solid #ced3d6;
+        }
+
         select,
         textarea,
         input[type="text"],
@@ -20,10 +24,6 @@ export const formStyle = css`
         select {
           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10'%3E%3Cpath d='M1 1l7 7 7-7' stroke='%23475569' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
         }
-
-        fieldset {
-          border: 1px solid #ced3d6;
-        }
       }
 
       .error-message {
@@ -32,6 +32,10 @@ export const formStyle = css`
     }
     &.bg-pattern {
       .field {
+        &.checkboxes {
+          border: 1px solid rgb(255, 255, 255, 0.1);
+        }
+
         select,
         textarea,
         input[type="text"],
@@ -39,14 +43,10 @@ export const formStyle = css`
         input[type="number"] {
           color: var(--white);
           background-color: rgb(255 255 255 / 0.05);
-          border: 1px solid rgb(255 255 255 / 0.1);
+          border: 1px solid rgb(255, 255, 255, 0.1);
           &:focus {
             box-shadow: 0 0 0 0.3rem rgba(0, 123, 255, 0.6);
           }
-        }
-
-        fieldset {
-          border: 1px solid rgb(255 255 255 / 0.1);
         }
 
         select {
@@ -185,15 +185,12 @@ export const formStyle = css`
   }
 
   .checkboxes {
-    fieldset {
-      width: 100%;
-      border-radius: var(--radius);
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-lite);
-      font-size: 1.86rem;
-      margin-bottom: var(--space-lite);
-    }
+    border-radius: var(--radius);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-lite);
+    font-size: 1.86rem;
+    margin-inline: 0; // overwrite chrome default
 
     .checkbox {
       display: flex;
@@ -213,6 +210,7 @@ export const formStyle = css`
       label {
         opacity: 0.81;
         user-select: none;
+        margin: 0;
       }
     }
   }

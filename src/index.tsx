@@ -2,6 +2,7 @@
 
 import { Hono } from 'hono'
 import home from './home/home.route'
+import tags from '@src/lib/tags.api'
 import { renderer } from '@src/renderer'
 import people from '@src/lib/people.api'
 import profile from '@src/lib/profile.route'
@@ -25,6 +26,7 @@ import joinNewsletter from '@src/joinNewsletter/joinNewsletter.api'
 const app = new Hono()
   .use(renderer)
   .route('/', home)
+  .route('/api/tags', tags)
   .route('/profile', profile)
   .route('/mastery', mastery)
   .route('/api/people', people)

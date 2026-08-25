@@ -44,35 +44,33 @@ export const Field: FC<FieldProps> = (props: FieldProps) => {
       </>
       break
     case 'checkbox':
-      field = <>
-        <div class="field checkboxes">
-          <fieldset>
-            <legend>{props.label ?? props.placeholder}</legend>
-            {
-              props.options.map(item => {
-                return <>
-                  <div class="checkbox">
-                    <input type="checkbox" id={fieldID + '--' + item.value} name={props.name} value={item.value} />
-                    <label for={fieldID + '--' + item.value}>{item.label}</label>
-                  </div>
-                </>
-              })
-            }
-            {errorElement}
-          </fieldset>
-        </div>
+      const fieldsetID = 'fieldset--' + props.prefix + '--' + props.name
+
+      const checkboxes = props.options.map(item => {
+        return <>
+          <div class="checkbox">
+            <input type="checkbox" id={fieldID + '--' + item.value} name={props.name} value={item.value} />
+            <label for={fieldID + '--' + item.value}>{item.label}</label>
+          </div>
+        </>
+      })
+
+      return <>
+        <fieldset id={fieldsetID} class="field checkboxes">
+          <legend>{props.label ?? props.placeholder}</legend>
+          {checkboxes}
+          {errorElement}
+        </fieldset>
       </>
   }
 
-  return props.type === 'checkbox'
-    ? field
-    : <>
-        <div class="field">
-          <label for={fieldID}>{props.label ?? props.placeholder}</label>
-          {field}
-          {errorElement}
-        </div>
-      </>
+  return <>
+    <div class="field">
+      <label for={fieldID}>{props.label ?? props.placeholder}</label>
+      {field}
+      {errorElement}
+    </div>
+  </>
 }
 
 

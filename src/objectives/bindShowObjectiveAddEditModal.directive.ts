@@ -1,10 +1,10 @@
 // app/src/objectives/bindShowObjectiveAddEditModal.directive.ts
 
 import { urlFE } from '@src/url/urlFE'
-import { query, type Dataset } from '@hono-dom'
-import type { QueryPeople } from '@src/db/queryPeople'
+import { FieldReturn, query, type DatasetReturn } from '@hono-dom'
+import type { QueryTags, QueryPeople } from '@src/db'
 import { QueryObjective } from '@src/db/queryObjective'
-import { idObjectiveAddEditModal, idObjectiveAddEditModalTitle, idObjectiveAddEditModalSubmit, fieldObjectiveAddEditTitle, fieldObjectiveAddEditColumn, fieldObjectiveAddEditDescription, fieldObjectiveAddEditAssignees, datasetObjectiveAddEditShowModal } from '@src/lib/dom'
+import { idObjectiveAddEditModal, idObjectiveAddEditModalTitle, idObjectiveAddEditModalSubmit, fieldObjectiveAddEditTitle, fieldObjectiveAddEditColumn, fieldObjectiveAddEditDescription, fieldObjectiveAddEditAssignees, fieldObjectiveAddEditTags, datasetObjectiveAddEditShowModal } from '@src/lib/dom'
 
 
 export default (_: HTMLDivElement) => {
@@ -22,19 +22,25 @@ export class DirectiveVars {
   textareaDescription: HTMLTextAreaElement
   selectColumn: HTMLInputElement
   errorMessages: NodeListOf<HTMLDivElement>
+  datasetShowModal: DatasetReturn
+  fieldsetTags: HTMLFieldSetElement
+  fieldTags: ReturnType<typeof fieldObjectiveAddEditTags>
+  fieldsetAssignees: HTMLFieldSetElement
   fieldAssignees: ReturnType<typeof fieldObjectiveAddEditAssignees>
-  datasetShowModal: Dataset
 
+  tags: QueryTags = []
   assignees: QueryPeople = []
   objective: QueryObjective | undefined = undefined
   assigneeCheckboxes: HTMLInputElement[] = []
 
   imgEdit: string
   imgLoading: string
+  apiTags: ReturnType<typeof urlFE>['api']['tags']
   apiPeople: ReturnType<typeof urlFE>['api']['people']
   apiObjective: ReturnType<typeof urlFE>['api']['objective'][':id']
 
   constructor() {
+    this.fieldTags = fieldObjectiveAddEditTags()
     this.fieldAssignees = fieldObjectiveAddEditAssignees()
     this.datasetShowModal = datasetObjectiveAddEditShowModal()
 
@@ -46,11 +52,14 @@ export class DirectiveVars {
     this.textareaDescription = query<HTMLTextAreaElement>(fieldObjectiveAddEditDescription().query).root(this.modal).one()
     this.selectColumn = query<HTMLInputElement>(fieldObjectiveAddEditColumn().query).root(this.modal).one()
     this.errorMessages = query<HTMLDivElement>('.error-message').root(this.modal).many()
+    this.fieldsetAssignees = query<HTMLFieldSetElement>(this.fieldAssignees.query()).root(this.modal).one()
+    this.fieldsetTags = query<HTMLFieldSetElement>(this.fieldTags.query()).root(this.modal).one()
 
     this.imgEdit = getImg('/img/edit.svg', 'Edit objective')
     this.imgLoading = getImg('/img/loading.svg', 'Edit objective modal loading')
 
     const client = urlFE()
+    this.apiTags = client.api.tags
     this.apiPeople = client.api.people
     this.apiObjective = client.api.objective[':id']
   }
@@ -95,68 +104,93 @@ function startLoadingIndicator(button: HTMLButtonElement, imgLoading: string) {
 
 
 async function queryDatabase(vars: DirectiveVars, objectiveId: number) {
-  if (!vars.assignees.length && objectiveId) {
-    const [resPeople, resObjective] = await Promise.all([
-      vars.apiPeople.$get(),
-      vars.apiObjective.$get({ param: { id: String(objectiveId) } }),
-    ])
+  const [resTags, resAssignees, resObjective] = await Promise.all([
+    vars.tags.length === 0 ? vars.apiTags.$get() : null,
+    vars.assignees.length === 0 ? vars.apiPeople.$get() : null,
+    objectiveId ? vars.apiObjective.$get({ param: { id: String(objectiveId) } }) : null,
+  ])
 
-    vars.assignees = await resPeople.json()
-    vars.objective = await resObjective.json()
+  if (resObjective) vars.objective = await resObjective.json()
+
+  if (resAssignees) {
+    vars.assignees = await resAssignees.json()
     addAssigneesToDom(vars)
-  } else if (vars.assignees.length && objectiveId) {
-    const response = await vars.apiObjective.$get({ param: { id: String(objectiveId) } })
-    vars.objective = await response.json()
-  } else if (!vars.assignees.length) {
-    const response = await vars.apiPeople.$get()
-    vars.assignees = await response.json()
-    addAssigneesToDom(vars)
+  }
+
+  if (resTags) {
+    vars.tags = await resTags.json()
+    addTagsToDom(vars)
   }
 }
 
 
 function addAssigneesToDom(vars: DirectiveVars) {
-  const fieldset = vars.modal.querySelector('fieldset')
-  if (!fieldset) throw new Error('!fieldset')
+  addCheckboxesToDom(
+    vars,
+    vars.assignees,
+    (p) => `${p.firstName} ${p.lastName}`,
+    vars.fieldAssignees,
+    vars.fieldsetAssignees,
+    vars.assigneeCheckboxes
+  )
+}
 
-  for (const p of vars.assignees) {
+
+function addTagsToDom(vars: DirectiveVars) {
+  addCheckboxesToDom(
+    vars,
+    vars.tags,
+    (t) => t.value,
+    vars.fieldTags,
+    vars.fieldsetTags,
+    vars.assigneeCheckboxes,
+  )
+}
+
+
+function addCheckboxesToDom<T_Items extends { id: number }[]>(
+  vars: DirectiveVars,
+  items: T_Items,
+  getLabel: (item: T_Items[number]) => string,
+  field: FieldReturn<'checkbox'>,
+  container: HTMLElement,
+  checkboxArray: HTMLInputElement[],
+): void {
+  for (const item of items) {
     const div = document.createElement('div')
     div.className = 'checkbox'
 
     const input = document.createElement('input')
     input.type = 'checkbox'
-    input.id = `checkbox--${vars.fieldAssignees.prefix}--${vars.fieldAssignees.name}--${p.id}`
+    input.id = field.query(String(item.id)).slice(1)
     input.name = vars.fieldAssignees.name
-    input.value = String(p.id)
+    input.value = String(item.id)
 
-    vars.assigneeCheckboxes.push(input)
+    checkboxArray.push(input)
 
     const label = document.createElement('label')
     label.htmlFor = input.id
-    label.textContent = `${p.firstName} ${p.lastName}`
+    label.textContent = getLabel(item)
 
     div.appendChild(input)
     div.appendChild(label)
-    fieldset.appendChild(div)
+    container.appendChild(div)
   }
 }
 
 
 function create(vars: DirectiveVars, button: HTMLButtonElement) {
   vars.inputTitle.value = ''
-  vars.modal.dataset.id = ''
   vars.selectColumn.value = '1'
   vars.textareaDescription.value = ''
   vars.assigneeCheckboxes?.forEach(checkbox => checkbox.checked = false)
-  vars.spanModalTitle.innerText = vars.buttonSubmit.innerText = 'Create Objective'
   vars.buttonSubmit.disabled = false
-  vars.modal.classList.remove('hidden')
-  vars.errorMessages.forEach(div => div.textContent = '')
-  vars.modal.querySelectorAll('.has-error')?.forEach(input => input.classList.remove('has-error'))
+  resetErrors(vars)
+  setTitleText(vars, 'Create Objective')
 
-  setTimeout(() => {
-    button.innerHTML = 'New'
-  }, 120)
+  vars.modal.classList.remove('hidden')
+
+  setTimeout(() => button.innerHTML = 'New', 450) // give time for the modal to be over the button
 }
 
 
@@ -164,12 +198,12 @@ function edit(event: PointerEvent, vars: DirectiveVars, button: HTMLButtonElemen
   event.stopPropagation()
 
   if (vars.objective) {
-    vars.modal.dataset.id = String(vars.objective.id)
-    vars.spanModalTitle.innerText = vars.buttonSubmit.innerText = 'Edit Objective'
-
     vars.inputTitle.value = vars.objective.title
     vars.textareaDescription.value = vars.objective.description ?? ''
     vars.selectColumn.value = String(vars.objective.columnId)
+
+    resetErrors(vars)
+    setTitleText(vars, 'Edit Objective')
 
     const objectiveAssigneeIds = new Set(vars.objective.assignees.map(assignee => assignee.id))
     vars.assigneeCheckboxes?.forEach(checkbox => {
@@ -179,8 +213,17 @@ function edit(event: PointerEvent, vars: DirectiveVars, button: HTMLButtonElemen
     vars.buttonSubmit.disabled = true
     vars.modal.classList.remove('hidden')
 
-    setTimeout(() => {
-      button.innerHTML = vars.imgEdit
-    }, 120)
+    setTimeout(() => button.innerHTML = vars.imgEdit, 120) // give time so it's not so jittery if the request is fast
   }
+}
+
+
+function resetErrors(vars: DirectiveVars) {
+  vars.errorMessages.forEach(div => div.textContent = '')
+  vars.modal.querySelectorAll('.has-error')?.forEach(input => input.classList.remove('has-error'))
+}
+
+
+function setTitleText(vars: DirectiveVars, title: string) {
+  vars.spanModalTitle.innerText = vars.buttonSubmit.innerText = title
 }

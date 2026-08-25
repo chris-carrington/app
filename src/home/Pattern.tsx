@@ -404,7 +404,7 @@ const style = css`
                 gap: var(--space-lite);
                 background-color: rgb(255 255 255 / 0.05);
                 border-radius: calc(var(--radius) * 3);
-                border: 1px solid rgb(255 255 255 / 0.1);
+                border: 1px solid rgb(255, 255, 255, 0.1);
                 &:last-child {
                   margin-bottom: 0;
                 }
@@ -432,7 +432,7 @@ const style = css`
             position: relative;
             width: 100%;
             border-radius: calc(var(--radius) * 3);
-            border: 1px solid rgb(255 255 255 / 0.1);
+            border: 1px solid rgb(255, 255, 255, 0.1);
             background-color: rgb(255 255 255 / 0.05);
 
             .mask {

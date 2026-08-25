@@ -8,7 +8,7 @@ import { modalStyle } from '@hono-modal'
 import svgClose from '@src/svg/close.svg?raw'
 import { kanbanColumns } from '@src/lib/vars'
 import { onModalToggle } from '@hono-directives'
-import { fieldObjectiveAddEditColumn, fieldObjectiveAddEditTitle, fieldObjectiveAddEditDescription, fieldObjectiveAddEditAssignees, idObjectiveAddEditModal, idObjectiveAddEditModalSubmit, idObjectiveAddEditModalTitle } from '@src/lib/dom'
+import { fieldObjectiveAddEditColumn, fieldObjectiveAddEditTitle, fieldObjectiveAddEditDescription, fieldObjectiveAddEditAssignees, fieldObjectiveAddEditTags, idObjectiveAddEditModal, idObjectiveAddEditModalSubmit, idObjectiveAddEditModalTitle } from '@src/lib/dom'
 
 
 export default (() => {
@@ -41,6 +41,8 @@ export default (() => {
             <Field {...fieldObjectiveAddEditDescription().attr()} label="Description" />
           </div>
 
+          <Field {...fieldObjectiveAddEditTags().attr()} label="Tags" options={[]} />
+
           <button id={idObjectiveAddEditModalSubmit().id} class="primary wide" type="submit">Create Objective</button>
         </form>
       </div>
@@ -53,7 +55,7 @@ const style = css`
   #objective-add-edit-modal {
     @media (min-height: 721px) {
       .modal {
-        max-width: 90rem;          
+        max-width: 96rem;          
       }
     }
 
@@ -68,15 +70,15 @@ const style = css`
         display: flex;
         gap: var(--space-lite);
 
-        @media (max-width: 600px) {
+        @media (max-width: 720px) {
           flex-direction: column;
           gap: 0;
         }
 
         .left {
-          width: 48rem;
+          width: 60rem;
 
-          @media (max-width: 600px) {
+          @media (max-width: 720px) {
             width: 100%;
           }
         }

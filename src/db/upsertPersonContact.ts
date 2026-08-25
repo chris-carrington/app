@@ -110,13 +110,13 @@ async function insert(tx: Transaction, ids: Partial<UpsertPersonContactResult>, 
 }
 
 
-export type UpsertPersonContactData = {
+type UpsertPersonContactData = {
   person?: Partial<InferSelectModel<typeof Person>>
   contact?: Partial<InferSelectModel<typeof Contact>>
 }
 
 
-export type UpsertPersonContactResult = {
+type UpsertPersonContactResult = {
   personId: number
   contactId: number
 }

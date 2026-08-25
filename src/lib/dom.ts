@@ -16,6 +16,7 @@ export const fieldObjectiveAddEditTitle = () => field('text', 'title', 'objectiv
 export const fieldObjectiveAddEditColumn = () => field('select', 'column', 'objective-add-edit')
 export const fieldObjectiveAddEditAssignees = () => field('checkbox', 'assignees', 'objective-add-edit')
 export const fieldObjectiveAddEditDescription = () => field('textarea', 'description', 'objective-add-edit')
+export const fieldObjectiveAddEditTags = () => field('checkbox', 'tags', 'objective-add-edit')
 
 
 // dataset

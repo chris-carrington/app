@@ -3,9 +3,9 @@
 import { Hono } from 'hono'
 import type { FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
-import type { Dataset } from '@hono-dom'
 import { kanbanColumns } from '@src/lib/vars'
 import { formStyle } from '@src/lib/formStyle'
+import type { DatasetReturn } from '@hono-dom'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import ObjectiveAddEdit from '@src/objectives/ObjectiveAddEdit'
 import { datasetObjectiveAddEditShowModal } from '@src/lib/dom'
@@ -75,7 +75,7 @@ export default new Hono()
   })
 
 
-const ObjectiveCard: FC<{ objective: QueryObjective | null, datasetShowModal: Dataset }> = ({ objective, datasetShowModal }) => {
+const ObjectiveCard: FC<{ objective: QueryObjective | null, datasetShowModal: DatasetReturn }> = ({ objective, datasetShowModal }) => {
   return <>
     <div class="objective" draggable="true" data-id={objective ? String(objective.id) : ''} data-order={objective ? String(objective.order) : undefined}>
       <div class="top-row">

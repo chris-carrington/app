@@ -3,13 +3,14 @@
 import { FieldProps } from '@hono-security'
 
 
-export function field<T extends FieldProps['type']>(type: T, name: string, prefix: string) {
-  const result = {
-    type,
-    name,
-    prefix,
-    query: `#${type}--${prefix}--${name}`,
-  } as const
+export function field<T_Type extends FieldProps['type']>(type: T_Type, name: string, prefix: string) {
+  const baseQuery = `#${type}--${prefix}--${name}`
+
+  const query = (type === 'checkbox')
+    ? ((value?: string) => value ? `${baseQuery}--${value}` : `#fieldset--${prefix}--${name}`)
+    : baseQuery
+
+  const result = { type, name, prefix, query } as const
 
   return {
     ...result,
@@ -18,5 +19,19 @@ export function field<T extends FieldProps['type']>(type: T, name: string, prefi
       name: result.name,
       prefix: result.prefix,
     }),
-  }
+  } as FieldReturn<T_Type>
 }
+
+
+export type FieldReturn<T_Type extends FieldProps['type']> = {
+  type: T_Type
+  name: string
+  prefix: string
+  query: FieldQuery<T_Type>
+  attr: () => { type: T_Type, name: string, prefix: string }
+}
+
+
+export type FieldQuery<T_Type extends FieldProps['type']> = T_Type extends 'checkbox'
+  ? (value?: string) => string
+  : string

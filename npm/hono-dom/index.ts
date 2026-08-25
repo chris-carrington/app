@@ -2,6 +2,6 @@
 
 export { id } from './id'
 export { query } from './query'
-export { field } from './field'
 export { className } from './className'
-export { dataset, type Dataset } from './dataset'
+export { dataset, type DatasetReturn } from './dataset'
+export { field, type FieldReturn, type FieldQuery } from './field'
