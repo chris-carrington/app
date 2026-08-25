@@ -66,7 +66,7 @@ export default (el: HTMLDivElement, kanbanData: QueryObjectives): void => {
   function addNewObjectiveToTopOfColumn(title: string, columnId: number): void {
     const sortedObjectives: QueryObjective[] = getSortedObjectivesForColumn(columnId)
     const newOrder: number = calculateOrderForObjectiveInsertedAtTopOfColumn(sortedObjectives)
-    const newObjective: QueryObjective = { id: nextObjectiveId++, title: title, order: newOrder, columnId, createdAt: new Date(), assignees: [], tags: [] }
+    const newObjective: QueryObjective = { id: nextObjectiveId++, title: title, description: '', order: newOrder, columnId, createdAt: (new Date()).toISOString(), assignees: [], tags: [] }
     kanbanData[columnId].push(newObjective)
     sortObjectivesInColumnByOrder(columnId)
   }
@@ -317,6 +317,7 @@ export default (el: HTMLDivElement, kanbanData: QueryObjectives): void => {
     const objectiveId = Number(card.dataset.id)
     const sourceColumnElement = card.closest<HTMLElement>('.column')
     const sourcenumber = Number(sourceColumnElement?.dataset.columnId)
+
     if (!objectiveId || !sourcenumber) {
       event.preventDefault()
       return

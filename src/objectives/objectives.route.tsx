@@ -77,7 +77,7 @@ export default new Hono()
 
 const ObjectiveCard: FC<{ objective: QueryObjective | null, datasetShowModal: Dataset }> = ({ objective, datasetShowModal }) => {
   return <>
-    <div class="objective" draggable="true" data-order={objective ? String(objective.order) : undefined}>
+    <div class="objective" draggable="true" data-id={objective ? String(objective.id) : ''} data-order={objective ? String(objective.order) : undefined}>
       <div class="top-row">
         <span class="title">{objective?.title ?? ''}</span>
         <button {...datasetShowModal.attr(objective?.id)} type="button" class="svg">
