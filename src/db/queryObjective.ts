@@ -11,6 +11,7 @@ function getBaseQuery() {
       id: Objective.id,
       columnId: Objective.columnId,
       title: Objective.title,
+      description: Objective.description,
       order: Objective.order,
       createdAt: Objective.createdAt,
 
@@ -38,6 +39,7 @@ const parentShape = createParentShape(getBaseQuery)
     id: row.id,
     columnId: row.columnId,
     title: row.title,
+    description: row.description,
     order: row.order,
     createdAt: row.createdAt,
   }))

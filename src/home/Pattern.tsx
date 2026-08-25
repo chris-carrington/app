@@ -461,10 +461,6 @@ const style = css`
                 label {
                   display: none;
                 }
-
-                textarea {
-                  height: 9rem;
-                }
               }
             }
           }

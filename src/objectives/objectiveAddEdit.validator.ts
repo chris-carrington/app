@@ -10,6 +10,7 @@ export const ObjectiveAddEditSchema = v.object({
     count: 9,
     error: 'Please include at least 9 characters'
   }),
+  description: v.optional(v.string()),
   column: pipeSelect({
     values: kanbanColumns.map(c => ({ value: String(c.id) })),
     errorMissing: 'Please select a column',

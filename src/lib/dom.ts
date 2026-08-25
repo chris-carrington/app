@@ -14,6 +14,7 @@ export const idObjectiveAddEditModalSubmit = () => id('objective-add-edit-modal-
 // field
 export const fieldObjectiveAddEditTitle = () => field('text', 'title', 'objective-add-edit')
 export const fieldObjectiveAddEditColumn = () => field('select', 'column', 'objective-add-edit')
+export const fieldObjectiveAddEditDescription = () => field('textarea', 'description', 'objective-add-edit')
 
 
 // dataset

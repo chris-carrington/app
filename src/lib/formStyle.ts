@@ -104,6 +104,11 @@ export const formStyle = css`
         background-position: right 1.6rem center;
         padding-right: 4.4rem;
       }
+
+      textarea {
+        height: 9rem;
+        resize: vertical;
+      }
     }
 
     .error-message {

@@ -2,7 +2,7 @@
 
 import { query } from '@hono-dom'
 import { urlFE } from '@src/url/urlFE'
-import { idObjectiveAddEditModal, idObjectiveAddEditModalTitle, idObjectiveAddEditModalSubmit, fieldObjectiveAddEditTitle, fieldObjectiveAddEditColumn, datasetObjectiveAddEditShowModal } from '@src/lib/dom'
+import { idObjectiveAddEditModal, idObjectiveAddEditModalTitle, idObjectiveAddEditModalSubmit, fieldObjectiveAddEditTitle, fieldObjectiveAddEditColumn, fieldObjectiveAddEditDescription, datasetObjectiveAddEditShowModal } from '@src/lib/dom'
 
 
 export default (_: HTMLDivElement) => {
@@ -13,6 +13,7 @@ export default (_: HTMLDivElement) => {
   const spanModalTitle = query<HTMLSpanElement>(idObjectiveAddEditModalTitle().query).root(modal).one()
   const buttonSubmit = query<HTMLButtonElement>(idObjectiveAddEditModalSubmit().query).root(modal).one()
   const inputTitle = query<HTMLInputElement>(fieldObjectiveAddEditTitle().query).root(modal).one()
+  const textareaDescription = query<HTMLTextAreaElement>(fieldObjectiveAddEditDescription().query).root(modal).one()
   const selectColumn = query<HTMLInputElement>(fieldObjectiveAddEditColumn().query).root(modal).one()
 
   const imgEdit = getImg('/img/edit.svg', 'Edit objective')
@@ -28,6 +29,7 @@ export default (_: HTMLDivElement) => {
         inputTitle.value = ''
         modal.dataset.id = ''
         selectColumn.value = '1'
+        textareaDescription.value = ''
         spanModalTitle.innerText = buttonSubmit.innerText = 'Create Objective'
         buttonSubmit.disabled = false // temp
         modal.classList.remove('hidden')
@@ -49,6 +51,7 @@ export default (_: HTMLDivElement) => {
 
         // set form
         inputTitle.value = res.title
+        textareaDescription.value = res.description ?? ''
         selectColumn.value = String(res.columnId)
 
         buttonSubmit.disabled = true // temp
