@@ -46,17 +46,20 @@ export const Field: FC<FieldProps> = (props: FieldProps) => {
     case 'checkbox':
       field = <>
         <div class="field checkboxes">
-          {
-            props.options.map(item => {
-              return <>
-                <div class="checkbox">
-                  <input type="checkbox" id={fieldID + '--' + item.value} name={props.name} value={item.value} />
-                  <label for={fieldID + '--' + item.value}>{item.label}</label>
-                </div>
-              </>
-            })
-          }
-          {errorElement}
+          <fieldset>
+            <legend>{props.label ?? props.placeholder}</legend>
+            {
+              props.options.map(item => {
+                return <>
+                  <div class="checkbox">
+                    <input type="checkbox" id={fieldID + '--' + item.value} name={props.name} value={item.value} />
+                    <label for={fieldID + '--' + item.value}>{item.label}</label>
+                  </div>
+                </>
+              })
+            }
+            {errorElement}
+          </fieldset>
         </div>
       </>
   }

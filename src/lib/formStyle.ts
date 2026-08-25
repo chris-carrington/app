@@ -20,6 +20,10 @@ export const formStyle = css`
         select {
           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10'%3E%3Cpath d='M1 1l7 7 7-7' stroke='%23475569' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
         }
+
+        fieldset {
+          border: 1px solid #ced3d6;
+        }
       }
 
       .error-message {
@@ -41,6 +45,10 @@ export const formStyle = css`
           }
         }
 
+        fieldset {
+          border: 1px solid rgb(255 255 255 / 0.1);
+        }
+
         select {
           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10'%3E%3Cpath d='M1 1l7 7 7-7' stroke='%23F9FBF9' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
         }
@@ -48,6 +56,10 @@ export const formStyle = css`
 
       .error-message {
         color: rgba(255, 58, 58, 0.9);
+      }
+
+      .checkboxes {
+        color: var(--white);
       }
     }
 
@@ -173,12 +185,15 @@ export const formStyle = css`
   }
 
   .checkboxes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-lite);
-    color: var(--white);
-    font-size: 1.86rem;
-    margin-bottom: var(--space-lite);
+    fieldset {
+      width: 100%;
+      border-radius: var(--radius);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-lite);
+      font-size: 1.86rem;
+      margin-bottom: var(--space-lite);
+    }
 
     .checkbox {
       display: flex;

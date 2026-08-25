@@ -78,7 +78,7 @@ export const modalStyle = css`
 
       .scroll {
         overflow: auto;
-        max-height: calc(100vh - 9rem);
+        max-height: calc(100vh - 15rem);
       }
 
       .item,

@@ -41,7 +41,7 @@ const parentShape = createParentShape(getBaseQuery)
     title: row.title,
     description: row.description,
     order: row.order,
-    createdAt: row.createdAt,
+    createdAt: row.createdAt as unknown as string, // post api layer it'll be a string
   }))
 
 

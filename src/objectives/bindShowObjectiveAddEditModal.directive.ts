@@ -1,76 +1,178 @@
 // app/src/objectives/bindShowObjectiveAddEditModal.directive.ts
 
-import { query } from '@hono-dom'
 import { urlFE } from '@src/url/urlFE'
-import { idObjectiveAddEditModal, idObjectiveAddEditModalTitle, idObjectiveAddEditModalSubmit, fieldObjectiveAddEditTitle, fieldObjectiveAddEditColumn, fieldObjectiveAddEditDescription, datasetObjectiveAddEditShowModal } from '@src/lib/dom'
+import { query, type Dataset } from '@hono-dom'
+import type { QueryPeople } from '@src/db/queryPeople'
+import { QueryObjective } from '@src/db/queryObjective'
+import { idObjectiveAddEditModal, idObjectiveAddEditModalTitle, idObjectiveAddEditModalSubmit, fieldObjectiveAddEditTitle, fieldObjectiveAddEditColumn, fieldObjectiveAddEditDescription, fieldObjectiveAddEditAssignees, datasetObjectiveAddEditShowModal } from '@src/lib/dom'
 
 
 export default (_: HTMLDivElement) => {
-  const datasetShowModal = datasetObjectiveAddEditShowModal()
+  const vars = new DirectiveVars()
+  bindShowModalButtons(vars)
+}
 
-  const modal = query<HTMLDivElement>(idObjectiveAddEditModal().query).one()
-  const showModalButtons = query<HTMLButtonElement>(datasetShowModal.query()).many()
-  const spanModalTitle = query<HTMLSpanElement>(idObjectiveAddEditModalTitle().query).root(modal).one()
-  const buttonSubmit = query<HTMLButtonElement>(idObjectiveAddEditModalSubmit().query).root(modal).one()
-  const inputTitle = query<HTMLInputElement>(fieldObjectiveAddEditTitle().query).root(modal).one()
-  const textareaDescription = query<HTMLTextAreaElement>(fieldObjectiveAddEditDescription().query).root(modal).one()
-  const selectColumn = query<HTMLInputElement>(fieldObjectiveAddEditColumn().query).root(modal).one()
 
-  const imgEdit = getImg('/img/edit.svg', 'Edit objective')
-  const imgLoading = getImg('/img/loading.svg', 'Edit objective modal loading')
+export class DirectiveVars {
+  modal: HTMLDivElement
+  showModalButtons: NodeListOf<HTMLButtonElement>
+  spanModalTitle: HTMLSpanElement
+  buttonSubmit: HTMLButtonElement
+  inputTitle: HTMLInputElement
+  textareaDescription: HTMLTextAreaElement
+  selectColumn: HTMLInputElement
+  fieldAssignees: { prefix: string, name: string }
+  datasetShowModal: Dataset
 
-  const clientRequest = urlFE().api.objective[':id']
+  assignees: QueryPeople = []
+  objective: QueryObjective | undefined = undefined
+  assigneeCheckboxes: HTMLInputElement[] = []
 
-  for (const button of showModalButtons) {
-    const id = Number(button.dataset[datasetShowModal.camel])
+  imgEdit: string
+  imgLoading: string
+  apiPeople: ReturnType<typeof urlFE>['api']['people']
+  apiObjective: ReturnType<typeof urlFE>['api']['objective'][':id']
 
-    button.addEventListener('click', async (e) => {
-      if (!id) { // create
-        inputTitle.value = ''
-        modal.dataset.id = ''
-        selectColumn.value = '1'
-        textareaDescription.value = ''
-        spanModalTitle.innerText = buttonSubmit.innerText = 'Create Objective'
-        buttonSubmit.disabled = false // temp
-        modal.classList.remove('hidden')
-      } else { // edit
-        e.stopPropagation()
+  constructor() {
+    this.fieldAssignees = fieldObjectiveAddEditAssignees()
+    this.datasetShowModal = datasetObjectiveAddEditShowModal()
 
-        // start loading indicator
-        button.innerHTML = imgLoading
+    this.modal = query<HTMLDivElement>(idObjectiveAddEditModal().query).one()
+    this.showModalButtons = query<HTMLButtonElement>(this.datasetShowModal.query()).many()
+    this.spanModalTitle = query<HTMLSpanElement>(idObjectiveAddEditModalTitle().query).root(this.modal).one()
+    this.buttonSubmit = query<HTMLButtonElement>(idObjectiveAddEditModalSubmit().query).root(this.modal).one()
+    this.inputTitle = query<HTMLInputElement>(fieldObjectiveAddEditTitle().query).root(this.modal).one()
+    this.textareaDescription = query<HTMLTextAreaElement>(fieldObjectiveAddEditDescription().query).root(this.modal).one()
+    this.selectColumn = query<HTMLInputElement>(fieldObjectiveAddEditColumn().query).root(this.modal).one()
 
-        // get objective from db
-        const response = await clientRequest.$get({ param: { id: String(id) } })
-        const res = await response.json()
+    this.imgEdit = getImg('/img/edit.svg', 'Edit objective')
+    this.imgLoading = getImg('/img/loading.svg', 'Edit objective modal loading')
 
-        // add objective id to DOM
-        modal.dataset.id = String(id)
-
-        // set modal title / button label
-        spanModalTitle.innerText = buttonSubmit.innerText = 'Edit Objective'
-
-        // set form
-        inputTitle.value = res.title
-        textareaDescription.value = res.description ?? ''
-        selectColumn.value = String(res.columnId)
-
-        buttonSubmit.disabled = true // temp
-
-        // show modal
-        modal.classList.remove('hidden')
-
-        setTimeout(() => { // stop loading indicator
-          button.innerHTML = imgEdit
-        }, 120)
-      }
-    })
+    const client = urlFE()
+    this.apiPeople = client.api.people
+    this.apiObjective = client.api.objective[':id']
   }
 }
 
 
 function getImg(src: string, alt: string) {
-  const imgLoading = document.createElement('img')
-  imgLoading.setAttribute('src', src)
-  imgLoading.setAttribute('alt', alt)
-  return imgLoading.outerHTML
+  const img = document.createElement('img')
+  img.setAttribute('src', src)
+  img.setAttribute('alt', alt)
+  return img.outerHTML
+}
+
+
+function bindShowModalButtons(vars: DirectiveVars) {
+  for (const button of vars.showModalButtons) {
+    const objectiveId = Number(button.dataset[vars.datasetShowModal.camel])
+
+    button.addEventListener('click', async (e) => {
+      main(e, vars, button, objectiveId)
+    })
+  }
+}
+
+
+async function main(e: PointerEvent, vars: DirectiveVars, button: HTMLButtonElement, objectiveId: number) {
+  startLoadingIndicator(objectiveId, button, vars.imgLoading)
+
+  await queryDatabase(vars, objectiveId)
+
+  if (!objectiveId) {
+    create(vars)
+  } else if (vars.objective) {
+    edit(e, vars, button)
+  }
+}
+
+
+function startLoadingIndicator(id: number, button: HTMLButtonElement, imgLoading: string) {
+  if (id) button.innerHTML = imgLoading
+}
+
+
+async function queryDatabase(vars: DirectiveVars, objectiveId: number) {
+  if (!vars.assignees.length && objectiveId) {
+    const [resPeople, resObjective] = await Promise.all([
+      vars.apiPeople.$get(),
+      vars.apiObjective.$get({ param: { id: String(objectiveId) } }),
+    ])
+
+    vars.assignees = await resPeople.json()
+    vars.objective = await resObjective.json()
+    addAssigneesToDom(vars)
+  } else if (vars.assignees.length && objectiveId) {
+    const response = await vars.apiObjective.$get({ param: { id: String(objectiveId) } })
+    vars.objective = await response.json()
+  } else if (!vars.assignees.length) {
+    const response = await vars.apiPeople.$get()
+    vars.assignees = await response.json()
+    addAssigneesToDom(vars)
+  }
+}
+
+
+function addAssigneesToDom(vars: DirectiveVars) {
+  const fieldset = vars.modal.querySelector('fieldset')
+  if (!fieldset) throw new Error('!fieldset')
+
+  for (const p of vars.assignees) {
+    const div = document.createElement('div')
+    div.className = 'checkbox'
+
+    const input = document.createElement('input')
+    input.type = 'checkbox'
+    input.id = `checkbox--${vars.fieldAssignees.prefix}--${vars.fieldAssignees.name}--${p.id}`
+    input.name = vars.fieldAssignees.name
+    input.value = String(p.id)
+
+    vars.assigneeCheckboxes.push(input)
+
+    const label = document.createElement('label')
+    label.htmlFor = input.id
+    label.textContent = `${p.firstName} ${p.lastName}`
+
+    div.appendChild(input)
+    div.appendChild(label)
+    fieldset.appendChild(div)
+  }
+}
+
+
+function create(v: DirectiveVars) {
+  v.inputTitle.value = ''
+  v.modal.dataset.id = ''
+  v.selectColumn.value = '1'
+  v.textareaDescription.value = ''
+  v.assigneeCheckboxes?.forEach(checkbox => checkbox.checked = false)
+  v.spanModalTitle.innerText = v.buttonSubmit.innerText = 'Create Objective'
+  v.buttonSubmit.disabled = false
+  v.modal.classList.remove('hidden')
+}
+
+
+function edit(event: PointerEvent, vars: DirectiveVars, button: HTMLButtonElement) {
+  event.stopPropagation()
+
+  if (vars.objective) {
+    vars.modal.dataset.id = String(vars.objective.id)
+    vars.spanModalTitle.innerText = vars.buttonSubmit.innerText = 'Edit Objective'
+
+    vars.inputTitle.value = vars.objective.title
+    vars.textareaDescription.value = vars.objective.description ?? ''
+    vars.selectColumn.value = String(vars.objective.columnId)
+
+    const objectiveAssigneeIds = new Set(vars.objective.assignees.map(assignee => assignee.id))
+    vars.assigneeCheckboxes?.forEach(checkbox => {
+      checkbox.checked = objectiveAssigneeIds.has(Number(checkbox.value))
+    })
+
+    vars.buttonSubmit.disabled = true
+    vars.modal.classList.remove('hidden')
+
+    setTimeout(() => {
+      button.innerHTML = vars.imgEdit
+    }, 120)
+  }
 }

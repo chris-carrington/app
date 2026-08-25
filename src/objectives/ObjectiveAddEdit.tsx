@@ -8,7 +8,7 @@ import { modalStyle } from '@hono-modal'
 import svgClose from '@src/svg/close.svg?raw'
 import { kanbanColumns } from '@src/lib/vars'
 import { onModalToggle } from '@hono-directives'
-import { fieldObjectiveAddEditColumn, fieldObjectiveAddEditTitle, fieldObjectiveAddEditDescription, idObjectiveAddEditModal, idObjectiveAddEditModalSubmit, idObjectiveAddEditModalTitle } from '@src/lib/dom'
+import { fieldObjectiveAddEditColumn, fieldObjectiveAddEditTitle, fieldObjectiveAddEditDescription, fieldObjectiveAddEditAssignees, idObjectiveAddEditModal, idObjectiveAddEditModalSubmit, idObjectiveAddEditModalTitle } from '@src/lib/dom'
 
 
 export default (() => {
@@ -36,6 +36,7 @@ export default (() => {
             <div class="left">
               <Field {...fieldObjectiveAddEditTitle().attr()} label="Title" />
               <Field {...fieldObjectiveAddEditColumn().attr()} label="Column" options={kanbanColumns.map(c => ({ value: String(c.id), label: c.value }))} />
+              <Field {...fieldObjectiveAddEditAssignees().attr()} label="Assignees" options={[]} />
             </div>
             <Field {...fieldObjectiveAddEditDescription().attr()} label="Description" />
           </div>
@@ -60,7 +61,7 @@ const style = css`
       padding: var(--space-lite);
 
       textarea {
-        height: 16.7rem;
+        height: 36rem;
       }
 
       .columns {
@@ -73,10 +74,10 @@ const style = css`
         }
 
         .left {
-          min-width: 21rem;
+          width: 48rem;
 
           @media (max-width: 600px) {
-            min-width: none;
+            width: 100%;
           }
         }
       }

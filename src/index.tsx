@@ -3,6 +3,7 @@
 import { Hono } from 'hono'
 import home from './home/home.route'
 import { renderer } from '@src/renderer'
+import people from '@src/lib/people.api'
 import profile from '@src/lib/profile.route'
 import signInApi from '@src/auth/signIn.api'
 import signUpApi from '@src/auth/signUp.api'
@@ -26,6 +27,7 @@ const app = new Hono()
   .route('/', home)
   .route('/profile', profile)
   .route('/mastery', mastery)
+  .route('/api/people', people)
   .route('/sign-in', signInRoute)
   .route('/sign-up', signUpRoute)
   .route('/sign-out', signOutRoute)

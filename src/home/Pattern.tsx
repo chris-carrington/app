@@ -451,6 +451,11 @@ const style = css`
               margin-bottom: var(--space-lite);
             }
 
+            fieldset {
+              padding: 0;
+              border: none;
+            }
+
             .inputs {
               padding: var(--space);
               position: relative;
