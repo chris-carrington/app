@@ -50,6 +50,11 @@ export const subPageHeroStyle = css`
       gap: var(--space-lite);
       margin: var(--space) auto 0 auto;
       max-width: var(--max-width);
+
+      img {
+        height: 1.8rem;
+        filter: invert(100%);
+      }
     }
   }
 `

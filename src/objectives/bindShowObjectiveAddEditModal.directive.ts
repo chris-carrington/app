@@ -21,7 +21,8 @@ export class DirectiveVars {
   inputTitle: HTMLInputElement
   textareaDescription: HTMLTextAreaElement
   selectColumn: HTMLInputElement
-  fieldAssignees: { prefix: string, name: string }
+  errorMessages: NodeListOf<HTMLDivElement>
+  fieldAssignees: ReturnType<typeof fieldObjectiveAddEditAssignees>
   datasetShowModal: Dataset
 
   assignees: QueryPeople = []
@@ -44,6 +45,7 @@ export class DirectiveVars {
     this.inputTitle = query<HTMLInputElement>(fieldObjectiveAddEditTitle().query).root(this.modal).one()
     this.textareaDescription = query<HTMLTextAreaElement>(fieldObjectiveAddEditDescription().query).root(this.modal).one()
     this.selectColumn = query<HTMLInputElement>(fieldObjectiveAddEditColumn().query).root(this.modal).one()
+    this.errorMessages = query<HTMLDivElement>('.error-message').root(this.modal).many()
 
     this.imgEdit = getImg('/img/edit.svg', 'Edit objective')
     this.imgLoading = getImg('/img/loading.svg', 'Edit objective modal loading')
@@ -75,20 +77,20 @@ function bindShowModalButtons(vars: DirectiveVars) {
 
 
 async function main(e: PointerEvent, vars: DirectiveVars, button: HTMLButtonElement, objectiveId: number) {
-  startLoadingIndicator(objectiveId, button, vars.imgLoading)
+  startLoadingIndicator(button, vars.imgLoading)
 
   await queryDatabase(vars, objectiveId)
 
   if (!objectiveId) {
-    create(vars)
+    create(vars, button)
   } else if (vars.objective) {
     edit(e, vars, button)
   }
 }
 
 
-function startLoadingIndicator(id: number, button: HTMLButtonElement, imgLoading: string) {
-  if (id) button.innerHTML = imgLoading
+function startLoadingIndicator(button: HTMLButtonElement, imgLoading: string) {
+  button.innerHTML = imgLoading
 }
 
 
@@ -140,15 +142,21 @@ function addAssigneesToDom(vars: DirectiveVars) {
 }
 
 
-function create(v: DirectiveVars) {
-  v.inputTitle.value = ''
-  v.modal.dataset.id = ''
-  v.selectColumn.value = '1'
-  v.textareaDescription.value = ''
-  v.assigneeCheckboxes?.forEach(checkbox => checkbox.checked = false)
-  v.spanModalTitle.innerText = v.buttonSubmit.innerText = 'Create Objective'
-  v.buttonSubmit.disabled = false
-  v.modal.classList.remove('hidden')
+function create(vars: DirectiveVars, button: HTMLButtonElement) {
+  vars.inputTitle.value = ''
+  vars.modal.dataset.id = ''
+  vars.selectColumn.value = '1'
+  vars.textareaDescription.value = ''
+  vars.assigneeCheckboxes?.forEach(checkbox => checkbox.checked = false)
+  vars.spanModalTitle.innerText = vars.buttonSubmit.innerText = 'Create Objective'
+  vars.buttonSubmit.disabled = false
+  vars.modal.classList.remove('hidden')
+  vars.errorMessages.forEach(div => div.textContent = '')
+  vars.modal.querySelectorAll('.has-error')?.forEach(input => input.classList.remove('has-error'))
+
+  setTimeout(() => {
+    button.innerHTML = 'New'
+  }, 120)
 }
 
 
