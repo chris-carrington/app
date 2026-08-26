@@ -3,7 +3,7 @@
 import { Hono } from 'hono'
 import { vValidator } from '@hono/valibot-validator'
 import { ContactUsSchema } from './contactUs.validator'
-import { db, upsertPersonContact, ContactUsMessage } from '@src/db'
+import { db, putPersonContact, ContactUsMessage } from '@src/db'
 
 
 export default new Hono()
@@ -15,7 +15,7 @@ export default new Hono()
 
       try {
         await db.transaction(async (tx) => { // atomic
-          const { personId } = await upsertPersonContact(tx, {
+          const { personId } = await putPersonContact(tx, {
             person: { firstName: data.firstName, lastName: data.lastName },
             contact: { email: data.email }
           })

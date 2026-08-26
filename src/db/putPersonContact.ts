@@ -1,12 +1,12 @@
-// app/src/db/upsertPersonContact.ts
+// app/src/db/putPersonContact.ts
 
 import { eq } from 'drizzle-orm'
 import type { InferSelectModel } from 'drizzle-orm'
 import { Person, Contact, type Transaction } from '@src/db'
 
 
-export async function upsertPersonContact(tx: Transaction, data: UpsertPersonContactData): Promise<UpsertPersonContactResult> {
-  let ids: Partial<UpsertPersonContactResult> = {
+export async function putPersonContact(tx: Transaction, data: PutPersonContactData): Promise<PutPersonContactResult> {
+  let ids: Partial<PutPersonContactResult> = {
     personId: data.person?.id,
     contactId: data.contact?.id,
   }
@@ -26,7 +26,7 @@ export async function upsertPersonContact(tx: Transaction, data: UpsertPersonCon
 }
 
 
-async function getIdsFromContactId(tx: Transaction, ids: Partial<UpsertPersonContactResult>) {
+async function getIdsFromContactId(tx: Transaction, ids: Partial<PutPersonContactResult>) {
   if (ids.contactId && !ids.personId) {
     const contact = await tx
       .select()
@@ -43,7 +43,7 @@ async function getIdsFromContactId(tx: Transaction, ids: Partial<UpsertPersonCon
 }
 
 
-async function getIdsFromEmail(tx: Transaction, ids: Partial<UpsertPersonContactResult>, data: UpsertPersonContactData) {
+async function getIdsFromEmail(tx: Transaction, ids: Partial<PutPersonContactResult>, data: PutPersonContactData) {
   if (data.contact?.email && (!ids.personId || !ids.contactId)) {
     const contact = await tx
       .select()
@@ -61,7 +61,7 @@ async function getIdsFromEmail(tx: Transaction, ids: Partial<UpsertPersonContact
 }
 
 
-async function updatePerson(tx: Transaction, ids: Partial<UpsertPersonContactResult>, data: UpsertPersonContactData) {
+async function updatePerson(tx: Transaction, ids: Partial<PutPersonContactResult>, data: PutPersonContactData) {
   if (ids.personId && data.person) {
     const { id, ...personMinusId } = data.person
 
@@ -73,7 +73,7 @@ async function updatePerson(tx: Transaction, ids: Partial<UpsertPersonContactRes
 }
 
 
-async function updateContact(tx: Transaction, ids: Partial<UpsertPersonContactResult>, data: UpsertPersonContactData) {
+async function updateContact(tx: Transaction, ids: Partial<PutPersonContactResult>, data: PutPersonContactData) {
   if (ids.contactId && data.contact) {
     const { id, ...contactMinusId } = data.contact
 
@@ -85,7 +85,7 @@ async function updateContact(tx: Transaction, ids: Partial<UpsertPersonContactRe
 }
 
 
-async function insert(tx: Transaction, ids: Partial<UpsertPersonContactResult>, data: UpsertPersonContactData) {
+async function insert(tx: Transaction, ids: Partial<PutPersonContactResult>, data: PutPersonContactData) {
   if (!ids.personId && data.person?.firstName && data.person.lastName) {
     const person = await tx
       .insert(Person)
@@ -110,13 +110,13 @@ async function insert(tx: Transaction, ids: Partial<UpsertPersonContactResult>, 
 }
 
 
-type UpsertPersonContactData = {
+type PutPersonContactData = {
   person?: Partial<InferSelectModel<typeof Person>>
   contact?: Partial<InferSelectModel<typeof Contact>>
 }
 
 
-type UpsertPersonContactResult = {
+type PutPersonContactResult = {
   personId: number
   contactId: number
 }

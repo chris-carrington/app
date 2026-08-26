@@ -1,7 +1,7 @@
 // app/src/joinNewsletter/joinNewsletter.api.ts
 
 import { Hono } from 'hono'
-import { db, upsertPersonContact } from '@src/db'
+import { db, putPersonContact } from '@src/db'
 import { vValidator } from '@hono/valibot-validator'
 import { JoinNewsletterSchema } from '@src/joinNewsletter/joinNewsletter.validator'
 
@@ -15,7 +15,7 @@ export default new Hono()
 
       try {
         await db.transaction(async (tx) => { // atomic
-          await upsertPersonContact(tx, {
+          await putPersonContact(tx, {
             person: { firstName: data.firstName, lastName: data.lastName },
             contact: { email: data.email }
           })

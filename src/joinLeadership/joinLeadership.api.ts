@@ -2,7 +2,7 @@
 
 import { Hono } from 'hono'
 import { vValidator } from '@hono/valibot-validator'
-import { db, upsertPersonContact, StaffLead, type Transaction } from '@src/db'
+import { db, putPersonContact, StaffLead, type Transaction } from '@src/db'
 import { JoinLeadershipSchema, JoinLeadershipFormData } from '@src/joinLeadership/joinLeadership.validator'
 
 export default new Hono()
@@ -14,7 +14,7 @@ export default new Hono()
 
       try {
         await db.transaction(async (tx) => { // atomic
-          const { personId } = await upsertPersonContact(tx, {
+          const { personId } = await putPersonContact(tx, {
             person: { firstName: data.firstName, lastName: data.lastName },
             contact: { email: data.email }
           })

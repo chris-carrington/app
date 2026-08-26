@@ -33,7 +33,7 @@ export const formStyle = css`
     &.bg-pattern {
       .field {
         &.checkboxes {
-          border: 1px solid rgb(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         select,
@@ -43,7 +43,7 @@ export const formStyle = css`
         input[type="number"] {
           color: var(--white);
           background-color: rgb(255 255 255 / 0.05);
-          border: 1px solid rgb(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.1);
           &:focus {
             box-shadow: 0 0 0 0.3rem rgba(0, 123, 255, 0.6);
           }
