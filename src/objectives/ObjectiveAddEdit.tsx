@@ -84,6 +84,7 @@ const style = css`
       }
 
       .md {
+        padding: var(--space-lite);
         border: 1px solid transparent;
 
         code {
