@@ -204,7 +204,7 @@ export const formStyle = css`
       input {
         margin: 0 calc(var(--space-lite) / 2) 0 0;
         width: 1.86rem;
-        height: 1.8em;
+        height: 1.8rem;
       }
 
       label {

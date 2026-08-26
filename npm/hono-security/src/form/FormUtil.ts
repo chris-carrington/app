@@ -21,6 +21,8 @@ export class FormUtil<T_Validator> {
     const checkboxGroups = new Map<string, HTMLInputElement[]>()
 
     allFields.forEach((field) => {
+      if (field instanceof HTMLInputElement && field.dataset.formUtilSkip) return
+
       if (field instanceof HTMLInputElement && field.type === 'checkbox') {
         const name = field.name
 

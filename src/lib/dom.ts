@@ -9,6 +9,8 @@ export const idAuthModal = () => id('auth-modal')
 export const idObjectiveAddEditModal = () => id('objective-add-edit-modal')
 export const idObjectiveAddEditModalTitle = () => id('objective-add-edit-modal-title')
 export const idObjectiveAddEditModalSubmit = () => id('objective-add-edit-modal-submit')
+export const idObjectiveAddEditModalMd = () => id('objective-add-edit-modal-md')
+export const idObjectiveAddEditModalMdToggle = () => id('objective-add-edit-modal-md-toggle')
 
 
 // field

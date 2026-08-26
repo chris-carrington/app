@@ -1,10 +1,10 @@
 // app/src/objectives/bindShowObjectiveAddEditModal.directive.ts
 
 import { urlFE } from '@src/url/urlFE'
-import { FieldReturn, query, type DatasetReturn } from '@hono-dom'
 import type { QueryTags, QueryPeople } from '@src/db'
 import { QueryObjective } from '@src/db/queryObjective'
-import { idObjectiveAddEditModal, idObjectiveAddEditModalTitle, idObjectiveAddEditModalSubmit, fieldObjectiveAddEditTitle, fieldObjectiveAddEditColumn, fieldObjectiveAddEditDescription, fieldObjectiveAddEditAssignees, fieldObjectiveAddEditTags, datasetObjectiveAddEditShowModal } from '@src/lib/dom'
+import { query, type FieldReturn, type DatasetReturn } from '@hono-dom'
+import { idObjectiveAddEditModal, idObjectiveAddEditModalTitle, idObjectiveAddEditModalSubmit, fieldObjectiveAddEditTitle, fieldObjectiveAddEditColumn, fieldObjectiveAddEditDescription, fieldObjectiveAddEditAssignees, fieldObjectiveAddEditTags, datasetObjectiveAddEditShowModal, idObjectiveAddEditModalMdToggle, idObjectiveAddEditModalMd } from '@src/lib/dom'
 
 
 export default (_: HTMLDivElement) => {
@@ -15,10 +15,12 @@ export default (_: HTMLDivElement) => {
 
 export class DirectiveVars {
   modal: HTMLDivElement
+  divMd: HTMLDivElement
   showModalButtons: NodeListOf<HTMLButtonElement>
   spanModalTitle: HTMLSpanElement
   buttonSubmit: HTMLButtonElement
   inputTitle: HTMLInputElement
+  inputMdToggle: HTMLInputElement
   textareaDescription: HTMLTextAreaElement
   selectColumn: HTMLInputElement
   errorMessages: NodeListOf<HTMLDivElement>
@@ -49,11 +51,13 @@ export class DirectiveVars {
     this.spanModalTitle = query<HTMLSpanElement>(idObjectiveAddEditModalTitle().query).root(this.modal).one()
     this.buttonSubmit = query<HTMLButtonElement>(idObjectiveAddEditModalSubmit().query).root(this.modal).one()
     this.inputTitle = query<HTMLInputElement>(fieldObjectiveAddEditTitle().query).root(this.modal).one()
+    this.inputMdToggle = query<HTMLInputElement>(idObjectiveAddEditModalMdToggle().query).root(this.modal).one()
     this.textareaDescription = query<HTMLTextAreaElement>(fieldObjectiveAddEditDescription().query).root(this.modal).one()
     this.selectColumn = query<HTMLInputElement>(fieldObjectiveAddEditColumn().query).root(this.modal).one()
     this.errorMessages = query<HTMLDivElement>('.error-message').root(this.modal).many()
     this.fieldsetAssignees = query<HTMLFieldSetElement>(this.fieldAssignees.query()).root(this.modal).one()
     this.fieldsetTags = query<HTMLFieldSetElement>(this.fieldTags.query()).root(this.modal).one()
+    this.divMd = query<HTMLDivElement>(idObjectiveAddEditModalMd().query).root(this.modal).one()
 
     this.imgEdit = getImg('/img/edit.svg', 'Edit objective')
     this.imgLoading = getImg('/img/loading.svg', 'Edit objective modal loading')
@@ -185,6 +189,9 @@ function create(vars: DirectiveVars, button: HTMLButtonElement) {
   vars.textareaDescription.value = ''
   vars.assigneeCheckboxes?.forEach(checkbox => checkbox.checked = false)
   vars.buttonSubmit.disabled = false
+  vars.inputMdToggle.checked = false
+  vars.inputMdToggle.dispatchEvent(new Event('change', { bubbles: true }))
+  
   resetErrors(vars)
   setTitleText(vars, 'Create Objective')
 
@@ -201,6 +208,8 @@ function edit(event: PointerEvent, vars: DirectiveVars, button: HTMLButtonElemen
     vars.inputTitle.value = vars.objective.title
     vars.textareaDescription.value = vars.objective.description ?? ''
     vars.selectColumn.value = String(vars.objective.columnId)
+    vars.inputMdToggle.checked = true
+    vars.inputMdToggle.dispatchEvent(new Event('change', { bubbles: true }))
 
     resetErrors(vars)
     setTitleText(vars, 'Edit Objective')

@@ -39,6 +39,15 @@ export const mdStyle = css`
       margin: var(--space-huge) 0;
     }
 
+    a {
+      color: var(--orange);
+      text-decoration: none;
+      transition: var(--transition-fast);
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
     .responsive {
       width: 100%;
       overflow-x: auto;
