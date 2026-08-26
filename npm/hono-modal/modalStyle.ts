@@ -95,6 +95,7 @@ export const modalStyle = css`
 
         span {
           font-weight: 600;
+          font-size: 1.95rem;
         }
 
         .close {

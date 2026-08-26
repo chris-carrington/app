@@ -74,9 +74,13 @@ const style = css`
     form {
       padding: var(--space-lite);
 
+      .field {
+        margin-bottom: var(--space);
+      }
+
       .md,
       textarea {
-        height: 36rem;
+        height: 37.4rem;
         margin: 0;
         overflow: auto;
         width: 100%;
