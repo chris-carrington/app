@@ -34,6 +34,7 @@ export class DirectiveVars {
   assignees: QueryPeople = []
   objective: QueryObjective | undefined = undefined
   assigneeCheckboxes: HTMLInputElement[] = []
+  tagsCheckboxes: HTMLInputElement[] = []
 
   imgEdit: string
   imgLoading: string
@@ -82,14 +83,14 @@ function bindShowModalButtons(vars: DirectiveVars) {
   for (const button of vars.showModalButtons) {
     const objectiveId = Number(button.dataset[vars.datasetShowModal.camel])
 
-    button.addEventListener('click', async (e) => {
-      main(e, vars, button, objectiveId)
+    button.addEventListener('click', async () => {
+      main(vars, button, objectiveId)
     })
   }
 }
 
 
-async function main(e: PointerEvent, vars: DirectiveVars, button: HTMLButtonElement, objectiveId: number) {
+async function main(vars: DirectiveVars, button: HTMLButtonElement, objectiveId: number) {
   startLoadingIndicator(button, vars.imgLoading)
 
   await queryDatabase(vars, objectiveId)
@@ -97,7 +98,7 @@ async function main(e: PointerEvent, vars: DirectiveVars, button: HTMLButtonElem
   if (!objectiveId) {
     create(vars, button)
   } else if (vars.objective) {
-    edit(e, vars, button)
+    edit(vars, button)
   }
 }
 
@@ -147,7 +148,7 @@ function addTagsToDom(vars: DirectiveVars) {
     (t) => t.value,
     vars.fieldTags,
     vars.fieldsetTags,
-    vars.assigneeCheckboxes,
+    vars.tagsCheckboxes,
   )
 }
 
@@ -187,10 +188,13 @@ function create(vars: DirectiveVars, button: HTMLButtonElement) {
   vars.inputTitle.value = ''
   vars.selectColumn.value = '1'
   vars.textareaDescription.value = ''
-  vars.assigneeCheckboxes?.forEach(checkbox => checkbox.checked = false)
   vars.buttonSubmit.disabled = false
+
   vars.inputMdToggle.checked = false
   vars.inputMdToggle.dispatchEvent(new Event('change', { bubbles: true }))
+
+  vars.tagsCheckboxes?.forEach(checkbox => checkbox.checked = false)
+  vars.assigneeCheckboxes?.forEach(checkbox => checkbox.checked = false)
   
   resetErrors(vars)
   setTitleText(vars, 'Create Objective')
@@ -201,9 +205,7 @@ function create(vars: DirectiveVars, button: HTMLButtonElement) {
 }
 
 
-function edit(event: PointerEvent, vars: DirectiveVars, button: HTMLButtonElement) {
-  event.stopPropagation()
-
+function edit(vars: DirectiveVars, button: HTMLButtonElement) {
   if (vars.objective) {
     vars.inputTitle.value = vars.objective.title
     vars.textareaDescription.value = vars.objective.description ?? ''
@@ -213,16 +215,22 @@ function edit(event: PointerEvent, vars: DirectiveVars, button: HTMLButtonElemen
 
     resetErrors(vars)
     setTitleText(vars, 'Edit Objective')
-
-    const objectiveAssigneeIds = new Set(vars.objective.assignees.map(assignee => assignee.id))
-    vars.assigneeCheckboxes?.forEach(checkbox => {
-      checkbox.checked = objectiveAssigneeIds.has(Number(checkbox.value))
-    })
+    setTagCheckboxes(vars.objective.tags, vars.tagsCheckboxes)
+    setTagCheckboxes(vars.objective.assignees, vars.assigneeCheckboxes)
 
     vars.buttonSubmit.disabled = true
     vars.modal.classList.remove('hidden')
 
     setTimeout(() => button.innerHTML = vars.imgEdit, 120) // give time so it's not so jittery if the request is fast
+  }
+}
+
+
+function setTagCheckboxes(masterList: {id:number}[], checkboxes: HTMLInputElement[]) {
+  const ids = new Set(masterList.map(v => v.id))
+
+  for (const checkbox of checkboxes) {
+    checkbox.checked = ids.has(Number(checkbox.value))
   }
 }
 
