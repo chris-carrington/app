@@ -190,7 +190,7 @@ function create(vars: DirectiveVars, button: HTMLButtonElement) {
   vars.textareaDescription.value = ''
   vars.buttonSubmit.disabled = false
 
-  vars.inputMdToggle.checked = false
+  vars.inputMdToggle.checked = true
   vars.inputMdToggle.dispatchEvent(new Event('change', { bubbles: true }))
 
   vars.tagsCheckboxes?.forEach(checkbox => checkbox.checked = false)
@@ -210,13 +210,13 @@ function edit(vars: DirectiveVars, button: HTMLButtonElement) {
     vars.inputTitle.value = vars.objective.title
     vars.textareaDescription.value = vars.objective.description ?? ''
     vars.selectColumn.value = String(vars.objective.columnId)
-    vars.inputMdToggle.checked = true
+    vars.inputMdToggle.checked = false
     vars.inputMdToggle.dispatchEvent(new Event('change', { bubbles: true }))
 
     resetErrors(vars)
     setTitleText(vars, 'Edit Objective')
-    setTagCheckboxes(vars.objective.tags, vars.tagsCheckboxes)
-    setTagCheckboxes(vars.objective.assignees, vars.assigneeCheckboxes)
+    setCheckboxes(vars.objective.tags, vars.tagsCheckboxes)
+    setCheckboxes(vars.objective.assignees, vars.assigneeCheckboxes)
 
     vars.buttonSubmit.disabled = true
     vars.modal.classList.remove('hidden')
@@ -226,7 +226,7 @@ function edit(vars: DirectiveVars, button: HTMLButtonElement) {
 }
 
 
-function setTagCheckboxes(masterList: {id:number}[], checkboxes: HTMLInputElement[]) {
+function setCheckboxes(masterList: {id:number}[], checkboxes: HTMLInputElement[]) {
   const ids = new Set(masterList.map(v => v.id))
 
   for (const checkbox of checkboxes) {

@@ -11,12 +11,12 @@ export default (el: HTMLInputElement) => {
 
   el.addEventListener('change', async function () {
     if (this.checked) {
+      elMd.style.display = 'none'
+      elTextarea.style.display = 'block'
+    } else {
       elMd.style.display = 'block'
       elTextarea.style.display = 'none'
       elMd.innerHTML = await md2html(elTextarea.value, false)
-    } else {
-      elMd.style.display = 'none'
-      elTextarea.style.display = 'block'
     }
   })
 }
