@@ -177,8 +177,9 @@ export function prop<C>(value: unknown, column: C): ExtractColumnData<C> {
 
 
 /** Extract the data type from a Drizzle column object */
-type ExtractColumnData<C> = C extends { _: { data: infer D } } ? D : never
-
+type ExtractColumnData<C> = C extends { _: { data: infer D; notNull: infer N } }
+  ? N extends true ? D : D | null
+  : never;
 
 // ----------------------------------------------------------------------
 // Helper: createParentShape

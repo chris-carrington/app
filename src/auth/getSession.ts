@@ -9,83 +9,125 @@ import { setSessionCookie } from '@src/auth/setSessionCookie'
 import { msSessionMaxAge, sessionCookieName, sessionRenewalWindow } from '@src/lib/vars'
 
 
-export async function getSession<T_IncludePersonAndContact extends boolean>(
-  c: Context,
-  includePersonAndContact: T_IncludePersonAndContact
-): Promise<GetSessionResult<T_IncludePersonAndContact>> {
+
+const defaultSessionVariant = 'just-session'
+
+
+
+export async function getSession<V extends Variant = typeof defaultSessionVariant>(c: Context, variant?: V): Promise<GetSessionResult<V>> {
   const sessionId = await getSignedCookie(c, env.COOKIE_SECRET, sessionCookieName)
 
-  if (!sessionId) return { status: 401, message: 'Please sign in again, current cookies does not have a valid session' }
-
-  let session: null | GetSessionResultBase['Session'] = null
-  let sessionWithPersonAndContact: null | GetSessionResultFull = null
-
-  if (includePersonAndContact) {
-    const result = await db
-      .select()
-      .from(Session)
-      .innerJoin(Person, eq(Session.personId, Person.id))
-      .innerJoin(Contact, eq(Person.id, Contact.personId))
-      .where(eq(Session.id, Number(sessionId)))
-      .limit(1)
-
-    if (result[0]) {
-      session = result[0].Session
-      sessionWithPersonAndContact = result[0]
+  if (!sessionId) { // no session in cookie
+    return {
+      status: 401,
+      message: 'Please sign in!',
     }
-  } else {
-    const result = await db // get session
-      .select()
-      .from(Session)
-      .where(eq(Session.id, Number(sessionId)))
-      .limit(1)
+  }
 
-    if (result[0]) session = result[0]
+  if (isNaN(Number(sessionId))) { // session cookie is not a number
+    return {
+      status: 401,
+      message: 'Please sign in b/c you cookies session_id is not a number',
+    }
   }
 
   const now = Date.now()
 
-  if (!session || session.expiresAt.getTime() < now) { // IF db says `Session` is undefined OR expired THEN delete cookie and redirect to `/sign-in`
-    deleteCookie(c, sessionCookieName, { path: '/' }) // delete cookie 
-    return { status: 401, message: !session ? 'Please sign in again, previous session was been deleted within database' : 'Please sign in again, previous session expired' }
+  let session: undefined | typeof Session.$inferSelect = undefined
+  let person: undefined | typeof Person.$inferSelect = undefined
+  let contact: undefined | typeof Contact.$inferSelect = undefined
+
+
+  switch (variant) {
+    case 'include-person-and-contact': {
+      const result = await db
+        .select()
+        .from(Session)
+        .innerJoin(Person, eq(Session.personId, Person.id))
+        .innerJoin(Contact, eq(Person.id, Contact.personId))
+        .where(eq(Session.id, Number(sessionId)))
+        .limit(1)
+        .get()
+
+      session = result?.Session
+      person = result?.Person
+      contact = result?.Contact
+    } break
+    case 'include-person': {
+      const result = await db
+        .select()
+        .from(Session)
+        .innerJoin(Person, eq(Session.personId, Person.id))
+        .where(eq(Session.id, Number(sessionId)))
+        .limit(1)
+        .get()
+
+      session = result?.Session
+      person = result?.Person
+    } break
+    default: {
+      session = await db
+        .select()
+        .from(Session)
+        .where(eq(Session.id, Number(sessionId)))
+        .limit(1)
+        .get()
+    } break
   }
 
-  if (session.expiresAt.getTime() - now < sessionRenewalWindow) { // IF session expires in less than 1 week THEN extend to 9 weeks from now
+
+  if (!session) { // session is not in db
+    deleteCookie(c, sessionCookieName, { path: '/' })
+
+    return {
+      status: 401,
+      message: 'Please sign in b/c the session w/in your cookies was deleted in our database'
+    }
+  }
+
+
+  if (session.expiresAt.getTime() < now) { // session has expired
+    const now = Date.now()
+    deleteCookie(c, sessionCookieName, { path: '/' })
+
+    return {
+      status: 401,
+      message: 'Please sign in b/c your session expired'
+    }
+  }
+
+
+  if (session.expiresAt.getTime() - now < sessionRenewalWindow) { // session expiration is w/in renewal window
     const expiresAt = new Date(now + msSessionMaxAge)
 
-    await db // update db Session expiresAt
+    await db
       .update(Session)
       .set({ expiresAt })
       .where(eq(Session.id, session.id))
 
-    await setSessionCookie(c, String(session.id)) // update cookie maxAge
+    await setSessionCookie(c, String(session.id))
 
     session.expiresAt = expiresAt
   }
 
-  if (sessionWithPersonAndContact) return { status: 200, response: sessionWithPersonAndContact } as GetSessionResult<T_IncludePersonAndContact>
-  return { status: 200, response: { Session: session } } as GetSessionResult<T_IncludePersonAndContact>
+  switch (variant) { // provide what's been requested
+    case 'include-person-and-contact': return { response: { session, person, contact }, status: 200 } as GetSessionResult<V>
+    case 'include-person': return { response: { session, person }, status: 200 } as GetSessionResult<V>
+    default: return { response: { session }, status: 200 } as GetSessionResult<V>
+  }
 }
 
 
-/** Just `Session` */
-type GetSessionResultBase = {
-  Session: typeof Session.$inferSelect
-}
+type Variant = 'just-session' | 'include-person' | 'include-person-and-contact'
 
-
-/** Just `Session` + `Person` + `Contact` */
-type GetSessionResultFull = GetSessionResultBase & {
-  Person: typeof Person.$inferSelect
-  Contact: typeof Contact.$inferSelect
-}
-
-
-/** `getSession()` return value */
-type GetSessionResult<T_IncludePersonAndContact extends boolean> =
-  | { status: 401; message: string }
+type GetSessionResult<V extends Variant> =
+  | { status: 401, message: string }
   | (
-      T_IncludePersonAndContact extends true
-        ? { status: 200; response: GetSessionResultFull }
-        : { status: 200; response: GetSessionResultBase }
-    )
+      V extends 'just-session'
+        ? { status: 200, response: { session: typeof Session.$inferSelect } }
+        : V extends 'include-person'
+        ? { status: 200, response: { session: typeof Session.$inferSelect, person: typeof Person.$inferSelect } }
+        : V extends 'include-person-and-contact'
+        ? { status: 200, response: { session: typeof Session.$inferSelect, person: typeof Person.$inferSelect, contact: typeof Contact.$inferSelect } }
+        : never
+  )

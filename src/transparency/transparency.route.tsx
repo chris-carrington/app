@@ -1,8 +1,9 @@
 // app/src/lib/transparency.route.tsx
 
 import { Hono } from 'hono'
+import { rpcBE } from '@hono-rpc/be'
 import { css, Style } from 'hono/css'
-import { urlBE } from '@src/url/urlBE'
+import type { AppType } from '@src/index'
 import { md2html } from '@src/md/md2html'
 import { mdStyle } from '@src/md/mdStyle'
 import { formStyle } from '@src/lib/formStyle'
@@ -17,7 +18,7 @@ import conflictOfInterestPolicy from '@src/transparency/conflict-of-interest-pol
 
 export default new Hono()
   .get('/:id?', async (c) => {
-    const url = urlBE()
+    const rpc = rpcBE<AppType>()
     const paramId = c.req.param('id') ?? documents[0].id
     const current = documents.find(b => b.id === paramId) ?? documents[0]
     const html = await md2html(current.md, current.wrapTables)
@@ -39,7 +40,7 @@ export default new Hono()
             </div>
 
             <div class="buttons">
-              {documents.map((a, i) => <a class={paramId === a.id ? 'orange big' : 'transparent big'} href={url.transparency[':id?'].$url({param: {id: a.id}}).href}>{a.title}</a>)}
+              {documents.map((a, i) => <a class={paramId === a.id ? 'orange big' : 'transparent big'} href={rpc.transparency[':id?'].$url({param: {id: a.id}}).href}>{a.title}</a>)}
             </div>
           </div>
 

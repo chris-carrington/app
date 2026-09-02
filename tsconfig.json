@@ -27,6 +27,12 @@
       "@src/*": [
         "./src/*"
       ],
+      "@hono-rpc/fe": [
+        "./npm/hono-rpc/rpcFE"
+      ],
+      "@hono-rpc/be": [
+        "./npm/hono-rpc/rpcBE"
+      ],
       "@hono-dom": [
         "./npm/hono-dom/index"
       ],

@@ -2,7 +2,7 @@
 
 import { Style } from 'hono/css'
 import type { FC } from 'hono/jsx'
-import { urlBE } from '@src/url/urlBE'
+import { rpcBE } from '@hono-rpc/be'
 import { modalStyle } from '@hono-modal'
 import svgClose from '@src/svg/close.svg?raw'
 import { onNavModalToggle } from '@hono-directives'
@@ -10,7 +10,7 @@ import { datasetAuth, idAuthModal } from '@src/lib/dom'
 
 
 export default (() => {
-  const url = urlBE()
+  const rpc = rpcBE()
   const authDataset = datasetAuth()
   const authModalId = idAuthModal().id
 
@@ -31,10 +31,10 @@ export default (() => {
         </div>
 
         <div {...authDataset.attr('loading')} class="item lite">Loading...</div>
-        <a {...authDataset.attr('false')} href={url['sign-in'].$url().href} class="item anchor">Sign In</a>
-        <a {...authDataset.attr('false')} href={url['sign-up'].$url().href} class="item anchor">Sign Up</a>
-        <a {...authDataset.attr('true')} href={url.profile.$url().href} class="item anchor">Profile</a>
-        <a {...authDataset.attr('true')} href={url['sign-out'].$url().href} class="item anchor">Sign Out</a>
+        <a {...authDataset.attr('false')} href={rpc['sign-in'].$url().href} class="item anchor">Sign In</a>
+        <a {...authDataset.attr('false')} href={rpc['sign-up'].$url().href} class="item anchor">Sign Up</a>
+        <a {...authDataset.attr('true')} href={rpc.profile.$url().href} class="item anchor">Profile</a>
+        <a {...authDataset.attr('true')} href={rpc['sign-out'].$url().href} class="item anchor">Sign Out</a>
       </div>
     </div>
   </>

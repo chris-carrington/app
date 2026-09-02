@@ -1,13 +1,14 @@
 // app/src/auth/signOut.route.tsx
 
 import { Hono } from 'hono'
-import { urlBE } from '@src/url/urlBE'
+import { rpcBE } from '@hono-rpc/be'
+import type { AppType } from '@src/index'
 import { signOut } from '@src/auth/signOut'
 
 
 export default new Hono()
   .get('/', async (c) => {
     await signOut(c)
-    const redirect: string = urlBE()['sign-in'].$url().href
+    const redirect: string = rpcBE<AppType>()['sign-in'].$url().href
     return c.redirect(redirect)
   })

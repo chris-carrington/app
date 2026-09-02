@@ -187,6 +187,7 @@ export const formStyle = css`
   .checkboxes {
     border-radius: var(--radius);
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
     gap: var(--space-lite);
     font-size: 1.86rem;

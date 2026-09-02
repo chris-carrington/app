@@ -1,8 +1,9 @@
 // app/src/lib/Footer.tsx
 
 import type { FC } from 'hono/jsx'
+import { rpcBE } from '@hono-rpc/be'
 import { css, Style } from 'hono/css'
-import { urlBE } from '@src/url/urlBE'
+import type { AppType } from '@src/index'
 import svgTikTok from '@src/svg/tikTok.svg?raw'
 import svgYoutube from '@src/svg/youtube.svg?raw'
 import svgFacebook from '@src/svg/facebook.svg?raw'
@@ -10,7 +11,7 @@ import svgInstagram from '@src/svg/instagram.svg?raw'
 
 
 export default (() => {
-  const url = urlBE()
+  const rpc = rpcBE<AppType>()
 
   return <>
     <Style>{style}</Style>
@@ -24,10 +25,10 @@ export default (() => {
         <div class="site-map">
           <div class="title">SITE MAP</div>
           <div class="links">
-            <a href={url['index'].$url().href}>Home</a>
-            <a href={url['mastery'][':id?'].$url({ param: { id: '' } }).href}>Mastery</a>
-            <a href={url['objectives'].$url().href}>Objectives</a>
-            <a href={url['transparency'][':id?'].$url({ param: { id: '' } }).href}>Transparency</a>
+            <a href={rpc['index'].$url().href}>Home</a>
+            <a href={rpc['mastery'][':id?'].$url({ param: { id: '' } }).href}>Mastery</a>
+            <a href={rpc['objectives'].$url().href}>Objectives</a>
+            <a href={rpc['transparency'][':id?'].$url({ param: { id: '' } }).href}>Transparency</a>
           </div>
         </div>
         <div class="socials">

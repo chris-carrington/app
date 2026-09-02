@@ -14,6 +14,8 @@ export default defineConfig({
     alias: {
       '@src': path.resolve(__dirname, 'src'),
       '@hono-dom': path.resolve(__dirname, 'npm/hono-dom/index'),
+      '@hono-rpc/fe': path.resolve(__dirname, 'npm/hono-rpc/rpcFE'),
+      '@hono-rpc/be': path.resolve(__dirname, 'npm/hono-rpc/rpcBE'),
       '@hono-email': path.resolve(__dirname, 'npm/hono-email/index'),
       '@hono-toast': path.resolve(__dirname, 'npm/hono-toast/index'),
       '@hono-modal': path.resolve(__dirname, 'npm/hono-modal/index'),

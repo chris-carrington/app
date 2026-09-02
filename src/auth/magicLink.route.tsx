@@ -3,9 +3,10 @@
 import { Hono } from 'hono'
 import { eq, and } from 'drizzle-orm'
 import { css, Style } from 'hono/css'
-import { urlBE } from '@src/url/urlBE'
+import type { AppType } from '@src/index'
 import { hashCreate } from '@hono-security'
 import type { JSX } from 'hono/jsx/jsx-runtime'
+import { rpcBE, type InferRpc } from '@hono-rpc/be'
 import { setSessionCookie } from './setSessionCookie'
 import { db, Person, Contact, MagicToken, Session } from '@src/db'
 import { msSessionMaxAge, magicLinkTokenHashCreateProps } from '@src/lib/vars'
@@ -13,6 +14,8 @@ import { msSessionMaxAge, magicLinkTokenHashCreateProps } from '@src/lib/vars'
 
 export default new Hono()
   .get('/:token', async (c) => {
+    const rpc = rpcBE<AppType>()
+
     const tokenHash = await hashCreate({ password: c.req.param('token'), ...magicLinkTokenHashCreateProps })
 
     const [result] = await db // get magicToken
@@ -23,7 +26,7 @@ export default new Hono()
       .where(eq(MagicToken.tokenHash, tokenHash))
       .limit(1)
 
-    const res = validate(result.MagicToken)
+    const res = validate(rpc, result.MagicToken)
 
     if (res.isValid) {
       const ipAddress = c.req.header('cf-connecting-ip')
@@ -68,12 +71,12 @@ export default new Hono()
           <>
             <title>Shasta Trades · Magic Link</title>
             <Style>{style}</Style>
-            <h1>Something went wrong. Please <a href={urlBE()['sign-in'].$url().href}>sign in</a> again.</h1>
+            <h1>Something went wrong. Please <a href={rpc['sign-in'].$url().href}>sign in</a> again.</h1>
           </>
         )
       }
 
-      const redirect: string = urlBE().profile.$url().href // string cast breaks circular depenency error
+      const redirect: string = rpc.profile.$url().href // string cast breaks circular depenency error
 
       return c.redirect(redirect)
     }
@@ -87,15 +90,15 @@ export default new Hono()
   })
 
 
-function validate(magicToken: typeof MagicToken.$inferSelect): { isValid: true } | { isValid: false, template: JSX.Element } {
+function validate(rpc: InferRpc<AppType>, magicToken: typeof MagicToken.$inferSelect): { isValid: true } | { isValid: false, template: JSX.Element } {
   // invalid token
-  if (!magicToken) return { isValid: false, template: <h1>Link is invalid, please attempt to <a href={urlBE()['sign-in'].$url().href}>sign in</a> again.</h1> }
+  if (!magicToken) return { isValid: false, template: <h1>Link is invalid, please attempt to <a href={rpc['sign-in'].$url().href}>sign in</a> again.</h1> }
 
   // used token
-  if (magicToken.used) return { isValid: false, template: <h1>Link has already been clicked, please attempt to <a href={urlBE()['sign-in'].$url().href}>sign in</a> again.</h1> }
+  if (magicToken.used) return { isValid: false, template: <h1>Link has already been clicked, please attempt to <a href={rpc['sign-in'].$url().href}>sign in</a> again.</h1> }
 
   // expiration is NOT before now
-  if (magicToken?.expiresAt.getTime() < Date.now()) return { isValid: false, template: <h1> Link is expired, they are only valid for 9 minutes, please attempt to <a href={urlBE()['sign-in'].$url().href}>sign in</a> again.</h1> }
+  if (magicToken?.expiresAt.getTime() < Date.now()) return { isValid: false, template: <h1> Link is expired, they are only valid for 9 minutes, please attempt to <a href={rpc['sign-in'].$url().href}>sign in</a> again.</h1> }
 
   // valid
   return { isValid: true }

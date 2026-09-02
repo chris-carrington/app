@@ -1,11 +1,11 @@
 // app/npm/hono-dom/query.ts
 
-export function query<T_Element extends HTMLElement>(query: string): QueryBuilder<T_Element> {
-  return new QueryBuilder<T_Element>(query);
+export function query<T_Element extends HTMLElement>(query: string): QueryReturn<T_Element> {
+  return new QueryReturn<T_Element>(query);
 }
 
 
-class QueryBuilder<T_Element extends HTMLElement> {
+export class QueryReturn<T_Element extends HTMLElement> {
   #root: HTMLElement | Document = document;
   #query: string;
 

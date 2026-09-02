@@ -2,15 +2,19 @@
 
 import * as v from 'valibot'
 
-export const pipeSelect = (props: {
-  errorMissing: string,
-  errorInvalid: string,
-  values: { value: string }[]
+
+export const pipeSelect = <const T extends readonly string[]>(props: {
+  errorMissing: string
+  errorInvalid: string
+  values: T
+  optional?: boolean
 }) => {
-  return v.pipe(
+  const basePipe = v.pipe(
     v.string(),
     v.trim(),
     v.minLength(1, props.errorMissing),
-    v.picklist(props.values.map(v => v.value), props.errorInvalid)
+    v.picklist(props.values, props.errorInvalid)
   )
+
+  return props.optional ? v.optional(basePipe) : basePipe
 }

@@ -3,16 +3,17 @@
 
 import { Hono } from 'hono'
 import { Style } from 'hono/css'
-import { urlBE } from '@src/url/urlBE'
+import { rpcBE } from '@hono-rpc/be'
+import type { AppType } from '@src/index'
 import { getSession } from '@src/auth/getSession'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 
 
 export default new Hono()
   .get('/', async (c) => {
-    const res = await getSession(c, true)
+    const res = await getSession(c, 'include-person-and-contact')
 
-    const redirect: string = urlBE()['sign-in'].$url().href
+    const redirect: string = rpcBE<AppType>()['sign-in'].$url().href
 
     return res.status === 401
       ? c.redirect(redirect)
@@ -26,7 +27,7 @@ export default new Hono()
               <div class="bg"></div>
               <div class="header">
                 <h1>Profile</h1>
-                <div class="sub-title">Welcome {res.response.Person.firstName} {res.response.Person.lastName}, to the authenticated space!</div>
+                <div class="sub-title">Welcome {res.response.person.firstName} {res.response.person.lastName}!</div>
               </div>
             </div>
           </div>

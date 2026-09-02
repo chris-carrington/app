@@ -1,13 +1,4 @@
 # Shasta Trades App
-
-## Todo
-1. Objectives
-1. Profile
-1. Transparency
-1. Mastery
-1. Directive, multiple on 1 element
-
-## 🔗 Links
 - Turso
     - [Pricing](https://turso.tech/pricing)
     - [Drizzle](https://docs.turso.tech/sdk/ts/orm/drizzle)
@@ -36,7 +27,7 @@
     - [Squoosh](https://squoosh.app/)
     - [PNG to ICO](https://convertio.co/)
     - [Remove Comments](https://commentclean.com/)
-    - [Open Graph Testing](https://www.opengraph.xyz/)
+    - [Open Graph Testing](https://www.opengraph.xyz/) `1200 x 630`
     - [Gradient CSS Generator](https://html-css-js.com/css/generator/box-shadow/)
     - [Markdown Table Generator](https://tableconvert.com/markdown-generator)
 - Blogs

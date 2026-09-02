@@ -2,9 +2,10 @@
 
 import { Hono } from 'hono'
 import { Style } from 'hono/css'
+import { rpcBE } from '@hono-rpc/be'
 import { authStyle } from '@src/auth'
-import { urlBE } from '@src/url/urlBE'
 import { Field } from '@hono-security'
+import type { AppType } from '@src/index'
 import { formStyle } from '@src/lib/formStyle'
 import { onSignUpSubmit } from '@hono-directives'
 
@@ -29,7 +30,7 @@ export default new Hono()
 
           <button class="primary" type="submit">Sign Up</button>
 
-          <a href={urlBE()['sign-in'].$url().href}>Have an account? Then click here to Sign In!</a>
+          <a href={rpcBE<AppType>()['sign-in'].$url().href}>Have an account? Then click here to Sign In!</a>
         </form>
       </>
     )

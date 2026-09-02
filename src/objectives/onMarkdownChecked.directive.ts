@@ -2,12 +2,15 @@
 
 import { query } from '@hono-dom'
 import { md2html } from '@src/md/md2html'
-import { idObjectiveAddEditModalMd, fieldObjectiveAddEditDescription } from '@src/lib/dom'
+import { idObjectiveInUpModalMd, fieldObjectiveInUpDescription } from '@src/lib/dom'
 
 
 export default (el: HTMLInputElement) => {
-  const elMd = query(idObjectiveAddEditModalMd().query).one()
-  const elTextarea = query<HTMLTextAreaElement>(fieldObjectiveAddEditDescription().query).one()
+  let innerHTML = ''
+  let textAreaValue = ''
+
+  const elMd = query(idObjectiveInUpModalMd().query).one()
+  const elTextarea = query<HTMLTextAreaElement>(fieldObjectiveInUpDescription().query).one()
 
   el.addEventListener('change', async function () {
     if (this.checked) {
@@ -16,7 +19,11 @@ export default (el: HTMLInputElement) => {
     } else {
       elMd.style.display = 'block'
       elTextarea.style.display = 'none'
-      elMd.innerHTML = await md2html(elTextarea.value, false)
+
+      if (textAreaValue !== elTextarea.value) {
+        textAreaValue = elTextarea.value
+        elMd.innerHTML = innerHTML = await md2html(elTextarea.value, false)
+      }
     }
   })
 }

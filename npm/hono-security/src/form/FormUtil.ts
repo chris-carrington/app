@@ -1,16 +1,22 @@
 // app/npm/hono-security/src/form/FormUtil.ts
 
-import type { Validator } from './createValidator'
+import type { Validator } from './Validator'
+import type { ObjectSchema, InferOutput } from 'valibot'
 
-export class FormUtil<T_Validator> {
+
+export class FormUtil<T_Schema extends ObjectSchema<any, any>> {
+ readonly $typeInstance = undefined! as FormUtil<T_Schema>
+ readonly $typeResult = undefined! as ReturnType<FormUtil<T_Schema>['validateForm']>
+ readonly $typeData = undefined! as InferOutput<T_Schema>
+
   #el: HTMLFormElement
-  #validator: Validator<T_Validator>
+  #validator: Validator<T_Schema>
   #domErrors: NodeListOf<HTMLDivElement>
   #textFields: (HTMLInputElement | HTMLTextAreaElement)[]
   #selectFields: HTMLSelectElement[]
   #checkboxGroups: Map<string, HTMLInputElement[]>
 
-  constructor(el: HTMLFormElement, validator: Validator<T_Validator>) {
+  constructor(el: HTMLFormElement, validator: Validator<T_Schema>) {
     this.#el = el
     this.#validator = validator
     this.#domErrors = el.querySelectorAll<HTMLDivElement>('div.error-message[data-field]')
@@ -44,14 +50,16 @@ export class FormUtil<T_Validator> {
     this.#bindEventListeners()
   }
 
-  validateForm() {
+  validateForm(): { success: true; data: InferOutput<T_Schema> } | { success: false; errors: Record<string, string> } {
     const result = this.#validator.safeParse(this.#el)
     this.#resetErrors()
+
     if (!result.success) {
       this.#displayErrors(result.errors)
       const firstInvalid = this.#el.querySelector<HTMLDivElement>('.has-error')
       if (firstInvalid) firstInvalid.focus()
     }
+
     return result
   }
 
@@ -102,7 +110,7 @@ export class FormUtil<T_Validator> {
     if (!group) return
 
     const checkedValues = group.filter((cb) => cb.checked).map((cb) => cb.value)
-    const errorMessage = this.#validator.validateField(name as keyof T_Validator, checkedValues)
+    const errorMessage = this.#validator.validateField(name as keyof Validator<T_Schema>, checkedValues)
 
     if (errorMessage) {
       const errorEl = this.#el.querySelector<HTMLDivElement>(`div.error-message[data-field="${name}"]`)
@@ -124,7 +132,7 @@ export class FormUtil<T_Validator> {
   #bindEventListeners() {
     // --- Text / textarea / email fields ---
     this.#textFields.forEach((field) => {
-      const name = field.name as keyof T_Validator
+      const name = field.name as keyof Validator<T_Schema>
       if (!name) return
 
       field.addEventListener('blur', () => {
@@ -154,7 +162,7 @@ export class FormUtil<T_Validator> {
 
     // --- Select dropdowns ---
     this.#selectFields.forEach((field) => {
-      const name = field.name as keyof T_Validator
+      const name = field.name as keyof Validator<T_Schema>
       if (!name) return
 
       const validateSelect = () => {

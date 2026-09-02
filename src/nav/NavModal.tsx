@@ -2,15 +2,16 @@
 
 import { Style } from 'hono/css'
 import type { FC } from 'hono/jsx'
-import { urlBE } from '@src/url/urlBE'
+import { rpcBE } from '@hono-rpc/be'
 import { modalStyle } from '@hono-modal'
+import type { AppType } from '@src/index'
 import svgClose from '@src/svg/close.svg?raw'
 import { onNavModalToggle } from '@hono-directives'
 import { datasetAuth, idNavModal } from '@src/lib/dom'
 
 
 export default (() => {
-  const url = urlBE()
+  const rpc = rpcBE<AppType>()
   const authDataset = datasetAuth()
   const navModalId = idNavModal().id
 
@@ -31,16 +32,16 @@ export default (() => {
         </div>
 
         <div class="scroll">
-          <a href={url['index'].$url().href} class="item anchor">Home</a>
-          <a href={url['mastery'][':id?'].$url({ param: { id: '' } }).href} class="item anchor">Mastery</a>
-          <a href={url['objectives'].$url().href} class="item anchor">Objectives</a>
-          <a href={url['transparency'][':id?'].$url({ param: { id: '' } }).href} class="item anchor">Transparency</a>
+          <a href={rpc['index'].$url().href} class="item anchor">Home</a>
+          <a href={rpc['mastery'][':id?'].$url({ param: { id: '' } }).href} class="item anchor">Mastery</a>
+          <a href={rpc['objectives'].$url().href} class="item anchor">Objectives</a>
+          <a href={rpc['transparency'][':id?'].$url({ param: { id: '' } }).href} class="item anchor">Transparency</a>
 
           <div {...authDataset.attr('loading')} class="item title">Loading...</div>
-          <a {...authDataset.attr('false')} href={url['sign-in'].$url().href} class="item anchor">Sign In</a>
-          <a {...authDataset.attr('false')} href={url['sign-up'].$url().href} class="item anchor">Sign Up</a>
-          <a {...authDataset.attr('true')} href={url.profile.$url().href} class="item anchor">Profile</a>
-          <a {...authDataset.attr('true')} href={url['sign-out'].$url().href} class="item anchor">Sign Out</a>
+          <a {...authDataset.attr('false')} href={rpc['sign-in'].$url().href} class="item anchor">Sign In</a>
+          <a {...authDataset.attr('false')} href={rpc['sign-up'].$url().href} class="item anchor">Sign Up</a>
+          <a {...authDataset.attr('true')} href={rpc.profile.$url().href} class="item anchor">Profile</a>
+          <a {...authDataset.attr('true')} href={rpc['sign-out'].$url().href} class="item anchor">Sign Out</a>
         </div>
       </div>
     </div>

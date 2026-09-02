@@ -3,7 +3,7 @@
 import { FieldProps } from '@hono-security'
 
 
-export function field<T_Type extends FieldProps['type']>(type: T_Type, name: string, prefix: string) {
+export function field<T_Type extends FieldProps['type']>(type: T_Type, name: string, prefix: string): FieldReturn<T_Type> {
   const baseQuery = `#${type}--${prefix}--${name}`
 
   const query = (type === 'checkbox')

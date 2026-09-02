@@ -5,19 +5,30 @@ import type { FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
 import { kanbanColumns } from '@src/lib/vars'
 import { formStyle } from '@src/lib/formStyle'
-import type { DatasetReturn } from '@hono-dom'
+import { onObjectivesPageLoad } from '@hono-directives'
+import ObjectiveInUp from '@src/objectives/ObjectiveInUp'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
-import ObjectiveAddEdit from '@src/objectives/ObjectiveAddEdit'
-import { datasetObjectiveAddEditShowModal } from '@src/lib/dom'
-import { queryObjectives, type QueryObjective, type QueryObjectives } from '@src/db/queryObjective'
-import { onObjectivesPageLoad, bindShowObjectiveAddEditModal } from '@hono-directives'
+import type { ClassNameReturn, DatasetReturn } from '@hono-dom'
+import { queryObjectives, type QueryObjective } from '@src/db/queryObjective'
+import { classNameAssignees, classNameColumn, classNameColumnCount, classNameObjective, classNameObjectives, classNameTags, classNameTitle, datasetColumnId, datasetId, datasetObjectiveInUpShowModal, datasetOrder, classNameSvg } from '@src/lib/dom'
 
 
 export default new Hono()
   .get('/', async (c) => {
-    // const kanbanData = await queryObjectives()
-    const kanbanData: QueryObjectives = { "1": [{ "id": 1, "columnId": 1, "title": "Profile: EditPerson.tsx", "description": "- Edit Self\n- [Trustee, President, Executive Director, CTO] may update any person\n- hono-img, Upload image, WASM Rust Shrink, Webp, Preview, R2\n- Edit: First Name / Last Name / Email / Newsletter Subscriber", "order": 1, "createdAt": "2026-08-24T03:59:26.000Z", "tags": [], "assignees": [{ "id": 1, "imageId": "be46a51d-131d-41d6-ac58-df29843d1cc0", "firstName": "Christopher", "lastName": "Carrington" }] }, { "id": 2, "columnId": 1, "title": "Profile: ContactUsMessages.tsx", "description": "- Seen by [Trustee, President, Secretary, Executive Director, CTO]", "order": 2, "createdAt": "2026-08-24T03:59:26.000Z", "tags": [], "assignees": [{ "id": 1, "imageId": "be46a51d-131d-41d6-ac58-df29843d1cc0", "firstName": "Christopher", "lastName": "Carrington" }] }], "2": [{ "id": 3, "columnId": 2, "title": "Create Objectives Page", "description": "- AddEditModal\n    - Description (Markdown)\n    - Assignees\n    - Tags\n    - Call again bindShowObjectiveAddEditModal() post create\n    - Loading icon post edit click\n    - New loading indicator\n- All / Mine\n    - May only drag and drop when looking @ All", "order": 1, "createdAt": "2026-08-24T03:59:26.000Z", "tags": [{ "id": 1, "value": "In Development", "bgHex": "#DBEAFE", "fgHex": "#1E40AF" }], "assignees": [{ "id": 1, "imageId": "be46a51d-131d-41d6-ac58-df29843d1cc0", "firstName": "Christopher", "lastName": "Carrington" }, { "id": 2, "imageId": "7a0e296f-5eda-401a-88fb-80c1577926c6", "firstName": "Megha", "lastName": "Carrington" }] }] }
-    const datasetShowModal = datasetObjectiveAddEditShowModal()
+    const kanbanData = await queryObjectives()
+
+    const idDataset = datasetId()
+    const orderDataset = datasetOrder()
+    const svgClassName = classNameSvg()
+    const tagsClassName = classNameTags()
+    const titleClassName = classNameTitle()
+    const columnClassName = classNameColumn()
+    const columnIdDataset = datasetColumnId()
+    const countClassName = classNameColumnCount()
+    const assigneesClassName = classNameAssignees()
+    const objectiveClassName = classNameObjective()
+    const objectivesClassName = classNameObjectives()
+    const datasetShowModal = datasetObjectiveInUpShowModal()
 
     return c.render(
       <>
@@ -26,7 +37,7 @@ export default new Hono()
         <Style>{formStyle}</Style>
         <Style>{subPageHeroStyle}</Style>
 
-        <div class="objectives" data-directive={bindShowObjectiveAddEditModal()}>
+        <div class="objectives">
           <div class="sub-page-hero">
             <div class="bg"></div>
             <div class="header">
@@ -35,9 +46,7 @@ export default new Hono()
             </div>
 
             <div class="buttons">
-              <button {...datasetObjectiveAddEditShowModal().attr()} class="transparent big" type="button">New</button>
-              <button class="orange big" type="button">All</button>
-              <button class="transparent big" type="button">Mine</button>
+              <button {...datasetObjectiveInUpShowModal().attr()} class="transparent big" type="button">New</button>
             </div>
           </div>
 
@@ -45,16 +54,25 @@ export default new Hono()
             <div class="kanban-board" id="kanbanBoard" aria-label="Kanban Board">
               <div class="kanban-board-inner">
                 {kanbanColumns.map((column) => (
-                  <section class="column" data-column-id={column.id} aria-label={`${column.value} column`}>
+                  <section {...columnIdDataset.attr(column.id)} class={columnClassName.className} aria-label={`${column.value} column`}>
                     <header class="header">
                       <h2 class="title">{column.value}</h2>
-                      <span class="count" id={`count-${column.id}`}>
+                      <span class={countClassName.className}>
                         {kanbanData[column.id]?.length || 0}
                       </span>
                     </header>
-                    <div class="objectives" data-column-id={column.id}>
+                    <div class={objectivesClassName.className} {...columnIdDataset.attr(column.id)}>
                       {kanbanData[column.id] && kanbanData[column.id].map((o) => (
-                        <ObjectiveCard objective={o} datasetShowModal={datasetShowModal} />
+                        <ObjectiveCard
+                          objective={o}
+                          idDataset={idDataset}
+                          orderDataset={orderDataset}
+                          svgClassName={svgClassName}
+                          tagsClassName={tagsClassName}
+                          titleClassName={titleClassName}
+                          datasetShowModal={datasetShowModal}
+                          assigneesClassName={assigneesClassName}
+                          objectiveClassName={objectiveClassName} />
                       ))}
                     </div>
                   </section>
@@ -64,38 +82,55 @@ export default new Hono()
           </div>
         </div>
 
-        <ObjectiveAddEdit />
+        <ObjectiveInUp />
 
-        {/* Single source of truth for client-created objective cards */}
         <template id="objective-template">
-          <ObjectiveCard objective={null} datasetShowModal={datasetShowModal} />
+          <ObjectiveCard
+            objective={null}
+            idDataset={idDataset}
+            orderDataset={orderDataset}
+            svgClassName={svgClassName}
+            tagsClassName={tagsClassName}
+            titleClassName={titleClassName}
+            datasetShowModal={datasetShowModal}
+            assigneesClassName={assigneesClassName}
+            objectiveClassName={objectiveClassName} />
         </template>
       </>
     )
   })
 
 
-const ObjectiveCard: FC<{ objective: QueryObjective | null, datasetShowModal: DatasetReturn }> = ({ objective, datasetShowModal }) => {
+const ObjectiveCard: FC<{
+  objective: QueryObjective | null,
+  idDataset: DatasetReturn,
+  orderDataset: DatasetReturn,
+  datasetShowModal: DatasetReturn,
+  objectiveClassName: ClassNameReturn,
+  tagsClassName: ClassNameReturn,
+  titleClassName: ClassNameReturn,
+  assigneesClassName: ClassNameReturn,
+  svgClassName: ClassNameReturn,
+}> = ({ objective, idDataset, orderDataset, datasetShowModal, objectiveClassName, tagsClassName, titleClassName, assigneesClassName, svgClassName }) => {
   return <>
-    <div class="objective" draggable="true" data-id={objective ? String(objective.id) : ''} data-order={objective ? String(objective.order) : undefined}>
+    <div {...idDataset.attr(objective ? String(objective.id) : '')} {...orderDataset.attr(objective ? String(objective.order) : undefined)} data-order={objective ? String(objective.order) : undefined} class={objectiveClassName.className} draggable="true">
       <div class="top-row">
-        <span class="title">{objective?.title ?? ''}</span>
-        <button {...datasetShowModal.attr(objective?.id)} type="button" class="svg">
+        <span class={titleClassName.className}>{objective?.title ?? ''}</span>
+        <button {...datasetShowModal.attr(objective?.id)} type="button" class={svgClassName.className}>
           <img src="/img/edit.svg" alt="Edit objective" />
         </button>
       </div>
       <div class="bottom-row" data-populated={Number(objective?.tags?.length) > 0 || Number(objective?.assignees?.length) > 0 ? 'true' : 'false'}>
-        <div class="tags">
+        <div class={tagsClassName.className}>
           {objective?.tags?.map((tag) => <>
-            <span class="tag" style={`background-color: ${tag.bgHex}; color: ${tag.fgHex};`}>
+            <span style={`background-color: ${tag.bgHex}; color: ${tag.fgHex};`}>
               {tag.value}
             </span>
           </>)}
         </div>
-        <div class="assignees">
+        <div class={assigneesClassName.className}>
           {objective?.assignees?.map((assignee) => <>
             <img
-              class="avatar"
               src={`https://r2.shastatrades.org/${assignee.imageId}.webp`}
               alt={`Assignee ${assignee.id}`}
             />
@@ -120,7 +155,6 @@ const style = css`
     margin-bottom: var(--space-huge);
   }
 
-  /* ===== KANBAN BOARD – SCROLL CONTAINER ===== */
   .kanban-board {
     display: flex;
     flex-wrap: nowrap;
@@ -169,7 +203,7 @@ const style = css`
             border-bottom-color: #6366f1;
           }
 
-          .count {
+          .column-count {
             color: #4f46e5;
             background-color: #e0e7ff;
           }
@@ -181,7 +215,7 @@ const style = css`
             border-bottom-color: #f59e0b;
           }
 
-          .count {
+          .column-count {
             color: #b45309;
             background-color: #fef3c7;
           }
@@ -193,7 +227,7 @@ const style = css`
             border-bottom-color: #10b981;
           }
 
-          .count {
+          .column-count {
             color: #047857;
             background-color: #d1fae5;
           }
@@ -215,7 +249,7 @@ const style = css`
             text-transform: uppercase;
           }
 
-          .count {
+          .column-count {
             font-size: 1.8rem;
             font-weight: 600;
             color: #64748b;
@@ -323,7 +357,7 @@ const style = css`
                 flex: 1;
                 justify-content: flex-start;
 
-                .tag {
+                span {
                   font-size: 1.4rem;
                   font-weight: 600;
                   padding: 0.45rem 0.9rem;
@@ -339,7 +373,7 @@ const style = css`
                 flex-shrink: 0;
                 transform: translateX(0.51rem);
 
-                .avatar {
+               img {
                   width: 3rem;
                   height: 3rem;
                   border-radius: 50%;
@@ -363,6 +397,19 @@ const style = css`
           flex-shrink: 0;
           pointer-events: none;
           transition: all 0.15s ease;
+          &.is-loading {
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: auto;
+            padding: 0.5rem;
+
+            img {
+              width: 2rem;
+              height: 2rem;
+            }
+          }
         }
       }
     }
