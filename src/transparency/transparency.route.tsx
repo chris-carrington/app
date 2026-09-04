@@ -11,6 +11,7 @@ import schema from '@src/transparency/schema.md?raw'
 import byLaws from '@src/transparency/bylaws.md?raw'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import trustDocument from '@src/transparency/trust-document.md?raw'
+import trustDocumentFaq from '@src/transparency/trust-document-faq.md?raw'
 import whistleblowerPolicy from '@src/transparency/whistleblower-policy.md?raw'
 import articlesOfIncorporation from '@src/transparency/articles-of-incorporation.md?raw'
 import conflictOfInterestPolicy from '@src/transparency/conflict-of-interest-policy.md?raw'
@@ -21,7 +22,7 @@ export default new Hono()
     const rpc = rpcBE<AppType>()
     const paramId = c.req.param('id') ?? documents[0].id
     const current = documents.find(b => b.id === paramId) ?? documents[0]
-    const html = await md2html(current.md, current.wrapTables)
+    const html = await getHtml(current)
 
     return c.render(
       <>
@@ -54,13 +55,20 @@ export default new Hono()
 
 
 const documents = [
-  { id: 'trust-document', title: 'Trust Document', md: trustDocument, wrapTables: false },
+  { id: 'trust-document', title: 'Trust Document', md: [trustDocumentFaq, trustDocument], wrapTables: false },
   { id: 'bylaws', title: 'Bylaws', md: byLaws, wrapTables: false },
   { id: 'articles-of-incorporation', title: 'Articles of Incorporation', md: articlesOfIncorporation, wrapTables: false },
   { id: 'conflict-of-interest-policy', title: 'Conflict of Interest Policy', md: conflictOfInterestPolicy, wrapTables: false },
   { id: 'whistleblower-policy', title: 'Whistleblower Policy', md: whistleblowerPolicy, wrapTables: false },
   { id: 'schema', title: 'Schema', md: schema, wrapTables: true },
 ]
+
+
+async function getHtml(doc: typeof documents[number]) {
+  return (Array.isArray(doc.md))
+    ? (await Promise.all(doc.md.map(async md => await md2html(md, doc.wrapTables)))).join('')
+    : await md2html(doc.md, doc.wrapTables)
+}
 
 
 const style = css`
