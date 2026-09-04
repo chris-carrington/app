@@ -28,5 +28,3 @@ export const kanbanColumns: typeof ObjectiveColumn.$inferSelect[] = [
   { id: 2, value: 'In Progress', isActive: true },
   { id: 3, value: 'Completed', isActive: true }
 ]
-
-export const serverErrorMessage = `An unexpected error happened, I'm sorry, please feel free to try again or contact us to help bring this error to our awareness`

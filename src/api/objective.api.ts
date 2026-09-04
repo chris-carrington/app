@@ -1,7 +1,6 @@
 // app/src/api/objective.api.ts
 
 import { Hono } from 'hono'
-import { serverErrorMessage } from '@src/lib/vars'
 import { vValidator } from '@hono/valibot-validator'
 import { mwSession } from '@src/middleware/mwSession'
 import { mwSessionPerson } from '@src/middleware/mwSessionPerson'
@@ -32,7 +31,7 @@ export default new Hono()
         })
       } catch (e) {
         console.error(e)
-        return c.json({ success: false, error: serverErrorMessage }, 500)
+        return c.json({ success: false }, 500)
       }
     })
   .put(
@@ -47,6 +46,6 @@ export default new Hono()
         return c.json({ success: true })
       } catch (e) {
         console.error(e)
-        return c.json({ success: false, error: serverErrorMessage }, 500)
+        return c.json({ success: false }, 500)
       }
     })

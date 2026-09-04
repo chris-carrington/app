@@ -2,8 +2,8 @@
 
 import { Hono } from 'hono'
 import { db, putPersonContact } from '@src/db'
-import { serverErrorMessage } from '@src/lib/vars'
 import { vValidator } from '@hono/valibot-validator'
+import { beApiError } from '@src/apiError/beApiError'
 import { joinNewsletterValidator } from '@src/validators/joinNewsletter.validator'
 
 
@@ -22,8 +22,7 @@ export default new Hono()
           })
         })
       } catch (e) {
-        console.error(e)
-        return c.json({ success: false, error: serverErrorMessage }, 500)
+        return beApiError(c, e)
       }
 
       return c.json({ success: true })

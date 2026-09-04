@@ -3,8 +3,8 @@
 import { showErrorToast } from '@hono-toast'
 import type { InferJson } from '@hono-rpc/fe'
 import { FormUtil, Loading } from '@hono-security'
-import { serverErrorMessage } from '@src/lib/vars'
 import { query, type FieldReturn } from '@hono-dom'
+import { feApiError } from '@src/apiError/feApiError'
 import { ObjectiveController } from '@src/objectives/ObjectiveController'
 import type { QueryObjectives, QueryObjective } from '@src/db/queryObjective'
 import { ObjectiveInUpShowModal } from '@src/objectives/ObjectiveInUpShowModal'
@@ -249,17 +249,15 @@ export class ObjectiveKanban {
       const response = await this.controller.rpc.api.objective.$put({
         json: { id: objectiveId, columnId: targetColumnId, order: newOrder }
       })
+
       const res = await response.json()
-      if ('error' in res) {
-        showErrorToast(res.error)
-        return
-      }
+
+      FormUtil.responseThrow(response, res)
 
       // On success, apply the move using explicit IDs
       this.#applyObjectiveMove(objectiveId, sourceColumnId, targetColumnId, insertionIndex, newOrder)
     } catch (error) {
-      console.error('❌ Drag and drop error:', error)
-      showErrorToast(serverErrorMessage)
+      feApiError(error)
     } finally {
       this.isDropInProgress = false
       this.#onDragEnd()
@@ -418,11 +416,10 @@ export class ObjectiveKanban {
       loading.start()
 
       objective = id
-        ? await this.#putObjectiveFromModal({...result, id})
-        : await this.#postObjectiveFromModal(result)
+        ? await this.#putObjectiveFromModal({...result, id}, form)
+        : await this.#postObjectiveFromModal(result, form)
     } catch (error) {
-      console.error('❌ Submission error:', error)
-      showErrorToast(serverErrorMessage)
+      form.catch(error, feApiError)
     } finally {
       loading.stop()
 
@@ -454,7 +451,7 @@ export class ObjectiveKanban {
 
 
 
-  async #putObjectiveFromModal(result: typeof formObjectiveValidator.$typeResult & {id: number}): Promise<null | QueryObjective> {
+  async #putObjectiveFromModal(result: typeof formObjectiveValidator.$typeResult & { id: number }, form: typeof formObjectiveValidator.$typeFormUtil) {
     if (!result.success) return null
 
     const json = { // with a put request we want a post json + the id of the objective that we want to put
@@ -462,47 +459,33 @@ export class ObjectiveKanban {
       ...this.#buildPostJson(result.data)
     }
 
-    const response = await this.controller.rpc.api.objective.$put({ json })
+    await form.rpc(this.controller.rpc.api.objective.$put, { json })
 
-    const res = await response.json()
-
-    if ('error' in res) {
-      showErrorToast(res.error)
-      return null
-    }
-
-    return this.#onInupFromModalSuccess(result.data, result.id, json)
+    return this.#onInupModalSuccess(result.data, result.id, json)
   }
 
 
 
-  async #postObjectiveFromModal(result: typeof formObjectiveValidator.$typeResult): Promise<null | QueryObjective> {
+  async #postObjectiveFromModal(result: typeof formObjectiveValidator.$typeResult, form: typeof formObjectiveValidator.$typeFormUtil) {
     if (!result.success) return null
 
     const json = this.#buildPostJson(result.data)
 
-    const response = await this.controller.rpc.api.objective.$post({ json })
-
-    const res = await response.json()
-
-    if ('error' in res) {
-      showErrorToast(res.error)
-      return null
-    }
+    const { res } = await form.rpc(this.controller.rpc.api.objective.$post, { json })
 
     if (!('objectiveId' in res)) {
       showErrorToast('Unexpected response')
       return null
     }
 
-    const objective = this.#onInupFromModalSuccess(result.data, res.objectiveId, json)
+    const objective = this.#onInupModalSuccess(result.data, res.objectiveId, json)
     this.kanbanData[json.columnId].unshift(objective)
     return objective
   }
 
 
 
-  #onInupFromModalSuccess(data: typeof formObjectiveValidator.data, id: number, json: InferJson<typeof this.controller.rpc.api.objective.$post>) {
+  #onInupModalSuccess(data: typeof formObjectiveValidator.data, id: number, json: InferJson<typeof this.controller.rpc.api.objective.$post>) {
     const objective: QueryObjective = {
       id,
       title: data.title,

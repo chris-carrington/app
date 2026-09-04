@@ -2,6 +2,7 @@
 
 import type { Validator } from './Validator'
 import type { ObjectSchema, InferOutput } from 'valibot'
+import type { ClientResponse, InferResponseType } from 'hono/client'
 
 
 export class FormUtil<T_Schema extends ObjectSchema<any, any>> {
@@ -15,6 +16,7 @@ export class FormUtil<T_Schema extends ObjectSchema<any, any>> {
   #textFields: (HTMLInputElement | HTMLTextAreaElement)[]
   #selectFields: HTMLSelectElement[]
   #checkboxGroups: Map<string, HTMLInputElement[]>
+
 
   constructor(el: HTMLFormElement, validator: Validator<T_Schema>) {
     this.#el = el
@@ -63,14 +65,98 @@ export class FormUtil<T_Schema extends ObjectSchema<any, any>> {
     return result
   }
 
+
   resetForm() {
     this.#el.reset()
     this.#resetErrors()
   }
 
+
+  /**
+   * - Calls a Hono RPC api
+   * - IF the `response` is not `ok` THEN we will throw an `Error` here and place the `res` (parsed json body) on the returned `Error.cause`
+   * @param method the `rpc` method
+   * @param args the `rpc` method's arguments
+   * @returns `{ response, res }`: `response` is the `Response` and `res` is the parsed `json`
+   */
+  async rpc<T_Method extends (args: any) => Promise<ClientResponse<any>>>(method: T_Method, args: Parameters<T_Method>[0]): Promise<{ response: ClientResponse<any>, res: InferResponseType<T_Method> }> {
+    const response = await method(args)
+    const res = (await response.json()) as InferResponseType<T_Method>
+    FormUtil.responseThrow(response, res)
+    return { response, res }
+  }
+
+
+  /**
+   * 1. Get the api response
+   * 2. JSON parse the api response
+   * 3. Pass both the `response` and the `res` (parsed json body) to `this.responseThrow()`
+   * 4. IF the `response` is not `ok` THEN we will throw an Error here and place the `res` on the `Error.cause`
+   * 5. @ `this.catch()` we will show valibot errors if they are found @ `Error.cause`
+   */
+  static responseThrow(response: ClientResponse<any>, res: unknown) {
+    if (!response.ok) {
+      
+      const error = new Error('Request failed'); // Throw an error with the full body so we can handle it in the catch
+      error.cause = res // attach the parsed body
+      throw error
+    }
+  }
+
+
+  /**
+   * @param error Error that is provided to `catch`
+   * @param onNotDisplayingValibotErrors Called anytime we do not show valibot errors
+   */
+  catch(error: unknown, onNotDisplayingValibotErrors: (error: unknown) => void): void {
+    if (!(error instanceof Error)) onNotDisplayingValibotErrors(error)
+    else if (!error.cause) onNotDisplayingValibotErrors(error)
+    else if (typeof error.cause !== 'object') onNotDisplayingValibotErrors(error)
+    else if (!('success' in error.cause)) onNotDisplayingValibotErrors(error)
+    else if (error.cause.success !== false) onNotDisplayingValibotErrors(error)
+    else this.#beResponseValidate(error.cause)
+  }
+
+
+  #beResponseValidate(res: unknown): { noIssues: boolean } {
+    if (typeof res !== 'object') return { noIssues: true }
+    if (!res) return { noIssues: false }
+    if (!('success' in res)) return { noIssues: false }
+    if (!('issues' in res)) return { noIssues: false }
+    if (!Array.isArray(res.issues)) return { noIssues: true }
+    if (!res.issues.length) return { noIssues: true }
+
+    const errors: Record<string, string> = {}
+
+    for (const issue of res.issues) {
+      // Set fieldName (path > key)
+      let fieldName: string | null = null
+
+      if (issue.path && issue.path.length > 0) {
+        const last = issue.path[issue.path.length - 1]
+
+        if (last && 'key' in last) {
+          fieldName = last.key as string;
+        }
+      }
+
+      // If we found a field name and there is a message, add it to the errors map
+      if (fieldName && issue.message) {
+        if (!errors[fieldName]) { // keep first error
+          errors[fieldName] = issue.message
+        }
+      }
+    }
+
+    this.#displayErrors(errors)
+    return { noIssues: false }
+  }
+
+
   #resetErrors() {
     this.#displayErrors({})
   }
+
 
   #displayErrors(errors: Record<string, string>) {
     // Clear all error messages and remove 'has-error' class from all fields
@@ -91,6 +177,7 @@ export class FormUtil<T_Schema extends ObjectSchema<any, any>> {
     }
   }
 
+
   #clearFieldError(name: string) {
     const errorEl = this.#el.querySelector<HTMLDivElement>(`div.error-message[data-field="${name}"]`)
 
@@ -104,6 +191,7 @@ export class FormUtil<T_Schema extends ObjectSchema<any, any>> {
       input.removeAttribute('aria-invalid')
     })
   }
+
 
   #validateCheckboxGroup(name: string) {
     const group = this.#checkboxGroups.get(name)
@@ -128,6 +216,7 @@ export class FormUtil<T_Schema extends ObjectSchema<any, any>> {
       this.#clearFieldError(name)
     }
   }
+
 
   #bindEventListeners() {
     // --- Text / textarea / email fields ---

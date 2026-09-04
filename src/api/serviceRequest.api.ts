@@ -1,8 +1,8 @@
 // app/src/api/serviceRequest.api.ts
 
 import { Hono } from 'hono'
-import { serverErrorMessage } from '@src/lib/vars'
 import { vValidator } from '@hono/valibot-validator'
+import { beApiError } from '@src/apiError/beApiError'
 import { serviceRequestValidator } from '@src/validators/serviceRequest.validator'
 import { db, putPersonContact, JobLead, Trade__JobLead, type Transaction } from '@src/db'
 
@@ -28,8 +28,7 @@ export default new Hono()
           )
         })
       } catch (e) {
-        console.error(e)
-        return c.json({ success: false, error: serverErrorMessage }, 500)
+        return beApiError(c, e)
       }
 
       return c.json({ success: true })
