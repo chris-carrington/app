@@ -5,6 +5,7 @@ import * as v from 'valibot'
 import { pipeSelect } from '@hono-security'
 import { getSession } from '@src/auth/getSession'
 import { vValidator } from '@hono/valibot-validator'
+import { beApiError } from '@src/apiError/beApiError'
 
 
 export default new Hono()
@@ -24,6 +25,6 @@ export default new Hono()
 
       return res.status === 200
         ? c.json(res.response)
-        : c.json({ error: res.message }, res.status)
+        : beApiError(c, res)
     }
   )

@@ -22,7 +22,7 @@ export default new Hono()
           })
         })
       } catch (e) {
-        return beApiError(c, e)
+        return beApiError(c, { caughtError: e })
       }
 
       return c.json({ success: true })

@@ -5,6 +5,7 @@ import { eq } from 'drizzle-orm'
 import { signIn } from '@src/auth/signIn'
 import { db, Person, Contact } from '@src/db'
 import { vValidator } from '@hono/valibot-validator'
+import { beApiError } from '@src/apiError/beApiError'
 import { signUpValidator } from '@src/validators/signUp.validator'
 
 
@@ -48,10 +49,9 @@ export default new Hono()
 
         return res.status === 200
           ? c.json({ success: true })
-          : c.json({ success: false, error: res.message }, res.status)
+          : beApiError(c, res)
       } catch (e) {
-        console.error(e)
-        return c.json({ success: false, error: 'An unexpected error happened' }, 500);
+        return beApiError(c, { caughtError: e })
       }
     }
   )

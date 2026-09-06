@@ -24,7 +24,7 @@ export default new Hono()
           await insertStaffLead(tx, data, personId)
         })
       } catch (e) {
-        return beApiError(c, e)
+        return beApiError(c, { caughtError: e })
       }
 
       return c.json({ success: true })

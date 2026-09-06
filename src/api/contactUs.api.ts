@@ -24,7 +24,7 @@ export default new Hono()
           await tx.insert(ContactUsMessage).values({ message: data.message, personId })
         })
       } catch (e) {
-        return beApiError(c, e)
+        return beApiError(c, { caughtError: e })
       }
 
       return c.json({ success: true })
