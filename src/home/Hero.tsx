@@ -106,6 +106,14 @@ const style = css`
           font-weight: 600;
           margin-bottom: var(--space);
 
+          @media (max-width: 540px) {
+            font-size: 5.4rem;
+          }
+
+          @media (max-width: 400px) {
+            font-size: 4.5rem;
+          }
+
           .top {
             color: var(--white);
           }
