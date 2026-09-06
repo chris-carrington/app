@@ -3,9 +3,9 @@
 import { Hono } from 'hono'
 import { rpcBE } from '@hono-rpc/be'
 import { css, Style } from 'hono/css'
-import type { AppType } from '@src/index'
 import { md2html } from '@src/md/md2html'
 import { mdStyle } from '@src/md/mdStyle'
+import type { AppType } from '@src/index'
 import { formStyle } from '@src/lib/formStyle'
 import schema from '@src/transparency/schema.md?raw'
 import byLaws from '@src/transparency/bylaws.md?raw'
@@ -48,6 +48,15 @@ export default new Hono()
           <div class="md">
             <div dangerouslySetInnerHTML={{ __html: html }}></div>
           </div>
+
+          {
+            current.download && <>
+              <div class="download">
+                <a href={'/pdf/' + current.download} download={current.download}  class="primary big">Download {current.title} as PDF</a>
+              </div>
+            </>
+          }
+
         </div>
       </>
     )
@@ -55,7 +64,7 @@ export default new Hono()
 
 
 const documents = [
-  { id: 'trust-document', title: 'Trust Document', md: [trustDocumentFaq, trustDocument], wrapTables: false },
+  { id: 'trust-document', title: 'Trust Document', md: [trustDocumentFaq, trustDocument], wrapTables: false, download: 'trust-document.pdf' },
   { id: 'bylaws', title: 'Bylaws', md: byLaws, wrapTables: false },
   { id: 'articles-of-incorporation', title: 'Articles of Incorporation', md: articlesOfIncorporation, wrapTables: false },
   { id: 'conflict-of-interest-policy', title: 'Conflict of Interest Policy', md: conflictOfInterestPolicy, wrapTables: false },
@@ -74,5 +83,12 @@ async function getHtml(doc: typeof documents[number]) {
 const style = css`
   .sub-page-hero .big {
     padding: var(--space-lite) 2.1rem;
+  }
+
+  .download {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--space);
   }
 `

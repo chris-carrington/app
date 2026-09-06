@@ -3,6 +3,11 @@
 import { marked, type Tokens } from 'marked'
 
 
+/**
+ * Receives a markdown string and gives back an html string
+ * @param md Markdown string
+ * @param wrapTables Optional, defaults to true, will this markdown have tables in it and if so should we wrap them to allow responsive hoizontal scrolling
+ */
 export async function md2html(md: string, wrapTables = true) {
   if (wrapTables) {
     marked.use({ // wrap table w/ .responsive div

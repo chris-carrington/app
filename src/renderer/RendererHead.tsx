@@ -1,41 +1,20 @@
-// app/src/renderer.tsx
+// app/src/renderer/RendererHead.tsx
 
-import Nav from '@src/nav/Nav'
-import Footer from '@src/lib/Footer'
+import type { FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
-import NavModal from '@src/nav/NavModal'
-import AuthModal from '@src/auth/AuthModal'
-import { honoToastStyle } from '@hono-toast'
-import { jsxRenderer } from 'hono/jsx-renderer'
-import { Script } from 'vite-ssr-components/hono'
-import { ViteClient } from 'vite-ssr-components/hono'
 
 
-export const renderer = jsxRenderer(({ children }) => <>
-  <html>
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="theme-color" content="#F9FBF9" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="preload" as="font" href="/fonts/proxima_nova_400.woff2" type="font/woff2" crossorigin="anonymous"></link>
-      <link rel="preload" as="font" href="/fonts/proxima_nova_500.woff2" type="font/woff2" crossorigin="anonymous"></link>
-      <link rel="preload" as="font" href="/fonts/proxima_nova_600.woff2" type="font/woff2" crossorigin="anonymous"></link>
-      <Style>{style}</Style>
-      <Style>{honoToastStyle}</Style>
-      <ViteClient />
-      <Script src='/src/lib/hono-directives-mount.ts' />
-    </head>
-
-    <body>
-      <Nav />
-      <main>{children}</main>
-      <Footer />
-
-      <NavModal />
-      <AuthModal />
-    </body>
-  </html>
-</>)
+export default (() => {
+  return <>
+    <meta charset="UTF-8" />
+    <meta name="theme-color" content="#F9FBF9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preload" as="font" href="/fonts/proxima_nova_400.woff2" type="font/woff2" crossorigin="anonymous"></link>
+    <link rel="preload" as="font" href="/fonts/proxima_nova_500.woff2" type="font/woff2" crossorigin="anonymous"></link>
+    <link rel="preload" as="font" href="/fonts/proxima_nova_600.woff2" type="font/woff2" crossorigin="anonymous"></link>
+    <Style>{style}</Style>
+  </>
+}) satisfies FC
 
 
 const style = css`
