@@ -26,7 +26,7 @@ export default (() => {
           </div>
           <div class="message">
             <div>Just loving! This is our primary focus. Loving our community, loving our elders and loving the next generation!</div>
-            <div>How? By transmuting non-profit grants into affordable, high-quality trade services (e.g., flooring, plumbing, roofing) for our lovely Mount Shasta community.</div>
+            <div>How? By giving our community high-quality trade services at a discount (e.g., flooring, plumbing, roofing), thanks to our non-profit donations!</div>
           </div>
           <div class="ctas">
             <a href="#service-request-scroll" class="orange big">SERVICE REQUEST</a>
