@@ -16,6 +16,7 @@ import trustDocumentFaq from '@src/transparency/trust-document-faq.md?raw'
 import whistleblowerPolicy from '@src/transparency/whistleblower-policy.md?raw'
 import articlesOfIncorporation from '@src/transparency/articles-of-incorporation.md?raw'
 import conflictOfInterestPolicy from '@src/transparency/conflict-of-interest-policy.md?raw'
+import articlesOfIncorporationFaq from '@src/transparency/articles-of-incorporation-faq.md?raw'
 
 
 export default new Hono()
@@ -51,7 +52,7 @@ export default new Hono()
           </div>
 
           {
-            (current.id === 'trust-document' || current.id === 'bylaws') && <>
+            Array.isArray(current.md) && <>
               <div class="download">
                 <a href={`https://github.com/chris-carrington/app/blob/main/src/transparency/${current.id}.md`} target="_blank" class="orange big">View on GitHub</a>
                 <a href={`/pdf/${current.id}.pdf`} download={`${current.id}.pdf`} class="primary big">Download {current.title} as PDF</a>
@@ -67,7 +68,7 @@ export default new Hono()
 const documents = [
   { id: 'trust-document', title: 'Trust Document', md: [trustDocumentFaq, trustDocument], wrapTables: false },
   { id: 'bylaws', title: 'Bylaws', md: [byLawsFaq, byLaws], wrapTables: false, download: 'bylaws.pdf' },
-  { id: 'articles-of-incorporation', title: 'Articles of Incorporation', md: articlesOfIncorporation, wrapTables: false },
+  { id: 'articles-of-incorporation', title: 'Articles of Incorporation', md: [articlesOfIncorporationFaq, articlesOfIncorporation], wrapTables: true },
   { id: 'conflict-of-interest-policy', title: 'Conflict of Interest Policy', md: conflictOfInterestPolicy, wrapTables: false },
   { id: 'whistleblower-policy', title: 'Whistleblower Policy', md: whistleblowerPolicy, wrapTables: false },
   { id: 'schema', title: 'Schema', md: schema, wrapTables: true },

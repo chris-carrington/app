@@ -6,14 +6,14 @@ import { md2html } from '@src/md/md2html'
 import { mdStyle } from '@src/md/mdStyle'
 import RendererHead from '@src/renderer/RendererHead'
 
-import bylaws from '@src/transparency/bylaws.md?raw'
-// import trustDocument from '@src/transparency/trust-document.md?raw'
+// import md from '@src/transparency/bylaws.md?raw'
+// import md from '@src/transparency/trust-document.md?raw'
+import md from '@src/transparency/articles-of-incorporation.md?raw'
 
 
 export default new Hono()
   .get('/', async (c) => {
-    const html = await md2html(bylaws, false)
-    // const html = await md2html(trustDocument, false)
+    const html = await md2html(md, false)
 
     return c.html(
       <>
