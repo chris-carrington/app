@@ -15,7 +15,7 @@
 
 **Section 2.2 Specific Purpose.** The specific purpose of this corporation is:
 
-> To provide affordable, high-quality trade services to our lovely Mount Shasta community, to offer mentors work they love, and to help the next generation become licensed contractors through paid apprenticeships.
+> To provide affordable, high-quality trade services to our lovely Mount Shasta community, to offer mentors work they love, and to help the next generation, become licensed contractors, through paid apprenticeships.
 
 **Section 2.3 501(c)(3) Purpose.** This corporation is organized and operated **exclusively** for charitable and educational purposes within the meaning of Section 501(c)(3) of the Internal Revenue Code of 1986, as amended.[reference:11][reference:12]
 

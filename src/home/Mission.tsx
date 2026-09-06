@@ -10,7 +10,7 @@ export default (() => {
 
     <div class="mission">
       <div class="key">OUR MISSION</div>
-      <div class="value">To provide affordable, high-quality trade services, to our lovely Mount Shasta community, to offer mentors work they love and to help the next generation become licensed contractors through paid apprenticeships. 💚</div>
+      <div class="value">To provide affordable, high-quality trade services, to our lovely Mount Shasta community, to offer mentors work they love and to help the next generation, become licensed contractors, through paid apprenticeships. 💚</div>
     </div>
   </>
 }) satisfies FC

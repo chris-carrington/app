@@ -32,7 +32,7 @@
 
 **4.1 Mission.** The Trust is organized exclusively for charitable, educational, and public benefit purposes within the meaning of Section 501(c)(3) of the Internal Revenue Code of 1986, as amended. The specific mission of the Trust (the "Mission") is:
 
-> To provide affordable, high-quality trade services, to offer mentors work they love and to help the next generation become licensed contractors through paid apprenticeships. 
+> To provide affordable, high-quality trade services, to offer mentors work they love and to help the next generation, become licensed contractors, through paid apprenticeships.
 
 **4.2 Public Benefit.** The Trust is created for the benefit of the public. The beneficiaries of this Trust are the members of the public who benefit from the Trust's charitable activities, including:
 

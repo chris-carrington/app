@@ -19,7 +19,7 @@
 
 **Section 2.2 Mission.** The specific mission of the Corporation is:
 
-> To provide affordable, high-quality trade services to our lovely Mount Shasta community, to offer mentors work they love, and to help the next generation become licensed contractors through paid apprenticeships.
+> To provide affordable, high-quality trade services to our lovely Mount Shasta community, to offer mentors work they love, and to help the next generation, become licensed contractors, through paid apprenticeships.
 
 **Section 2.3 Public Benefit.** The Corporation is organized for the benefit of the public. The beneficiaries of the Corporation include community members receiving trade services, mentors seeking meaningful work, and students pursuing careers as licensed contractors.
 
