@@ -9,6 +9,7 @@ import type { AppType } from '@src/index'
 import { formStyle } from '@src/lib/formStyle'
 import schema from '@src/transparency/schema.md?raw'
 import byLaws from '@src/transparency/bylaws.md?raw'
+import byLawsFaq from '@src/transparency/bylaws-faq.md?raw'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import trustDocument from '@src/transparency/trust-document.md?raw'
 import trustDocumentFaq from '@src/transparency/trust-document-faq.md?raw'
@@ -50,13 +51,13 @@ export default new Hono()
           </div>
 
           {
-            current.download && <>
+            (current.id === 'trust-document' || current.id === 'bylaws') && <>
               <div class="download">
-                <a href={'/pdf/' + current.download} download={current.download}  class="primary big">Download {current.title} as PDF</a>
+                <a href={`https://github.com/chris-carrington/app/blob/main/src/transparency/${current.id}.md`} target="_blank" class="orange big">View on GitHub</a>
+                <a href={`/pdf/${current.id}.pdf`} download={`${current.id}.pdf`} class="primary big">Download {current.title} as PDF</a>
               </div>
             </>
           }
-
         </div>
       </>
     )
@@ -64,8 +65,8 @@ export default new Hono()
 
 
 const documents = [
-  { id: 'trust-document', title: 'Trust Document', md: [trustDocumentFaq, trustDocument], wrapTables: false, download: 'trust-document.pdf' },
-  { id: 'bylaws', title: 'Bylaws', md: byLaws, wrapTables: false },
+  { id: 'trust-document', title: 'Trust Document', md: [trustDocumentFaq, trustDocument], wrapTables: false },
+  { id: 'bylaws', title: 'Bylaws', md: [byLawsFaq, byLaws], wrapTables: false, download: 'bylaws.pdf' },
   { id: 'articles-of-incorporation', title: 'Articles of Incorporation', md: articlesOfIncorporation, wrapTables: false },
   { id: 'conflict-of-interest-policy', title: 'Conflict of Interest Policy', md: conflictOfInterestPolicy, wrapTables: false },
   { id: 'whistleblower-policy', title: 'Whistleblower Policy', md: whistleblowerPolicy, wrapTables: false },
@@ -89,6 +90,7 @@ const style = css`
     width: 100%;
     display: flex;
     justify-content: center;
+    gap: var(--space);
     margin-bottom: var(--space);
   }
 `
