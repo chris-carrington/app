@@ -114,6 +114,8 @@ export class FormUtil<T_Schema extends ObjectSchema<any, any>> {
     else if (typeof error.cause !== 'object') onNotDisplayingValibotErrors(error)
     else if (!('success' in error.cause)) onNotDisplayingValibotErrors(error)
     else if (error.cause.success !== false) onNotDisplayingValibotErrors(error)
+    else if (!('issues' in error.cause)) onNotDisplayingValibotErrors(error)
+    else if (!Array.isArray(error.cause.issues)) onNotDisplayingValibotErrors(error)
     else this.#beResponseValidate(error.cause)
   }
 
