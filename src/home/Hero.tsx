@@ -18,13 +18,16 @@ export default (() => {
         <div class="left">
           <div class="badge">
             <div class="pulse"></div>
-            <div class="label">PRE-LAUNCH PHASE</div>
+            <div class="label" title="Once our Trust and Nonprofit have been approved by the State of California we will start offering trade services to our lovely Mount Shasta community">PRE-LAUNCH PHASE</div>
           </div>
           <div class="title">
-            <div class="top">Building Careers.</div>
-            <div class="bottom">Supporting Community.</div>
+            <div class="top">Loving Our</div>
+            <div class="bottom">Community!</div>
           </div>
-          <div class="message">We are currently in in the pre-launch phase (building this site, creating Shasta Trades Trust and creating Shasta Trades Nonprofit). We will start offering trade services once California has apporved our Trust and Nonprofit applications!</div>
+          <div class="message">
+            <div>Just loving! This is our primary focus. Loving our community, loving our elders and loving the next generation!</div>
+            <div>How? By transmuting non-profit grants into affordable, high-quality trade services (e.g., flooring, plumbing, roofing) for our lovely Mount Shasta community.</div>
+          </div>
           <div class="ctas">
             <a href="#service-request-scroll" class="orange big">SERVICE REQUEST</a>
             <a href="#join-leadership-scroll" class="transparent big">JOIN LEADERSHIP</a>
@@ -97,9 +100,9 @@ const style = css`
         }
 
         .title {
-          font-size: 4.5rem;
+          font-size: 7.2rem;
           font-family: var(--font-family-serif);
-          line-height: 1.32;
+          line-height: 1.11;
           font-weight: 600;
           margin-bottom: var(--space);
 
@@ -117,6 +120,10 @@ const style = css`
           font-size: 2.1rem;
           color: rgb(180 205 184);
           margin-bottom: var(--space);
+
+          div {
+            margin-bottom: var(--space-lite);
+          }
         }
 
         .ctas {

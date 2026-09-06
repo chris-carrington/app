@@ -107,6 +107,10 @@ const style = css`
     min-height: calc(100vh - 27rem);
   }
 
+  strong {
+    font-weight: 600;
+  }
+
   @font-face {
     font-family: ProximaNova;
     font-weight: 400;
