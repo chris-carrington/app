@@ -7,6 +7,7 @@ import { md2html } from '@src/md/md2html'
 import { mdStyle } from '@src/md/mdStyle'
 import type { AppType } from '@src/index'
 import { formStyle } from '@src/lib/formStyle'
+import svgDownload from '@src/svg/download.svg?raw'
 import schema from '@src/transparency/schema.md?raw'
 import byLaws from '@src/transparency/bylaws.md?raw'
 import byLawsFaq from '@src/transparency/bylaws-faq.md?raw'
@@ -17,6 +18,7 @@ import whistleblowerPolicy from '@src/transparency/whistleblower-policy.md?raw'
 import articlesOfIncorporation from '@src/transparency/articles-of-incorporation.md?raw'
 import conflictOfInterestPolicy from '@src/transparency/conflict-of-interest-policy.md?raw'
 import articlesOfIncorporationFaq from '@src/transparency/articles-of-incorporation-faq.md?raw'
+import conflictOfInterestPolicyFaq from '@src/transparency/conflict-of-interest-policy-faq.md?raw'
 
 
 export default new Hono()
@@ -55,7 +57,10 @@ export default new Hono()
             Array.isArray(current.md) && <>
               <div class="download">
                 <a href={`https://github.com/chris-carrington/app/blob/main/src/transparency/${current.id}.md`} target="_blank" class="orange big">View on GitHub</a>
-                <a href={`/pdf/${current.id}.pdf`} download={`${current.id}.pdf`} class="primary big">Download {current.title} as PDF</a>
+                <a href={`/pdf/${current.id}.pdf`} download={`${current.id}.pdf`} class="primary big">
+                  <span dangerouslySetInnerHTML={{ __html: svgDownload }} class="svg"></span>
+                  <span>Download {current.title} as PDF</span>
+                </a>
               </div>
             </>
           }
@@ -69,7 +74,7 @@ const documents = [
   { id: 'trust-document', title: 'Trust Document', md: [trustDocumentFaq, trustDocument], wrapTables: false },
   { id: 'bylaws', title: 'Bylaws', md: [byLawsFaq, byLaws], wrapTables: false, download: 'bylaws.pdf' },
   { id: 'articles-of-incorporation', title: 'Articles of Incorporation', md: [articlesOfIncorporationFaq, articlesOfIncorporation], wrapTables: true },
-  { id: 'conflict-of-interest-policy', title: 'Conflict of Interest Policy', md: conflictOfInterestPolicy, wrapTables: false },
+  { id: 'conflict-of-interest-policy', title: 'Conflict of Interest Policy', md: [conflictOfInterestPolicyFaq, conflictOfInterestPolicy], wrapTables: true },
   { id: 'whistleblower-policy', title: 'Whistleblower Policy', md: whistleblowerPolicy, wrapTables: false },
   { id: 'schema', title: 'Schema', md: schema, wrapTables: true },
 ]
@@ -93,5 +98,20 @@ const style = css`
     justify-content: center;
     gap: var(--space);
     margin-bottom: var(--space);
+
+    .primary {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lite);
+
+      .svg {
+        height: 2.4rem;
+
+        svg {
+          width: 2.4rem;
+          height: 2.4rem;
+        }
+      }
+    }
   }
 `

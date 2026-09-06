@@ -8,7 +8,8 @@ import RendererHead from '@src/renderer/RendererHead'
 
 // import md from '@src/transparency/bylaws.md?raw'
 // import md from '@src/transparency/trust-document.md?raw'
-import md from '@src/transparency/articles-of-incorporation.md?raw'
+// import md from '@src/transparency/articles-of-incorporation.md?raw'
+import md from '@src/transparency/conflict-of-interest-policy.md?raw'
 
 
 export default new Hono()
