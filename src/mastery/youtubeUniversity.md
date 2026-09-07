@@ -7,18 +7,32 @@
 
 
 <!--{"accordionStart":true}-->
-## ⚡️ Electricity: How to turn electricity into rotation?
+## ⚡️ Electricity: What is electricity?
 <!--{"accordionBody":true}-->
-- This <a href="https://www.youtube.com/watch?v=hZxD1hwntqY" target="_blank">Jeremy Fielding Video</a> explores the induction motor, a device he describes as one of the most widely used inventions in the world, which earned Nikola Tesla a place in the National Inventors Hall of Fame. Fielding constructs a simple model using an aluminum disc and magnets to visually demonstrate how a rotating magnetic field drags the conductor with it, creating rotary motion
-- This <a href="https://www.youtube.com/watch?v=CWulQ1ZSE3c" target="_blank">Jared Owen Video</a> provides a clear, 3D-animated explanation of how DC electric motors function by converting electrical energy into mechanical rotation
+- This <a href="https://www.youtube.com/watch?v=ru032Mfsfig" target="_blank">Into The Ordinary Video</a> is a fundamental explainer on the nature and mechanics of electricity
+- This <a href="https://www.youtube.com/watch?v=xr68GxkiWFM" target="_blank">Into The Ordinary Video</a> explains what an ampere (amp) is and how it functions as a unit of measurement for electric current
+- This <a href="https://www.youtube.com/watch?v=wmaobOy8r6I" target="_blank">Into The Ordinary Video</a> explains voltage, cathode, anode and how connecting batteries in series vs parallel alters the voltage 
+- This <a href="https://www.youtube.com/watch?v=h6l30kpyhK8" target="_blank">Into The Ordinary Video</a> explains electrical resistance as the opposition to the flow of electric current in a circuit. Just as voltage is the "push" that drives current, resistance is the "friction" that resists it.
 <!--{"accordionEnd":true}-->
 
 
 <!--{"accordionStart":true}-->
 ## ⚡️ Electricity: How to make a solar power system?
 <!--{"accordionBody":true}-->
+- This <a href="https://www.youtube.com/watch?v=M89LDaTzgmo" target="_blank">City Prepping Video</a> is an introductory, step-by-step guide on how to build a basic DIY solar power system for beginners. The host emphasizes that no special technical skills are required and provides a clear, high-level overview of the process and necessary components.
+- This <a href="https://www.youtube.com/watch?v=7uFalNd_-S8" target="_blank">Footprint Hero with Alex Beale Video</a> is a beginner-friendly, plug-and-play solar generator setup that costs Alex approximately $1,500. The system is designed for backup power during blackouts or as a first step toward energy independence.
 - This <a href="https://www.youtube.com/watch?v=tXHKtBk9IE0" target="_blank">Wilson Forest Lands Video</a> is a beginner-friendly guide to building a DIY solar power system, emphasizing that it is simple enough for anyone to set up. The creator demonstrates the assembly of a basic system by focusing on three essential components (panels, battery, controller).
 - This <a href="https://www.youtube.com/watch?v=dd7P1tdGyK4" target="_blank">Wilson Forest Lands Video</a> details how the creator successfully runs an off-grid solar power system year-round without the need for a generator, even during cloudy winter months
+- This <a href="https://www.youtube.com/watch?v=mSZ4ZthnLpA" target="_blank">Minute Man Solar Video</a> details how the creator achieved 100% off-grid energy independence for approximately $13,500, which is about one-eighth of the cost of a professional installation. The system is broken down into three main components: output (inverter), storage (batteries), and input (solar panels).
+- This <a href="https://www.youtube.com/watch?v=XaR4Uto2lXY" target="_blank">Solar Surge Video</a> presents a detailed head-to-head comparison between the Tesla Powerwall 3 and the EG4 PowerPro ESS, evaluating their performance for home solar and battery storage systems as of 2025.
+- This <a href="https://www.youtube.com/watch?v=IJmZ6MAQXWU" target="_blank">RICH SOLAR Video</a> provides a step-by-step guide on how to correctly expand a solar setup by adding parallel charge controllers.
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## ⚡️ Electricity: How to cool food without electricity?
+<!--{"accordionBody":true}-->
+- This <a href="https://www.youtube.com/watch?v=jEst__pgcv8" target="_blank">Sidney Explains Video</a> explains the Zeer pot technique, an ancient, cost-effective method of evaporative cooling that allows for food preservation without electricity or refrigeration.
 <!--{"accordionEnd":true}-->
 
 
@@ -70,6 +84,20 @@
 <!--{"accordionBody":true}-->
 - This <a href="https://www.youtube.com/watch?v=QyokX-BK7FQ" target="_blank">Stumpy Nubs Video</a> shows how to build a strong, self-aligning box, drawer, or cabinet using a locking rabbet joint and a hidden groove joint. This method is designed to simplify project assembly and ensure durability without the need for complex, visible stop cuts.
 - This <a href="https://www.youtube.com/watch?v=HQXHzvJNsoA" target="_blank">Stumpy Nubs Video</a> shows an efficient, fast, and simple method for constructing locking rabbet drawer boxes using a single table saw setup, which he refers to as the "half-half-half" drawer method.
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## 🌲 Carpentry: How to build a dresser?
+<!--{"accordionBody":true}-->
+- This <a href="https://www.youtube.com/watch?v=uuTxRI_yewA" target="_blank">Anika's DIY Life Video</a> is a beginner-friendly tutorial by Anika on how to build a 5-drawer dresser using only three essential power tools: a circular saw, a power drill, and a nail gun. The project focuses on utilizing plywood for the main body and drawers, making it an accessible build for newcomers to woodworking.
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## 🌲 Carpentry: How to safely use a skill saw?
+<!--{"accordionBody":true}-->
+- This <a href="https://www.youtube.com/watch?v=wDmwuRVfZh0" target="_blank">731 Woodworks Video</a> is a comprehensive guide for beginners on how to safely and effectively use a circular (skill) saw, emphasizing that 97% of accidents occur in DIY settings rather than professional job sites.
 <!--{"accordionEnd":true}-->
 
 
@@ -134,12 +162,35 @@
 ---
 
 
+<!--{"accordionStart":true}-->
+## 🧰 Flooring: How to install an earthen floor?
+<!--{"accordionBody":true}-->
+- This <a href="https://www.youtube.com/watch?v=KGtrQ4caas4" target="_blank">Radical Gastronomy Video</a> documents the installation of a simple, cost-effective earthen floor for a cottage addition. The process involves multiple layers and specific material mixes to ensure a stable, beautiful, and functional finish.
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## 🧰 Flooring: How to install vinyl plank floors?
+<!--{"accordionBody":true}-->
+- This <a href="https://www.youtube.com/watch?v=6KEthELQfro" target="_blank">Fix This Build That Video</a> is a comprehensive, beginner-friendly guide to installing vinyl plank flooring in a laundry room. The creator walks through the entire renovation process, emphasizing proper planning, tool selection, and execution techniques.
+- This <a href="https://www.youtube.com/watch?v=p_3y4a_Pzbs" target="_blank">Funny Carpenter Video</a> is a practical tutorial by The Funny Carpenter on how to properly install floating vinyl plank flooring. The guide emphasizes the mechanics of locking the planks together to ensure a clean, long-lasting installation.
+<!--{"accordionEnd":true}-->
+
+
+---
 
 
 <!--{"accordionStart":true}-->
 ## 🚪 Doors: How to install a door?
 <!--{"accordionBody":true}-->
 - This <a href="https://www.youtube.com/watch?v=za1xCbZIr2A" target="_blank">BAS Renovations Video</a> provides a comprehensive guide on how to achieve a strong and professional door installation. The core takeaway is that a strong installation depends on properly tying the door into the structural framing of the wall, rather than just the type of door used.
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## 🪴 Landscaping: How to lay sod?
+<!--{"accordionBody":true}-->
+- This <a href="https://www.youtube.com/watch?v=t9GHY-gQFho" target="_blank">Lowe's Home Improvement Video</a> provides a step-by-step guide on how to install sod to achieve a lush, healthy lawn. Replacing a patchy or struggling lawn with sod is presented as a faster alternative to seeding.
 <!--{"accordionEnd":true}-->
 
 
@@ -151,11 +202,11 @@
 
 
 <!--{"accordionStart":true}-->
-## 🪚 Flooring: How to install vinyl plank floors?
+## 🧰 Tools: How to move heavy stuff by yourself?
 <!--{"accordionBody":true}-->
-- This <a href="https://www.youtube.com/watch?v=Q4HOB4E-fJc" target="_blank">BAS Renovations Video</a> provides a step-by-step guide on how to properly install a window, focusing on flashing techniques to ensure a water-tight installation.
-- This <a href="https://www.youtube.com/watch?v=Q4HOB4E-fJc" target="_blank">Fix This Build That Video</a> is a beginner-friendly guide to installing vinyl plank flooring in a laundry room. The creator provides a step-by-step walkthrough, emphasizing planning, preparation, and the use of basic tools to achieve professional-looking results.
+- This <a href="https://www.youtube.com/watch?v=dh6eY4tkqqg" target="_blank">Essential Craftsman Video</a> provides a practical guide on how to utilize mechanical advantage to move heavy objects safely by yourself. The speaker emphasizes that understanding simple machines is essential for construction and general manual labor, allowing a single person to accomplish tasks that would normally require a team.
 <!--{"accordionEnd":true}-->
+
 
 
 <!--{"accordionStart":true}-->
