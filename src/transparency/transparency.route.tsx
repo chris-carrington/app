@@ -15,6 +15,7 @@ import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import trustDocument from '@src/transparency/trust-document.md?raw'
 import trustDocumentFaq from '@src/transparency/trust-document-faq.md?raw'
 import whistleblowerPolicy from '@src/transparency/whistleblower-policy.md?raw'
+import whistleblowerPolicyFaq from '@src/transparency/whistleblower-policy-faq.md?raw'
 import articlesOfIncorporation from '@src/transparency/articles-of-incorporation.md?raw'
 import conflictOfInterestPolicy from '@src/transparency/conflict-of-interest-policy.md?raw'
 import articlesOfIncorporationFaq from '@src/transparency/articles-of-incorporation-faq.md?raw'
@@ -54,7 +55,7 @@ export default new Hono()
           </div>
 
           {
-            Array.isArray(current.md) && <>
+            current.id !== 'schema' && <>
               <div class="download">
                 <a href={`https://github.com/chris-carrington/app/blob/main/src/transparency/${current.id}.md`} target="_blank" class="orange big">View on GitHub</a>
                 <a href={`/pdf/${current.id}.pdf`} download={`${current.id}.pdf`} class="primary big">
@@ -75,7 +76,7 @@ const documents = [
   { id: 'bylaws', title: 'Bylaws', md: [byLawsFaq, byLaws], wrapTables: false, download: 'bylaws.pdf' },
   { id: 'articles-of-incorporation', title: 'Articles of Incorporation', md: [articlesOfIncorporationFaq, articlesOfIncorporation], wrapTables: true },
   { id: 'conflict-of-interest-policy', title: 'Conflict of Interest Policy', md: [conflictOfInterestPolicyFaq, conflictOfInterestPolicy], wrapTables: true },
-  { id: 'whistleblower-policy', title: 'Whistleblower Policy', md: whistleblowerPolicy, wrapTables: false },
+  { id: 'whistleblower-policy', title: 'Whistleblower Policy', md: [whistleblowerPolicyFaq, whistleblowerPolicy], wrapTables: false },
   { id: 'schema', title: 'Schema', md: schema, wrapTables: true },
 ]
 

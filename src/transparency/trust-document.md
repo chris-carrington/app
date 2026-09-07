@@ -189,13 +189,14 @@
 **14.1 Execution.** This Declaration of Trust is executed by the Settlor and the Trustees as of the date first written above.
 
 ## SETTLOR:
-
-- Christopher Carrington
-    - Date: September 3, 2026
+- **Christopher Carrington:**
+    - Signature: ______________________________________
+    - Date: __________________________________________
 
 ## TRUSTEES:
-
-- Christopher Carrington
-    - Date: September 3, 2026
-- Megha Marhatta
-    - Date: September 3, 2026
+- **Christopher Carrington:**
+    - Signature: ______________________________________
+    - Date: __________________________________________
+- **Megha Marhatta:**
+    - Signature: ______________________________________
+    - Date: __________________________________________

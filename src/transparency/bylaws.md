@@ -191,7 +191,12 @@
 ---
 
 **IN WITNESS WHEREOF**, the undersigned, being the initial directors of the Corporation, have adopted these Bylaws.
-
-- **Christopher Carrington**, Director
-- **Megha Marhatta**, Director
-- **Cindi Joy Staller**, Director
+- **Christopher Carrington, Director:**
+    - Signature: ______________________________________
+    - Date: __________________________________________
+- **Megha Marhatta, Director:**
+    - Signature: ______________________________________
+    - Date: __________________________________________
+- **Cindi Joy Staller, Director:**
+    - Signature: ______________________________________
+    - Date: __________________________________________

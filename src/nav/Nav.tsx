@@ -21,12 +21,12 @@ export default (() => {
     <div class="nav">
       <div class="inner">
         <div class="left">
-          <a data-directive={onHomeClick()} href="/" class="logo">
-            <div class="img">
+          <div data-directive={onHomeClick()} href="/" class="logo">
+            <a href="/" class="img" title="Go to Home page">
               <img src="/img/logo.webp" />
-            </div>
-            <span>Shasta Trades</span>
-          </a>
+            </a>
+            <span title="Scroll to top of page">Shasta Trades</span>
+          </div>
 
           <div class="links">
             <a href={rpc['index'].$url().href} class={c.req.path === '/' ? 'active' : ''}>Home</a>
@@ -90,6 +90,10 @@ const style = css`
             img {
               width: 100%;
             }
+          }
+
+          span {
+            cursor: pointer;
           }
         }
 

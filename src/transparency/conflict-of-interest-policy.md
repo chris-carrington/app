@@ -223,12 +223,8 @@ I certify that:
 - (b) The information provided in this Annual Disclosure Statement is true, complete, and accurate as of the date below;
 - (c) I agree to comply with the Conflict of Interest Policy; and
 - (d) I will promptly disclose any changes to the information provided in this Annual Disclosure Statement.
-
-________________________________________________
-**Signature**
-
-________________________________________________
-**Date**
+- **Signature:** ___________________________________________
+- **Date:** _______________________________________________
 
 
 ---
@@ -250,19 +246,7 @@ I agree to:
 - (e) Report any known violations of the Conflict of Interest Policy.
 
 I understand that the Corporation is charitable and, in order to maintain its federal tax exemption, it must engage primarily in activities which accomplish one or more of its tax-exempt purposes[reference:50].
-
-**Name (Printed)**
-
----
-
-**Signature**
-
----
-
-**Title**
-
----
-
-**Date**
-
----
+- **Name (Printed):** _______________________________________
+- **Signature:** ___________________________________________
+- **Title:** _______________________________________________
+- **Date:** _______________________________________________
