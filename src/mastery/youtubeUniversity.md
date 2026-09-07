@@ -7,40 +7,25 @@
 
 
 <!--{"accordionStart":true}-->
-## 🚪 Doors: How to install a door?
+## ⚡️ Electricity: How to turn electricity into rotation?
 <!--{"accordionBody":true}-->
-- This <a href="https://www.youtube.com/watch?v=za1xCbZIr2A" target="_blank">BAS Renovations Video</a> provides a comprehensive guide on how to achieve a strong and professional door installation. The core takeaway is that a strong installation depends on properly tying the door into the structural framing of the wall, rather than just the type of door used.
+- This <a href="https://www.youtube.com/watch?v=hZxD1hwntqY" target="_blank">Jeremy Fielding Video</a> explores the induction motor, a device he describes as one of the most widely used inventions in the world, which earned Nikola Tesla a place in the National Inventors Hall of Fame. Fielding constructs a simple model using an aluminum disc and magnets to visually demonstrate how a rotating magnetic field drags the conductor with it, creating rotary motion
+- This <a href="https://www.youtube.com/watch?v=CWulQ1ZSE3c" target="_blank">Jared Owen Video</a> provides a clear, 3D-animated explanation of how DC electric motors function by converting electrical energy into mechanical rotation
 <!--{"accordionEnd":true}-->
 
 
----
-
-
 <!--{"accordionStart":true}-->
-## 🪟 Windows: How to install a window?
+## ⚡️ Electricity: How to make a solar power system?
 <!--{"accordionBody":true}-->
-- This <a href="https://www.youtube.com/watch?v=Q4HOB4E-fJc" target="_blank">BAS Renovations Video</a> provides a step-by-step guide on how to properly install a window, focusing on flashing techniques to ensure a water-tight installation.
+- This <a href="https://www.youtube.com/watch?v=tXHKtBk9IE0" target="_blank">Wilson Forest Lands Video</a> is a beginner-friendly guide to building a DIY solar power system, emphasizing that it is simple enough for anyone to set up. The creator demonstrates the assembly of a basic system by focusing on three essential components (panels, battery, controller).
+- This <a href="https://www.youtube.com/watch?v=dd7P1tdGyK4" target="_blank">Wilson Forest Lands Video</a> details how the creator successfully runs an off-grid solar power system year-round without the need for a generator, even during cloudy winter months
 <!--{"accordionEnd":true}-->
 
 
----
-
-
 <!--{"accordionStart":true}-->
-## 🪚 Flooring: How to install a vinyl plank floors?
+## ⚡️ Electricity: How to connect splice wires together?
 <!--{"accordionBody":true}-->
-- This <a href="https://www.youtube.com/watch?v=Q4HOB4E-fJc" target="_blank">BAS Renovations Video</a> provides a step-by-step guide on how to properly install a window, focusing on flashing techniques to ensure a water-tight installation.
-- This <a href="https://www.youtube.com/watch?v=Q4HOB4E-fJc" target="_blank">Fix This Build That Video</a> is a beginner-friendly guide to installing vinyl plank flooring in a laundry room. The creator provides a step-by-step walkthrough, emphasizing planning, preparation, and the use of basic tools to achieve professional-looking results.
-<!--{"accordionEnd":true}-->
-
-
----
-
-
-<!--{"accordionStart":true}-->
-## ⛩️ Fencing: How to install a vinyl or wood fence?
-<!--{"accordionBody":true}-->
-- This <a href="https://www.youtube.com/watch?v=qSNGtAtRpTc" target="_blank">BAS Renovations Video</a> provides a comprehensive guide on installing a durable vinyl or wood fence.
+- This <a href="https://www.youtube.com/watch?v=ihpNCVk1lF0" target="_blank">Word of Advice Video</a> provides a practical guide on 10 different methods for splicing or reconnecting electrical wires.
 <!--{"accordionEnd":true}-->
 
 
@@ -58,32 +43,6 @@
 ## 🪨 Concrete: How to repair concrete cracks?
 <!--{"accordionBody":true}-->
 - This <a href="https://www.youtube.com/watch?v=EKdJnN-Y_38" target="_blank">Michael Builds Video</a> is a practical, DIY guide for repairing concrete damage (cracks and voids). The video demonstrates how to achieve a professional, seamless finish.
-<!--{"accordionEnd":true}-->
-
-
----
-
-
-<!--{"accordionStart":true}-->
-## ⚡️ Electricity: How to turn electricity into rotation?
-<!--{"accordionBody":true}-->
-- This <a href="https://www.youtube.com/watch?v=hZxD1hwntqY" target="_blank">Jeremy Fielding Video</a> explores the induction motor, a device he describes as one of the most widely used inventions in the world, which earned Nikola Tesla a place in the National Inventors Hall of Fame. Fielding constructs a simple model using an aluminum disc and magnets to visually demonstrate how a rotating magnetic field drags the conductor with it, creating rotary motion
-- This <a href="https://www.youtube.com/watch?v=CWulQ1ZSE3c" target="_blank">Jared Owen Video</a> provides a clear, 3D-animated explanation of how DC electric motors function by converting electrical energy into mechanical rotation
-<!--{"accordionEnd":true}-->
-
-
-<!--{"accordionStart":true}-->
-## ⚡️ Electricity: How to make a solar power system?
-<!--{"accordionBody":true}-->
-- This <a href="https://www.youtube.com/watch?v=tXHKtBk9IE0" target="_blank">Wilson Forest Lands Video</a> is a beginner-friendly guide to building a DIY solar power system, emphasizing that it is simple enough for anyone to set up. The creator demonstrates the assembly of a basic system by focusing on three essential components (panels, battery, controller).
-- This <a href="https://www.youtube.com/watch?v=dd7P1tdGyK4" target="_blank">Wilson Forest Lands Video</a> details how the creator successfully runs an off-grid solar power system year-round without the need for a generator, even during cloudy winter months
-<!--{"accordionEnd":true}-->
-
-
-<!--{"accordionStart":true}-->
-## ⚡️ Electricity: How to connect slice wires together?
-<!--{"accordionBody":true}-->
-- This <a href="https://www.youtube.com/watch?v=ihpNCVk1lF0" target="_blank">Word of Advice Video</a> provides a practical guide on 10 different methods for splicing or reconnecting electrical wires.
 <!--{"accordionEnd":true}-->
 
 
@@ -169,4 +128,38 @@
 ## 🌲 Carpentry: Why should we not use furnisure polish on wooden surfaces?
 <!--{"accordionBody":true}-->
 - This <a href="https://www.youtube.com/watch?v=yog33yzzMN0" target="_blank">Workshop Companion Video</a> explains why repair experts advise against using commercial furniture polish on wooden surfaces, why paste wax is a better alternative and how to use it optimally. 
+<!--{"accordionEnd":true}-->
+
+
+---
+
+
+
+
+<!--{"accordionStart":true}-->
+## 🚪 Doors: How to install a door?
+<!--{"accordionBody":true}-->
+- This <a href="https://www.youtube.com/watch?v=za1xCbZIr2A" target="_blank">BAS Renovations Video</a> provides a comprehensive guide on how to achieve a strong and professional door installation. The core takeaway is that a strong installation depends on properly tying the door into the structural framing of the wall, rather than just the type of door used.
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## 🪟 Windows: How to install a window?
+<!--{"accordionBody":true}-->
+- This <a href="https://www.youtube.com/watch?v=Q4HOB4E-fJc" target="_blank">BAS Renovations Video</a> provides a step-by-step guide on how to properly install a window, focusing on flashing techniques to ensure a water-tight installation.
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## 🪚 Flooring: How to install vinyl plank floors?
+<!--{"accordionBody":true}-->
+- This <a href="https://www.youtube.com/watch?v=Q4HOB4E-fJc" target="_blank">BAS Renovations Video</a> provides a step-by-step guide on how to properly install a window, focusing on flashing techniques to ensure a water-tight installation.
+- This <a href="https://www.youtube.com/watch?v=Q4HOB4E-fJc" target="_blank">Fix This Build That Video</a> is a beginner-friendly guide to installing vinyl plank flooring in a laundry room. The creator provides a step-by-step walkthrough, emphasizing planning, preparation, and the use of basic tools to achieve professional-looking results.
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## ⛩️ Fencing: How to install a vinyl or wood fence?
+<!--{"accordionBody":true}-->
+- This <a href="https://www.youtube.com/watch?v=qSNGtAtRpTc" target="_blank">BAS Renovations Video</a> provides a comprehensive guide on installing a durable vinyl or wood fence.
 <!--{"accordionEnd":true}-->
