@@ -115,17 +115,17 @@
 
 ---
 
-**IN WITNESS WHEREOF**, the undersigned incorporator has executed these Articles of Incorporation on this 3rd day of September, 2026.
+**IN WITNESS WHEREOF**, the undersigned incorporator has executed these Articles of Incorporation on this 15th day of September, 2026.
 - **Christopher Carringtonr:**
-    - Signature: ______________________________________
-    - Date: __________________________________________
+    - Signature: <span class="signature">Christopher Carrington</span>_____________________
+    - Date: <u>09/15/2026</u>_________________________________
 
 **ACKNOWLEDGMENT AND CONSENT OF INITIAL DIRECTORS**
 
 The undersigned, being the persons named as initial directors in Article 5 of these Articles of Incorporation, hereby acknowledge and consent to serve as initial directors of the Corporation.
 - **Christopher Carringtonr:**
-    - Signature: ______________________________________
-    - Date: __________________________________________
+    - Signature: <span class="signature">Christopher Carrington</span>_____________________
+    - Date: <u>09/15/2026</u>_________________________________
 - **Megha Marhatta:**
     - Signature: ______________________________________
     - Date: __________________________________________

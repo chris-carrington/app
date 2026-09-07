@@ -1,6 +1,6 @@
 # DECLARATION OF TRUST OF THE SHASTA TRADES CHARITABLE TRUST
 
-**THIS DECLARATION OF TRUST** is made on this 3rd day of September, 2026, by **CHRISTOPHER CARRINGTON** (the "Settlor").
+**THIS DECLARATION OF TRUST** is made on this 15th day of September, 2026, by **CHRISTOPHER CARRINGTON** (the "Settlor").
 
 
 ## ARTICLE 1: NAME AND OFFICE
@@ -190,13 +190,13 @@
 
 ## SETTLOR:
 - **Christopher Carrington:**
-    - Signature: ______________________________________
-    - Date: __________________________________________
+    - Signature: <span class="signature">Christopher Carrington</span>_____________________
+    - Date: <u>09/15/2026</u>_________________________________
 
 ## TRUSTEES:
 - **Christopher Carrington:**
-    - Signature: ______________________________________
-    - Date: __________________________________________
+    - Signature: <span class="signature">Christopher Carrington</span>_____________________
+    - Date: <u>09/15/2026</u>_________________________________
 - **Megha Marhatta:**
     - Signature: ______________________________________
     - Date: __________________________________________

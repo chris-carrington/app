@@ -1,7 +1,7 @@
 # WHISTLEBLOWER POLICY
 ## SHASTA TRADES NONPROFIT
 
-**Adopted by the Board of Directors on this 3rd day of September, 2026**
+**Adopted by the Board of Directors on this 15th day of September, 2026**
 
 
 ## ARTICLE 1: INTRODUCTION AND PURPOSE
@@ -316,10 +316,15 @@ shall suffer harassment, retaliation, or adverse consequences as a result.
 ---
 
 **IN WITNESS WHEREOF**, the undersigned, being the Board of Directors of Shasta Trades Nonprofit, have adopted this Whistleblower Policy.
-- **Christopher Carrington, Director, Signature:** ______________________________________
-- **Megha Marhatta, Director, Signature:** ___________________________________________
-- **Cindi Joy Staller, Director, Signature:** ___________________________________________
-
+- **Christopher Carrington:**
+    - Signature: <span class="signature">Christopher Carrington</span>_____________________
+    - Date: <u>09/15/2026</u>_________________________________
+- **Megha Marhatta:**
+    - Signature: ______________________________________
+    - Date: __________________________________________
+- **Cindi Joy Staller:**
+    - Signature: ______________________________________
+    - Date: __________________________________________
 
 ---
 

@@ -1,7 +1,7 @@
 # BYLAWS OF SHASTA TRADES NONPROFIT
 ## A California Nonprofit Public Benefit Corporation
 
-**Adopted on this 6th day of September, 2026**
+**Adopted on this 15th day of September, 2026**
 
 
 ## ARTICLE 1: NAME AND OFFICES
@@ -192,8 +192,8 @@
 
 **IN WITNESS WHEREOF**, the undersigned, being the initial directors of the Corporation, have adopted these Bylaws.
 - **Christopher Carrington, Director:**
-    - Signature: ______________________________________
-    - Date: __________________________________________
+    - Signature: <span class="signature">Christopher Carrington</span>_____________________
+    - Date: <u>09/15/2026</u>_________________________________
 - **Megha Marhatta, Director:**
     - Signature: ______________________________________
     - Date: __________________________________________

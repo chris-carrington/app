@@ -1,7 +1,7 @@
 # CONFLICT OF INTEREST POLICY
 ## SHASTA TRADES NONPROFIT
 
-**Adopted on this 3rd day of September, 2026**
+**Adopted on this 15th day of September, 2026**
 
 
 ## ARTICLE 1: PURPOSE

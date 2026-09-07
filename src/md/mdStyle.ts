@@ -91,5 +91,10 @@ export const mdStyle = css`
         }
       }
     }
+
+    .signature {
+      font-family: cursive;
+      text-decoration: underline;
+    }
   }
 `
