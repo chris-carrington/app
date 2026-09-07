@@ -5,6 +5,7 @@ import { Style } from 'hono/css'
 import { md2html } from '@src/md/md2html'
 import { mdStyle } from '@src/md/mdStyle'
 import { formStyle } from '@src/lib/formStyle'
+import { mdAccordion } from '@hono-directives'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import mdStudyGuide2025 from '@src/mastery/studyGuide2025.md?raw'
 import mdYoutubeUniversity from '@src/mastery/youtubeUniversity.md?raw'
@@ -14,7 +15,7 @@ export default new Hono()
   .get('/:id?', async (c) => {
     const paramId = c.req.param('id') ?? documents[0].id
     const current = documents.find(b => b.id === paramId) ?? documents[0]
-    const html = await md2html(current.md, current.wrapTables)
+    const html = await md2html(current.md, current)
 
     return c.render(
       <>
@@ -23,7 +24,7 @@ export default new Hono()
         <Style>{formStyle}</Style>
         <Style>{subPageHeroStyle}</Style>
 
-        <div class="mastery">
+        <div class="mastery" data-directive={mdAccordion()}>
           <div class="sub-page-hero">
             <div class="bg"></div>
             <div class="header">
@@ -46,6 +47,6 @@ export default new Hono()
 
 
 const documents = [
-  { id: 'youtube-university', title: 'Youtube University', md: mdYoutubeUniversity, wrapTables: false },
-  { id: '2025-class-b-study-guide', title: '2025 Class B Study Guide', md: mdStudyGuide2025, wrapTables: false },
+  { id: 'youtube-university', title: 'Youtube University', md: mdYoutubeUniversity, wrapTables: false, enableAccordion: true },
+  { id: '2025-class-b-study-guide', title: '2025 Class B Study Guide', md: mdStudyGuide2025, wrapTables: false, enableAccordion: false },
 ]

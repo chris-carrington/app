@@ -48,6 +48,11 @@ export const mdStyle = css`
       }
     }
 
+    .signature {
+      font-family: cursive;
+      text-decoration: underline;
+    }
+
     .responsive {
       width: 100%;
       overflow-x: auto;
@@ -92,9 +97,68 @@ export const mdStyle = css`
       }
     }
 
-    .signature {
-      font-family: cursive;
-      text-decoration: underline;
+    .accordion-item {
+      margin-bottom: var(--space-lite);
+
+      .accordion-header {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 0.5rem 0;
+        user-select: none;
+        transition: var(--transition-fast);
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.02);
+        }
+      }
+
+      .accordion-chevron {
+        flex-shrink: 0;
+        width: 2.4rem;
+        height: 2.4rem;
+        margin-right: calc(var(--space-lite) / 2);
+        transition: var(--transition);
+      }
+
+      &.open .accordion-chevron {
+        transform: rotate(90deg);
+      }
+
+      .accordion-title {
+        flex: 1; 
+
+        /* reset heading margins inside the title */
+        h1,
+        h2,
+        h3 {
+          display: flex;
+          align-items: center;
+          gap: 0.45rem;
+          margin: 0;
+          font-size: 2.4rem; /* optionally keep heading hierarchy */
+
+          svg {
+            width: 2.4rem;
+            height: 2.4rem;
+          }
+        }
+      }
+
+      .accordion-body {
+        overflow: hidden;
+        transition: var(--transition);
+        height: 0; /* will be set by JavaScript */
+
+        /* ensure no extra spacing */
+        > *:first-child {
+          margin-top: 0;
+        }
+
+        > *:last-child {
+          margin-bottom: 0;
+        }
+      }
     }
   }
 `
