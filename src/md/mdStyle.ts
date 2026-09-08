@@ -43,8 +43,12 @@ export const mdStyle = css`
       color: var(--orange);
       text-decoration: none;
       transition: var(--transition-fast);
-      &:hover {
+      &:hover,
+      &.active {
         text-decoration: underline;
+      }
+      &.active {
+        font-weight: 500;
       }
     }
 

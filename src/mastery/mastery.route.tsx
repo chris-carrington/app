@@ -5,9 +5,9 @@ import { Style } from 'hono/css'
 import { md2html } from '@src/md/md2html'
 import { mdStyle } from '@src/md/mdStyle'
 import { formStyle } from '@src/lib/formStyle'
-import { mdAccordion } from '@hono-directives'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
-import mdStudyGuide2025 from '@src/mastery/studyGuide2025.md?raw'
+import { mdAccordion, onStudyGuideLoad } from '@hono-directives'
+import mdStudyGuide2025Faq from '@src/mastery/studyGuide2025Faq.md?raw'
 import mdYoutubeUniversity from '@src/mastery/youtubeUniversity.md?raw'
 
 
@@ -17,6 +17,15 @@ export default new Hono()
     const current = documents.find(b => b.id === paramId) ?? documents[0]
     const html = await md2html(current.md, current)
 
+    let subHtml = ''
+
+    if (current.id === '2025-class-b-study-guide') {
+      const subQuery = c.req.query('sub') ?? ''
+      const subValidQuery = studyGuideSubs.has(subQuery) ? subQuery : 'acronyms'
+      const mdSub = await import(`./studyGuide2025_${subValidQuery}.md?raw`)
+      subHtml = await md2html(mdSub.default, current)
+    }
+    
     return c.render(
       <>
         <title>Shasta Trades · Mastery · {current.title}</title>
@@ -37,8 +46,9 @@ export default new Hono()
             </div>
           </div>
 
-          <div class="md">
+          <div class="md" data-directive={onStudyGuideLoad()}>
             <div dangerouslySetInnerHTML={{ __html: html }}></div>
+            { subHtml && <div dangerouslySetInnerHTML={{ __html: subHtml }}></div> }
           </div>
         </div>
       </>
@@ -48,5 +58,11 @@ export default new Hono()
 
 const documents = [
   { id: 'youtube-university', title: 'Youtube University', md: mdYoutubeUniversity, wrapTables: false, enableAccordion: true },
-  { id: '2025-class-b-study-guide', title: '2025 Class B Study Guide', md: mdStudyGuide2025, wrapTables: false, enableAccordion: false },
+  { id: '2025-class-b-study-guide', title: '2025 Class B Study Guide', md: mdStudyGuide2025Faq, wrapTables: false, enableAccordion: true },
 ]
+
+const studyGuideSubs = new Set([
+  'acronyms',
+  'random',
+  'occupancy_classification',
+])
