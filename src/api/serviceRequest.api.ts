@@ -1,8 +1,7 @@
 // app/src/api/serviceRequest.api.ts
 
 import { Hono } from 'hono'
-import { vValidator } from '@hono/valibot-validator'
-import { beApiError } from '@src/apiError/beApiError'
+import { validator, onError, onSuccess } from '@hono-api/be'
 import { serviceRequestValidator } from '@src/validators/serviceRequest.validator'
 import { db, putPersonContact, JobLead, Trade__JobLead, type Transaction } from '@src/db'
 
@@ -10,7 +9,7 @@ import { db, putPersonContact, JobLead, Trade__JobLead, type Transaction } from 
 export default new Hono()
   .post(
     '/',
-    vValidator('json', serviceRequestValidator.schema),
+    validator('json', serviceRequestValidator.schema),
     async (c) => {
       const data = c.req.valid('json')
 
@@ -28,10 +27,10 @@ export default new Hono()
           )
         })
       } catch (e) {
-        return beApiError(c, { caughtError: e })
+        return onError(c, { e })
       }
 
-      return c.json({ success: true })
+      return onSuccess(c)
     }
   )
 

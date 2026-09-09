@@ -3,13 +3,13 @@
 
 import type { FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
-import { Field } from '@hono-security'
+import { Field } from '@hono-form'
 import { modalStyle } from '@hono-modal'
 import { mdStyle } from '@src/md/mdStyle'
 import svgClose from '@src/svg/close.svg?raw'
 import { kanbanColumns } from '@src/lib/vars'
 import { onModalToggle, onMarkdownChecked } from '@hono-directives'
-import { fieldObjectiveInUpColumnId, fieldObjectiveInUpTitle, fieldObjectiveInUpDescription, fieldObjectiveInUpAssigneeIds, fieldObjectiveInUpTagIds, idObjectiveInUpModal, idObjectiveInUpModalSubmit, idObjectiveInUpModalTitle, idObjectiveInUpModalMd, idObjectiveInUpModalMdToggle, idObjectiveInUpForm } from '@src/lib/dom'
+import { fieldObjectiveInUpColumnId, fieldObjectiveInUpTitle, fieldObjectiveInUpDescription, fieldObjectiveInUpAssigneeIds, fieldObjectiveInUpTagIds, idObjectiveInUpModal, idObjectiveInUpModalSubmit, idObjectiveInUpModalTitle, idObjectiveInUpModalMd, idObjectiveInUpModalMdToggle, idObjectiveInUpForm, idObjectiveInUpModalDelete } from '@src/lib/dom'
 
 
 export default (() => {
@@ -55,10 +55,14 @@ export default (() => {
 
           <Field {...fieldObjectiveInUpTagIds().attr()} label="Tags" options={[]} />
 
-          <button id={idObjectiveInUpModalSubmit().id} class="primary wide" type="submit">Create Objective</button>
+          <div class="buttons">
+            <button id={idObjectiveInUpModalDelete().id} data-directive={onModalToggle('modal-confirm')} class="danger" type="button">Delete</button>
+            <button id={idObjectiveInUpModalSubmit().id} class="primary" type="submit">Create Objective</button>
+          </div>
         </form>
       </div>
     </div>
+
   </>
 }) satisfies FC
 
@@ -169,6 +173,13 @@ const style = css`
             }
           }
         }
+      }
+
+      .buttons {
+        width: 100%;
+        display: flex;
+        gap: var(--space-lite);
+        justify-content: end;
       }
     }
   }

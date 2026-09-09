@@ -3,7 +3,7 @@
 
 import { Hono } from 'hono'
 import { Style } from 'hono/css'
-import { rpcBE } from '@hono-rpc/be'
+import { createRPC } from '@hono-api/be'
 import type { AppType } from '@src/index'
 import { getSession } from '@src/auth/getSession'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
@@ -13,7 +13,7 @@ export default new Hono()
   .get('/', async (c) => {
     const res = await getSession(c, 'include-person-and-contact')
 
-    const redirect: string = rpcBE<AppType>()['sign-in'].$url().href
+    const redirect: string = createRPC<AppType>()['sign-in'].$url().href
 
     return res.status === 401
       ? c.redirect(redirect)

@@ -3,7 +3,7 @@
 import { query, type FieldReturn } from '@hono-dom'
 import { QueryObjective } from '@src/db/queryObjective'
 import { ObjectiveController } from '@src/objectives/ObjectiveController'
-import { datasetId, idObjectiveInUpModalTitle, idObjectiveInUpModalSubmit, fieldObjectiveInUpTitle, fieldObjectiveInUpColumnId, fieldObjectiveInUpDescription, fieldObjectiveInUpAssigneeIds, fieldObjectiveInUpTagIds, datasetObjectiveInUpShowModal, idObjectiveInUpModalMdToggle, idObjectiveInUpModalMd } from '@src/lib/dom'
+import { idObjectiveInUpModalTitle, idObjectiveInUpModalSubmit, fieldObjectiveInUpTitle, fieldObjectiveInUpColumnId, fieldObjectiveInUpDescription, fieldObjectiveInUpAssigneeIds, fieldObjectiveInUpTagIds, datasetObjectiveInUpShowModal, idObjectiveInUpModalMdToggle, idObjectiveInUpModalMd, idObjectiveInUpModalDelete } from '@src/lib/dom'
 
 
 
@@ -13,6 +13,7 @@ export class ObjectiveInUpShowModal {
   selectColumn: HTMLInputElement
   spanModalTitle: HTMLSpanElement
   buttonSubmit: HTMLButtonElement
+  buttonDelete: HTMLButtonElement
   inputMdToggle: HTMLInputElement
   fieldsetTags: HTMLFieldSetElement
   controller: ObjectiveController
@@ -23,18 +24,18 @@ export class ObjectiveInUpShowModal {
   errorMessages: NodeListOf<HTMLDivElement>
   assigneeCheckboxes: HTMLInputElement[] = []
   fieldAssignees = fieldObjectiveInUpAssigneeIds()
-  showModalButtons: NodeListOf<HTMLButtonElement>
   objective: QueryObjective | undefined = undefined
   datasetShowModal = datasetObjectiveInUpShowModal()
+  showModalButtons = query<HTMLButtonElement>(this.datasetShowModal.query()).many()
   imgEdit = ObjectiveInUpShowModal.#getImg('/img/edit.svg', 'Edit objective')
   imgLoading = ObjectiveInUpShowModal.#getImg('/img/loading.svg', 'Edit objective modal loading')
 
 
   constructor(controller: ObjectiveController) {
     this.controller = controller
-    this.showModalButtons = query<HTMLButtonElement>(this.datasetShowModal.query()).many()
     this.spanModalTitle = query<HTMLSpanElement>(idObjectiveInUpModalTitle().query).root(this.controller.elModal).one()
     this.buttonSubmit = query<HTMLButtonElement>(idObjectiveInUpModalSubmit().query).root(this.controller.elModal).one()
+    this.buttonDelete = query<HTMLButtonElement>(idObjectiveInUpModalDelete().query).root(this.controller.elModal).one()
     this.inputTitle = query<HTMLInputElement>(fieldObjectiveInUpTitle().query).root(this.controller.elModal).one()
     this.inputMdToggle = query<HTMLInputElement>(idObjectiveInUpModalMdToggle().query).root(this.controller.elModal).one()
     this.textareaDescription = query<HTMLTextAreaElement>(fieldObjectiveInUpDescription().query).root(this.controller.elModal).one()
@@ -167,10 +168,12 @@ export class ObjectiveInUpShowModal {
     this.tagCheckboxes?.forEach(checkbox => checkbox.checked = false)
     this.assigneeCheckboxes?.forEach(checkbox => checkbox.checked = false)
 
-    this.controller.elModal.dataset[datasetId().camel] = ''
+    this.controller.elModal.dataset[this.controller.idDataset.camel] = ''
 
     this.#resetErrors()
-    this.#setTitleText('Create Objective')
+    this.buttonSubmit.classList.add('wide')
+    this.buttonDelete.style.display = 'none'
+    this.#setTitleAndSubmit('Create Objective', 'Create')
 
     this.controller.elModal.classList.remove('hidden')
 
@@ -187,10 +190,12 @@ export class ObjectiveInUpShowModal {
     this.selectColumn.value = String(this.objective.columnId)
     this.inputMdToggle.checked = false
     this.inputMdToggle.dispatchEvent(new Event('change', { bubbles: true }))
-    this.controller.elModal.dataset[datasetId().camel] = String(this.objective.id)
+    this.controller.elModal.dataset[this.controller.idDataset.camel] = String(this.objective.id)
 
     this.#resetErrors()
-    this.#setTitleText('Edit Objective')
+    this.buttonSubmit.classList.remove('wide')
+    this.buttonDelete.style.display = 'block'
+    this.#setTitleAndSubmit('Edit Objective', 'Edit')
     ObjectiveInUpShowModal.#setCheckboxes(this.objective.tags, this.tagCheckboxes)
     ObjectiveInUpShowModal.#setCheckboxes(this.objective.assignees, this.assigneeCheckboxes)
 
@@ -218,8 +223,9 @@ export class ObjectiveInUpShowModal {
 
 
 
-  #setTitleText(title: string) {
-    this.spanModalTitle.innerText = this.buttonSubmit.innerText = title
+  #setTitleAndSubmit(title: string, submitText: string) {
+    this.spanModalTitle.innerText = title
+    this.buttonSubmit.innerText = submitText
   }
 
 

@@ -1,8 +1,7 @@
 // app/src/api/joinLeadership.api.ts
 
 import { Hono } from 'hono'
-import { vValidator } from '@hono/valibot-validator'
-import { beApiError } from '@src/apiError/beApiError'
+import { validator, onError, onSuccess } from '@hono-api/be'
 import { db, putPersonContact, StaffLead, type Transaction } from '@src/db'
 import { joinLeadershipValidator } from '@src/validators/joinLeadership.validator'
 
@@ -10,7 +9,7 @@ import { joinLeadershipValidator } from '@src/validators/joinLeadership.validato
 export default new Hono()
   .post(
     '/',
-    vValidator('json', joinLeadershipValidator.schema),
+    validator('json', joinLeadershipValidator.schema),
     async (c) => {
       const data = c.req.valid('json')
 
@@ -24,10 +23,10 @@ export default new Hono()
           await insertStaffLead(tx, data, personId)
         })
       } catch (e) {
-        return beApiError(c, { caughtError: e })
+        return onError(c, { e })
       }
 
-      return c.json({ success: true })
+      return onSuccess(c)
     }
   )
 

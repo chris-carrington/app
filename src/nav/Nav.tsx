@@ -1,8 +1,8 @@
 // app/src/nav/Nav.tsx
 
 import type { FC } from 'hono/jsx'
-import { rpcBE } from '@hono-rpc/be'
 import { css, Style } from 'hono/css'
+import { createRPC } from '@hono-api/be'
 import type { AppType } from '@src/index'
 import svgMenu from '@src/svg/menu.svg?raw'
 import svgPerson from '@src/svg/person.svg?raw'
@@ -12,8 +12,8 @@ import { onHomeClick, onNavModalToggle } from '@hono-directives'
 
 
 export default (() => {
-  const rpc = rpcBE<AppType>()
   const c = useRequestContext()
+  const rpc = createRPC<AppType>()
 
   return <>
     <Style>{style}</Style>

@@ -1,6 +1,6 @@
 // app/npm/hono-dom/field.ts
 
-import { FieldProps } from '@hono-security'
+import { FieldProps } from '@hono-form'
 
 
 export function field<T_Type extends FieldProps['type']>(type: T_Type, name: string, prefix: string): FieldReturn<T_Type> {

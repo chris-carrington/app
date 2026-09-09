@@ -1,7 +1,7 @@
 // app/src/validators/signUp.validator.ts
 
 import * as v from 'valibot'
-import { pipeEmail, pipeEnoughContent, Validator } from '@hono-security'
+import { pipeEmail, pipeEnoughContent, Validator } from '@hono-form'
 
 
 export const signUpValidator = new Validator(

@@ -7,7 +7,7 @@ export const honoToastStyle = css`
   #hono-toast-wrapper {
     pointer-events: none;
     position: fixed;
-    z-index: var(--z-modal);
+    z-index: calc(var(--z-modal) + 3); /** above confirm modal */
     inset: 0;
     top: 0;
     overflow: hidden; /** prevent scrollbar for offscreen toasts sliding in */

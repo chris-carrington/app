@@ -2,29 +2,27 @@
 
 import { Hono } from 'hono'
 import * as v from 'valibot'
-import { pipeSelect } from '@hono-security'
+import { pipeSelect } from '@hono-form'
 import { getSession } from '@src/auth/getSession'
-import { vValidator } from '@hono/valibot-validator'
-import { beApiError } from '@src/apiError/beApiError'
+import { validator, onError, onSuccess } from '@hono-api/be'
 
 
 export default new Hono()
   .get(
     '/:variant?',
-    vValidator('param', v.object({
-        variant: pipeSelect({
-          optional: true,
-          values: ['just-session', 'include-person', 'include-person-and-contact'],
-          errorMissing: 'Please select a variant',
-          errorInvalid: 'Please select a valid variant',
-        })
-      }),
+    validator('param', v.object({
+      variant: pipeSelect({
+        optional: true,
+        values: ['just-session', 'include-person', 'include-person-and-contact'],
+        errorInvalid: 'Please select a valid variant',
+      })
+    }),
     ),
     async (c) => {
       const res = await getSession(c, c.req.valid('param').variant)
 
       return res.status === 200
-        ? c.json(res.response)
-        : beApiError(c, res)
+        ? onSuccess(c, { data: res.response })
+        : onError(c, res)
     }
   )

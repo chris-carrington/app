@@ -1,7 +1,7 @@
 // app/src/lib/vars.ts
 
 import type { ObjectiveColumn } from '@src/db'
-import { msMinute, msWeek, secWeek, type HashCreateProps } from '@hono-security'
+import { msMinute, msWeek, secWeek, type HashCreateProps } from '@hono-form'
 
 
 export const sessionCookieName = 'session'

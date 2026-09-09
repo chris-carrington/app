@@ -2,7 +2,7 @@
 
 import * as v from 'valibot'
 import { jsonTrades } from '@src/json/trades.json'
-import { pipeEmail, pipeArray, pipeEnoughContent, Validator } from '@hono-security'
+import { pipeEmail, pipeArray, pipeEnoughContent, Validator } from '@hono-form'
 
 
 export const serviceRequestValidator = new Validator(

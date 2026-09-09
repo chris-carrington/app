@@ -1,15 +1,14 @@
 // app/src/auth/onSignInSubmit.directive.ts
 
-import { rpcFE } from '@hono-rpc/fe'
 import { showToast } from '@hono-toast'
 import type { AppType } from '@src/index'
-import { FormUtil, Loading } from '@hono-security'
-import { feApiError } from '@src/apiError/feApiError'
+import { createRPC, onError } from '@hono-api/fe'
+import { FormUtil, Loading } from '@hono-form'
 import { signInValidator } from '@src/validators/signIn.validator'
 
 
 export default (el: HTMLFormElement) => {
-  const rpc = rpcFE<AppType>()
+  const rpc = createRPC<AppType>()
   const form = new FormUtil(el, signInValidator)
 
   el.addEventListener('submit', async (e) => {
@@ -32,7 +31,7 @@ export default (el: HTMLFormElement) => {
       
       showToast({ value: 'Success! Please click the "Sign In" button w/in your email inbox/spam folder w/in the next 9 minutes!', variant: 'success', ms: Infinity })
     } catch (error) {
-      form.catch(error, feApiError)
+      form.catch(error, onError)
     } finally {
       loading.stop()
     }

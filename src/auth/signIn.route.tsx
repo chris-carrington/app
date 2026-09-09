@@ -2,9 +2,9 @@
 
 import { Hono } from 'hono'
 import { Style } from 'hono/css'
-import { rpcBE } from '@hono-rpc/be'
 import { authStyle } from '@src/auth'
-import { Field } from '@hono-security'
+import { Field } from '@hono-form'
+import { createRPC } from '@hono-api/be'
 import type { AppType } from '@src/index'
 import { formStyle } from '@src/lib/formStyle'
 import { onSignInSubmit } from '@hono-directives'
@@ -12,7 +12,7 @@ import { onSignInSubmit } from '@hono-directives'
 
 export default new Hono()
   .get('/', (c) => {
-    const rpc = rpcBE<AppType>()
+    const rpc = createRPC<AppType>()
 
     return c.render(
       <>

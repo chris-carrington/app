@@ -1,8 +1,8 @@
 // app/src/lib/Footer.tsx
 
 import type { FC } from 'hono/jsx'
-import { rpcBE } from '@hono-rpc/be'
 import { css, Style } from 'hono/css'
+import { createRPC } from '@hono-api/be'
 import type { AppType } from '@src/index'
 import svgTikTok from '@src/svg/tikTok.svg?raw'
 import svgYoutube from '@src/svg/youtube.svg?raw'
@@ -11,7 +11,7 @@ import svgInstagram from '@src/svg/instagram.svg?raw'
 
 
 export default (() => {
-  const rpc = rpcBE<AppType>()
+  const rpc = createRPC<AppType>()
 
   return <>
     <Style>{style}</Style>

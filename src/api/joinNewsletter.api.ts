@@ -2,15 +2,14 @@
 
 import { Hono } from 'hono'
 import { db, putPersonContact } from '@src/db'
-import { vValidator } from '@hono/valibot-validator'
-import { beApiError } from '@src/apiError/beApiError'
+import { validator, onError, onSuccess } from '@hono-api/be'
 import { joinNewsletterValidator } from '@src/validators/joinNewsletter.validator'
 
 
 export default new Hono()
   .post(
     '/',
-    vValidator('json', joinNewsletterValidator.schema),
+    validator('json', joinNewsletterValidator.schema),
     async (c) => {
       const data = c.req.valid('json')
 
@@ -22,9 +21,9 @@ export default new Hono()
           })
         })
       } catch (e) {
-        return beApiError(c, { caughtError: e })
+        return onError(c, { e })
       }
 
-      return c.json({ success: true })
+      return onSuccess(c)
     }
   )

@@ -1,8 +1,8 @@
 // app/src/lib/transparency.route.tsx
 
 import { Hono } from 'hono'
-import { rpcBE } from '@hono-rpc/be'
 import { css, Style } from 'hono/css'
+import { createRPC } from '@hono-api/be'
 import { md2html } from '@src/md/md2html'
 import { mdStyle } from '@src/md/mdStyle'
 import type { AppType } from '@src/index'
@@ -24,7 +24,7 @@ import conflictOfInterestPolicyFaq from '@src/transparency/conflict-of-interest-
 
 export default new Hono()
   .get('/:id?', async (c) => {
-    const rpc = rpcBE<AppType>()
+    const rpc = createRPC<AppType>()
     const paramId = c.req.param('id') ?? documents[0].id
     const current = documents.find(b => b.id === paramId) ?? documents[0]
     const html = await getHtml(current)
@@ -83,8 +83,8 @@ const documents = [
 
 async function getHtml(doc: typeof documents[number]) {
   return (Array.isArray(doc.md))
-    ? (await Promise.all(doc.md.map(async md => await md2html(md, doc.wrapTables)))).join('')
-    : await md2html(doc.md, doc.wrapTables)
+    ? (await Promise.all(doc.md.map(async md => await md2html(md, doc)))).join('')
+    : await md2html(doc.md, doc)
 }
 
 

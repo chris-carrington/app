@@ -2,7 +2,7 @@
 
 import { Style } from 'hono/css'
 import type { FC } from 'hono/jsx'
-import { rpcBE } from '@hono-rpc/be'
+import { createRPC } from '@hono-api/be'
 import { modalStyle } from '@hono-modal'
 import type { AppType } from '@src/index'
 import svgClose from '@src/svg/close.svg?raw'
@@ -11,7 +11,7 @@ import { datasetAuth, idNavModal } from '@src/lib/dom'
 
 
 export default (() => {
-  const rpc = rpcBE<AppType>()
+  const rpc = createRPC<AppType>()
   const authDataset = datasetAuth()
   const navModalId = idNavModal().id
 

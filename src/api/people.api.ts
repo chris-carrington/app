@@ -2,9 +2,11 @@
 
 import { Hono } from 'hono'
 import { queryPeople } from '@src/db'
+import { onSuccess } from '@hono-api/be'
 
 
 export default new Hono()
   .get('/', async (c) => {
-    return c.json(await queryPeople())
+    const people = await queryPeople()
+    return onSuccess(c, { data: {people} })
   })

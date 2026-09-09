@@ -2,7 +2,7 @@
 
 import * as v from 'valibot'
 import { jsonStaff } from '@src/json/staff.json'
-import { pipeEmail, pipeSelect, pipeEnoughContent, Validator } from '@hono-security'
+import { pipeEmail, pipeSelect, pipeEnoughContent, Validator } from '@hono-form'
 
 
 export const joinLeadershipValidator = new Validator(

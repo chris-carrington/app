@@ -1,8 +1,7 @@
 // app/src/api/contactUs.api.ts
 
 import { Hono } from 'hono'
-import { vValidator } from '@hono/valibot-validator'
-import { beApiError } from '@src/apiError/beApiError'
+import { validator, onError, onSuccess } from '@hono-api/be'
 import { db, putPersonContact, ContactUsMessage } from '@src/db'
 import { contactUsValidator } from '@src/validators/contactUs.validator'
 
@@ -10,7 +9,7 @@ import { contactUsValidator } from '@src/validators/contactUs.validator'
 export default new Hono()
   .post(
     '/',
-    vValidator('json', contactUsValidator.schema),
+    validator('json', contactUsValidator.schema),
     async (c) => {
       const data = c.req.valid('json')
 
@@ -24,9 +23,9 @@ export default new Hono()
           await tx.insert(ContactUsMessage).values({ message: data.message, personId })
         })
       } catch (e) {
-        return beApiError(c, { caughtError: e })
+        return onError(c, { e })
       }
 
-      return c.json({ success: true })
+      return onSuccess(c)
     }
   )

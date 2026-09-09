@@ -1,10 +1,10 @@
 // app/src/objectives/ObjectiveKanban.ts
 
+import { onError } from '@hono-api/fe'
 import { showErrorToast } from '@hono-toast'
-import type { InferJson } from '@hono-rpc/fe'
-import { FormUtil, Loading } from '@hono-security'
+import type { InferJson } from '@hono-api/fe'
+import { FormUtil, Loading } from '@hono-form'
 import { query, type FieldReturn } from '@hono-dom'
-import { feApiError } from '@src/apiError/feApiError'
 import { ObjectiveController } from '@src/objectives/ObjectiveController'
 import type { QueryObjectives, QueryObjective } from '@src/db/queryObjective'
 import { ObjectiveInUpShowModal } from '@src/objectives/ObjectiveInUpShowModal'
@@ -16,7 +16,6 @@ import { classNameAssignees, classNameColumn, classNameColumnCount, classNameIsB
 export class ObjectiveKanban {
   el: HTMLDivElement
   columns: HTMLElement[]
-  idDataset = datasetId()
   isDropInProgress = false
   kanbanData: QueryObjectives
   orderDataset = datasetOrder()
@@ -81,7 +80,7 @@ export class ObjectiveKanban {
     const card = aim.closest<HTMLDivElement>(this.objectiveClassName.query)
     if (!card) return
 
-    const objectiveId = Number(card.dataset[this.idDataset.camel])
+    const objectiveId = Number(card.dataset[this.controller.idDataset.camel])
     const sourceColumnElement = card.closest<HTMLElement>(this.columnClassName.query)
     const currentObjectiveSourceColumnId = Number(sourceColumnElement?.dataset.columnId)
 
@@ -257,7 +256,7 @@ export class ObjectiveKanban {
       // On success, apply the move using explicit IDs
       this.#applyObjectiveMove(objectiveId, sourceColumnId, targetColumnId, insertionIndex, newOrder)
     } catch (error) {
-      feApiError(error)
+      onError(error)
     } finally {
       this.isDropInProgress = false
       this.#onDragEnd()
@@ -291,7 +290,7 @@ export class ObjectiveKanban {
     this.kanbanData[targetColumnId].splice(insertionIndex, 0, objective)
 
     // update DOM
-    const card = this.el.querySelector<HTMLDivElement>(this.objectiveClassName.query + this.idDataset.query(objectiveId))
+    const card = query<HTMLDivElement>(this.objectiveClassName.query + this.controller.idDataset.query(objectiveId)).root(this.el).one()
     const columnSection = this.columns[targetColumnId - 1]
     const objectivesContainer = columnSection?.querySelector<HTMLDivElement>(this.objectivesClassName.query)
 
@@ -331,7 +330,7 @@ export class ObjectiveKanban {
   #determineInsertionIndexFromMousePosition(elColumn: HTMLDivElement, clientY: number, draggedObjectiveId: number): number {
     const allObjectiveCards: HTMLDivElement[] = this.#findAllObjectiveCardElementsInColumn(elColumn)
     const visibleObjectiveCards: HTMLDivElement[] = allObjectiveCards.filter(
-      (card: HTMLDivElement) => card.dataset[this.idDataset.camel] !== String(draggedObjectiveId)
+      (card: HTMLDivElement) => card.dataset[this.controller.idDataset.camel] !== String(draggedObjectiveId)
     )
 
     for (let i: number = 0; i < visibleObjectiveCards.length; i++) {
@@ -406,7 +405,7 @@ export class ObjectiveKanban {
 
     if (!result.success) return
 
-    const idStr = this.controller.elModal.dataset[this.idDataset.camel]
+    const idStr = this.controller.elModal.dataset[this.controller.idDataset.camel]
     const id = idStr ? Number(idStr) : null
 
     let objective = null
@@ -419,7 +418,7 @@ export class ObjectiveKanban {
         ? await this.#putObjectiveFromModal({...result, id}, form)
         : await this.#postObjectiveFromModal(result, form)
     } catch (error) {
-      form.catch(error, feApiError)
+      form.catch(error, onError)
     } finally {
       loading.stop()
 
@@ -497,7 +496,7 @@ export class ObjectiveKanban {
       assignees: this.controller.assignees.filter(person => json.assigneeIds.includes(person.id)),
     }
 
-    const existingCard = this.el.querySelector<HTMLDivElement>(this.objectiveClassName.query + this.idDataset.query(id))
+    const existingCard = this.el.querySelector<HTMLDivElement>(this.objectiveClassName.query + this.controller.idDataset.query(id))
 
     if (existingCard) {
       // Update existing card in place
@@ -636,7 +635,7 @@ export class ObjectiveKanban {
 
 
   #populateObjectiveCard(card: HTMLDivElement, objective: QueryObjective) {
-    card.dataset[this.idDataset.camel] = String(objective.id)
+    card.dataset[this.controller.idDataset.camel] = String(objective.id)
     card.dataset[this.orderDataset.camel] = String(objective.order)
 
     query<HTMLSpanElement>(this.titleClassName.query).root(card).one().textContent = objective.title

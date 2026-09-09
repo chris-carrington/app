@@ -1,12 +1,12 @@
 // app/src/auth/signIn.ts
 
 import { eq } from 'drizzle-orm'
-import { rpcBE } from '@hono-rpc/be'
+import { createRPC } from '@hono-api/be'
 import type { AppType } from '@src/index'
 import { sendEmail, renderEmail } from '@hono-email'
 import { db, Person, Contact, MagicToken } from '@src/db'
 import emailTemplate from '@src/emails/magicLink.html?raw'
-import { createPassword, hashCreate } from '@hono-security'
+import { createPassword, hashCreate } from '@hono-form'
 import { emailFrom, magicTokenMaxAge, magicLinkTokenHashCreateProps } from '@src/lib/vars'
 
 
@@ -33,7 +33,7 @@ export async function signIn(email: string): Promise<SignInResult> {
         expiresAt: new Date(Date.now() + magicTokenMaxAge)
       })
 
-    const magicLink = rpcBE<AppType>()['magic-link'][':token']
+    const magicLink = createRPC<AppType>()['magic-link'][':token']
       .$url({ param: {token} })
       .href
 

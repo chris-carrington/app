@@ -4,17 +4,17 @@ import { Hono } from 'hono'
 import { eq, and } from 'drizzle-orm'
 import { css, Style } from 'hono/css'
 import type { AppType } from '@src/index'
-import { hashCreate } from '@hono-security'
+import { hashCreate } from '@hono-form'
 import type { JSX } from 'hono/jsx/jsx-runtime'
-import { rpcBE, type InferRpc } from '@hono-rpc/be'
 import { setSessionCookie } from './setSessionCookie'
+import { createRPC, type InferRpc } from '@hono-api/be'
 import { db, Person, Contact, MagicToken, Session } from '@src/db'
 import { msSessionMaxAge, magicLinkTokenHashCreateProps } from '@src/lib/vars'
 
 
 export default new Hono()
   .get('/:token', async (c) => {
-    const rpc = rpcBE<AppType>()
+    const rpc = createRPC<AppType>()
 
     const tokenHash = await hashCreate({ password: c.req.param('token'), ...magicLinkTokenHashCreateProps })
 

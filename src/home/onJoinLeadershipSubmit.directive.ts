@@ -1,15 +1,14 @@
 // app/src/joinLeadership/joinLeadership.directive.ts
 
-import { rpcFE } from '@hono-rpc/fe'
 import { showToast } from '@hono-toast'
 import type { AppType } from '@src/index'
-import { Loading, FormUtil } from '@hono-security'
-import { feApiError } from '@src/apiError/feApiError'
+import { onError, createRPC } from '@hono-api/fe'
+import { Loading, FormUtil } from '@hono-form'
 import { joinLeadershipValidator } from '@src/validators/joinLeadership.validator'
 
 
 export default (el: HTMLFormElement) => {
-  const rpc = rpcFE<AppType>()
+  const rpc = createRPC<AppType>()
   const form = new FormUtil(el, joinLeadershipValidator)
 
   el.addEventListener('submit', async (e) => {
@@ -32,7 +31,7 @@ export default (el: HTMLFormElement) => {
 
       showToast({ value: 'Success!', variant: 'success' })
     } catch (error) {
-      form.catch(error, feApiError)
+      form.catch(error, onError)
     } finally {
       loading.stop()
     }

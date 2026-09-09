@@ -2,9 +2,11 @@
 
 import { Hono } from 'hono'
 import { queryTags } from '@src/db'
+import { onSuccess } from '@hono-api/be'
 
 
 export default new Hono()
   .get('/', async (c) => {
-    return c.json(await queryTags())
+    const tags = await queryTags()
+    return onSuccess(c, { data: {tags} })
   })

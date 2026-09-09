@@ -12,8 +12,8 @@ export const idObjectiveInUpModal = () => id('objective-in-up-modal')
 export const idObjectiveInUpModalMd = () => id('objective-in-up-modal-md')
 export const idObjectiveInUpModalTitle = () => id('objective-in-up-modal-title')
 export const idObjectiveInUpModalSubmit = () => id('objective-in-up-modal-submit')
+export const idObjectiveInUpModalDelete = () => id('objective-in-up-modal-delete')
 export const idObjectiveInUpModalMdToggle = () => id('objective-in-up-modal-md-toggle')
-
 
 // field
 export const fieldObjectiveInUpTitle = () => field('text', 'title', 'objective-in-up')

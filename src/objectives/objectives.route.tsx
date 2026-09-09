@@ -3,6 +3,7 @@
 import { Hono } from 'hono'
 import type { FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
+import { ModalConfirm } from '@hono-modal'
 import { kanbanColumns } from '@src/lib/vars'
 import { formStyle } from '@src/lib/formStyle'
 import { onObjectivesPageLoad } from '@hono-directives'
@@ -83,6 +84,7 @@ export default new Hono()
         </div>
 
         <ObjectiveInUp />
+        <ModalConfirm message="Are you sure you'd love to delete this objective?" />
 
         <template id="objective-template">
           <ObjectiveCard

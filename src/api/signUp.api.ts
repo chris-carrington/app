@@ -4,15 +4,14 @@ import { Hono } from 'hono'
 import { eq } from 'drizzle-orm'
 import { signIn } from '@src/auth/signIn'
 import { db, Person, Contact } from '@src/db'
-import { vValidator } from '@hono/valibot-validator'
-import { beApiError } from '@src/apiError/beApiError'
+import { validator, onError, onSuccess } from '@hono-api/be'
 import { signUpValidator } from '@src/validators/signUp.validator'
 
 
 export default new Hono()
   .post(
     '/',
-    vValidator('json', signUpValidator.schema),
+    validator('json', signUpValidator.schema),
     async (c) => {
       const data = c.req.valid('json')
 
@@ -48,10 +47,10 @@ export default new Hono()
         const res = await signIn(data.email)
 
         return res.status === 200
-          ? c.json({ success: true })
-          : beApiError(c, res)
+          ? onSuccess(c)
+          : onError(c, res)
       } catch (e) {
-        return beApiError(c, { caughtError: e })
+        return onError(c, { e })
       }
     }
   )

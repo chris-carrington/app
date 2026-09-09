@@ -42,7 +42,7 @@ export const mdStyle = css`
     a {
       color: var(--orange);
       text-decoration: none;
-      transition: var(--transition-fast);
+      transition: var(--fast-transition);
       &:hover,
       &.active {
         text-decoration: underline;
@@ -110,7 +110,7 @@ export const mdStyle = css`
         cursor: pointer;
         padding: 0.5rem 0;
         user-select: none;
-        transition: var(--transition-fast);
+        transition: var(--fast-transition);
 
         &:hover {
           background-color: rgba(0, 0, 0, 0.02);

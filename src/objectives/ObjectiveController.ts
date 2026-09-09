@@ -1,16 +1,17 @@
 // app/src/objectives/ObjectiveController.ts
 
 import { query } from '@hono-dom'
-import { rpcFE } from '@hono-rpc/fe'
 import { AppType } from '@src/index'
-import { idObjectiveInUpModal } from '@src/lib/dom'
+import { createRPC } from '@hono-api/fe'
 import type { QueryTags, QueryPeople } from '@src/db'
 import { QueryObjective } from '@src/db/queryObjective'
+import { datasetId, idObjectiveInUpModal } from '@src/lib/dom'
 
 
 export class ObjectiveController {
   tags: QueryTags = []
-  rpc = rpcFE<AppType>()
+  rpc = createRPC<AppType>()
+  idDataset = datasetId()
   assignees: QueryPeople = []
   elModal = query<HTMLDivElement>(idObjectiveInUpModal().query).one()
 
@@ -21,10 +22,10 @@ export class ObjectiveController {
       objectiveId ? this.rpc.api.objective[':id'].$get({ param: { id: String(objectiveId) } }) : null,
     ])
 
-    if (resAssignees) this.assignees = await resAssignees.json()
+    if (resTags) this.tags = (await resTags.json()).tags
 
-    if (resTags) this.tags = await resTags.json()
+    if (resAssignees) this.assignees = (await resAssignees.json()).people
 
-    if (resObjective) return await resObjective.json()
+    if (resObjective) return (await resObjective.json()).objective
   }
 }

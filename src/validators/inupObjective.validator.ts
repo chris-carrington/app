@@ -1,7 +1,7 @@
 // app/src/validators/inupObjective.validator.ts
 
 import * as v from 'valibot'
-import { pipeEnoughContent, Validator } from '@hono-security'
+import { pipeEnoughContent, Validator } from '@hono-form'
 
 
 export const formObjectiveValidator = new Validator(

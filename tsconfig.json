@@ -27,11 +27,14 @@
       "@src/*": [
         "./src/*"
       ],
-      "@hono-rpc/fe": [
-        "./npm/hono-rpc/rpcFE"
+      "@hono-events": [
+        "./npm/hono-events/index"
       ],
-      "@hono-rpc/be": [
-        "./npm/hono-rpc/rpcBE"
+      "@hono-api/fe": [
+        "./npm/hono-api/fe/index"
+      ],
+      "@hono-api/be": [
+        "./npm/hono-api/be/index"
       ],
       "@hono-dom": [
         "./npm/hono-dom/index"
@@ -42,8 +45,8 @@
       "@hono-directives": [
         "./npm/hono-directives/dist/index"
       ],
-      "@hono-security": [
-        "./npm/hono-security/index"
+      "@hono-form": [
+        "./npm/hono-form/index"
       ],
       "@hono-email": [
         "./npm/hono-email/index"

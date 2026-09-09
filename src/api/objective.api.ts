@@ -1,10 +1,11 @@
 // app/src/api/objective.api.ts
 
 import { Hono } from 'hono'
-import { vValidator } from '@hono/valibot-validator'
+import { eq } from 'drizzle-orm'
 import { mwSession } from '@src/middleware/mwSession'
+import { validator, onError, onSuccess } from '@hono-api/be'
 import { mwSessionPerson } from '@src/middleware/mwSessionPerson'
-import { db, insertObjective, queryObjective, updateObjective } from '@src/db'
+import { db, insertObjective, queryObjective, updateObjective, Objective } from '@src/db'
 import { updateObjectiveValidator, insertObjectiveValidator } from '@src/validators/inupObjective.validator'
 
 
@@ -14,38 +15,47 @@ export default new Hono()
     async (c) => {
       const paramId = Number(c.req.param('id'))
       const objective = await queryObjective(paramId)
-      return c.json(objective)
+      return onSuccess(c, { data: {objective} })
     })
   .post(
     '/',
-    vValidator('json', insertObjectiveValidator.schema),
+    validator('json', insertObjectiveValidator.schema),
     mwSessionPerson,
     async (c) => {
       const person = c.get('person')
       const data = c.req.valid('json')
 
       try {
-        return c.json({
-          success: true,
-          objectiveId: await db.transaction(tx => insertObjective(tx, { ...data, createdBy: person.id }))
-        })
+        const objectiveId = await db.transaction(tx => insertObjective(tx, { ...data, createdBy: person.id }))
+        return onSuccess(c, { data: {objectiveId} })
       } catch (e) {
-        console.error(e)
-        return c.json({ success: false }, 500)
+        return onError(c, { e })
       }
     })
   .put(
     '/',
-    vValidator('json', updateObjectiveValidator.schema),
+    validator('json', updateObjectiveValidator.schema),
     mwSession,
     async (c) => {
       const data = c.req.valid('json')
 
       try {
         await db.transaction(tx => updateObjective(tx, data))
-        return c.json({ success: true })
+        return onSuccess(c)
       } catch (e) {
-        console.error(e)
-        return c.json({ success: false }, 500)
+        return onError(c, { e })
+      }
+    })
+  .delete(
+    '/:id',
+    mwSession,
+    async (c) => {
+      const paramId = Number(c.req.param('id'))
+
+      try {
+        await db.delete(Objective).where(eq(Objective.id, paramId))
+        return onSuccess(c)
+      } catch (e) {
+        return onError(c, { e })
       }
     })

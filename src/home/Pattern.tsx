@@ -1,7 +1,7 @@
 // app/src/lib/Pattern.tsx
 
 import type{ FC } from 'hono/jsx'
-import { Field } from '@hono-security'
+import { Field } from '@hono-form'
 import { css, Style } from 'hono/css'
 import { flowSteps } from './flowSteps'
 import svgLock from '@src/svg/lock.svg?raw'

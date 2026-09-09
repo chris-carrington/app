@@ -51,6 +51,77 @@ export const modalStyle = css`
         display: none;
       }
     }
+    &#modal-confirm {
+      &:not(.hidden) {
+        .backdrop {
+          opacity: 0.81;
+        }
+
+        .modal {
+          opacity: 1;
+        }
+      }
+
+      .backdrop {
+        z-index: calc(var(--z-modal) + 1);
+      }
+
+      .modal {
+        z-index: calc(var(--z-modal) + 2);
+        top: 50% !important;
+        left: 50% !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%) !important;
+        opacity: 0;
+        transition: opacity var(--prop-transition);
+        width: 48rem;
+        max-width: 90vw;
+        will-change: opacity;
+      }
+
+      .message {
+        padding: var(--space) var(--space-lite);
+        font-size: 2.1rem;
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: space-between;
+
+        button {
+          flex: 1;
+          width: 50%;
+          outline: 0;
+          background: transparent;
+          padding: var(--space-lite);
+          border-bottom: none;
+          border-color: rgba(0, 0, 0, 0.15);
+          border-right: none;
+          color: #0054e9;
+          cursor: pointer;
+          transition: var(--fast-transition);
+          &:first-child {
+            border-left: none;
+          }
+          &:last-child {
+            font-weight: 500;
+          }
+          &:hover {
+            box-shadow: 0px 7px 8px 1px rgba(0 ,0, 0, 0.33);
+            transform: translateY(-0.2rem);
+          }
+          &:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0px 6px 1px 0 rgba(0 ,0, 0, 0.33);
+          }
+          &:disabled {
+            opacity: 0.45;
+            cursor: default;
+          }
+        }
+      }
+    }
 
     .backdrop {
       position: fixed;

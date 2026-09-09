@@ -133,6 +133,7 @@ export const formStyle = css`
   a,
   button {
     &.orange,
+    &.danger,
     &.primary,
     &.transparent {
       outline: 0;
@@ -141,7 +142,7 @@ export const formStyle = css`
       white-space: nowrap;
       text-decoration: none;
       border: 1px solid transparent;
-      padding: calc(var(--space-lite) / 1.2);
+      padding: calc(var(--space-lite) / 1.2) calc(var(--space) / 1.2);
       border-radius: var(--radius);
       cursor: pointer;
       transition: var(--fast-transition);
@@ -161,6 +162,14 @@ export const formStyle = css`
     &.primary {
       color: var(--white);
       background: var(--primary-gradient);
+    }
+    &.danger {
+      color: var(--white);
+      background: #c5000f;
+      opacity: 0.81;
+      &:hover {
+        opacity: 1;
+      }
     }
     &.orange {
       color: var(--orange-text);
