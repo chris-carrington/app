@@ -21,6 +21,7 @@ import serviceRequest from '@src/api/serviceRequest.api'
 import joinLeadership from '@src/api/joinLeadership.api'
 import joinNewsletter from '@src/api/joinNewsletter.api'
 import objectives from '@src/objectives/objectives.route'
+import objectiveCommentApi from '@src/api/objectiveComment.api'
 import transparency from '@src/transparency/transparency.route'
 
 
@@ -46,6 +47,7 @@ const app = new Hono()
   .route('/api/join-leadership', joinLeadership)
   .route('/api/join-newsletter', joinNewsletter)
   .route('/api/service-request', serviceRequest)
+  .route('/api/objective-comment', objectiveCommentApi)
 
 export default app
 

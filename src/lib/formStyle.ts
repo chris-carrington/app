@@ -132,6 +132,7 @@ export const formStyle = css`
 
   a,
   button {
+    &.blue,
     &.orange,
     &.danger,
     &.primary,
@@ -166,10 +167,10 @@ export const formStyle = css`
     &.danger {
       color: var(--white);
       background: #c5000f;
-      opacity: 0.81;
-      &:hover {
-        opacity: 1;
-      }
+    }
+    &.blue {
+      color: var(--white);
+      background-color: rgb(11, 94, 215);
     }
     &.orange {
       color: var(--orange-text);

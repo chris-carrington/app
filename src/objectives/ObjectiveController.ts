@@ -15,6 +15,7 @@ export class ObjectiveController {
   assignees: QueryPeople = []
   elModal = query<HTMLDivElement>(idObjectiveInUpModal().query).one()
 
+
   async dbQuery(objectiveId: number): Promise<QueryObjective | undefined> {
     const [resTags, resAssignees, resObjective] = await Promise.all([
       this.tags.length === 0 ? this.rpc.api.tags.$get() : null,

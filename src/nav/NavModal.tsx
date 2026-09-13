@@ -3,7 +3,6 @@
 import { Style } from 'hono/css'
 import type { FC } from 'hono/jsx'
 import { createRPC } from '@hono-api/be'
-import { modalStyle } from '@hono-modal'
 import type { AppType } from '@src/index'
 import svgClose from '@src/svg/close.svg?raw'
 import { onNavModalToggle } from '@hono-directives'
@@ -16,8 +15,6 @@ export default (() => {
   const navModalId = idNavModal().id
 
   return <>
-    <Style>{modalStyle}</Style>
-
     <div {...authDataset.attr('undefined')} id={navModalId} class="modal-wrapper hidden">
       <button data-directive={onNavModalToggle(navModalId)} class="backdrop" type="button" />
 

@@ -1,11 +1,17 @@
 // app/src/db/queryObjective.ts
 
 import { eq } from 'drizzle-orm'
-import { db, Person, Objective, ObjectiveTag, Objective__Tag, Objective__Assignee } from '@src/db'
+import { alias } from 'drizzle-orm/sqlite-core'
+import { db, Person, Objective, ObjectiveTag, ObjectiveComment, Objective__Tag, Objective__Assignee } from '@src/db'
 import { prop, leftJoin, createParentShape, createChildren, type InferQuery } from '@drizzle-compose'
 
 
+const CommenterAlias = () => alias(Person, 'Commenter')
+
+
 function getBaseQuery() {
+  const Commenter = CommenterAlias()
+
   return db
     .select({
       id: Objective.id,
@@ -24,13 +30,30 @@ function getBaseQuery() {
       assigneeImageId: Person.imageId,
       assigneeFirstName: Person.firstName,
       assigneeLastName: Person.lastName,
+
+      commentId: ObjectiveComment.id,
+      commentValue: ObjectiveComment.value,
+      commentCreatedAt: ObjectiveComment.createdAt,
+
+      commenterId: Commenter.id,
+      commenterImageId: Commenter.imageId,
+      commenterFirstName: Commenter.firstName,
+      commenterLastName: Commenter.lastName,
     })
     .from(Objective)
     .leftJoin(Objective__Tag, eq(Objective__Tag.objectiveId, Objective.id))
     .leftJoin(ObjectiveTag, eq(ObjectiveTag.id, Objective__Tag.tagId))
     .leftJoin(Objective__Assignee, eq(Objective__Assignee.objectiveId, Objective.id))
     .leftJoin(Person, eq(Person.id, Objective__Assignee.personId))
-    .orderBy(Objective.columnId, Objective.order, ObjectiveTag.order, Person.firstName)
+    .leftJoin(ObjectiveComment, eq(ObjectiveComment.objectiveId, Objective.id))
+    .leftJoin(Commenter, eq(Commenter.id, ObjectiveComment.createdBy))
+    .orderBy(
+      Objective.columnId,
+      Objective.order,
+      ObjectiveTag.order,
+      Person.firstName,
+      ObjectiveComment.createdAt,
+    )
 }
 
 
@@ -45,33 +68,54 @@ const parentShape = createParentShape(getBaseQuery)
   }))
 
 
-const children = createChildren(getBaseQuery)
-  .fn({
-    prop: 'tags',
-    id: (row) => row.tagId,
-    shape: (row) => ({
-      id: prop(row.tagId, ObjectiveTag.id),
-      value: prop(row.tagValue, ObjectiveTag.value),
-      bgHex: prop(row.tagBgHex, ObjectiveTag.bgHex),
-      fgHex: prop(row.tagFgHex, ObjectiveTag.fgHex),
-    }),
-  },
-  {
-    prop: 'assignees',
-    id: (row) => row.assigneeId,
-    shape: (row) => ({
-      id: prop(row.assigneeId, Person.id),
-      imageId: prop(row.assigneeImageId, Person.imageId),
-      firstName: prop(row.assigneeFirstName, Person.firstName),
-      lastName: prop(row.assigneeLastName, Person.lastName),
-    }),
-  })
+function getChildren() {
+  const Commenter = CommenterAlias()
+
+  return createChildren(getBaseQuery)
+    .fn({
+      prop: 'tags',
+      id: (row) => row.tagId,
+      shape: (row) => ({
+        id: prop(row.tagId, ObjectiveTag.id),
+        value: prop(row.tagValue, ObjectiveTag.value),
+        bgHex: prop(row.tagBgHex, ObjectiveTag.bgHex),
+        fgHex: prop(row.tagFgHex, ObjectiveTag.fgHex),
+      }),
+    },
+      {
+        prop: 'assignees',
+        id: (row) => row.assigneeId,
+        shape: (row) => ({
+          id: prop(row.assigneeId, Person.id),
+          imageId: prop(row.assigneeImageId, Person.imageId),
+          firstName: prop(row.assigneeFirstName, Person.firstName),
+          lastName: prop(row.assigneeLastName, Person.lastName),
+        }),
+      },
+      {
+        prop: 'comments',
+        id: (row) => row.commentId,
+        shape: (row) => ({
+          id: prop(row.commentId, ObjectiveComment.id),
+          value: prop(row.commentValue, ObjectiveComment.value),
+          createdAt: row.commentCreatedAt as unknown as string, // post api layer it'll be a string
+          createdBy: {
+            id: prop(row.commenterId, Commenter.id),
+            imageId: prop(row.commenterImageId, Commenter.imageId),
+            firstName: prop(row.commenterFirstName, Commenter.firstName),
+            lastName: prop(row.commenterLastName, Commenter.lastName),
+          },
+        }),
+      }
+    )
+}
+
 
 
 /** Get all objectives */
 export async function queryObjectives() {
   return leftJoin(await getBaseQuery(), {
-    children,
+    children: getChildren(),
     parent: { shape: parentShape, groupId: (row) => row.columnId },
   })
 }
@@ -83,7 +127,7 @@ export async function queryObjective(id: number) {
     .where(eq(Objective.id, id))
 
   const [objective] = leftJoin(rows, {
-    children,
+    children: getChildren(),
     parent: { shape: parentShape },
   })
 

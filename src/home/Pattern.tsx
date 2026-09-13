@@ -388,7 +388,7 @@ const style = css`
             }
 
             .items {
-              max-height: 50.1rem;
+              max-height: 47.1rem;
               overflow: auto;
               -ms-overflow-style: none;  /* IE and Edge */
               scrollbar-width: none;     /* Firefox */

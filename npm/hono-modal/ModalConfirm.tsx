@@ -1,8 +1,6 @@
 // app/npm/hono-modal/ModalConfirm.tsx
 
-import { Style } from 'hono/css'
 import type { FC } from 'hono/jsx'
-import { modalStyle } from './modalStyle'
 import svgClose from '@src/svg/close.svg?raw'
 import { onModalToggle, onConfirmSubmit } from '@hono-directives'
 
@@ -13,8 +11,6 @@ import { onModalToggle, onConfirmSubmit } from '@hono-directives'
  */
 export const ModalConfirm = (({ message, title }) => {
   return <>
-    <Style>{modalStyle}</Style>
-
     <div id="modal-confirm" class="modal-wrapper hidden">
       <button data-directive={onModalToggle('modal-confirm')} class="backdrop" type="button" />
 

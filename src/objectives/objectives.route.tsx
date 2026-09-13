@@ -11,7 +11,7 @@ import ObjectiveInUp from '@src/objectives/ObjectiveInUp'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import type { ClassNameReturn, DatasetReturn } from '@hono-dom'
 import { queryObjectives, type QueryObjective } from '@src/db/queryObjective'
-import { classNameAssignees, classNameColumn, classNameColumnCount, classNameObjective, classNameObjectives, classNameTags, classNameTitle, datasetColumnId, datasetId, datasetObjectiveInUpShowModal, datasetOrder, classNameSvg } from '@src/lib/dom'
+import { classNameAssignees, classNameColumn, classNameColumnCount, classNameObjective, classNameObjectives, classNameTags, classNameTitle, datasetColumnId, datasetId, datasetObjectiveInUpShowModal, datasetOrder, classNameSvg, idObjectiveTemplate } from '@src/lib/dom'
 
 
 export default new Hono()
@@ -86,7 +86,7 @@ export default new Hono()
         <ObjectiveInUp />
         <ModalConfirm message="Are you sure you'd love to delete this objective?" />
 
-        <template id="objective-template">
+        <template id={idObjectiveTemplate().id}>
           <ObjectiveCard
             objective={null}
             idDataset={idDataset}

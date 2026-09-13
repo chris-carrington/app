@@ -4,12 +4,12 @@ import { onError } from '@hono-api/fe'
 import { showErrorToast } from '@hono-toast'
 import type { InferJson } from '@hono-api/fe'
 import { FormUtil, Loading } from '@hono-form'
-import { query, type FieldReturn } from '@hono-dom'
+import { query, cloneTemplate, type FieldReturn } from '@hono-dom'
 import { ObjectiveController } from '@src/objectives/ObjectiveController'
 import type { QueryObjectives, QueryObjective } from '@src/db/queryObjective'
 import { ObjectiveInUpShowModal } from '@src/objectives/ObjectiveInUpShowModal'
 import { formObjectiveValidator } from '@src/validators/inupObjective.validator'
-import { classNameAssignees, classNameColumn, classNameColumnCount, classNameIsBeingDragged, classNameObjective, classNameObjectives, classNameSvg, classNameTags, classNameTitle, datasetColumnId, datasetId, datasetOrder, fieldObjectiveInUpAssigneeIds, fieldObjectiveInUpTagIds, idObjectiveInUpForm, idObjectiveTemplate } from '@src/lib/dom'
+import { classNameAssignees, classNameColumn, classNameColumnCount, classNameIsBeingDragged, classNameObjective, classNameObjectives, classNameSvg, classNameTags, classNameTitle, datasetColumnId, datasetOrder, fieldObjectiveInUpAssigneeIds, fieldObjectiveInUpTagIds, idObjectiveInUpForm, idObjectiveTemplate } from '@src/lib/dom'
 
 
 
@@ -487,6 +487,7 @@ export class ObjectiveKanban {
   #onInupModalSuccess(data: typeof formObjectiveValidator.data, id: number, json: InferJson<typeof this.controller.rpc.api.objective.$post>) {
     const objective: QueryObjective = {
       id,
+      comments: [],
       title: data.title,
       description: data.description ?? '',
       order: json.order,
@@ -546,7 +547,7 @@ export class ObjectiveKanban {
       const columnData = this.kanbanData[objective.columnId]
       columnData.unshift(objective)
 
-      const card = this.#cloneObjectiveCardTemplate()
+      const card = cloneTemplate(idObjectiveTemplate().query)
       const button = query<HTMLButtonElement>(this.svgClassName.query).root(card).one()
 
       button.addEventListener('click', () => {
@@ -622,14 +623,6 @@ export class ObjectiveKanban {
     elDropIndicator.setAttribute('aria-hidden', 'true')
 
     return elDropIndicator
-  }
-
-
-
-  #cloneObjectiveCardTemplate() {
-    const template = query<HTMLTemplateElement>(idObjectiveTemplate().query).one()
-    if (!(template.content.firstElementChild instanceof HTMLDivElement)) throw new Error('!(template.content.firstElementChild instanceof HTMLDivElement)')
-    return template.content.firstElementChild?.cloneNode(true) as HTMLDivElement
   }
 
 
