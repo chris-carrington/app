@@ -44,7 +44,7 @@ export default new Hono()
 
               <Field type="file" label="Avatar" name="img" prefix="profile-update" />
               <img id={idAvatar().id} class={res.response.person.imageId ? '' : 'hidden'} src={`https://r2.shastatrades.org/${res.response.person.imageId}.webp`} />
-              <button type="submit" class="primary">Edit</button>
+              <button type="submit" class="primary">Save</button>
             </form>
 
           </div>
