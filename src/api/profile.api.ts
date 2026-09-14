@@ -30,7 +30,10 @@ export default new Hono()
           .where(eq(Person.id, person.id))
 
         if (response.imageId && form.img) {
-          await env.R2.put(response.imageId + '.webp', form.img)
+          await Promise.all([
+            env.R2.delete(person.imageId + '.webp'), // remove current image in r2
+            env.R2.put(response.imageId + '.webp', form.img) // add new image to r2
+          ])
         }
 
         return onSuccess(c, { data: response })
