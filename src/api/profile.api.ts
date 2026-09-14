@@ -25,14 +25,14 @@ export default new Hono()
 
         if (form.img) update.imageId = response.imageId = crypto.randomUUID()
 
-        await db.update(Person)
+        await db.update(Person) // update db
           .set(update)
           .where(eq(Person.id, person.id))
 
-        if (response.imageId && form.img) {
+        if (response.imageId && form.img) { // update r2
           await Promise.all([
-            env.R2.delete(person.imageId + '.webp'), // remove current image in r2
-            env.R2.put(response.imageId + '.webp', form.img) // add new image to r2
+            env.R2.delete(person.imageId + '.webp'),
+            env.R2.put(response.imageId + '.webp', form.img)
           ])
         }
 

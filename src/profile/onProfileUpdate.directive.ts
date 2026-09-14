@@ -27,17 +27,30 @@ export default (el: HTMLFormElement) => {
       const { res } = await form.rpc(rpc.api['profile'].$put, { form: { firstName: result.data.firstName, lastName: result.data.lastName, img: result.data.img } })
 
       if (res.success) {
-        if (res.imageId) {
-          imgAvatar.src = `https://r2.shastatrades.org/${res.imageId}.webp`
-          imgAvatar.style.display = 'block'
-        }
-
+        if (res.imageId) await setDomImg(imgAvatar, res.imageId)
         showToast({ variant: 'success', value: 'Success!' })
+        loading.stop()
       }
     } catch (e) {
       form.catch(e, onError)
-    } finally {
       loading.stop()
     }
   })
+}
+
+
+/**
+ * - Preload and decode the image asynchronously before updating DOM
+ * - decode() ensures the image is fetched and decoded in memory
+ * - Helps us ensure that the image shows and then we show the toast and stop the loading indicator
+ */
+async function setDomImg(imgAvatar: HTMLImageElement, imageId: string) {
+  const tempImg = new Image()
+  const newSrc = `https://r2.shastatrades.org/${imageId}.webp`  
+
+  tempImg.src = newSrc
+  await tempImg.decode().catch(() => { })
+
+  imgAvatar.src = newSrc
+  imgAvatar.style.display = 'block'
 }
