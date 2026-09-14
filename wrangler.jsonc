@@ -12,6 +12,12 @@
       "invocation_logs": true
     }
   },
+  "r2_buckets": [
+    {
+      "binding": "R2",      // The variable name used in your Worker code (env.R2)
+      "bucket_name": "main" // The actual bucket name in your Cloudflare dashboard
+    }
+  ],
   "routes": [
     {
       "pattern": "shastatrades.org/*",

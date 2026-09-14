@@ -311,14 +311,15 @@ export class ObjectiveInUpShowModal {
 
     try {
       loading.start()
-      const { res } = await form.rpc(rpc.api['objective-comment'].$post, { json: { objectiveId, value: result.data.comment } })
+      await form.rpc(rpc.api.test.$post, {})
+      // const { res } = await form.rpc(rpc.api['objective-comment'].$post, { json: { objectiveId, value: result.data.comment } })
 
-      if (res.success) {
-        showToast({ variant: 'success', value: 'Success!' })
-        this.formComment.reset()
-        this.#addCommentToDom(res.firstName, res.lastName, result.data.comment, new Date().toISOString(), res.imageId)
-        this.divComments.style.display = 'block'
-      }
+      // if (res.success) {
+      //   showToast({ variant: 'success', value: 'Success!' })
+      //   this.formComment.reset()
+      //   this.#addCommentToDom(res.firstName, res.lastName, result.data.comment, new Date().toISOString(), res.imageId)
+      //   this.divComments.style.display = 'block'
+      // }
     } catch (error) {
       form.catch(error, onError)
     } finally {

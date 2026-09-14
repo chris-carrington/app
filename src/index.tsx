@@ -3,6 +3,7 @@
 import { Hono } from 'hono'
 import home from './home/home.route'
 import tags from '@src/api/tags.api'
+import test from '@src/api/test.api'
 import pdf from '@src/lib/pdf.route'
 import people from '@src/api/people.api'
 import signInApi from '@src/api/signIn.api'
@@ -29,6 +30,7 @@ const app = new Hono()
   .use(renderer)
   .route('/', home)
   .route('/pdf', pdf)
+  .route('/api/test', test)
   .route('/api/tags', tags)
   .route('/profile', profile)
   .route('/mastery', mastery)
