@@ -9,8 +9,8 @@ export default new Hono()
   .post(
     '/',
     async (c) => {
-      const x = await env.R2.get('5587065e-0d3f-4e35-bbb3-70a14d1e683b.webp')
-console.log(x)
+      await env.R2.put('test.txt', 'Hello World')
+
       return onSuccess(c)
     }
   )
