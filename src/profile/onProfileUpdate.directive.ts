@@ -29,10 +29,10 @@ export default (el: HTMLFormElement) => {
       if (res.success) {
         if (res.imageId) await setDomImg(imgAvatar, res.imageId)
         showToast({ variant: 'success', value: 'Success!' })
-        loading.stop()
       }
     } catch (e) {
       form.catch(e, onError)
+    } finally {
       loading.stop()
     }
   })
