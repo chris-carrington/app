@@ -4,6 +4,7 @@ import { id, field, dataset, className } from '@hono-dom'
 
 
 // id
+export const idAvatar = () => id('avatar')
 export const idNavModal = () => id('nav-modal')
 export const idAuthModal = () => id('auth-modal')
 export const idObjectiveTemplate = () => id('objective-template')

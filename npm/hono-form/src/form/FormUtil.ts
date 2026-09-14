@@ -11,11 +11,12 @@ export class FormUtil<T_Schema extends v.ObjectSchema<any, any>> {
   readonly $typeData = undefined! as v.InferOutput<T_Schema>
 
   #el: HTMLFormElement
+  #fileFields: HTMLInputElement[] = []
   #validator: Validator<T_Schema>
   #domErrors: NodeListOf<HTMLDivElement>
-  #textFields: (HTMLInputElement | HTMLTextAreaElement)[]
-  #selectFields: HTMLSelectElement[]
-  #checkboxGroups: Map<string, HTMLInputElement[]>
+  #textFields: (HTMLInputElement | HTMLTextAreaElement)[] = []
+  #selectFields: HTMLSelectElement[] = []
+  #checkboxGroups: Map<string, HTMLInputElement[]> = new Map()
 
 
   constructor(el: HTMLFormElement, validator: Validator<T_Schema>) {
@@ -24,32 +25,30 @@ export class FormUtil<T_Schema extends v.ObjectSchema<any, any>> {
     this.#domErrors = el.querySelectorAll<HTMLDivElement>('div.error-message[data-field]')
 
     const allFields = el.querySelectorAll('input[name], textarea[name], select[name]')
-    const textFields: (HTMLInputElement | HTMLTextAreaElement)[] = []
-    const selectFields: HTMLSelectElement[] = []
-    const checkboxGroups = new Map<string, HTMLInputElement[]>()
 
     allFields.forEach((field) => {
-      if (field instanceof HTMLInputElement && field.dataset.formUtilSkip) return
+      if ((field as HTMLElement).dataset.formUtilSkip) return
 
       if (field instanceof HTMLInputElement && field.type === 'checkbox') {
         const name = field.name
 
         if (name) {
-          if (!checkboxGroups.has(name)) checkboxGroups.set(name, [])
-          checkboxGroups.get(name)!.push(field)
+          if (!this.#checkboxGroups.has(name)) this.#checkboxGroups.set(name, [])
+          this.#checkboxGroups.get(name)!.push(field)
         }
+      } else if (field instanceof HTMLInputElement && field.type === 'file') {
+        this.#fileFields.push(field)
       } else if (field instanceof HTMLSelectElement) {
-        selectFields.push(field)
+        this.#selectFields.push(field)
       } else if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) {
-        textFields.push(field)
+        this.#textFields.push(field)
       }
     })
 
-    this.#textFields = textFields
-    this.#selectFields = selectFields
-    this.#checkboxGroups = checkboxGroups
-
-    this.#bindEventListeners()
+    this.#bindTextListener()
+    this.#bindSelectListener()
+    this.#bindCheckboxListener()
+    this.#bindFileListener()
   }
 
   validateForm(): { success: true; data: v.InferOutput<T_Schema> } | { success: false; errors: Record<string, string> } {
@@ -102,8 +101,8 @@ export class FormUtil<T_Schema extends v.ObjectSchema<any, any>> {
       const res = await response.json()
       FormUtil.responseThrow(response, res)
       if (res.success) showToast({ variant: 'success', value: 'Success!' })
-    } catch (error) {
-      onError(error)
+    } catch (e) {
+      onError(e)
     }
     ```
    */
@@ -118,9 +117,9 @@ export class FormUtil<T_Schema extends v.ObjectSchema<any, any>> {
 
   /**
    * @param error Error that is provided to `catch`
-   * @param onError Called anytime we do not show valibot errors
+   * @param onError Helpful when we'd love to add additional logic to happen on error (then the standard valibot checks based on the api response)
    */
-  catch(error: unknown, onError: (error: unknown) => void): void {
+  catch(error: unknown, onError?: (error: unknown) => void): void {
     const res = v.safeParse(v.object({
       cause: v.object({
         success: v.literal(false),
@@ -132,7 +131,7 @@ export class FormUtil<T_Schema extends v.ObjectSchema<any, any>> {
     }), error)
 
     if (res.success) this.#beResponseValidate(res.output.cause)
-    onError(error)
+    if (onError) onError(error)
   }
 
 
@@ -168,9 +167,13 @@ export class FormUtil<T_Schema extends v.ObjectSchema<any, any>> {
 
 
   #displayErrors(errors: Record<string, string>) {
-    // Clear all error messages and remove 'has-error' class from all fields
-    this.#domErrors.forEach((e) => (e.textContent = ''))
+    this.#domErrors.forEach((e) => {
+      e.textContent = ''
+      e.style.display = 'none'
+    })
+
     this.#el.querySelectorAll('.has-error').forEach((e) => e.classList.remove('has-error'))
+    this.#el.querySelectorAll('[aria-invalid]').forEach((e) => e.removeAttribute('aria-invalid'))
 
     for (const [fieldName, errorMessage] of Object.entries(errors)) {
       const errorEl = this.#el.querySelector<HTMLDivElement>(`div.error-message[data-field="${fieldName}"]`)
@@ -202,6 +205,74 @@ export class FormUtil<T_Schema extends v.ObjectSchema<any, any>> {
   }
 
 
+  #bindTextListener() {
+    for (const el of this.#textFields) {
+      const name = el.name as keyof Validator<T_Schema>
+      if (!name) continue
+
+      el.addEventListener('blur', () => {
+        const error = this.#validator.validateField(name, el.value)
+
+        if (error) {
+          const errorEl = this.#el.querySelector<HTMLDivElement>(`div.error-message[data-field="${String(name)}"]`)
+
+          if (errorEl) {
+            errorEl.textContent = error
+            errorEl.style.display = 'block'
+          }
+
+          el.classList.add('has-error')
+          el.setAttribute('aria-invalid', 'true')
+        } else {
+          this.#clearFieldError(String(name))
+        }
+      })
+
+      el.addEventListener('input', () => {
+        if (!this.#validator.validateField(name, el.value)) {
+          this.#clearFieldError(String(name))
+        }
+      })
+    }
+  }
+
+
+  #bindSelectListener() {
+    for (const el of this.#selectFields) {
+      const name = el.name as keyof Validator<T_Schema>
+      if (!name) continue
+
+      const validateSelect = () => {
+        const error = this.#validator.validateField(name, el.value)
+        if (error) {
+          const errorEl = this.#el.querySelector<HTMLDivElement>(
+            `div.error-message[data-field="${String(name)}"]`
+          )
+          if (errorEl) errorEl.textContent = error
+          el.classList.add('has-error')
+          el.setAttribute('aria-invalid', 'true')
+        } else {
+          this.#clearFieldError(String(name))
+        }
+      }
+
+      el.addEventListener('blur', validateSelect)
+      el.addEventListener('change', validateSelect)
+    }
+  }
+
+
+  #bindCheckboxListener() {
+    for (const [name, el] of this.#checkboxGroups) {
+      for (const cb of el) {
+        cb.addEventListener('change', () => {
+          this.#validateCheckboxGroup(name)
+        })
+      }
+    }
+  }
+
+
   #validateCheckboxGroup(name: string) {
     const group = this.#checkboxGroups.get(name)
     if (!group) return
@@ -209,7 +280,8 @@ export class FormUtil<T_Schema extends v.ObjectSchema<any, any>> {
     const checkedValues = group.filter((cb) => cb.checked).map((cb) => cb.value)
     const errorMessage = this.#validator.validateField(name as keyof Validator<T_Schema>, checkedValues)
 
-    if (errorMessage) {
+    if (!errorMessage) this.#clearFieldError(name)
+    else {
       const errorEl = this.#el.querySelector<HTMLDivElement>(`div.error-message[data-field="${name}"]`)
 
       if (errorEl) {
@@ -221,73 +293,45 @@ export class FormUtil<T_Schema extends v.ObjectSchema<any, any>> {
         cb.classList.add('has-error')
         cb.setAttribute('aria-invalid', 'true')
       })
-    } else {
-      this.#clearFieldError(name)
     }
   }
 
 
-  #bindEventListeners() {
-    // --- Text / textarea / email fields ---
-    this.#textFields.forEach((field) => {
-      const name = field.name as keyof Validator<T_Schema>
-      if (!name) return
+  #bindFileListener() {
+    for (const el of this.#fileFields) {
+      const name = el.name as keyof Validator<T_Schema>
+      if (!name) continue
 
-      field.addEventListener('blur', () => {
-        const error = this.#validator.validateField(name, field.value)
-
-        if (error) {
-          const errorEl = this.#el.querySelector<HTMLDivElement>(`div.error-message[data-field="${String(name)}"]`)
-
-          if (errorEl) {
-            errorEl.textContent = error
-            errorEl.style.display = 'block'
-          }
-
-          field.classList.add('has-error')
-          field.setAttribute('aria-invalid', 'true')
-        } else {
-          this.#clearFieldError(String(name))
-        }
+      el.addEventListener('change', () => {
+        this.#validateFile(el)
       })
+    }
+  }
 
-      field.addEventListener('input', () => {
-        if (!this.#validator.validateField(name, field.value)) {
-          this.#clearFieldError(String(name))
-        }
-      })
-    })
 
-    // --- Select dropdowns ---
-    this.#selectFields.forEach((field) => {
-      const name = field.name as keyof Validator<T_Schema>
-      if (!name) return
+  #validateFile(el: HTMLInputElement) {
+    const name = el.name as keyof Validator<T_Schema>
+    if (!name) return
 
-      const validateSelect = () => {
-        const error = this.#validator.validateField(name, field.value)
-        if (error) {
-          const errorEl = this.#el.querySelector<HTMLDivElement>(
-            `div.error-message[data-field="${String(name)}"]`
-          )
-          if (errorEl) errorEl.textContent = error
-          field.classList.add('has-error')
-          field.setAttribute('aria-invalid', 'true')
-        } else {
-          this.#clearFieldError(String(name))
-        }
+    // Pass the File (or File[] for multiple) instead of the fakepath string.
+    const value = el.multiple
+      ? Array.from(el.files ?? [])
+      : el.files?.[0]
+
+    const error = this.#validator.validateField(name, value)
+
+    if (error) {
+      const errorEl = this.#el.querySelector<HTMLDivElement>(
+        `div.error-message[data-field="${String(name)}"]`
+      )
+      if (errorEl) {
+        errorEl.textContent = error
+        errorEl.style.display = 'block'
       }
-
-      field.addEventListener('blur', validateSelect)
-      field.addEventListener('change', validateSelect)
-    })
-
-    // --- Checkbox groups ---
-    for (const [name, checkboxes] of this.#checkboxGroups) {
-      checkboxes.forEach((cb) => {
-        cb.addEventListener('change', () => {
-          this.#validateCheckboxGroup(name)
-        })
-      })
+      el.classList.add('has-error')
+      el.setAttribute('aria-invalid', 'true')
+    } else {
+      this.#clearFieldError(String(name))
     }
   }
 }

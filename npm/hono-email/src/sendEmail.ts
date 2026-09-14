@@ -31,8 +31,8 @@ export async function sendEmail(props: SendEmailProps): Promise<ApiResponse> {
     if (props.onSuccess) return props.onSuccess(vResponse.output)
 
     return vResponse.output
-  } catch (error) {
-    return onCatch(props, error)
+  } catch (e) {
+    return onCatch(props, e)
   }
 }
 

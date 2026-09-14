@@ -105,22 +105,30 @@ export class Validator<T extends v.ObjectSchema<any, any>> {
 function getSafeParseData(arg: HTMLFormElement | unknown): Record<string, any> {
   let data: Record<string, any> = {}
 
-  if (arg instanceof HTMLFormElement) {
+  if (!(arg instanceof HTMLFormElement)) data = arg as Record<string, any>
+  else {
     const form = arg
     const formData = new FormData(form)
+    const nameInfo = new Map<string, { hasCheckbox: boolean; isFile: boolean; multiple: boolean }>()
 
-    // Track which fields have checkboxes (to handle multi‑value correctly)
-    const nameInfo = new Map<string, { hasCheckbox: boolean }>()
     for (const el of form.elements) {
       const input = el as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+      if (!input.name) continue
 
-      if (input.name) {
-        if (!nameInfo.has(input.name)) {
-          nameInfo.set(input.name, { hasCheckbox: false })
-        }
+      let info = nameInfo.get(input.name)
 
-        if (input.type === 'checkbox') {
-          nameInfo.get(input.name)!.hasCheckbox = true
+      if (!info) {
+        info = { hasCheckbox: false, isFile: false, multiple: false }
+        nameInfo.set(input.name, info)
+      }
+
+      if (input.type === 'checkbox') info.hasCheckbox = true
+
+      if (input.type === 'file') {
+        info.isFile = true
+
+        if ((input as HTMLInputElement).multiple) {
+          info.multiple = true
         }
       }
     }
@@ -130,12 +138,18 @@ function getSafeParseData(arg: HTMLFormElement | unknown): Record<string, any> {
 
       if (info.hasCheckbox) {
         data[name] = values
+      } else if (info.isFile) {       
+        const validFiles = values.filter((v): v is File => v instanceof File && v.size > 0 && v.name !== '')  // Filter out empty browser dummy files (size 0 and name empty)
+
+        if (info.multiple) {
+          data[name] = validFiles
+        } else {
+          data[name] = validFiles.length > 0 ? validFiles[0] : undefined
+        }
       } else {
         data[name] = values.length > 0 ? values[0] : ''
       }
     }
-  } else {
-    data = arg as Record<string, any>
   }
 
   return data

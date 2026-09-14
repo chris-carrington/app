@@ -4,7 +4,6 @@ import { Hono } from 'hono'
 import { Style } from 'hono/css'
 import { md2html } from '@src/md/md2html'
 import { mdStyle } from '@src/md/mdStyle'
-import { formStyle } from '@src/lib/formStyle'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import { mdAccordion, onStudyGuideLoad } from '@hono-directives'
 import mdStudyGuide2025Faq from '@src/mastery/studyGuide2025Faq.md?raw'
@@ -30,7 +29,6 @@ export default new Hono()
       <>
         <title>Shasta Trades · Mastery · {current.title}</title>
         <Style>{mdStyle}</Style>
-        <Style>{formStyle}</Style>
         <Style>{subPageHeroStyle}</Style>
 
         <div class="mastery" data-directive={mdAccordion()}>

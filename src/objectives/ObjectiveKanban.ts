@@ -255,8 +255,8 @@ export class ObjectiveKanban {
 
       // On success, apply the move using explicit IDs
       this.#applyObjectiveMove(objectiveId, sourceColumnId, targetColumnId, insertionIndex, newOrder)
-    } catch (error) {
-      onError(error)
+    } catch (e) {
+      onError(e)
     } finally {
       this.isDropInProgress = false
       this.#onDragEnd()
@@ -417,8 +417,8 @@ export class ObjectiveKanban {
       objective = id
         ? await this.#putObjectiveFromModal({...result, id}, form)
         : await this.#postObjectiveFromModal(result, form)
-    } catch (error) {
-      form.catch(error, onError)
+    } catch (e) {
+      form.catch(e, onError)
     } finally {
       loading.stop()
 

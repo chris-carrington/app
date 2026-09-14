@@ -5,7 +5,6 @@ import type { FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
 import { ModalConfirm } from '@hono-modal'
 import { kanbanColumns } from '@src/lib/vars'
-import { formStyle } from '@src/lib/formStyle'
 import { onObjectivesPageLoad } from '@hono-directives'
 import ObjectiveInUp from '@src/objectives/ObjectiveInUp'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
@@ -35,7 +34,6 @@ export default new Hono()
       <>
         <title>Shasta Trades · Objectives</title>
         <Style>{style}</Style>
-        <Style>{formStyle}</Style>
         <Style>{subPageHeroStyle}</Style>
 
         <div class="objectives">

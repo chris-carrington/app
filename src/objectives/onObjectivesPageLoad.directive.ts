@@ -38,8 +38,8 @@ export default (el: HTMLDivElement, kanbanData: QueryObjectives): void => {
       controller.elModal.classList.add('hidden') // hide inup modal
 
       showToast({ variant: 'success', value: 'Success!' }) // notify success
-    } catch (error) { // IF status is not 200
-      onError(error)
+    } catch (e) { // IF status is not 200
+      onError(e)
     } finally { // stop confirm modal button loading indicator
       onConfirmEvents.emit('isConfirmActionLoading', false)
     }

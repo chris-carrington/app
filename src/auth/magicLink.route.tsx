@@ -64,8 +64,8 @@ export default new Hono()
         })
 
         await setSessionCookie(c, String(session.id)) // create cookie
-      } catch (error) {
-        console.error(error)
+      } catch (e) {
+        console.error(e)
 
         return c.render(
           <>

@@ -1,12 +1,9 @@
 // app/src/auth/signUp.route.tsx
 
 import { Hono } from 'hono'
-import { Style } from 'hono/css'
-import { createRPC } from '@hono-api/be'
-import { authStyle } from '@src/auth'
 import { Field } from '@hono-form'
+import { createRPC } from '@hono-api/be'
 import type { AppType } from '@src/index'
-import { formStyle } from '@src/lib/formStyle'
 import { onSignUpSubmit } from '@hono-directives'
 
 
@@ -15,18 +12,16 @@ export default new Hono()
     return c.render(
       <>
         <title>Shasta Trades · Sign Up</title>
-        <Style>{authStyle}</Style>
-        <Style>{formStyle}</Style>
 
-        <form data-directive={onSignUpSubmit()} class="auth bg-white">
+        <form data-directive={onSignUpSubmit()} class="form-card bg-white">
           <div class="title">Create your Shasta Trades account</div>
 
           <div class="two">
-            <Field name="firstName" placeholder="First Name" type="text" prefix="sign-up"/>
-            <Field name="lastName" placeholder="Last Name" type="text" prefix="sign-up" />
+            <Field name="firstName" label="First Name" type="text" prefix="sign-up"/>
+            <Field name="lastName" label="Last Name" type="text" prefix="sign-up" />
           </div>
 
-          <Field name="email" placeholder="Email" type="email" prefix="sign-up" />
+          <Field name="email" label="Email" type="email" prefix="sign-up" />
 
           <button class="primary" type="submit">Sign Up</button>
 

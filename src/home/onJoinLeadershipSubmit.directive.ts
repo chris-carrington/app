@@ -30,8 +30,8 @@ export default (el: HTMLFormElement) => {
       form.resetForm()
 
       showToast({ value: 'Success!', variant: 'success' })
-    } catch (error) {
-      form.catch(error, onError)
+    } catch (e) {
+      form.catch(e, onError)
     } finally {
       loading.stop()
     }

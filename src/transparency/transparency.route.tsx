@@ -6,7 +6,6 @@ import { createRPC } from '@hono-api/be'
 import { md2html } from '@src/md/md2html'
 import { mdStyle } from '@src/md/mdStyle'
 import type { AppType } from '@src/index'
-import { formStyle } from '@src/lib/formStyle'
 import svgDownload from '@src/svg/download.svg?raw'
 import schema from '@src/transparency/schema.md?raw'
 import byLaws from '@src/transparency/bylaws.md?raw'
@@ -34,7 +33,6 @@ export default new Hono()
         <title>Shasta Trades · Transparency · {current.title}</title>
         <Style>{style}</Style>
         <Style>{mdStyle}</Style>
-        <Style>{formStyle}</Style>
         <Style>{subPageHeroStyle}</Style>
 
         <div class="transparency">
