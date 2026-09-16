@@ -43,7 +43,7 @@ export class ObjectiveKanban {
     this.kanbanData = kanbanData
     this.objectiveInUpShowModal = objectiveInUpShowModal
     this.columns = Array.from(query<HTMLElement>(this.columnClassName.query).root(this.el).many())
-    this.columnCounts = Array.from(query<HTMLSpanElement>(classNameCount().query).root(this.el).many())
+    this.columnCounts = Array.from(query<HTMLSpanElement>('header ' + classNameCount().query).root(this.el).many())
   }
 
 
