@@ -10,10 +10,10 @@
 
 ## What is the 2025 Class B Study Guide?
 - The California Business and Professions Code is written in dense legal language. We translate it into simple English.
-- Commercial study guides cost $1,000+ but we believe that knowledge should be free, so you don't need to enroll in a program to use this guide b/c it's available to anyone, anywhere, anytime!
+- Commercial study guides cost over $1,000, we believe that knowledge should be free!
 
 
 ---
 
 
-# [Acronyms](/mastery/2025-class-b-study-guide?sub=acronyms) · [Random](/mastery/2025-class-b-study-guide?sub=random) · [Occupancy Classification](/mastery/2025-class-b-study-guide?sub=occupancy_classification)
+## [Acronyms](/mastery/2025-class-b-study-guide?sub=acronyms) · [Random](/mastery/2025-class-b-study-guide?sub=random) · [Occupancy Classification](/mastery/2025-class-b-study-guide?sub=occupancy_classification)
