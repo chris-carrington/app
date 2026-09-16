@@ -11,17 +11,19 @@ export class FormUtil<T_Schema extends v.ObjectSchema<any, any>> {
   readonly $typeData = undefined! as v.InferOutput<T_Schema>
 
   #el: HTMLFormElement
-  #fileFields: HTMLInputElement[] = []
   #validator: Validator<T_Schema>
+  #fileFields: HTMLInputElement[] = []
   #domErrors: NodeListOf<HTMLDivElement>
-  #textFields: (HTMLInputElement | HTMLTextAreaElement)[] = []
   #selectFields: HTMLSelectElement[] = []
+  onFileChange?: (el: HTMLInputElement) => any
+  #textFields: (HTMLInputElement | HTMLTextAreaElement)[] = []
   #checkboxGroups: Map<string, HTMLInputElement[]> = new Map()
 
 
-  constructor(el: HTMLFormElement, validator: Validator<T_Schema>) {
+  constructor(el: HTMLFormElement, validator: Validator<T_Schema>, onFileChange?: (el: HTMLInputElement) => Promise<void>) {
     this.#el = el
     this.#validator = validator
+    this.onFileChange = onFileChange
     this.#domErrors = el.querySelectorAll<HTMLDivElement>('div.error-message[data-field]')
 
     const allFields = el.querySelectorAll('input[name], textarea[name], select[name]')
@@ -302,7 +304,11 @@ export class FormUtil<T_Schema extends v.ObjectSchema<any, any>> {
       const name = el.name as keyof Validator<T_Schema>
       if (!name) continue
 
-      el.addEventListener('change', () => {
+      el.addEventListener('change', async () => {
+        if (this.onFileChange) {
+          await this.onFileChange(el)
+        }
+
         this.#validateFile(el)
       })
     }

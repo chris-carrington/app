@@ -27,6 +27,9 @@
       "@src/*": [
         "./src/*"
       ],
+      "@img-webp": [
+        "./npm/img-webp/index"
+      ],
       "@hono-events": [
         "./npm/hono-events/index"
       ],

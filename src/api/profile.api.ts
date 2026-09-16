@@ -23,13 +23,15 @@ export default new Hono()
       try {
         const update: typeof Person.$inferInsert = { firstName: form.firstName, lastName: form.lastName }
 
-        if (form.img) update.imageId = response.imageId = crypto.randomUUID()
+        if (form.img && env.ENVIRONMENT !== 'local') {
+          update.imageId = response.imageId = crypto.randomUUID()
+        }
 
         await db.update(Person) // update db
           .set(update)
           .where(eq(Person.id, person.id))
 
-        if (response.imageId && form.img) { // update r2
+        if (response.imageId && form.img && env.ENVIRONMENT !== 'local') { // update r2
           await Promise.all([
             env.R2.delete(person.imageId + '.webp'),
             env.R2.put(response.imageId + '.webp', form.img)
