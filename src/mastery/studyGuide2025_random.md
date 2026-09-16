@@ -1,6 +1,3 @@
-# Section: Random
-
-
 <!--{"accordionStart":true}-->
 ## When is a contractor's license required?
 <!--{"accordionBody":true}-->

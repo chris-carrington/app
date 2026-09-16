@@ -198,7 +198,7 @@ export class ObjectiveInUpShowModal {
 
     this.controller.elModal.classList.remove('hidden')
 
-    this.#stopLoadingIndicator(button, 'New', 450) // give time for the modal to be over the button
+    this.#stopLoadingIndicator(button, 'Create', 450) // give time for the modal to be over the button
   }
 
 

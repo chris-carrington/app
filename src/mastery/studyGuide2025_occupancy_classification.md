@@ -1,6 +1,3 @@
-# Section: Occupancy Classification
-
-
 <!--{"accordionStart":true}-->
 ## What is occupancy classification?
 <!--{"accordionBody":true}-->

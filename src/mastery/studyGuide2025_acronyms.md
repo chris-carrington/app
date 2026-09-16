@@ -1,6 +1,3 @@
-# Section: Acronyms
-
-
 <!--{"accordionStart":true}-->
 ##  What is CSLB?
 <!--{"accordionBody":true}-->

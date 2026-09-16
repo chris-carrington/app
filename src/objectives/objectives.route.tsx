@@ -45,7 +45,8 @@ export default new Hono()
             </div>
 
             <div class="buttons">
-              <button {...datasetObjectiveInUpShowModal().attr()} class="transparent big" type="button">New</button>
+              <button {...datasetObjectiveInUpShowModal().attr()} class="transparent big" type="button">Create</button>
+              <button class="orange big" type="button">Q3 2026</button>
             </div>
           </div>
 
@@ -61,7 +62,7 @@ export default new Hono()
                       </span>
                     </header>
                     <div class={objectivesClassName.className} {...columnIdDataset.attr(column.id)}>
-                      {kanbanData[column.id] && kanbanData[column.id].map((o) => (
+                      {kanbanData[column.id] && kanbanData[column.id]?.map((o) => (
                         <ObjectiveCard
                           objective={o}
                           idDataset={idDataset}

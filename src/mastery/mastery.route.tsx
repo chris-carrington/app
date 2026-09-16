@@ -12,8 +12,8 @@ import mdYoutubeUniversity from '@src/mastery/youtubeUniversity.md?raw'
 
 export default new Hono()
   .get('/:id?', async (c) => {
-    const paramId = c.req.param('id') ?? documents[0].id
-    const current = documents.find(b => b.id === paramId) ?? documents[0]
+    const paramId = c.req.param('id') ?? defaultDocument.id
+    const current = documents.find(b => b.id === paramId) ?? defaultDocument
     const html = await md2html(current.md, current)
 
     let subHtml = ''
@@ -54,8 +54,11 @@ export default new Hono()
   })
 
 
+const defaultDocument = { id: 'youtube-university', title: 'Youtube University', md: mdYoutubeUniversity, wrapTables: false, enableAccordion: true }
+
+
 const documents = [
-  { id: 'youtube-university', title: 'Youtube University', md: mdYoutubeUniversity, wrapTables: false, enableAccordion: true },
+  defaultDocument,
   { id: '2025-class-b-study-guide', title: '2025 Class B Study Guide', md: mdStudyGuide2025Faq, wrapTables: false, enableAccordion: true },
 ]
 

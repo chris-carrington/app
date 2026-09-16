@@ -24,8 +24,8 @@ import conflictOfInterestPolicyFaq from '@src/transparency/conflict-of-interest-
 export default new Hono()
   .get('/:id?', async (c) => {
     const rpc = createRPC<AppType>()
-    const paramId = c.req.param('id') ?? documents[0].id
-    const current = documents.find(b => b.id === paramId) ?? documents[0]
+    const paramId = c.req.param('id') ?? defaultDocument.id
+    const current = documents.find(b => b.id === paramId) ?? defaultDocument
     const html = await getHtml(current)
 
     return c.render(
@@ -69,8 +69,10 @@ export default new Hono()
   })
 
 
+const defaultDocument = { id: 'trust-document', title: 'Trust Document', md: [trustDocumentFaq, trustDocument], wrapTables: false }
+
 const documents = [
-  { id: 'trust-document', title: 'Trust Document', md: [trustDocumentFaq, trustDocument], wrapTables: false },
+  defaultDocument,
   { id: 'bylaws', title: 'Bylaws', md: [byLawsFaq, byLaws], wrapTables: false, download: 'bylaws.pdf' },
   { id: 'articles-of-incorporation', title: 'Articles of Incorporation', md: [articlesOfIncorporationFaq, articlesOfIncorporation], wrapTables: true },
   { id: 'conflict-of-interest-policy', title: 'Conflict of Interest Policy', md: [conflictOfInterestPolicyFaq, conflictOfInterestPolicy], wrapTables: true },
