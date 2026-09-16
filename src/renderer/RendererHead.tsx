@@ -5,6 +5,7 @@ import { css, Style } from 'hono/css'
 import { modalStyle } from '@hono-modal'
 import { tooltipStyle } from '@hono-tooltip'
 import { formStyle } from '@src/lib/formStyle'
+import { accordionStyle } from '@hono-accordion'
 
 
 export default (() => {
@@ -19,6 +20,7 @@ export default (() => {
     <Style>{formStyle}</Style>
     <Style>{modalStyle}</Style>
     <Style>{tooltipStyle}</Style>
+    <Style>{accordionStyle}</Style>
   </>
 }) satisfies FC
 
@@ -115,6 +117,12 @@ const style = css`
 
   strong {
     font-weight: 600;
+  }
+
+  .page-content {
+    margin: 0 auto;
+    max-width: var(--max-width);
+    padding: 0 var(--space-lite) var(--space-huge) var(--space-lite);
   }
 
   @font-face {

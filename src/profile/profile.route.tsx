@@ -7,9 +7,10 @@ import { css, Style } from 'hono/css'
 import { idAvatar } from '@src/lib/dom'
 import { createRPC } from '@hono-api/be'
 import type { AppType } from '@src/index'
+import { Accordion } from '@hono-accordion'
 import { getSession } from '@src/auth/getSession'
-import { onProfileUpdateLoad } from '@hono-directives'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
+import { mdAccordion, onProfileUpdateLoad } from '@hono-directives'
 
 
 export default new Hono()
@@ -26,27 +27,37 @@ export default new Hono()
           <Style>{style}</Style>
           <Style>{subPageHeroStyle}</Style>
 
-          <div class="profile">
+          <div class="profile" data-directive={mdAccordion()}>
             <div class="sub-page-hero">
               <div class="bg"></div>
               <div class="header">
                 <h1>Profile</h1>
+                <div class="sub-title">Welcome {res.response.person.firstName} {res.response.person.lastName}, thank you for being here!</div>
               </div>
             </div>
 
-            <form data-directive={onProfileUpdateLoad()} class="form-card bg-white">
-              <div class="title">Edit Profile</div>
+            <div class="page-content">
+              <Accordion items={[
+                {
+                  namespace: 'top',
+                  header: 'Edit Profile',
+                  body: <>
+                    <form data-directive={onProfileUpdateLoad()} class="form-card bg-white">
+                      <div class="title">Edit Profile</div>
 
-              <div class="two">
-                <Field type="text" label="First Name" name="firstName" prefix="profile-update" value={res.response.person.firstName} />
-                <Field type="text" label="Last Name" name="lastName" prefix="profile-update" value={res.response.person.lastName} />
-              </div>
+                      <div class="two">
+                        <Field type="text" label="First Name" name="firstName" prefix="profile-update" value={res.response.person.firstName} />
+                        <Field type="text" label="Last Name" name="lastName" prefix="profile-update" value={res.response.person.lastName} />
+                      </div>
 
-              <Field type="file" label="Avatar" name="img" prefix="profile-update" />
-              <img id={idAvatar().id} class={res.response.person.imageId ? '' : 'hidden'} src={`https://r2.shastatrades.org/${res.response.person.imageId}.webp`} />
-              <button type="submit" class="primary">Save</button>
-            </form>
-
+                      <Field type="file" label="Avatar" name="img" prefix="profile-update" />
+                      <img id={idAvatar().id} class={res.response.person.imageId ? '' : 'hidden'} src={`https://r2.shastatrades.org/${res.response.person.imageId}.webp`} />
+                      <button type="submit" class="primary">Save</button>
+                    </form>
+                  </>
+                }
+              ]} /> 
+            </div>
           </div>
         </>
       )

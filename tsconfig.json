@@ -34,6 +34,9 @@
       "@on-time": [
         "./npm/on-time/index"
       ],
+      "@hono-accordion": [
+        "./npm/hono-accordion/index"
+      ],
       "@hono-events": [
         "./npm/hono-events/index"
       ],
