@@ -1,6 +1,7 @@
-// app/npm/img-webp/onChange.ts
+// app/npm/img-webp/onFileChange.ts
 
 import { imgTransmute, type ImgTransmuteConfig } from './imgTransmute'
+import { imgWebpEvents } from './imgWebpEvents'
 
 
 /**
@@ -30,11 +31,15 @@ export async function onFileChange(el: HTMLInputElement, cfg?: ImgTransmuteConfi
   tokens.set(el, token)
 
   const output: File[] = []
+
+  imgWebpEvents.emit('filesTransmuting', true)
+
   for (const file of Array.from(files)) {
     if (!file.type.startsWith('image/')) {
       output.push(file)
       continue
     }
+
     try {
       output.push(await imgTransmute(file, cfg))
     } catch (e) {
@@ -42,6 +47,8 @@ export async function onFileChange(el: HTMLInputElement, cfg?: ImgTransmuteConfi
       output.push(file)
     }
   }
+
+  imgWebpEvents.emit('filesTransmuting', false)
 
   // Ignore this run if a newer change event has started.
   if (tokens.get(el) !== token) return

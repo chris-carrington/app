@@ -1,12 +1,12 @@
-// app/src/profile/onProfileUpdate.directive.ts
+// app/src/profile/onProfileUpdateLoad.directive.ts
 
 import { query } from '@hono-dom'
 import { showToast } from '@hono-toast'
-import { idAvatar } from '@src/lib/dom'
-import { onFileChange } from '@img-webp'
 import type { AppType } from '@src/index'
 import { FormUtil, Loading } from '@hono-form'
 import { createRPC, onError } from '@hono-api/fe'
+import { imgWebpEvents, onFileChange } from '@img-webp'
+import { idAvatar, idProfileUpdateSaveBtn } from '@src/lib/dom'
 import { profileUpdateValidator } from '@src/validators/profileUpdate.validator'
 
 
@@ -14,7 +14,9 @@ export default (el: HTMLFormElement) => {
   const loading = new Loading(el)
   const rpc = createRPC<AppType>()
   const imgAvatar = query<HTMLImageElement>(idAvatar().query).one()
+  const btnProfileUpdateSaveBtn = query<HTMLButtonElement>(idProfileUpdateSaveBtn().query).one()
   const form = new FormUtil(el, profileUpdateValidator, (input) => onFileChange(input, { aimWidth: 450 }))
+
 
   el.addEventListener('submit', async e => {
     e.preventDefault()
@@ -35,6 +37,17 @@ export default (el: HTMLFormElement) => {
       form.catch(e, onError)
     } finally {
       loading.stop()
+    }
+  })
+
+
+  imgWebpEvents.on('filesTransmuting', filesTransmuting => {
+    if (filesTransmuting) {
+      btnProfileUpdateSaveBtn.disabled = true
+      btnProfileUpdateSaveBtn.textContent = 'Compressing Image...'
+    } else {
+      btnProfileUpdateSaveBtn.disabled = false
+      btnProfileUpdateSaveBtn.textContent = 'Save'
     }
   })
 }

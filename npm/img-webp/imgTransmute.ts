@@ -19,7 +19,8 @@ export async function imgTransmute(file: File, cfg: ImgTransmuteConfig = {}): Pr
   // Read all wasm getters before freeing.
   const width = processed.width
   const height = processed.height
-  // ArrayLike ctor copies into a fresh ArrayBuffer, giving us Uint8ClampedArray<ArrayBuffer>.
+
+  // ArrayLike ctor copies into a fresh ArrayBuffer, giving us Uint8ClampedArray<ArrayBuffer>
   const rgba = new Uint8ClampedArray(processed.pixels)
   processed.free()
 

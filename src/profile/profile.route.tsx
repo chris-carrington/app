@@ -8,7 +8,7 @@ import { idAvatar } from '@src/lib/dom'
 import { createRPC } from '@hono-api/be'
 import type { AppType } from '@src/index'
 import { getSession } from '@src/auth/getSession'
-import { onProfileUpdate } from '@hono-directives'
+import { onProfileUpdateLoad } from '@hono-directives'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 
 
@@ -34,7 +34,7 @@ export default new Hono()
               </div>
             </div>
 
-            <form data-directive={onProfileUpdate()} class="form-card bg-white">
+            <form data-directive={onProfileUpdateLoad()} class="form-card bg-white">
               <div class="title">Edit Profile</div>
 
               <div class="two">
