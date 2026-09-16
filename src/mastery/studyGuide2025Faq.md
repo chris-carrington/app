@@ -5,10 +5,15 @@
 - <a href="https://www.cslb.ca.gov/Resources/GuidesAndPublications/2026/2026_CSLB_Law_Book.pdf" target="_blank">California Contractors License Law & Reference Book</a>
 
 
+---
+
+
 ## What is the 2025 Class B Study Guide?
 - The California Business and Professions Code is written in dense legal language. We translate it into simple English.
 - Commercial study guides cost $1,000+ but we believe that knowledge should be free, so you don't need to enroll in a program to use this guide b/c it's available to anyone, anywhere, anytime!
 
+
 ---
+
 
 # [Acronyms](/mastery/2025-class-b-study-guide?sub=acronyms) · [Random](/mastery/2025-class-b-study-guide?sub=random) · [Occupancy Classification](/mastery/2025-class-b-study-guide?sub=occupancy_classification)
