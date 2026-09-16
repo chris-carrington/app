@@ -31,8 +31,14 @@
       "@img-webp": [
         "./npm/img-webp/index"
       ],
+      "@on-time": [
+        "./npm/on-time/index"
+      ],
       "@hono-events": [
         "./npm/hono-events/index"
+      ],
+      "@hono-tooltip": [
+        "./npm/hono-tooltip/index"
       ],
       "@hono-api/fe": [
         "./npm/hono-api/fe/index"

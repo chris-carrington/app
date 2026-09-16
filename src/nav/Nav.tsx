@@ -8,7 +8,7 @@ import svgMenu from '@src/svg/menu.svg?raw'
 import svgPerson from '@src/svg/person.svg?raw'
 import { useRequestContext } from 'hono/jsx-renderer'
 import { idNavModal, idAuthModal } from '@src/lib/dom'
-import { onHomeClick, onNavModalToggle } from '@hono-directives'
+import { tooltip, onHomeClick, onNavModalToggle } from '@hono-directives'
 
 
 export default (() => {
@@ -22,10 +22,10 @@ export default (() => {
       <div class="inner">
         <div class="left">
           <div data-directive={onHomeClick()} href="/" class="logo">
-            <a href="/" class="img" title="Go to Home page">
+            <a href="/" class="img" data-directive={tooltip('bottomLeft', 'Navigate to Home Page')}>
               <img src="/img/logo.webp" />
             </a>
-            <span title="Scroll to top of page">Shasta Trades</span>
+            <span data-directive={tooltip('bottomLeft', 'Scroll to top of page')}>Shasta Trades</span>
           </div>
 
           <div class="links">

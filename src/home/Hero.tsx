@@ -2,6 +2,8 @@
 
 import type{ FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
+import { patience } from '@src/lib/vars'
+import { tooltip } from '@hono-directives'
 
 
 export default (() => {
@@ -16,18 +18,21 @@ export default (() => {
 
       <div class="content">
         <div class="left">
-          <div class="badge">
+          <div class="badge" data-directive={tooltip('bottomLeft', patience)}>
             <div class="pulse"></div>
-            <div class="label" title="Once our Trust and Nonprofit have been approved by the State of California we will start offering trade services to our lovely Mount Shasta community">PRE-LAUNCH PHASE</div>
+            <div class="label">PRE-LAUNCH PHASE</div>
           </div>
+
           <div class="title">
             <div class="top">Loving Our</div>
             <div class="bottom">Community!</div>
           </div>
+
           <div class="message">
             <div>Just loving! This is our primary focus. Loving our community, loving our elders and loving the next generation!</div>
             <div>How? By giving our community high-quality trade services at a discount (e.g., flooring, plumbing, roofing), thanks to our non-profit donations!</div>
           </div>
+
           <div class="ctas">
             <a href="#service-request-scroll" class="orange big">SERVICE REQUEST</a>
             <a href="#join-leadership-scroll" class="transparent big">JOIN LEADERSHIP</a>

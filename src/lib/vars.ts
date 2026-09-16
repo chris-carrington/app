@@ -28,3 +28,5 @@ export const kanbanColumns: typeof ObjectiveColumn.$inferSelect[] = [
   { id: 2, value: 'In Progress', isActive: true },
   { id: 3, value: 'Completed', isActive: true }
 ]
+
+export const patience = 'Once our Trust and Nonprofit have been approved by the State of California we will start offering trade services to our lovely Mount Shasta community! 💚'

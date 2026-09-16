@@ -4,13 +4,14 @@ import type{ FC } from 'hono/jsx'
 import { Field } from '@hono-form'
 import { css, Style } from 'hono/css'
 import { flowSteps } from './flowSteps'
+import { patience } from '@src/lib/vars'
 import svgLock from '@src/svg/lock.svg?raw'
 import { jsonStaff } from '@src/json/staff.json'
 import { jsonTrades } from '@src/json/trades.json'
 import svgFrequency from '@src/svg/frequency.svg?raw'
 import { jsonHomeFormIds, jsonHomeForms } from '@src/json/homeForms.json'
 import { classNameStep, datasetFlowStepButton, datasetFlowStepContainer } from '@src/lib/dom'
-import { onFlowChange, onHashChange, onWrapChange, onContactUsSubmit, onServiceRequestSubmit, onJoinLeadershipSubmit, onJoinNewsletterSubmit } from '@hono-directives'
+import { onFlowChange, onHashChange, onWrapChange, onContactUsSubmit, onServiceRequestSubmit, onJoinLeadershipSubmit, onJoinNewsletterSubmit, tooltip } from '@hono-directives'
 
 
 export default (() => {
@@ -81,6 +82,7 @@ const Forms: FC = () => {
 
 const ServiceRequest: FC = () => {
   const id = jsonHomeFormIds[0]
+  if (!id) throw new Error('!id')
 
   return <>
     <div id={id} class="form hidden">
@@ -117,7 +119,7 @@ const ServiceRequest: FC = () => {
               <Field name="description" placeholder="Job Description" type="textarea" prefix={id} />
               <Field name="trade" type="checkbox" options={jsonTrades} prefix={id} />
 
-              <button class="orange wide" type="submit">Hire Trade Professionals</button>
+              <button data-directive={tooltip('topCenter', patience)} class="orange wide" type="submit">Hire Trade Professionals</button>
             </form>
           </div>
         </div>
@@ -129,6 +131,7 @@ const ServiceRequest: FC = () => {
 
 const JoinLeadership: FC = () => {
   const id = jsonHomeFormIds[1]
+  if (!id) throw new Error('!id')
 
   return <>
     <div id={id} class="form hidden">
@@ -174,6 +177,7 @@ const JoinLeadership: FC = () => {
 
 const JoinNewsletter: FC = () => {
   const id = jsonHomeFormIds[2]
+  if (!id) throw new Error('!id')
 
   const items = [
     { icon: svgLock, title: 'Security', description: 'Newsletter recipient names & emails are encrypted using industry-standard AEAD algorithms' },
@@ -223,6 +227,7 @@ const JoinNewsletter: FC = () => {
 
 const ContactUs: FC = () => {
   const id = jsonHomeFormIds[3]
+  if (!id) throw new Error('!id')
 
   const items = [
     { icon: svgLock, title: 'Security', description: 'Contact names, emails and messages are encrypted using industry-standard AEAD algorithms' },

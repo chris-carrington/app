@@ -1,0 +1,98 @@
+// app/npm/hono-tooltip/tooltip.style.ts
+
+import { css } from 'hono/css'
+
+export const tooltipStyle = css`
+  .hono-tooltip {
+    --hono-tooltip-bg: linear-gradient(to bottom right, rgba(25, 32, 54, 0.96), rgba(10, 10, 20, 0.96));
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+    color: white;
+    pointer-events: none;
+    opacity: 0;
+    max-width: 30rem;
+    transition: opacity 0.3s ease-in-out;
+    &.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    &.position-topCenter {
+      left: 50%;
+      transform: translateY(-0.6rem);
+
+      .arrow {
+        left: 50%;
+        top: 100%;
+        transform: translateX(-50%);
+        clip-path: polygon(50% 100%, 0 0, 100% 0);
+      }
+    }
+    &.position-topRight {
+      transform: translateY(-0.6rem);
+
+      .arrow {
+        top: 100%;
+        right: 0;
+        transform: translateX(-0.9rem);
+        clip-path: polygon(50% 100%, 0 0, 100% 0);
+      }
+    }
+    &.position-topLeft {
+      transform: translateY(-0.6rem);
+
+      .arrow {
+        top: 100%;
+        left: 0;
+        transform: translateX(0.9rem);
+        clip-path: polygon(50% 100%, 0 0, 100% 0);
+      }
+    }
+    &.position-bottomCenter {
+      left: 50%;
+      transform: translateY(0.57rem);
+
+      .arrow {
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -0.6rem);
+        clip-path: polygon(50% 0, 0 100%, 100% 100%);
+      }
+    }
+    &.position-bottomRight {
+      transform: translateY(0.57rem);
+
+      .arrow {
+        top: 0;
+        right: 0;
+        transform: translate(-0.9rem, -0.6rem);
+        clip-path: polygon(50% 0, 0 100%, 100% 100%);
+      }
+    }
+    &.position-bottomLeft {
+      transform: translateY(0.57rem);
+
+      .arrow {
+        top: 0;
+        left: 0;
+        transform: translate(0.9rem, -0.6rem);
+        clip-path: polygon(50% 0, 0 100%, 100% 100%);
+      }
+    }
+
+    .arrow {
+      position: absolute;
+      width: 0.6rem;
+      height: 0.6rem;
+      z-index: -1;
+      background: var(--hono-tooltip-bg);
+    }
+
+    .content {
+      background: var(--hono-tooltip-bg);
+      padding: 0.9rem 1.2rem;
+      border-radius: 0.6rem;
+      overflow-wrap: break-word;
+    }
+  }
+`

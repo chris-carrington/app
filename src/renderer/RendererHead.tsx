@@ -3,6 +3,7 @@
 import type { FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
 import { modalStyle } from '@hono-modal'
+import { tooltipStyle } from '@hono-tooltip'
 import { formStyle } from '@src/lib/formStyle'
 
 
@@ -15,8 +16,9 @@ export default (() => {
     <link rel="preload" as="font" href="/fonts/proxima_nova_500.woff2" type="font/woff2" crossorigin="anonymous"></link>
     <link rel="preload" as="font" href="/fonts/proxima_nova_600.woff2" type="font/woff2" crossorigin="anonymous"></link>
     <Style>{style}</Style>
-    <Style>{modalStyle}</Style>
     <Style>{formStyle}</Style>
+    <Style>{modalStyle}</Style>
+    <Style>{tooltipStyle}</Style>
   </>
 }) satisfies FC
 
