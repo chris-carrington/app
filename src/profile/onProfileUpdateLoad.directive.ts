@@ -1,12 +1,12 @@
 // app/src/profile/onProfileUpdateLoad.directive.ts
 
 import { query } from '@hono-dom'
+import { idAvatar } from '@src/lib/dom'
 import { showToast } from '@hono-toast'
 import type { AppType } from '@src/index'
 import { FormUtil, Loading } from '@hono-form'
 import { createRPC, onError } from '@hono-api/fe'
 import { imgWebpEvents, onFileChange } from '@img-webp'
-import { idAvatar, idProfileUpdateSaveBtn } from '@src/lib/dom'
 import { profileUpdateValidator } from '@src/validators/profileUpdate.validator'
 
 
@@ -14,7 +14,7 @@ export default (el: HTMLFormElement) => {
   const loading = new Loading(el)
   const rpc = createRPC<AppType>()
   const imgAvatar = query<HTMLImageElement>(idAvatar().query).one()
-  const btnProfileUpdateSaveBtn = query<HTMLButtonElement>(idProfileUpdateSaveBtn().query).one()
+  const btnProfileUpdateSaveBtn = query<HTMLButtonElement>('button[type="submit"]').root(el).one()
   const form = new FormUtil(el, profileUpdateValidator, (input) => onFileChange(input, { aimWidth: 450 }))
 
 
