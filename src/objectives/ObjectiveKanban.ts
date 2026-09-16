@@ -9,7 +9,7 @@ import { ObjectiveController } from '@src/objectives/ObjectiveController'
 import type { QueryObjectives, QueryObjective } from '@src/db/queryObjective'
 import { ObjectiveInUpShowModal } from '@src/objectives/ObjectiveInUpShowModal'
 import { formObjectiveValidator } from '@src/validators/inupObjective.validator'
-import { classNameAssignees, classNameColumn, classNameColumnCount, classNameIsBeingDragged, classNameObjective, classNameObjectives, classNameSvg, classNameTags, classNameTitle, datasetColumnId, datasetOrder, fieldObjectiveInUpAssigneeIds, fieldObjectiveInUpTagIds, idObjectiveInUpForm, idObjectiveTemplate } from '@src/lib/dom'
+import { classNameAssignees, classNameColumn, classNameComment, classNameCount, classNameIsBeingDragged, classNameObjective, classNameObjectives, classNameSvg, classNameTags, classNameTitle, datasetColumnId, datasetOrder, fieldObjectiveInUpAssigneeIds, fieldObjectiveInUpTagIds, idObjectiveInUpForm, idObjectiveInUpModalComments, idObjectiveTemplate } from '@src/lib/dom'
 
 
 
@@ -43,7 +43,7 @@ export class ObjectiveKanban {
     this.kanbanData = kanbanData
     this.objectiveInUpShowModal = objectiveInUpShowModal
     this.columns = Array.from(query<HTMLElement>(this.columnClassName.query).root(this.el).many())
-    this.columnCounts = Array.from(query<HTMLSpanElement>(classNameColumnCount().query).root(this.el).many())
+    this.columnCounts = Array.from(query<HTMLSpanElement>(classNameCount().query).root(this.el).many())
   }
 
 

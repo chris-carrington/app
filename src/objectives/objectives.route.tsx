@@ -10,7 +10,7 @@ import ObjectiveInUp from '@src/objectives/ObjectiveInUp'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import type { ClassNameReturn, DatasetReturn } from '@hono-dom'
 import { queryObjectives, type QueryObjective } from '@src/db/queryObjective'
-import { classNameAssignees, classNameColumn, classNameColumnCount, classNameObjective, classNameObjectives, classNameTags, classNameTitle, datasetColumnId, datasetId, datasetObjectiveInUpShowModal, datasetOrder, classNameSvg, idObjectiveTemplate } from '@src/lib/dom'
+import { classNameAssignees, classNameColumn, classNameCount, classNameObjective, classNameObjectives, classNameTags, classNameTitle, datasetColumnId, datasetId, datasetObjectiveInUpShowModal, datasetOrder, classNameSvg, idObjectiveTemplate } from '@src/lib/dom'
 
 
 export default new Hono()
@@ -22,9 +22,9 @@ export default new Hono()
     const svgClassName = classNameSvg()
     const tagsClassName = classNameTags()
     const titleClassName = classNameTitle()
+    const countClassName = classNameCount()
     const columnClassName = classNameColumn()
     const columnIdDataset = datasetColumnId()
-    const countClassName = classNameColumnCount()
     const assigneesClassName = classNameAssignees()
     const objectiveClassName = classNameObjective()
     const objectivesClassName = classNameObjectives()
@@ -69,6 +69,7 @@ export default new Hono()
                           orderDataset={orderDataset}
                           svgClassName={svgClassName}
                           tagsClassName={tagsClassName}
+                          countClassName={countClassName}
                           titleClassName={titleClassName}
                           datasetShowModal={datasetShowModal}
                           assigneesClassName={assigneesClassName}
@@ -92,6 +93,7 @@ export default new Hono()
             orderDataset={orderDataset}
             svgClassName={svgClassName}
             tagsClassName={tagsClassName}
+            countClassName={countClassName}
             titleClassName={titleClassName}
             datasetShowModal={datasetShowModal}
             assigneesClassName={assigneesClassName}
@@ -110,11 +112,14 @@ const ObjectiveCard: FC<{
   objectiveClassName: ClassNameReturn,
   tagsClassName: ClassNameReturn,
   titleClassName: ClassNameReturn,
+  countClassName: ClassNameReturn,
   assigneesClassName: ClassNameReturn,
   svgClassName: ClassNameReturn,
-}> = ({ objective, idDataset, orderDataset, datasetShowModal, objectiveClassName, tagsClassName, titleClassName, assigneesClassName, svgClassName }) => {
+}> = ({ objective, idDataset, orderDataset, countClassName, datasetShowModal, objectiveClassName, tagsClassName, titleClassName, assigneesClassName, svgClassName }) => {
   return <>
     <div {...idDataset.attr(objective ? String(objective.id) : '')} {...orderDataset.attr(objective ? String(objective.order) : undefined)} data-order={objective ? String(objective.order) : undefined} class={objectiveClassName.className} draggable="true">
+      <div class={`${countClassName.className} ${!objective?.comments.length ? 'hidden' : ''}`}>{objective?.comments.length}</div> 
+
       <div class="top-row">
         <span class={titleClassName.className}>{objective?.title ?? ''}</span>
         <button {...datasetShowModal.attr(objective?.id)} type="button" class={svgClassName.className}>
@@ -204,7 +209,7 @@ const style = css`
             border-bottom-color: #6366f1;
           }
 
-          .column-count {
+          .count {
             color: #4f46e5;
             background-color: #e0e7ff;
           }
@@ -216,7 +221,7 @@ const style = css`
             border-bottom-color: #f59e0b;
           }
 
-          .column-count {
+          .count {
             color: #b45309;
             background-color: #fef3c7;
           }
@@ -228,7 +233,7 @@ const style = css`
             border-bottom-color: #10b981;
           }
 
-          .column-count {
+          .count {
             color: #047857;
             background-color: #d1fae5;
           }
@@ -250,7 +255,7 @@ const style = css`
             text-transform: uppercase;
           }
 
-          .column-count {
+          .count {
             font-size: 1.8rem;
             font-weight: 600;
             color: #64748b;
@@ -299,6 +304,25 @@ const style = css`
               transform: scale(0.96);
               box-shadow: none;
               cursor: grabbing;
+            }
+
+            .count {
+              position: absolute;
+              right: -1.2rem;
+              top: -1.2rem;
+              background-color: rgb(11, 94, 215);
+              color: var(--white);
+              font-size: 80%;
+              font-weight: 600;
+              height: 2.5rem;
+              width: 2.5rem;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              &.hidden {
+                display: none;
+              }
             }
 
             .top-row {

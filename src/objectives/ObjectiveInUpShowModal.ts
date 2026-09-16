@@ -9,7 +9,7 @@ import { formatTimestamp } from '@src/lib/formatTimestamp'
 import { cloneTemplate, query, type FieldReturn } from '@hono-dom'
 import { ObjectiveController } from '@src/objectives/ObjectiveController'
 import { formObjectiveCommentValidator } from '@src/validators/objectiveComment.validator'
-import { idObjectiveInUpModalTitle, idObjectiveInUpModalSubmit, fieldObjectiveInUpTitle, fieldObjectiveInUpColumnId, fieldObjectiveInUpDescription, fieldObjectiveInUpAssigneeIds, fieldObjectiveInUpTagIds, datasetObjectiveInUpShowModal, idObjectiveInUpModalMdToggle, idObjectiveInUpModalMd, idObjectiveInUpModalDelete, idObjectiveInUpModalCommentSpacer, idObjectiveInUpModalCommentForm, idObjectiveInUpModalComments, classNameName, classNameValue, classNameTemporal, idObjectiveInUpModalComment, classNameComment } from '@src/lib/dom'
+import { idObjectiveInUpModalTitle, idObjectiveInUpModalSubmit, fieldObjectiveInUpTitle, fieldObjectiveInUpColumnId, fieldObjectiveInUpDescription, fieldObjectiveInUpAssigneeIds, fieldObjectiveInUpTagIds, datasetObjectiveInUpShowModal, idObjectiveInUpModalMdToggle, idObjectiveInUpModalMd, idObjectiveInUpModalDelete, idObjectiveInUpModalCommentSpacer, idObjectiveInUpModalCommentForm, idObjectiveInUpModalComments, classNameName, classNameValue, classNameTemporal, idObjectiveInUpModalComment, classNameComment, classNameCount, classNameObjective } from '@src/lib/dom'
 
 
 
@@ -318,6 +318,16 @@ export class ObjectiveInUpShowModal {
         this.formComment.reset()
         this.#addCommentToDom(res.firstName, res.lastName, result.data.comment, new Date().toISOString(), res.imageId)
         this.divComments.style.display = 'block'
+
+        // update comment count
+        const commentCount = query(classNameComment().query).root(this.divComments).many().length
+        const card = query<HTMLDivElement>(classNameObjective().query + this.controller.idDataset.query(objectiveId)).one()
+            
+        if (commentCount) {
+          const elCount = query<HTMLDivElement>(classNameCount().query).root(card).one()
+          elCount.style.display = 'flex'
+          elCount.innerText = String(commentCount)
+        }
       }
     } catch (e) {
       form.catch(e, onError)
