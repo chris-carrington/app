@@ -16,13 +16,13 @@ const tokens = new WeakMap<HTMLInputElement, number>()
  * untouched. Errors on individual files are logged and the original is kept.
  *
  * @example
- * ```ts
- * import { onChange } from '@img-webp'
- *
- * input.addEventListener('change', () => onChange(input, { aimWidth: 1200 }))
- * ```
+  ```ts
+  import { onFileChange } from '@img-webp'
+
+  input.addEventListener('change', () => onFileChange(input, { aimWidth: 1200 }))
+  ```
  */
-export async function onInputChange(el: HTMLInputElement, cfg?: ImgTransmuteConfig): Promise<void> {
+export async function onFileChange(el: HTMLInputElement, cfg?: ImgTransmuteConfig): Promise<void> {
   const files = el.files
   if (!files || files.length === 0) return
 

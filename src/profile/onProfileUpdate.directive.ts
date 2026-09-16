@@ -3,7 +3,7 @@
 import { query } from '@hono-dom'
 import { showToast } from '@hono-toast'
 import { idAvatar } from '@src/lib/dom'
-import { onInputChange } from '@img-webp'
+import { onFileChange } from '@img-webp'
 import type { AppType } from '@src/index'
 import { FormUtil, Loading } from '@hono-form'
 import { createRPC, onError } from '@hono-api/fe'
@@ -14,7 +14,7 @@ export default (el: HTMLFormElement) => {
   const loading = new Loading(el)
   const rpc = createRPC<AppType>()
   const imgAvatar = query<HTMLImageElement>(idAvatar().query).one()
-  const form = new FormUtil(el, profileUpdateValidator, onInputChange)
+  const form = new FormUtil(el, profileUpdateValidator, (input) => onFileChange(input, { aimWidth: 450 }))
 
   el.addEventListener('submit', async e => {
     e.preventDefault()

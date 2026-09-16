@@ -1,2 +1,2 @@
-export * from './onInputChange'
+export * from './onFileChange'
 export * from './imgTransmute'

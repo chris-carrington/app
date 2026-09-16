@@ -5,10 +5,8 @@ import { img_transmute } from './img_webp.js'
 
 
 /**
- * Compress an image `File` into a WebP `File` using the img-webp wasm module.
- *
- * Assumes `file` is an image. Non-image files should be filtered by the caller
- * (see `onChange`). Throws if wasm init or encoding fails.
+ * - Compress an image `File` into a WebP `File` using the img-webp wasm module.
+ * - Assumes `file` is an image. Non-image files should be filtered by the caller (see `onFileChange`). Throws if wasm init or encoding fails.
  */
 export async function imgTransmute(file: File, cfg: ImgTransmuteConfig = {}): Promise<File> {
   const { aimWidth = null, quality = 0.3 } = cfg
@@ -47,10 +45,15 @@ export async function imgTransmute(file: File, cfg: ImgTransmuteConfig = {}): Pr
 
 export type ImgTransmuteConfig = {
   /**
-   * Target width in px passed to `process_and_convert`.
-   * Defaults to `null`, which tells Rust to keep the source image's own width (no resize).
+   * - Optional
+   * - IF undefined THEN no resize
+   * - ELSE IF provided image width < aimWidth THEN no resize
+   * - ELSE set new image width to aimWidth
    */
-  aimWidth?: number | null
-  /** WebP encoder quality, 0..1. Default: 0.3 (30%). */
+  aimWidth?: number
+  /** 
+   * - WebP encoder quality, 0..1. Default: 0.3 (30%)
+   * - 30% surprisingly looks exactly like the original image
+    */
   quality?: number
 }
