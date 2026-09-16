@@ -3,8 +3,8 @@
 import { query } from '@hono-dom'
 import { AppType } from '@src/index'
 import { createRPC } from '@hono-api/fe'
-import type { QueryTags, QueryPeople } from '@src/db'
 import { QueryObjective } from '@src/db/queryObjective'
+import type { QueryTags, QueryStaffPeople } from '@src/db'
 import { datasetId, idObjectiveInUpModal } from '@src/lib/dom'
 
 
@@ -12,20 +12,20 @@ export class ObjectiveController {
   tags: QueryTags = []
   rpc = createRPC<AppType>()
   idDataset = datasetId()
-  assignees: QueryPeople = []
+  staff: QueryStaffPeople = []
   elModal = query<HTMLDivElement>(idObjectiveInUpModal().query).one()
 
 
   async dbQuery(objectiveId: number): Promise<QueryObjective | undefined> {
     const [resTags, resAssignees, resObjective] = await Promise.all([
       this.tags.length === 0 ? this.rpc.api.tags.$get() : null,
-      this.assignees.length === 0 ? this.rpc.api.people.$get() : null,
+      this.staff.length === 0 ? this.rpc.api.staff.$get() : null,
       objectiveId ? this.rpc.api.objective[':id'].$get({ param: { id: String(objectiveId) } }) : null,
     ])
 
     if (resTags) this.tags = (await resTags.json()).tags
 
-    if (resAssignees) this.assignees = (await resAssignees.json()).people
+    if (resAssignees) this.staff = (await resAssignees.json()).staff
 
     if (resObjective) return (await resObjective.json()).objective
   }

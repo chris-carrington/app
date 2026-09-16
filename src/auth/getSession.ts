@@ -3,11 +3,11 @@
 import { eq } from 'drizzle-orm'
 import type { Context } from 'hono'
 import { env } from 'cloudflare:workers'
-import { db, Person, Contact, Session } from '@src/db'
+import { queryStaffPersonSession } from '@src/db/queryStaff'
 import { deleteCookie, getSignedCookie } from 'hono/cookie'
 import { setSessionCookie } from '@src/auth/setSessionCookie'
+import { db, Person, Contact, Session, type QueryStaffPersonSession } from '@src/db'
 import { msSessionMaxAge, sessionCookieName, sessionRenewalWindow } from '@src/lib/vars'
-
 
 
 const defaultSessionVariant = 'just-session'
@@ -36,6 +36,7 @@ export async function getSession<V extends Variant = typeof defaultSessionVarian
   let session: undefined | typeof Session.$inferSelect = undefined
   let person: undefined | typeof Person.$inferSelect = undefined
   let contact: undefined | typeof Contact.$inferSelect = undefined
+  let positions: QueryStaffPersonSession['positions'] = []
 
 
   switch (variant) {
@@ -64,6 +65,12 @@ export async function getSession<V extends Variant = typeof defaultSessionVarian
 
       session = result?.Session
       person = result?.Person
+    } break
+    case 'include-staff': {
+      const result = await queryStaffPersonSession(Number(sessionId))
+      session = result?.session
+      person = result?.person
+      positions = result?.positions ?? []
     } break
     default: {
       session = await db
@@ -113,12 +120,13 @@ export async function getSession<V extends Variant = typeof defaultSessionVarian
   switch (variant) { // provide what's been requested
     case 'include-person-and-contact': return { response: { session, person, contact }, status: 200 } as GetSessionResult<V>
     case 'include-person': return { response: { session, person }, status: 200 } as GetSessionResult<V>
+    case 'include-staff': return { response: { session, person, positions }, status: 200 } as GetSessionResult<V>
     default: return { response: { session }, status: 200 } as GetSessionResult<V>
   }
 }
 
 
-type Variant = 'just-session' | 'include-person' | 'include-person-and-contact'
+type Variant = 'just-session' | 'include-person' | 'include-person-and-contact' | 'include-staff'
 
 type GetSessionResult<V extends Variant> =
   | { status: 401, message: string }
@@ -129,5 +137,7 @@ type GetSessionResult<V extends Variant> =
         ? { status: 200, response: { session: typeof Session.$inferSelect, person: typeof Person.$inferSelect } }
         : V extends 'include-person-and-contact'
         ? { status: 200, response: { session: typeof Session.$inferSelect, person: typeof Person.$inferSelect, contact: typeof Contact.$inferSelect } }
+        : V extends 'include-staff'
+        ? { status: 200, response: QueryStaffPersonSession }
         : never
   )

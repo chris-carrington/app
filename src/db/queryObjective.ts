@@ -6,7 +6,7 @@ import { db, Person, Objective, ObjectiveTag, ObjectiveComment, Objective__Tag, 
 import { prop, leftJoin, createParentShape, createChildren, type InferQuery } from '@drizzle-compose'
 
 
-const CommenterAlias = () => alias(Person, 'Commenter')
+const CommenterAlias = () => alias(Person, 'Commenter') // vite blows up if this proxy is not w/in a function
 
 
 function getBaseQuery() {

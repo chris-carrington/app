@@ -3,10 +3,14 @@
 import { Hono } from 'hono'
 import { queryPeople } from '@src/db'
 import { onSuccess } from '@hono-api/be'
+import { mwSessionPersonStaff } from '@src/middleware/mwSessionPersonStaff'
 
 
 export default new Hono()
-  .get('/', async (c) => {
-    const people = await queryPeople()
-    return onSuccess(c, { data: {people} })
-  })
+  .get(
+    '/',
+    mwSessionPersonStaff,
+    async (c) => {
+      const people = await queryPeople()
+      return onSuccess(c, { data: {people} })
+    })

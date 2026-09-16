@@ -2,9 +2,8 @@
 
 import { Hono } from 'hono'
 import { eq } from 'drizzle-orm'
-import { mwSession } from '@src/middleware/mwSession'
 import { validator, onError, onSuccess } from '@hono-api/be'
-import { mwSessionPerson } from '@src/middleware/mwSessionPerson'
+import { mwSessionPersonStaff } from '@src/middleware/mwSessionPersonStaff'
 import { db, insertObjective, queryObjective, updateObjective, Objective } from '@src/db'
 import { updateObjectiveValidator, insertObjectiveValidator } from '@src/validators/inupObjective.validator'
 
@@ -20,7 +19,7 @@ export default new Hono()
   .post(
     '/',
     validator('json', insertObjectiveValidator.schema),
-    mwSessionPerson,
+    mwSessionPersonStaff,
     async (c) => {
       const person = c.get('person')
       const data = c.req.valid('json')
@@ -35,7 +34,7 @@ export default new Hono()
   .put(
     '/',
     validator('json', updateObjectiveValidator.schema),
-    mwSession,
+    mwSessionPersonStaff,
     async (c) => {
       const data = c.req.valid('json')
 
@@ -48,7 +47,7 @@ export default new Hono()
     })
   .delete(
     '/:id',
-    mwSession,
+    mwSessionPersonStaff,
     async (c) => {
       const paramId = Number(c.req.param('id'))
 

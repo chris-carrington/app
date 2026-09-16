@@ -220,4 +220,4 @@ export function createChildren<Q extends (...args: any[]) => any>(queryFn: Q) {
 // Type helpers (for convenience)
 // ----------------------------------------------------------------------
 export type InferRow<T extends (...args: any) => any> = Awaited<ReturnType<T>>[number]
-export type InferQuery<T extends (...args: any) => any> = Awaited<ReturnType<T>>
+export type InferQuery<T extends (...args: any) => any> = NonNullable<Awaited<ReturnType<T>>>

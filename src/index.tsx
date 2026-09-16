@@ -4,6 +4,7 @@ import { Hono } from 'hono'
 import home from './home/home.route'
 import tags from '@src/api/tags.api'
 import pdf from '@src/lib/pdf.route'
+import staff from '@src/api/staff.api'
 import people from '@src/api/people.api'
 import signInApi from '@src/api/signIn.api'
 import signUpApi from '@src/api/signUp.api'
@@ -32,6 +33,7 @@ const app = new Hono()
   .route('/pdf', pdf)
   .route('/api/tags', tags)
   .route('/mastery', mastery)
+  .route('/api/staff', staff)
   .route('/api/people', people)
   .route('/sign-in', signInRoute)
   .route('/sign-up', signUpRoute)

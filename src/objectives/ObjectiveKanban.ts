@@ -494,7 +494,7 @@ export class ObjectiveKanban {
       columnId: json.columnId,
       createdAt: new Date().toISOString(),
       tags: this.controller.tags.filter(tag => json.tagIds.includes(tag.id)),
-      assignees: this.controller.assignees.filter(person => json.assigneeIds.includes(person.id)),
+      assignees: this.controller.staff.filter(person => json.assigneeIds.includes(person.id)),
     }
 
     const existingCard = this.el.querySelector<HTMLDivElement>(this.objectiveClassName.query + this.controller.idDataset.query(id))

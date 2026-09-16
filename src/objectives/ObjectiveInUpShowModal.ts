@@ -107,13 +107,13 @@ export class ObjectiveInUpShowModal {
 
   async #dbQuery(objectiveId: number) {
     let noTags = !this.controller.tags.length
-    let noAssignees = !this.controller.assignees.length
+    let noStaff = !this.controller.staff.length
 
-    if (noTags || noAssignees || objectiveId) {
+    if (noTags || noStaff || objectiveId) {
       this.objective = await this.controller.dbQuery(objectiveId)
 
       if (noTags) this.#addTagsToDom()
-      if (noAssignees) this.#addAssigneesToDom()
+      if (noStaff) this.#addAssigneesToDom()
     }
   }
 
@@ -121,7 +121,7 @@ export class ObjectiveInUpShowModal {
 
   #addAssigneesToDom() {
     ObjectiveInUpShowModal.#addCheckboxesToDom(
-      this.controller.assignees,
+      this.controller.staff,
       (p) => `${p.firstName} ${p.lastName}`,
       this.fieldAssignees,
       this.fieldsetAssignees,
