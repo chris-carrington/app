@@ -25,7 +25,7 @@ export default new Hono()
       const data = c.req.valid('json')
 
       try {
-        const objectiveId = await db.transaction(tx => insertObjective(tx, { ...data, createdBy: person.id }))
+        const objectiveId = await db.transaction(tx => insertObjective(person.id, tx, { ...data, createdBy: person.id }))
         return onSuccess(c, { data: {objectiveId} })
       } catch (e) {
         return onError(c, { e })
@@ -36,10 +36,11 @@ export default new Hono()
     validator('json', updateObjectiveValidator.schema),
     mwSessionPersonStaff,
     async (c) => {
+      const person = c.get('person')
       const data = c.req.valid('json')
 
       try {
-        await db.transaction(tx => updateObjective(tx, data))
+        await db.transaction(tx => updateObjective(person.id, tx, data))
         return onSuccess(c)
       } catch (e) {
         return onError(c, { e })

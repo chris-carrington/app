@@ -19,6 +19,7 @@ export * from '@src/db/queryTags'
 export * from '@src/db/queryPeople'
 export * from '@src/db/queryStaff'
 export * from '@src/db/inupObjective'
+export * from '@src/db/queryObjectiveActivity'
 export * from '@src/db/queryObjective'
 export * from '@src/db/putPersonContact'
 
@@ -36,6 +37,8 @@ export * from '@src/db/schema/MagicToken'
 export * from './schema/Objective__Assignee'
 export * from './schema/Objective__Tag'
 export * from './schema/Objective'
+export * from './schema/ObjectiveActivity'
+export * from './schema/ObjectiveActivityType'
 export * from './schema/ObjectiveColumn'
 export * from './schema/ObjectiveComment__Assignee'
 export * from './schema/ObjectiveComment'
@@ -48,6 +51,16 @@ export * from '@src/db/schema/StaffLead'
 export * from '@src/db/schema/StaffPosition'
 export * from '@src/db/schema/Trade__JobLead'
 export * from '@src/db/schema/Trade'
+
+
+export const OBJECTIVE_ACTIVITY_TYPE_ID = {
+  ASSIGNEE_ADDED: 1,
+  ASSIGNEE_REMOVED: 2,
+  COLUMN_CHANGED: 3,
+  TAG_ADDED: 4,
+  TAG_REMOVED: 5,
+  COMMENT_ADDED: 6,
+} as const
 
 
 // types

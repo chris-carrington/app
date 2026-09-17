@@ -1,10 +1,10 @@
 // app/src/api/objectiveComment.api.ts
 
 import { Hono } from 'hono'
-import { db, ObjectiveComment } from '@src/db'
 import { validator, onError, onSuccess } from '@hono-api/be'
 import { mwSessionPerson } from '@src/middleware/mwSessionPerson'
 import { postObjectiveCommentValidator } from '@src/validators/objectiveComment.validator'
+import { db, ObjectiveComment, ObjectiveActivity, OBJECTIVE_ACTIVITY_TYPE_ID } from '@src/db'
 
 
 export default new Hono()
@@ -17,11 +17,22 @@ export default new Hono()
       const data = c.req.valid('json')
 
       try {
-        const { id: commentId } = await db
-          .insert(ObjectiveComment)
-          .values({ createdBy: person.id, ...data })
-          .returning({ id: ObjectiveComment.id })
-          .get()
+        const commentId = await db.transaction(async (tx) => {
+          const { id: commentId } = await tx // insert comment
+            .insert(ObjectiveComment)
+            .values({ createdBy: person.id, ...data })
+            .returning({ id: ObjectiveComment.id })
+            .get()
+
+          await tx.insert(ObjectiveActivity).values({ // insert activity
+            objectiveId: data.objectiveId,
+            typeId: OBJECTIVE_ACTIVITY_TYPE_ID.COMMENT_ADDED,
+            actorId: person.id,
+            commentId,
+          })
+
+          return commentId
+        })
 
         const response = {
           commentId,

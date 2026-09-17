@@ -42,4 +42,12 @@ export const Accordion = (({ items }) => {
       })
     }
   </>
-}) satisfies FC<{ items: { header: Child, body: Child, startOpen?: boolean, namespace?: string }[] }>
+}) satisfies FC<{ items: AccordionItem[] }>
+
+
+export type AccordionItem = {
+  header: Child,
+  body: Child,
+  startOpen?: boolean,
+  namespace?: string
+}

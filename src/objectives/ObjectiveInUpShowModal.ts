@@ -33,16 +33,16 @@ export class ObjectiveInUpShowModal {
   textareaDescription: HTMLTextAreaElement
   errorMessages: NodeListOf<HTMLDivElement>
   assigneeCheckboxes: HTMLInputElement[] = []
+  showModalButtons: NodeListOf<HTMLButtonElement>
   fieldAssignees = fieldObjectiveInUpAssigneeIds()
   objective: QueryObjective | undefined = undefined
-  datasetShowModal = datasetObjectiveInUpShowModal()
-  showModalButtons = query<HTMLButtonElement>(this.datasetShowModal.query()).many()
   imgEdit = ObjectiveInUpShowModal.#getImg('/img/edit.svg', 'Edit objective')
   imgLoading = ObjectiveInUpShowModal.#getImg('/img/loading.svg', 'Edit objective modal loading')
 
 
   constructor(controller: ObjectiveController) {
     this.controller = controller
+    this.showModalButtons = query<HTMLButtonElement>(this.controller.datasetShowModal.query()).many()
     this.spanModalTitle = query<HTMLSpanElement>(idObjectiveInUpModalTitle().query).root(this.controller.elModal).one()
     this.buttonSubmit = query<HTMLButtonElement>(idObjectiveInUpModalSubmit().query).root(this.controller.elModal).one()
     this.buttonDelete = query<HTMLButtonElement>(idObjectiveInUpModalDelete().query).root(this.controller.elModal).one()
@@ -64,7 +64,7 @@ export class ObjectiveInUpShowModal {
 
   main() {
     for (const button of this.showModalButtons) {
-      const objectiveId = Number(button.dataset[this.datasetShowModal.camel])
+      const objectiveId = Number(button.dataset[this.controller.datasetShowModal.camel])
 
       button.addEventListener('click', async () => {
         this.showModal(button, objectiveId)
@@ -321,8 +321,9 @@ export class ObjectiveInUpShowModal {
 
         // update comment count
         const commentCount = query(classNameComment().query).root(this.divComments).many().length
-        const card = query<HTMLDivElement>(classNameObjective().query + this.controller.idDataset.query(objectiveId)).one()
-            
+        const card = this.controller.getObjectiveCard(objectiveId)
+        if (!card) throw new Error('!card')
+
         if (commentCount) {
           const elCount = query<HTMLDivElement>(classNameCount().query).root(card).one()
           elCount.style.display = 'flex'

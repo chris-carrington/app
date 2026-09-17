@@ -1,26 +1,27 @@
 // app/src/db/inupObjective.ts
 
 import { eq, and, inArray } from 'drizzle-orm'
-import { Objective, Objective__Tag, Objective__Assignee, type Transaction } from '@src/db'
+import { Objective, Objective__Tag, Objective__Assignee, type Transaction, ObjectiveActivity, OBJECTIVE_ACTIVITY_TYPE_ID } from '@src/db'
 import type { insertObjectiveValidator, updateObjectiveValidator } from '@src/validators/inupObjective.validator'
 
 
 /** Insert a new Objective */
-export async function insertObjective(tx: Transaction, input: InupObjectiveInput<'insert'>): Promise<number> {
+export async function insertObjective(actorId: number, tx: Transaction, input: InupObjectiveInput<'insert'>): Promise<number> {
   const { columnId, createdBy, title, description, order } = input
 
-  const [objective] = await tx // insert objective
+  const objective = await tx // insert objective
     .insert(Objective)
     .values({ columnId, createdBy, title, description, order })
     .returning({ id: Objective.id })
+    .get()
 
-  await insertObjectiveChildren(tx, input, objective.id) // insert children
+  await insertObjectiveChildren(actorId, tx, input, objective.id) // insert children
 
   return objective.id
 }
 
 
-async function insertObjectiveChildren(tx: Transaction, input: InupObjectiveInput<'insert'>, objectiveId: number) {
+async function insertObjectiveChildren(actorId: number, tx: Transaction, input: InupObjectiveInput<'insert'>, objectiveId: number) {
   const promises: Promise<unknown>[] = [] // alter db in parallel
 
   const { assigneeIds, tagIds } = input
@@ -31,6 +32,17 @@ async function insertObjectiveChildren(tx: Transaction, input: InupObjectiveInpu
         assigneeIds.map((personId) => ({
           objectiveId,
           personId,
+        })),
+      ),
+    )
+
+    promises.push(
+      tx.insert(ObjectiveActivity).values(
+        assigneeIds.map((assigneeId) => ({
+          objectiveId,
+          typeId: OBJECTIVE_ACTIVITY_TYPE_ID.ASSIGNEE_ADDED,
+          actorId,
+          assigneeId,
         })),
       ),
     )
@@ -45,6 +57,17 @@ async function insertObjectiveChildren(tx: Transaction, input: InupObjectiveInpu
         })),
       ),
     )
+
+    promises.push(
+      tx.insert(ObjectiveActivity).values(
+        tagIds.map((tagId) => ({
+          objectiveId,
+          typeId: OBJECTIVE_ACTIVITY_TYPE_ID.TAG_ADDED,
+          actorId,
+          tagId,
+        })),
+      ),
+    )
   }
 
   if (promises.length) {
@@ -54,24 +77,40 @@ async function insertObjectiveChildren(tx: Transaction, input: InupObjectiveInpu
 
 
 /** Update an existing Objective */
-export async function updateObjective(tx: Transaction, input: InupObjectiveInput<'update'>): Promise<number> {
+export async function updateObjective(actorId: number, tx: Transaction, input: InupObjectiveInput<'update'>): Promise<number> {
   const { id, columnId, title, description, order, assigneeIds, tagIds } = input
+
+  const existing = await tx
+    .select({ columnId: Objective.columnId })
+    .from(Objective)
+    .where(eq(Objective.id, id))
+    .get()
 
   await tx // update objective
     .update(Objective)
     .set({ columnId, title, description, order })
     .where(eq(Objective.id, id))
 
+  if (existing && existing.columnId !== columnId) {
+    await tx.insert(ObjectiveActivity).values({
+      objectiveId: id,
+      typeId: OBJECTIVE_ACTIVITY_TYPE_ID.COLUMN_CHANGED,
+      actorId,
+      fromColumnId: existing.columnId,
+      toColumnId: columnId,
+    })
+  }
+
   await Promise.all([ // update children
-    assigneeIds ? updateAssignees(tx, id, assigneeIds) : null,
-    tagIds ? updateTags(tx, id, tagIds) : null,
+    assigneeIds ? updateAssignees(actorId, tx, id, assigneeIds) : null,
+    tagIds ? updateTags(actorId, tx, id, tagIds) : null,
   ])
 
   return id
 }
 
 
-async function updateAssignees(tx: Transaction, objectiveId: number, newPersonIds: number[]): Promise<void> {
+async function updateAssignees(actorId: number, tx: Transaction, objectiveId: number, newPersonIds: number[]): Promise<void> {
   const newSet = new Set(newPersonIds)
 
   const existing = await tx
@@ -84,30 +123,49 @@ async function updateAssignees(tx: Transaction, objectiveId: number, newPersonId
   const toRemove = [...existingSet].filter((id) => !newSet.has(id))
 
   if (toRemove.length > 0) {
-    await tx
-      .delete(Objective__Assignee)
-      .where(
-        and(
-          eq(Objective__Assignee.objectiveId, objectiveId),
-          inArray(Objective__Assignee.personId, toRemove),
+    await Promise.all([
+      tx.delete(Objective__Assignee)
+        .where(
+          and(
+            eq(Objective__Assignee.objectiveId, objectiveId),
+            inArray(Objective__Assignee.personId, toRemove),
+          ),
         ),
+      tx.insert(ObjectiveActivity).values(
+        toRemove.map((assigneeId) => ({
+          objectiveId,
+          typeId: OBJECTIVE_ACTIVITY_TYPE_ID.ASSIGNEE_REMOVED,
+          actorId,
+          assigneeId,
+        })),
       )
+    ])
   }
 
   const toAdd = newPersonIds.filter((id) => !existingSet.has(id))
 
   if (toAdd.length > 0) {
-    await tx.insert(Objective__Assignee).values(
-      toAdd.map((personId) => ({
-        objectiveId,
-        personId,
-      })),
-    )
+    await Promise.all([
+      tx.insert(Objective__Assignee).values(
+        toAdd.map((personId) => ({
+          objectiveId,
+          personId,
+        })),
+      ),
+      tx.insert(ObjectiveActivity).values(
+        toAdd.map((assigneeId) => ({
+          objectiveId,
+          typeId: OBJECTIVE_ACTIVITY_TYPE_ID.ASSIGNEE_ADDED,
+          actorId,
+          assigneeId,
+        })),
+      )
+    ])
   }
 }
 
 
-async function updateTags(tx: Transaction, objectiveId: number, newTagIds: number[],): Promise<void> {
+async function updateTags(actorId: number, tx: Transaction, objectiveId: number, newTagIds: number[]): Promise<void> {
   const newSet = new Set(newTagIds)
 
   const existing = await tx
@@ -120,25 +178,45 @@ async function updateTags(tx: Transaction, objectiveId: number, newTagIds: numbe
   const toRemove = [...existingSet].filter((id) => !newSet.has(id))
 
   if (toRemove.length > 0) {
-    await tx
-      .delete(Objective__Tag)
-      .where(
-        and(
-          eq(Objective__Tag.objectiveId, objectiveId),
-          inArray(Objective__Tag.tagId, toRemove),
+    await Promise.all([
+      tx.delete(Objective__Tag)
+        .where(
+          and(
+            eq(Objective__Tag.objectiveId, objectiveId),
+            inArray(Objective__Tag.tagId, toRemove),
+          ),
         ),
+      tx.insert(ObjectiveActivity).values(
+        toRemove.map((tagId) => ({
+          objectiveId,
+          typeId: OBJECTIVE_ACTIVITY_TYPE_ID.TAG_REMOVED,
+          actorId,
+          tagId,
+        })),
       )
+    ])
+
   }
 
   const toAdd = newTagIds.filter((id) => !existingSet.has(id))
 
   if (toAdd.length > 0) {
-    await tx.insert(Objective__Tag).values(
-      toAdd.map((tagId) => ({
-        objectiveId,
-        tagId,
-      })),
-    )
+    await Promise.all([
+      tx.insert(Objective__Tag).values(
+        toAdd.map((tagId) => ({
+          objectiveId,
+          tagId,
+        })),
+      ),
+      tx.insert(ObjectiveActivity).values(
+        toAdd.map((tagId) => ({
+          objectiveId,
+          typeId: OBJECTIVE_ACTIVITY_TYPE_ID.TAG_ADDED,
+          actorId,
+          tagId,
+        })),
+      )
+    ])
   }
 }
 

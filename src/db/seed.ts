@@ -1,6 +1,6 @@
 // app/src/db/seed.ts
 
-import { db, Trade, JobStatus, LeadStatus, StaffPosition, StaffEndReason, ObjectiveColumn, ObjectiveTag } from '@src/db'
+import { db, Trade, JobStatus, LeadStatus, StaffPosition, StaffEndReason, ObjectiveColumn, ObjectiveTag, ObjectiveActivityType } from '@src/db'
 
 
 const trades = [
@@ -91,6 +91,15 @@ const objectiveTags = [
   { value: 'Archived', order: 7, bgHex: '#F1F5F9', fgHex: '#475569' }
 ]
 
+const objectiveActivityTypes = [
+  { value: 'Assignee Added' },
+  { value: 'Assignee Removed' },
+  { value: 'Column Changed' },
+  { value: 'Tag Added' },
+  { value: 'Tag Removed' },
+  { value: 'Comment Added' },
+]
+
 await Promise.all([
   db.insert(Trade).values(trades),
   db.insert(StaffPosition).values(staffPositions),
@@ -99,6 +108,7 @@ await Promise.all([
   db.insert(JobStatus).values(jobStatuses),
   db.insert(ObjectiveColumn).values(objectiveColumns),
   db.insert(ObjectiveTag).values(objectiveTags),
+  db.insert(ObjectiveActivityType).values(objectiveActivityTypes),
 ])
 
 console.log('✅ Database seed complete!')
