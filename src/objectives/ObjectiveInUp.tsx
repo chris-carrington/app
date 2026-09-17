@@ -210,6 +210,7 @@ const style = css`
           }
 
           .md {
+            display: none;
             padding: var(--space-lite);
             border: 1px solid transparent;
 
