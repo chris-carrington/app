@@ -101,8 +101,8 @@ async function onAccordion(marked: Marked, md: string) {
   let html = await marked.parse(processedMd)
 
   // replace placeholders with accordion HTML
-  accordionData.forEach(async (d, i) => {
-    const { startOpen, headerMd, bodyMd } = d
+  for (let i = 0; i < accordionData.length; i++) {
+    const { startOpen, headerMd, bodyMd } = accordionData[i]
 
     // render header and body separately (they can contain markdown)
     const headerHtml = await marked.parse(headerMd)
@@ -110,7 +110,7 @@ async function onAccordion(marked: Marked, md: string) {
 
     const accordionHtml = getAccordionItemHtml(i, startOpen, headerHtml, bodyHtml)
     html = html.replace(`<!--ACCORDION_PLACEHOLDER_${i}-->`, accordionHtml)
-  })
+  }
 
   return html
 }
