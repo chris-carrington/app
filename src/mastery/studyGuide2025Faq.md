@@ -9,8 +9,9 @@
 
 
 ## What is the 2025 Class B Study Guide?
-- The California Business and Professions Code is written in dense legal language. We translate it into simple English.
-- Commercial study guides cost over $1,000, we believe that knowledge should be free!
+- To be a General Contractor in California you must pass a test that proves you know the California Business and Professions Code
+- The California Business and Professions Code is written in dense legal language, so here, we translate it into simple English
+- Study guides typically require a $1,000+ class sign up but our study guide is free, happy studying!
 
 
 ---
