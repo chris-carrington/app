@@ -10,8 +10,8 @@ import { bindAccordionItems } from '@hono-accordion'
 export default (el: HTMLDivElement) => {
   const rpc = createRPC<AppType>()
 
-  if (location.pathname === rpc.mastery[':id?'].$url({ param: { id: '2025-class-b-study-guide'}}).pathname) {
-
+  // IF the current route is on the study guide page (not youtube mastery)
+  if (location.pathname === rpc.mastery[':id?'].$url({ param: { id: '2025-class-b-study-guide' }}).pathname) {
     tabsEvents.on('tabChanged', async ({ id }) => {
       const elTabContent = query<HTMLDivElement>(`#tabs-content-${id}`).one()
 
@@ -28,12 +28,12 @@ export default (el: HTMLDivElement) => {
 
         // add click listeners
         bindAccordionItems(el)
-
-        // update url
-        const url = rpc.mastery[':id?'].$url({ param: { id: '2025-class-b-study-guide' } })
-        url.searchParams.set('sub', id)
-        history.replaceState(history.state, '', url.pathname + url.search)
       }
+
+      // update url
+      const url = rpc.mastery[':id?'].$url({ param: { id: '2025-class-b-study-guide' } })
+      url.searchParams.set('sub', id)
+      history.replaceState(history.state, '', url.pathname + url.search)
     })
   }
 }

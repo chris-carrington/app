@@ -3,6 +3,13 @@
 import { query } from '@hono-dom'
 
 
+/**
+ * - Per-header context, keyed by the header element itself
+ * - WeakMap so entries are GC'd when the header is removed from the DOM
+ */
+const contexts = new WeakMap<HTMLDivElement, AccordionContext>()
+
+
 export default (el: HTMLDivElement) => {
   const elItems = query<HTMLDivElement>('.accordion-item').root(el).many()
 
@@ -10,50 +17,73 @@ export default (el: HTMLDivElement) => {
     const header = query<HTMLDivElement>('.accordion-header').root(elItem).one()
     const body = query<HTMLDivElement>('.accordion-body').root(elItem).one()
 
-    const toggle = () => {
-      const isOpen = elItem.classList.contains('open')
+    contexts.set(header, { elItem, header, body })
 
-      if (isOpen) { // Close: set height to 0
-        body.style.height = '0px'
-        elItem.classList.remove('open')
-        header.setAttribute('aria-expanded', 'false')
-      } else { // Open: first set height to auto to get scrollHeight, then animate to that value
-        body.style.height = 'auto'
-        const height = body.scrollHeight
-        body.style.height = '0px'
+    // Idempotent: same fn references, so removing first is safe
+    header.removeEventListener('click', onClick)
+    header.removeEventListener('keydown', onKeydown)
 
-        requestAnimationFrame(() => { // Force reflow then set to target height
-          body.style.height = height + 'px'
-        })
+    header.addEventListener('click', onClick)
+    header.addEventListener('keydown', onKeydown)
 
-        elItem.classList.add('open')
-        header.setAttribute('aria-expanded', 'true')
-      }
-    }
-
-    // Click toggles
-    header.addEventListener('click', toggle)
-
-    // Keyboard support (Enter/Space)
-    header.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault()
-        toggle()
-      }
-    })
-
-    // Initialize height for items that start open
+    // Initial state
     if (elItem.classList.contains('open')) {
-      requestAnimationFrame(() => { // After rendering, set height to scrollHeight
-        body.style.height = 'auto'
-        const height = body.scrollHeight
-        body.style.height = height + 'px'
-      })
-
       header.setAttribute('aria-expanded', 'true')
+
+      requestAnimationFrame(() => {
+        body.style.height = 'auto'
+        body.style.height = body.scrollHeight + 'px'
+      })
     } else {
-      body.style.height = '0px'
       header.setAttribute('aria-expanded', 'false')
+      body.style.height = '0px'
     }
   }
+}
+
+
+function onClick(e: PointerEvent) {
+  const header = e.currentTarget as HTMLDivElement
+  const ctx = contexts.get(header)
+  if (ctx) toggle(ctx)
+}
+
+
+function onKeydown(e: KeyboardEvent) {
+  if (e.key !== 'Enter' && e.key !== ' ') return
+
+  e.preventDefault()
+
+  const header = e.currentTarget as HTMLDivElement
+  const ctx = contexts.get(header)
+  if (ctx) toggle(ctx)
+}
+
+
+function toggle({ elItem, header, body }: AccordionContext) {
+  const isOpen = elItem.classList.contains('open')
+
+  if (isOpen) {
+    body.style.height = '0px'
+    elItem.classList.remove('open')
+    header.setAttribute('aria-expanded', 'false')
+  } else {
+    body.style.height = 'auto'
+    const height = body.scrollHeight
+    body.style.height = '0px'
+
+    requestAnimationFrame(() => {
+      body.style.height = height + 'px'
+    })
+
+    elItem.classList.add('open')
+    header.setAttribute('aria-expanded', 'true')
+  }
+}
+
+
+type AccordionContext = {
+  elItem: HTMLDivElement
+  header: HTMLDivElement
+  body: HTMLDivElement
 }
