@@ -1,3 +1,5 @@
+// app/tsconfig.json
+
 {
   "include": [
     "src",

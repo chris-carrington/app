@@ -3,18 +3,22 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run cf:types && npm run typesafe && vite build",
     "preview": "$npm_execpath run build && vite preview",
     "deploy": "$npm_execpath run build && wrangler deploy",
-    "cf:types": "npx wrangler types",
+
+    "build": "npm run build:cf-typess && build:hono-directives && npm run build:types && vite build",
+    "build:cf-types": "npx wrangler types",
+    "build:hono-directives": "npx tsx npm/hono-directives/src/cli.ts",
+    "build:app-types": "tsc --noEmit",
+    "build:hono-email-preview-script": "node npm/hono-email/src/build.js",
+
     "cf:secret:put": "npx wrangler secret put",
     "cf:secret:delete": "npx wrangler secret delete",
+
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "npx tsx src/db/seed.ts",
-    "hono-email:build": "node npm/hono-email/src/build.js",
-    "typesafe": "tsc --noEmit"
+    "db:seed": "npx tsx src/db/seed.ts"
   },
   "dependencies": {
     "@hono/valibot-validator": "^0.6.1",
