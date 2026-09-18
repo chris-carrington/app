@@ -1,15 +1,15 @@
 // app/src/lib/Pattern.tsx
 
-import type{ FC } from 'hono/jsx'
+import type { FC } from 'hono/jsx'
 import { Field } from '@hono-form'
 import { css, Style } from 'hono/css'
-import { flowSteps } from './flowSteps'
 import { patience } from '@src/lib/vars'
 import svgLock from '@src/svg/lock.svg?raw'
-import { jsonStaff } from '@src/json/staff.json'
-import { jsonTrades } from '@src/json/trades.json'
 import svgFrequency from '@src/svg/frequency.svg?raw'
-import { jsonHomeFormIds, jsonHomeForms } from '@src/json/homeForms.json'
+import { dsStaff } from '@src/dataStructures/staff.ds'
+import { dsTrades } from '@src/dataStructures/trades.ds'
+import { dsFlowSteps } from '@src/dataStructures/flowSteps.ds'
+import { dsHomeFormIds, dsHomeForms } from '@src/dataStructures/homeForms.ds'
 import { classNameStep, datasetFlowStepButton, datasetFlowStepContainer } from '@src/lib/dom'
 import { onFlowChange, onHashChange, onWrapChange, onContactUsSubmit, onServiceRequestSubmit, onJoinLeadershipSubmit, onJoinNewsletterSubmit, tooltip } from '@hono-directives'
 
@@ -40,10 +40,10 @@ const Flow: FC = () => {
       <div class="explain">🤔 How does Shasta Trades work?</div>
 
       <div class="buttons">
-        {flowSteps.map(step => <button {...datasetButton.attr(step.id)} class="transparent big" type="button">{step.button}</button>)}
+        {dsFlowSteps.map(step => <button {...datasetButton.attr(step.id)} class="transparent big" type="button">{step.button}</button>)}
       </div>
 
-      {flowSteps.map(step => <>
+      {dsFlowSteps.map(step => <>
         <div {...datasetContainer.attr(step.id)} data-directive={onWrapChange()} class="steps hidden">
           <div class="line"></div>
 
@@ -68,7 +68,7 @@ const Forms: FC = () => {
       <div class="explain">🤝 Want to connect with us?</div>
 
       <div class="buttons">
-        {jsonHomeForms.map(a => <a href={'#' + a.id} class="transparent big">{a.title}</a>)}
+        {dsHomeForms.map(a => <a href={'#' + a.id} class="transparent big">{a.title}</a>)}
       </div>
 
       <ServiceRequest />
@@ -81,7 +81,7 @@ const Forms: FC = () => {
 
 
 const ServiceRequest: FC = () => {
-  const id = jsonHomeFormIds[0]
+  const id = dsHomeFormIds[0]
   if (!id) throw new Error('!id')
 
   return <>
@@ -92,7 +92,7 @@ const ServiceRequest: FC = () => {
           <div class="title">Professional Service</div>
           <div class="description">Our master trade professionals lead every project, ensuring lovely results and hands-on education. Our services include:</div>
           <div class="items">
-            {jsonTrades.map(item => <>
+            {dsTrades.map(item => <>
               <div class="item">
                 <div class="icon" dangerouslySetInnerHTML={{ __html: item.icon }}></div>
                 <div class="info">
@@ -117,7 +117,7 @@ const ServiceRequest: FC = () => {
               <Field name="email" placeholder="Email" type="email" prefix={id} />
 
               <Field name="description" placeholder="Job Description" type="textarea" prefix={id} />
-              <Field name="trade" type="checkbox" options={jsonTrades} prefix={id} />
+              <Field name="trade" type="checkbox" options={dsTrades} prefix={id} />
 
               <button data-directive={tooltip('topCenter', patience)} class="orange wide" type="submit">Hire Trade Professionals</button>
             </form>
@@ -130,7 +130,7 @@ const ServiceRequest: FC = () => {
 
 
 const JoinLeadership: FC = () => {
-  const id = jsonHomeFormIds[1]
+  const id = dsHomeFormIds[1]
   if (!id) throw new Error('!id')
 
   return <>
@@ -141,7 +141,7 @@ const JoinLeadership: FC = () => {
           <div class="title">Lead by Example</div>
           <div class="description">We are uniting a visionary Board and dedicated Staff to lead by example! Current openings include:</div>
           <div class="items">
-            {jsonStaff.map(item => <>
+            {dsStaff.map(item => <>
               <div class="item">
                 <div class="icon" dangerouslySetInnerHTML={{__html: item.icon}}></div>
                 <div class="info">
@@ -164,7 +164,7 @@ const JoinLeadership: FC = () => {
               </div>
 
               <Field name="email" placeholder="Email" type="email" prefix={id} />
-              <Field name="interest" placeholder="Select Interested Position" type="select" options={jsonStaff} prefix={id} />
+              <Field name="interest" placeholder="Select Interested Position" type="select" options={dsStaff} prefix={id} />
               <button class="orange wide" type="submit">Join Leadership Team</button>
             </form>
           </div>
@@ -176,7 +176,7 @@ const JoinLeadership: FC = () => {
 
 
 const JoinNewsletter: FC = () => {
-  const id = jsonHomeFormIds[2]
+  const id = dsHomeFormIds[2]
   if (!id) throw new Error('!id')
 
   const items = [
@@ -226,7 +226,7 @@ const JoinNewsletter: FC = () => {
 
 
 const ContactUs: FC = () => {
-  const id = jsonHomeFormIds[3]
+  const id = dsHomeFormIds[3]
   if (!id) throw new Error('!id')
 
   const items = [

@@ -2,17 +2,17 @@
 
 import { query } from '@hono-dom'
 import { safeArrayAccess } from '@safely-access'
-import { jsonHomeFormIds } from '@src/json/homeForms.json'
+import { dsHomeFormIds } from '@src/dataStructures/homeForms.ds'
 
 
 export default (el: HTMLDivElement) => {
-  const defaultHashKey = safeArrayAccess(jsonHomeFormIds, 0)
+  const defaultHashKey = safeArrayAccess(dsHomeFormIds, 0)
 
-  const stepsRegex = new RegExp(`^#(${jsonHomeFormIds.join('|')})(?:-(scroll))?$`)
+  const stepsRegex = new RegExp(`^#(${dsHomeFormIds.join('|')})(?:-(scroll))?$`)
 
   const steps: Step[] = []
 
-  for (const id of jsonHomeFormIds) {
+  for (const id of dsHomeFormIds) {
     steps.push({
       id,
       domForm: query<HTMLDivElement>(`#${id}`).root(el).one(),

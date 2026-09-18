@@ -53,15 +53,5 @@ export * from '@src/db/schema/Trade__JobLead'
 export * from '@src/db/schema/Trade'
 
 
-export const OBJECTIVE_ACTIVITY_TYPE_ID = {
-  ASSIGNEE_ADDED: 1,
-  ASSIGNEE_REMOVED: 2,
-  COLUMN_CHANGED: 3,
-  TAG_ADDED: 4,
-  TAG_REMOVED: 5,
-  COMMENT_ADDED: 6,
-} as const
-
-
 // types
 export type Transaction = SQLiteTransaction<'async', ResultSet, Record<string, never>, ExtractTablesWithRelations<Record<string, never>>>

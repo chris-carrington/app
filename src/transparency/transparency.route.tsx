@@ -7,25 +7,16 @@ import { md2html } from '@src/md/md2html'
 import { mdStyle } from '@src/md/mdStyle'
 import type { AppType } from '@src/index'
 import svgDownload from '@src/svg/download.svg?raw'
-import schema from '@src/transparency/schema.md?raw'
-import byLaws from '@src/transparency/bylaws.md?raw'
-import byLawsFaq from '@src/transparency/bylaws-faq.md?raw'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
-import trustDocument from '@src/transparency/trust-document.md?raw'
-import trustDocumentFaq from '@src/transparency/trust-document-faq.md?raw'
-import whistleblowerPolicy from '@src/transparency/whistleblower-policy.md?raw'
-import whistleblowerPolicyFaq from '@src/transparency/whistleblower-policy-faq.md?raw'
-import articlesOfIncorporation from '@src/transparency/articles-of-incorporation.md?raw'
-import conflictOfInterestPolicy from '@src/transparency/conflict-of-interest-policy.md?raw'
-import articlesOfIncorporationFaq from '@src/transparency/articles-of-incorporation-faq.md?raw'
-import conflictOfInterestPolicyFaq from '@src/transparency/conflict-of-interest-policy-faq.md?raw'
+import { dsTransparencyMarkdowns, dsTransparencyMarkdownsDefault, type DsTransparencyMarkdowns } from '@src/dataStructures/transparencyMarkdowns.ds'
+import { bindAccordionItems } from '@hono-directives'
 
 
 export default new Hono()
   .get('/:id?', async (c) => {
     const rpc = createRPC<AppType>()
-    const paramId = c.req.param('id') ?? defaultDocument.id
-    const current = documents.find(b => b.id === paramId) ?? defaultDocument
+    const paramId = c.req.param('id') ?? dsTransparencyMarkdownsDefault.id
+    const current = dsTransparencyMarkdowns.find(b => b.id === paramId) ?? dsTransparencyMarkdownsDefault
     const html = await getHtml(current)
 
     return c.render(
@@ -35,7 +26,7 @@ export default new Hono()
         <Style>{mdStyle}</Style>
         <Style>{subPageHeroStyle}</Style>
 
-        <div class="transparency">
+        <div data-directive={bindAccordionItems()} class="transparency">
           <div class="sub-page-hero">
             <div class="bg"></div>
             <div class="header">
@@ -44,7 +35,7 @@ export default new Hono()
             </div>
 
             <div class="buttons">
-              {documents.map((a, i) => <a class={paramId === a.id ? 'orange big' : 'transparent big'} href={rpc.transparency[':id?'].$url({param: {id: a.id}}).href}>{a.title}</a>)}
+              {dsTransparencyMarkdowns.map(a => <a class={paramId === a.id ? 'orange big' : 'transparent big'} href={rpc.transparency[':id?'].$url({param: {id: a.id}}).href}>{a.title}</a>)}
             </div>
           </div>
 
@@ -69,19 +60,7 @@ export default new Hono()
   })
 
 
-const defaultDocument = { id: 'trust-document', title: 'Trust Document', md: [trustDocumentFaq, trustDocument], wrapTables: false }
-
-const documents = [
-  defaultDocument,
-  { id: 'bylaws', title: 'Bylaws', md: [byLawsFaq, byLaws], wrapTables: false, download: 'bylaws.pdf' },
-  { id: 'articles-of-incorporation', title: 'Articles of Incorporation', md: [articlesOfIncorporationFaq, articlesOfIncorporation], wrapTables: true },
-  { id: 'conflict-of-interest-policy', title: 'Conflict of Interest Policy', md: [conflictOfInterestPolicyFaq, conflictOfInterestPolicy], wrapTables: true },
-  { id: 'whistleblower-policy', title: 'Whistleblower Policy', md: [whistleblowerPolicyFaq, whistleblowerPolicy], wrapTables: false },
-  { id: 'schema', title: 'Schema', md: schema, wrapTables: true },
-]
-
-
-async function getHtml(doc: typeof documents[number]) {
+async function getHtml(doc: DsTransparencyMarkdowns) {
   return (Array.isArray(doc.md))
     ? (await Promise.all(doc.md.map(async md => await md2html(md, doc)))).join('')
     : await md2html(doc.md, doc)

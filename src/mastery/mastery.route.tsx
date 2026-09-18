@@ -8,20 +8,19 @@ import { Tab, Tabs, tabsStyle } from '@hono-tabs'
 import { queryStudyGuide } from './queryStudyGuide'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import { bindAccordionItems, onStudyGuideLoad } from '@hono-directives'
-import mdStudyGuide2025Faq from '@src/mastery/studyGuide2025Faq.md?raw'
-import mdYoutubeUniversity from '@src/mastery/youtubeUniversity.md?raw'
+import { dsMasteryMarkdowns, dsMasteryMarkdownsDefault, dsMasteryMarkdownStudyGuideId } from '@src/dataStructures/masteryMarkdowns.ds'
 
 
 export default new Hono()
   .get('/:id?', async (c) => {
-    const paramId = c.req.param('id') ?? defaultDocument.id
-    const current = documents.find(b => b.id === paramId) ?? defaultDocument
+    const paramId = c.req.param('id') ?? dsMasteryMarkdownsDefault.id
+    const current = dsMasteryMarkdowns.find(b => b.id === paramId) ?? dsMasteryMarkdownsDefault
     const html = await md2html(current.md, current)
 
     let subHtml = ''
     let subVerifiedIdQuery = ''
 
-    if (current.id === '2025-class-b-study-guide') {
+    if (current.id === dsMasteryMarkdownStudyGuideId) {
       const { verifiedId, html } = await queryStudyGuide(c.req.query('sub'))
       subVerifiedIdQuery = verifiedId
       subHtml = html
@@ -43,7 +42,7 @@ export default new Hono()
             </div>
 
             <div class="buttons">
-              {documents.map((a, i) => <a class={paramId === a.id ? 'orange big' : 'transparent big'} href={'/mastery/' + a.id}>{a.title}</a>)}
+              {dsMasteryMarkdowns.map(a => <a class={paramId === a.id ? 'orange big' : 'transparent big'} href={'/mastery/' + a.id}>{a.title}</a>)}
             </div>
           </div>
 
@@ -60,15 +59,6 @@ export default new Hono()
       </>
     )
   })
-
-
-const defaultDocument = { id: 'youtube-university', title: 'Youtube University', md: mdYoutubeUniversity, wrapTables: false, enableAccordion: true }
-
-
-const documents = [
-  defaultDocument,
-  { id: '2025-class-b-study-guide', title: '2025 Class B Study Guide', md: mdStudyGuide2025Faq, wrapTables: false, enableAccordion: true },
-]
 
 
 function createTab(id: string, label: string, html: string, subVerifiedIdQuery: string): Tab {

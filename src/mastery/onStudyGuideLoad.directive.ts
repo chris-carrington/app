@@ -5,13 +5,14 @@ import { AppType } from '@src/index'
 import { tabsEvents } from '@hono-tabs'
 import { createRPC } from '@hono-api/fe'
 import { bindAccordionItems } from '@hono-accordion'
+import { dsMasteryMarkdownStudyGuideId } from '@src/dataStructures/masteryMarkdowns.ds'
 
 
 export default (el: HTMLDivElement) => {
   const rpc = createRPC<AppType>()
 
   // IF the current route is on the study guide page (not youtube mastery)
-  if (location.pathname === rpc.mastery[':id?'].$url({ param: { id: '2025-class-b-study-guide' }}).pathname) {
+  if (location.pathname === rpc.mastery[':id?'].$url({ param: { id: dsMasteryMarkdownStudyGuideId }}).pathname) {
     tabsEvents.on('tabChanged', async ({ id }) => {
       const elTabContent = query<HTMLDivElement>(`#tabs-content-${id}`).one()
 
@@ -31,7 +32,7 @@ export default (el: HTMLDivElement) => {
       }
 
       // update url
-      const url = rpc.mastery[':id?'].$url({ param: { id: '2025-class-b-study-guide' } })
+      const url = rpc.mastery[':id?'].$url({ param: { id: dsMasteryMarkdownStudyGuideId } })
       url.searchParams.set('sub', id)
       history.replaceState(history.state, '', url.pathname + url.search)
     })

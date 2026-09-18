@@ -1,4 +1,4 @@
-// app/src/json/trades.json.ts
+// app/src/dataStructures/trades.ds.ts
 
 import svgHvac from '@src/svg/hvac.svg?raw'
 import svgTree from '@src/svg/tree.svg?raw'
@@ -20,7 +20,7 @@ import svgFoundation from '@src/svg/foundation.svg?raw'
 import svgPaintRoller from '@src/svg/paintRoller.svg?raw'
 
 
-export const jsonTrades = [
+export const dsTrades = [
   {
     value: '1',
     icon: svgFaucet,

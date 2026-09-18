@@ -1,11 +1,11 @@
-// app/src/json/homeForms.json.ts
+// app/src/dataStructures/homeForms.ds.ts
 
 
-export const jsonHomeForms = [
+export const dsHomeForms = [
   { id: 'service-request', title: 'SERVICE REQUEST' },
   { id: 'join-leadership', title: 'JOIN LEADERSHIP' },
   { id: 'join-newsletter', title: 'JOIN NEWSLETTER' },
   { id: 'contact-us', title: 'CONTACT US' },
 ]
 
-export const jsonHomeFormIds = jsonHomeForms.map(f => f.id)
+export const dsHomeFormIds = dsHomeForms.map(f => f.id)

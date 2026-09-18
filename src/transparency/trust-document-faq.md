@@ -1,12 +1,16 @@
+<!--{"accordionStart":true}-->
 ## Why isn't Shasta Trades an LLC, S-Corporation or C-Corporation?
+<!--{"accordionBody":true}-->
 - An LLC, S-Corporation or C-Corporation is profit focused
     - Created to make money
 - A Nonprofit is **mission focused**
     - Created to make a difference
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## Why is Shasta Trades a Trust and a Nonprofit?
+<!--{"accordionBody":true}-->
 - Shasta Trades **Trust**:
     - Is the member (owner) of Shasta Trades **Nonprofit**
     - Is the ultimate decision maker for our Nonprofit
@@ -16,17 +20,21 @@
     - A Nonprofit's mission can be changed with a Board vote
     - A Trust's mission cannot be changed unless it becomes "illegal, impossible, or impracticable" to carry out
     - So with this combination, our Nonprofit's mission can still change but only to an alteration that continues to align with our Trust's mission
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## What is a Trust Document?
+<!--{"accordionBody":true}-->
 - A Trust Document is a legal contract that brings the Trust into existence
 - Reviewed by the state's Attorney General
 - Defines the Trust's mission, names the Trustee(s) and tells them exactly how they must operate
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## What is a Charitable Trust?
+<!--{"accordionBody":true}-->
 - A Charitable Trust is a Nonprofit's member (owner)
 - A standard Nonprofit has a person’s name as the member. Our format is Shasta Trades Trust is the member of Shasta Trades Nonprofit
 - Shasta Trades Trust has a mission
@@ -41,10 +49,12 @@
 - Shasta Trades Trust has 2 Trustees who can veto any Nonprofit idea (e.g., change Nonprofit mission, hire someone, alter a salary, start working on a new project) that does not align with our Trusts mission
 - If a Trustee violates the Trust’s mission, California’s Attorney General will prosecute them
 - **The Nonprofit does the charitable work and the Trust protects the mission forever**
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## What is a Trustee?
+<!--{"accordionBody":true}-->
 - A Trustee has a strict legal duty to act in the best interest of the Trust's mission
 - Must avoid conflicts of interest
 - Cannot use Trust assets (Nonprofit) for their own personal gain
@@ -59,10 +69,12 @@
     - A registration fee of $50
 - Must file an annual report (Form RRF-1) with the Attorney General's Registry of Charitable Trusts every year, due 5 months after Shasta Trades fiscal year ends
 - Must file the annual IRS Form 990 tax return
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## An optimal Trust Document must include:
+<!--{"accordionBody":true}-->
 - Statement of intent explaining why we are creating the trust
 - Broad, specific & clear Mission Statement
     - Broad enough to allow for future growth but specific enough to guide the Trustees
@@ -76,5 +88,6 @@
 - Dissolution Clause
 - A clause specifying that the trust is created under and will be governed by the laws of the State of California
 - Amendments: provision allowing the Trustees to amend the document to conform to future changes in the law
+<!--{"accordionEnd":true}-->
 
 ---
