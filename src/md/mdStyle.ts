@@ -17,7 +17,7 @@ export const mdStyle = css`
     }
 
     h1 {
-      font-size: 3.3rem;
+      font-size: 3.21rem;
       margin-bottom: var(--space-lite);
     }
 

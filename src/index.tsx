@@ -20,12 +20,13 @@ import signOutRoute from '@src/auth/signOut.route'
 import studyGuideApi from '@src/api/studyGuide.api'
 import profileRoute from '@src/profile/profile.route'
 import magicLinkRoute from '@src/auth/magicLink.route'
+import transparencyApi from '@src/api/transparency.api'
 import serviceRequest from '@src/api/serviceRequest.api'
 import joinLeadership from '@src/api/joinLeadership.api'
 import joinNewsletter from '@src/api/joinNewsletter.api'
 import objectives from '@src/objectives/objectives.route'
 import objectiveCommentApi from '@src/api/objectiveComment.api'
-import transparency from '@src/transparency/transparency.route'
+import transparencyRoute from '@src/transparency/transparency.route'
 
 
 const app = new Hono()
@@ -47,9 +48,10 @@ const app = new Hono()
   .route('/api/session', sessionApi)
   .route('/api/objective', objective)
   .route('/api/contact-us', contactUs)
-  .route('/transparency', transparency)
   .route('/magic-link', magicLinkRoute)
   .route('/api/study-guide', studyGuideApi)
+  .route('/transparency', transparencyRoute)
+  .route('/api/transparency', transparencyApi)
   .route('/api/join-leadership', joinLeadership)
   .route('/api/join-newsletter', joinNewsletter)
   .route('/api/service-request', serviceRequest)

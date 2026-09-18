@@ -1,12 +1,13 @@
 // app/src/mastery/queryStudyGuide.ts
 
 import { md2html } from '@src/md/md2html'
+import { dsStudyGuideSectionIdDefault, dsStudyGuideSectionIds } from '@src/dataStructures/studyGuideSections.ds'
 
 
 export async function queryStudyGuide(id?: string) {
-  const verifiedId = id && studyGuideIds.has(id)
+  const verifiedId = id && dsStudyGuideSectionIds.has(id)
     ? id
-    : defaultId
+    : dsStudyGuideSectionIdDefault
 
   const md = await import(`./studyGuide2025_${verifiedId}.md?raw`)
 
@@ -15,13 +16,3 @@ export async function queryStudyGuide(id?: string) {
     html: await md2html(md.default, { wrapTables: false, enableAccordion: true })
   }
 }
-
-
-const defaultId = 'acronyms'
-
-
-const studyGuideIds = new Set([
-  defaultId,
-  'random',
-  'occupancy_classification',
-])

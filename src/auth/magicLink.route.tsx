@@ -116,7 +116,7 @@ const style = css`
     text-align: center;
     padding: var(--space);
     color: var(--primary);
-    font-size: 3.2rem;
+    font-size: 3.21rem;
 
     a {
       color: var(--orange);

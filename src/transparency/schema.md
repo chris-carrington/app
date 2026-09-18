@@ -1,13 +1,17 @@
+<!--{"accordionStart":true}-->
 ## What is a database, what is SQL and what is a database schema?
+<!--{"accordionBody":true}-->
 - A database is an organized collection of information
 - SQL is the most popular database programming language
 - A database schema defines how database information is organized (tables, rows, indexes, etc.)
     - All our data goes into an encrypted SQL database
     - The **architecture** of this database is a schema
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## Why do we need this detailed of a schema?
+<!--{"accordionBody":true}-->
 - We are running a trades school, a construction company and a grant-funded nonprofit all at once
 - Grantors don't just give money and walk away
     - They love financial reports and this schema helps us organize our data so we may provide these reports
@@ -16,10 +20,16 @@
     - Identify and restrict specific grant funds to specific liabilities
     - Tell an apprentice how many hours they have left until they reach their 4-year CSLB requirement
     - Identify how many low-income, medium-income and/or senior citizen households we've helped this quarter, for grants that love helping specific cohorts of our community
+<!--{"accordionEnd":true}-->
+
 
 ---
 
+# Database Schema 
+
+<!--{"accordionStart":true}-->
 ## Person
+<!--{"accordionBody":true}-->
 Store all people in our system (students, mentors, customers, Trustees, Board members, employees, vendors, etc.)
 
 | Field     | Type    | Notes                 |
@@ -28,10 +38,12 @@ Store all people in our system (students, mentors, customers, Trustees, Board me
 | firstName | TEXT    | NOT NULL              |
 | lastName  | TEXT    | NOT NULL              |
 | isActive  | BOOLEAN | NOT NULL, DEFAULT = 1 |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## Contact
+<!--{"accordionBody":true}-->
 Store contact details for each **Person**
 
 | Field                    | Type    | Notes                                                            |
@@ -45,10 +57,12 @@ Store contact details for each **Person**
 | phoneNumber              | TEXT    | NULLABLE                                                         |
 | phoneNumberVerified      | BOOLEAN | DEFAULT = 0                                                      |
 | sendJobOpportunityTexts  | BOOLEAN | DEFAULT = 0                                                      |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## Session
+<!--{"accordionBody":true}-->
 Stores authentication details between a **Person** and our application
 
 | Field           | Type     | Notes                                                     |
@@ -58,10 +72,12 @@ Stores authentication details between a **Person** and our application
 | expiresAt       | DATETIME | NOT NULL                                                  |
 | createdAt       | DATETIME | NOT NULL                                                  |
 | ipAddress       | TEXT     | NOT NULL                                                  |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## MagicToken
+<!--{"accordionBody":true}-->
 Before a **Session** is created we send a **Person** an email w/ a **MagicToken** (*passwordless / magic link authentication*)
 
 | Field     | Type     | Notes                                                     |
@@ -71,12 +87,12 @@ Before a **Session** is created we send a **Person** an email w/ a **MagicToken*
 | tokenHash | TEXT     | INDEX, NOT NULL                                           |
 | expiresAt | DATETIME | NOT NULL                                                  |
 | used      | BOOLEAN  | NOT NULL, DEFAULT = 0                                     |
+<!--{"accordionEnd":true}-->
 
 
-
----
-
+<!--{"accordionStart":true}-->
 ## ContactUsMessage
+<!--{"accordionBody":true}-->
 Store messages that are filled out with our Contact Us website form
 
 | Field     | Type     | Notes                                              |
@@ -85,10 +101,12 @@ Store messages that are filled out with our Contact Us website form
 | personId  | INTEGER  | NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE |
 | message   | TEXT     | NOT NULL                                           |
 | createdAt | DATETIME | NOT NULL, DEFAULT = NOW                            |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## Trade
+<!--{"accordionBody":true}-->
 Trades lookup table
 
 | Field    | Type    | Notes                 |
@@ -96,10 +114,12 @@ Trades lookup table
 | id       | INTEGER | PK, AI                |
 | value    | TEXT    | NOT NULL              |
 | isActive | BOOLEAN | NOT NULL, DEFAULT = 1 |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## Job
+<!--{"accordionBody":true}-->
 Store all work projects
 
 | Field       | Type     | Notes                                        |
@@ -109,10 +129,12 @@ Store all work projects
 | description | TEXT     | NULLABLE                                     |
 | address     | TEXT     | NOT NULL                                     |
 | createdAt   | DATETIME | NOT NULL, DEFAULT = NOW                      |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## Job__Trade
+<!--{"accordionBody":true}-->
 Junction table between **Job** & **Trade**
 
 | Field         | Type    | Notes                                           |
@@ -121,10 +143,12 @@ Junction table between **Job** & **Trade**
 | jobId         | INTEGER | NOT NULL, FK &rarr; **Job(id)**, CASCADE DELETE |
 | tradeId       | INTEGER | INDEX, NOT NULL, FK &rarr; **Trade(id)**        |
 | -             | -       | UNIQUE(jobId, tradeId)                          |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## Job__Client
+<!--{"accordionBody":true}-->
 Junction table between **Job** & **Person** (Client)
 
 | Field    | Type    | Notes                                                     |
@@ -133,10 +157,12 @@ Junction table between **Job** & **Person** (Client)
 | jobId    | INTEGER | NOT NULL, FK &rarr; **Job(id)**, CASCADE DELETE           |
 | clientId | INTEGER | INDEX, NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE |
 | -        | -       | UNIQUE(jobId, clientId)                                   |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## JobStatus
+<!--{"accordionBody":true}-->
 Job status lookup table
 
 | Field       | Type    | Notes                 |
@@ -145,10 +171,12 @@ Job status lookup table
 | value       | TEXT    | NOT NULL              |
 | description | TEXT    | NOT NULL              |
 | isActive    | BOOLEAN | NOT NULL, DEFAULT = 1 |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## JobLead
+<!--{"accordionBody":true}-->
 Store entries from our service request (job lead) form
 
 | Field       | Type     | Notes                                                         |
@@ -159,10 +187,12 @@ Store entries from our service request (job lead) form
 | statusId    | INTEGER  | INDEX, NOT NULL, FK &rarr; **LeadStatus(id)**                 |
 | description | TEXT     | NOT NULL                                                      |
 | createdAt   | DATETIME | NOT NULL, DEFAULT = NOW                                       |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## LeadStatus
+<!--{"accordionBody":true}-->
 Lead status lookup table
 
 | Field    | Type    | Notes                 |
@@ -170,10 +200,12 @@ Lead status lookup table
 | id       | INTEGER | PK, AI                |
 | value    | TEXT    | NOT NULL              |
 | isActive | BOOLEAN | NOT NULL, DEFAULT = 1 |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## Trade__JobLead
+<!--{"accordionBody":true}-->
 Junction table between **Trade** & **JobLead**
 
 | Field     | Type    | Notes                                               |
@@ -182,10 +214,12 @@ Junction table between **Trade** & **JobLead**
 | jobLeadId | INTEGER | NOT NULL, FK &rarr; **JobLead(id)**, CASCADE DELETE |
 | tradeId   | INTEGER | INDEX, NOT NULL, FK &rarr; **Trade(id)**            |
 | -         | -       | UNIQUE(tradeId, jobLeadId)                          |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## StaffLead
+<!--{"accordionBody":true}-->
 Store entries from our staff interest form
 
 | Field      | Type     | Notes                                              |
@@ -195,10 +229,12 @@ Store entries from our staff interest form
 | statusId   | INTEGER  | NOT NULL, FK &rarr; **LeadStatus(id)**             |
 | positionId | INTEGER  | NOT NULL, FK &rarr; **StaffPosition(id)**          |
 | createdAt  | DATETIME | NOT NULL, DEFAULT = NOW                            |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## StaffPosition
+<!--{"accordionBody":true}-->
 Staff position lookup table
 
 | Field    | Type    | Notes                 |
@@ -207,10 +243,12 @@ Staff position lookup table
 | value    | TEXT    | NOT NULL              |
 | isActive | BOOLEAN | NOT NULL, DEFAULT = 1 |
 | isHiring | BOOLEAN | NOT NULL, DEFAULT = 1 |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## Person__StaffPosition
+<!--{"accordionBody":true}-->
 Junction table between **Person** & **StaffPosition** that also tracks the employment time and potential reason for ending the position
 
 | Field       | Type     | Notes                                              |
@@ -222,10 +260,12 @@ Junction table between **Person** & **StaffPosition** that also tracks the emplo
 | startDate   | DATETIME | NOT NULL                                           |
 | endDate     | DATETIME | NULLABLE                                           |
 | -           | -        | UNIQUE(personId, positionId)                       |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## StaffEndReason
+<!--{"accordionBody":true}-->
 Staff end reason lookup table
 
 | Field    | Type    | Notes                 |
@@ -233,10 +273,12 @@ Staff end reason lookup table
 | id       | INTEGER | PK, AI                |
 | value    | TEXT    | NOT NULL              |
 | isActive | BOOLEAN | NOT NULL, DEFAULT = 1 |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## Objective
+<!--{"accordionBody":true}-->
 Stores objectives on our Kanban
 
 | Field       | Type     | Notes                                             |
@@ -248,10 +290,12 @@ Stores objectives on our Kanban
 | description | TEXT     |                                                   |
 | order       | DECIMAL  | INDEX, NOT NULL                                   |
 | createdAt   | DATETIME | NOT NULL, DEFAULT = NOW                           |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## Objective__Assignee
+<!--{"accordionBody":true}-->
 Junction table between **Objective** & **Person**
 
 | Field       | Type    | Notes                                                     |
@@ -260,10 +304,12 @@ Junction table between **Objective** & **Person**
 | objectiveId | INTEGER | NOT NULL, FK &rarr; **Objective(id)**, CASCADE DELETE     |
 | personId    | INTEGER | INDEX, NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE |
 | -           | -       | UNIQUE(objectiveId, personId)                             |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## ObjectiveColumn
+<!--{"accordionBody":true}-->
 Objective column (on Kanban) lookup table
 
 | Field    | Type    | Notes                 |
@@ -271,10 +317,12 @@ Objective column (on Kanban) lookup table
 | id       | INTEGER | PK, AI                |
 | value    | TEXT    | NOT NULL              |
 | isActive | BOOLEAN | NOT NULL, DEFAULT = 1 |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## ObjectiveTag
+<!--{"accordionBody":true}-->
 Objective tag lookup table (more specific then **ObjectiveColumn**)
 
 | Field    | Type    | Notes                 |
@@ -283,10 +331,12 @@ Objective tag lookup table (more specific then **ObjectiveColumn**)
 | value    | TEXT    | NOT NULL              |
 | isActive | BOOLEAN | NOT NULL, DEFAULT = 1 |
 | order    | INTEGER | NOT NULL              |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## Objective__Tag
+<!--{"accordionBody":true}-->
 Junction table between **Objective** & **ObjectiveTag**
 
 | Field       | Type    | Notes                                                 |
@@ -295,10 +345,12 @@ Junction table between **Objective** & **ObjectiveTag**
 | objectiveId | INTEGER | NOT NULL, FK &rarr; **Objective(id)**, CASCADE DELETE |
 | tagId       | INTEGER | INDEX, NOT NULL, FK &rarr; **ObjectiveTag(id)**       |
 | -           | -       | UNIQUE(objectiveId, tagId)                            |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## ObjectiveComment
+<!--{"accordionBody":true}-->
 Store **Objective** comments
 
 | Field       | Type     | Notes                                                        |
@@ -308,10 +360,12 @@ Store **Objective** comments
 | createdBy   | INTEGER  | NOT NULL, FK &rarr;**Person(id)**, CASCADE DELETE            |
 | value       | TEXT     | NOT NULL                                                     |
 | createdAt   | DATETIME | NOT NULL, DEFAULT = NOW                                      |
+<!--{"accordionEnd":true}-->
 
----
 
+<!--{"accordionStart":true}-->
 ## ObjectiveComment__Assignee
+<!--{"accordionBody":true}-->
 Junction table between **ObjectiveComment** & **Person**. If someone is assigned to an **Objective** then **DO NOT** store an entry for them here. **ObjectiveComment__Assignee** is for notifying people about an **ObjectiveComment** that are **NOT** assigned to an **Objective** when we'd love for them to know about a comment.
 
 | Field       | Type    | Notes                                                        |
@@ -320,5 +374,5 @@ Junction table between **ObjectiveComment** & **Person**. If someone is assigned
 | commentId   | INTEGER | NOT NULL, FK &rarr; **ObjectiveComment(id)**, CASCADE DELETE |
 | personId    | INTEGER | INDEX, NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE    |
 | -           | -       | UNIQUE(commentId, personId)                                  |
+<!--{"accordionEnd":true}-->
 
----

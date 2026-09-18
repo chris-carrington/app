@@ -42,7 +42,7 @@ export default new Hono()
             </div>
 
             <div class="buttons">
-              {dsMasteryMarkdowns.map(a => <a class={paramId === a.id ? 'orange big' : 'transparent big'} href={'/mastery/' + a.id}>{a.title}</a>)}
+              {dsMasteryMarkdowns.map(v => <a class={paramId === v.id ? 'orange big' : 'transparent big'} href={'/mastery/' + v.id}>{v.title}</a>)}
             </div>
           </div>
 

@@ -31,7 +31,7 @@ export const subPageHeroStyle = css`
       max-width: var(--max-width);
 
       h1 {
-        font-size: 3.2rem;
+        font-size: 3.21rem;
         font-weight: 600;
         color: var(--white);
         margin-bottom: var(--space-lite);
