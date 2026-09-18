@@ -196,7 +196,7 @@ export const formStyle = css`
     &.big {
       font-size: 1.86rem;
       border-radius: calc(var(--radius) * 2);
-      padding: var(--space-lite) var(--space);
+      padding: var(--space-lite) 2.1rem;
     }
   }
 
