@@ -1,5 +1,6 @@
 // import ConfirmModal from './ConfirmModal'
 
-export { modalStyle } from './modalStyle'
-export { ModalConfirm } from './ModalConfirm'
-export { onConfirmEvents } from './onConfirmEvents'
+export * from './modalStyle'
+export * from './ModalConfirm'
+export * from './onConfirmEvents'
+export * from './toggleModalDom'

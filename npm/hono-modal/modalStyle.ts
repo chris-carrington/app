@@ -8,7 +8,7 @@ export const modalStyle = css`
     pointer-events: none;
     visibility: hidden;
     transition: visibility 0s 0.3s; /* hide after animation */
-    &:not(.hidden) { /* visible state */
+    &:not(.modal-hidden) { /* visible state */
       pointer-events: auto;
       visibility: visible;
       transition: visibility 0s 0s; /* show immediately */
@@ -52,7 +52,7 @@ export const modalStyle = css`
       }
     }
     &#modal-confirm {
-      &:not(.hidden) {
+      &:not(.modal-hidden) {
         .backdrop {
           opacity: 0.81;
         }
@@ -236,7 +236,7 @@ export const modalStyle = css`
         transform: translateX(-50%) translateY(calc(-100% - 1px)); /* start above the viewport, horizontally centered */
       }
 
-      &:not(.hidden) .modal {
+      &:not(.modal-hidden) .modal {
         transform: translateX(-50%) translateY(0); /* slide down to its final position */
       }
     }

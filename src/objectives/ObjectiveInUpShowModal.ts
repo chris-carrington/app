@@ -2,6 +2,7 @@
 
 import { showToast } from '@hono-toast'
 import type { AppType } from '@src/index'
+import { toggleModalDom } from '@hono-modal'
 import { FormUtil, Loading } from '@hono-form'
 import { createRPC, onError } from '@hono-api/fe'
 import { QueryObjective } from '@src/db/queryObjective'
@@ -196,7 +197,7 @@ export class ObjectiveInUpShowModal {
     this.divComments.style.display = 'none'
     this.#setTitleAndSubmit('Create Objective', 'Create')
 
-    this.controller.elModal.classList.remove('hidden')
+    toggleModalDom(this.controller.elModal, true)
 
     this.#stopLoadingIndicator(button, 'Create', 450) // give time for the modal to be over the button
   }
@@ -224,7 +225,7 @@ export class ObjectiveInUpShowModal {
     ObjectiveInUpShowModal.#setCheckboxes(this.objective.tags, this.tagCheckboxes)
     ObjectiveInUpShowModal.#setCheckboxes(this.objective.assignees, this.assigneeCheckboxes)
 
-    this.controller.elModal.classList.remove('hidden')
+    toggleModalDom(this.controller.elModal, true)
 
     this.#clearPreviousComments()
     this.#addCommentsToDom()

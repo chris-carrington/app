@@ -15,7 +15,7 @@ export default (() => {
   const authModalId = idAuthModal().id
 
   return <>
-    <div {...authDataset.attr('undefined')} id={authModalId} class="modal-wrapper hidden">
+    <div {...authDataset.attr('undefined')} id={authModalId} class="modal-wrapper modal-hidden">
       <button data-directive={onNavModalToggle(authModalId)} class="backdrop" type="button" />
 
       <div class="modal">

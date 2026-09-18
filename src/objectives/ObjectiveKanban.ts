@@ -1,6 +1,7 @@
 // app/src/objectives/ObjectiveKanban.ts
 
 import { onError } from '@hono-api/fe'
+import { toggleModalDom } from '@hono-modal'
 import { showErrorToast } from '@hono-toast'
 import type { InferJson } from '@hono-api/fe'
 import { FormUtil, Loading } from '@hono-form'
@@ -424,7 +425,7 @@ export class ObjectiveKanban {
       loading.stop()
 
       if (objective) {
-        this.controller.elModal.classList.add('hidden')
+        toggleModalDom(this.controller.elModal, false)
       }
     }
   }

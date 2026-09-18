@@ -4,10 +4,10 @@ import { query } from '@hono-dom'
 import { AppType } from '@src/index'
 import { FormUtil } from '@hono-form'
 import { showToast } from '@hono-toast'
-import { onConfirmEvents } from '@hono-modal'
 import { createRPC, onError } from '@hono-api/fe'
 import { QueryObjective } from '@src/db/queryObjective'
 import type { QueryTags, QueryStaffPeople } from '@src/db'
+import { toggleModalDom, onConfirmEvents } from '@hono-modal'
 import { datasetId, classNameObjective, idObjectiveInUpModal, datasetObjectiveInUpShowModal } from '@src/lib/dom'
 
 
@@ -77,8 +77,8 @@ export class ObjectiveController {
         card.remove() // remove card from kanban
 
         onConfirmEvents.emit('hideModal') // hide confirm modal
-
-        this.elModal.classList.add('hidden') // hide inup modal
+   
+        toggleModalDom(this.elModal, false) // hide inup modal
 
         showToast({ variant: 'success', value: 'Success!' }) // notify success
       } catch (e) { // IF status is not 200

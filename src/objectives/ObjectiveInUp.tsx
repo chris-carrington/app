@@ -18,7 +18,7 @@ export default (() => {
     <Style>{style}</Style>
     <Style>{mdStyle}</Style>
 
-    <div id={modalId} class="modal-wrapper hidden">
+    <div id={modalId} class="modal-wrapper modal-hidden">
       <button data-directive={onModalToggle(modalId)} class="backdrop" type="button" />
 
       <div class="modal">

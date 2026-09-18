@@ -11,7 +11,7 @@ import { onModalToggle, onConfirmSubmit } from '@hono-directives'
  */
 export const ModalConfirm = (({ message, title }) => {
   return <>
-    <div id="modal-confirm" class="modal-wrapper hidden">
+    <div id="modal-confirm" class="modal-wrapper modal-hidden">
       <button data-directive={onModalToggle('modal-confirm')} class="backdrop" type="button" />
 
       <div class="modal">

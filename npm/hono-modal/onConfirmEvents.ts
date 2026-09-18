@@ -1,4 +1,5 @@
 import { HonoEvents } from '@hono-events'
+import { toggleModalDom } from '@hono-modal'
 
 
 export const onConfirmEvents = new HonoEvents<{
@@ -26,5 +27,5 @@ onConfirmEvents.on('hideModal', () => {
   const modal = document.getElementById('modal-confirm')
   if (!modal) throw new Error('!modal')
 
-  modal.classList.add('hidden')
+  toggleModalDom(modal, false)
 })
