@@ -14,6 +14,3 @@
 
 
 ---
-
-
-## [Acronyms](/mastery/2025-class-b-study-guide?sub=acronyms) · [Random](/mastery/2025-class-b-study-guide?sub=random) · [Occupancy Classification](/mastery/2025-class-b-study-guide?sub=occupancy_classification)

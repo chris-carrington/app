@@ -1,4 +1,4 @@
-// app/src/md/mdAccordion.directive.ts
+// app/npm/hono-accordion/bindAccordionItems.directive.ts
 
 import { query } from '@hono-dom'
 

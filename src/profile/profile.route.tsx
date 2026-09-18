@@ -11,7 +11,7 @@ import { queryStaffPerson } from '@src/db'
 import { getSession } from '@src/auth/getSession'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import { Accordion, type AccordionItem } from '@hono-accordion'
-import { mdAccordion, onProfileUpdateLoad } from '@hono-directives'
+import { bindAccordionItems, onProfileUpdateLoad } from '@hono-directives'
 
 
 export default new Hono()
@@ -153,7 +153,7 @@ export default new Hono()
         <Style>{style}</Style>
         <Style>{subPageHeroStyle}</Style>
 
-        <div class="profile" data-directive={mdAccordion()}>
+        <div class="profile" data-directive={bindAccordionItems()}>
           <div class="sub-page-hero">
             <div class="bg"></div>
             <div class="header">
@@ -179,9 +179,6 @@ export const style = css`
       #avatar {
         max-width: 100%;
         margin-bottom: var(--space-lite);
-        &.hidden {
-          display: none;
-        }
       }
     }
 

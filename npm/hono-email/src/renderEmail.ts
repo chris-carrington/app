@@ -61,6 +61,8 @@ function parse(template: string): Node[] {
       // Parse directive
       const parts = comment.split(/\s+/)
       let cmd = parts[0]
+      if (!cmd) throw new Error('!cmd')
+
       if (cmd.endsWith(':')) cmd = cmd.slice(0, -1) // strip colon
 
       // For 'each', we need to parse "var of array"
@@ -84,6 +86,8 @@ function parse(template: string): Node[] {
 
       // Other directives (add, if)
       const path = parts[1]
+      if (!path) throw new Error('!path')
+
       if (cmd === 'add') {
         result.push({ type: 'add', path })
       } else if (cmd === 'if') {

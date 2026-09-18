@@ -1,11 +1,12 @@
 // app/src/home/onHashChange.directive.ts
 
 import { query } from '@hono-dom'
+import { safeArrayAccess } from '@safely-access'
 import { jsonHomeFormIds } from '@src/json/homeForms.json'
 
 
 export default (el: HTMLDivElement) => {
-  const defaultHashKey = jsonHomeFormIds[0]
+  const defaultHashKey = safeArrayAccess(jsonHomeFormIds, 0)
 
   const stepsRegex = new RegExp(`^#(${jsonHomeFormIds.join('|')})(?:-(scroll))?$`)
 
@@ -22,7 +23,7 @@ export default (el: HTMLDivElement) => {
   function onHashChange() {
     const match = window.location.hash.match(stepsRegex) // [1] = hashKey, [2] = scroll suffix
 
-    if (match) updateDOM(match[1], match[2] === 'scroll')
+    if (match) updateDOM(safeArrayAccess(match, 1), match[2] === 'scroll')
     else updateDOM(defaultHashKey, false)
   }
 

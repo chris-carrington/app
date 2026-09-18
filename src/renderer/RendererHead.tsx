@@ -70,6 +70,8 @@ const style = css`
 
     --toast-max-width: 45rem;
 
+    --tabs-background: rgb(11, 94, 215);
+
     --z-modal: 6;
     --z-backdrop: 5;
     --z-nav: 4;
@@ -123,6 +125,10 @@ const style = css`
     margin: 0 auto;
     max-width: var(--max-width);
     padding: 0 var(--space-lite) var(--space-huge) var(--space-lite);
+  }
+
+  .hidden {
+    display: none !important;
   }
 
   @font-face {

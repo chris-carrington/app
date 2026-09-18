@@ -36,10 +36,11 @@ export default new Hono()
 
 
 async function insertJobLead(tx: Transaction, data: typeof serviceRequestValidator.data, personId: number) {
-  const [inserted] = await tx
+  const inserted = await tx
     .insert(JobLead)
     .values({ personId, statusId: 1, description: data.description })
     .returning({ id: JobLead.id })
+    .get()
 
   return inserted.id
 }

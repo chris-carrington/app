@@ -14,9 +14,13 @@ function buildRegistry() {
 
   for (const path in directiveModules) {
     const fileName = path.split('/').pop() || ''
-    // Strip .directive.ts or .directive.tsx
     const name = fileName.replace(/\.directive\.(ts|tsx)$/, '')
-    if (name) registry[name] = directiveModules[path]
+
+    if (name) {
+      const mod = directiveModules[path]
+      if (!mod) throw new Error('!mod')
+      registry[name] = mod
+    }
   }
   return registry
 }

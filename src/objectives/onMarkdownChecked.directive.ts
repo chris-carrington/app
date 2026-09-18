@@ -22,7 +22,7 @@ export default (el: HTMLInputElement) => {
 
       if (textAreaValue !== elTextarea.value) {
         textAreaValue = elTextarea.value
-        elMd.innerHTML = innerHTML = await md2html(elTextarea.value, false)
+        elMd.innerHTML = innerHTML = await md2html(elTextarea.value, { wrapTables: true })
       }
     }
   })

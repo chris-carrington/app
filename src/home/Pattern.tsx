@@ -330,9 +330,6 @@ const style = css`
 
       .form {
         scroll-margin-top: 24rem;
-        &.hidden {
-          display: none;
-        }
 
         @media (max-width: 927px) {
           scroll-margin-top: 28.2rem;
@@ -486,9 +483,6 @@ const style = css`
         flex-wrap: wrap;
         gap: var(--space);
         position: relative;
-        &.hidden {
-          display: none;
-        }
         &.wrapped .line {
           display: none;
         }

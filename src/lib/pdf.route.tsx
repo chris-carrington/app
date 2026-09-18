@@ -15,7 +15,7 @@ import md from '@src/transparency/whistleblower-policy.md?raw'
 
 export default new Hono()
   .get('/', async (c) => {
-    const html = await md2html(md, false)
+    const html = await md2html(md)
 
     return c.html(
       <>

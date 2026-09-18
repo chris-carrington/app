@@ -1,7 +1,39 @@
 // app/src/mastery/onStudyGuideLoad.directive.ts
 
+import { query } from '@hono-dom'
+import { AppType } from '@src/index'
+import { tabsEvents } from '@hono-tabs'
+import { createRPC } from '@hono-api/fe'
+import { bindAccordionItems } from '@hono-accordion'
+
+
 export default (el: HTMLDivElement) => {
-  if (window.location.pathname !== '/mastery/2025-class-b-study-guide') return
-  const sub = new URLSearchParams(window.location.search).get('sub') ?? 'acronyms'
-  el.querySelector(`a[href="/mastery/2025-class-b-study-guide?sub=${sub}"]`)?.classList.add('active')
+  const rpc = createRPC<AppType>()
+
+  if (location.pathname === rpc.mastery[':id?'].$url({ param: { id: '2025-class-b-study-guide'}}).pathname) {
+
+    tabsEvents.on('tabChanged', async ({ id }) => {
+      const elTabContent = query<HTMLDivElement>(`#tabs-content-${id}`).one()
+
+      if (!elTabContent.innerText) {
+        // start loading indicator
+        elTabContent.innerHTML = '<img src="/img/loading.svg" alt="Loading..." />'
+
+        // get api data
+        const response = await rpc.api['study-guide'][':id'].$get({ param: { id } })
+        const { html } = await response.json()
+
+        // update html
+        elTabContent.innerHTML = html
+
+        // add click listeners
+        bindAccordionItems(el)
+
+        // update url
+        const url = rpc.mastery[':id?'].$url({ param: { id: '2025-class-b-study-guide' } })
+        url.searchParams.set('sub', id)
+        history.replaceState(history.state, '', url.pathname + url.search)
+      }
+    })
+  }
 }

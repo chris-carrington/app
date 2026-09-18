@@ -4,6 +4,7 @@ import { onError } from '@hono-api/fe'
 import { showErrorToast } from '@hono-toast'
 import type { InferJson } from '@hono-api/fe'
 import { FormUtil, Loading } from '@hono-form'
+import { safeObjectAccess, safeArrayAccess } from '@safely-access'
 import { query, cloneTemplate, type FieldReturn } from '@hono-dom'
 import { ObjectiveController } from '@src/objectives/ObjectiveController'
 import type { QueryObjectives, QueryObjective } from '@src/db/queryObjective'
@@ -176,7 +177,7 @@ export class ObjectiveKanban {
     }
 
     if (clampedIndex < objectiveCards.length) {
-      elColumn.insertBefore(this.elDropIndicator, objectiveCards[clampedIndex])
+      elColumn.insertBefore(this.elDropIndicator, safeArrayAccess(objectiveCards, clampedIndex))
     } else {
       elColumn.appendChild(this.elDropIndicator)
     }
@@ -187,7 +188,7 @@ export class ObjectiveKanban {
     const allObjectiveCards: HTMLDivElement[] = this.#findAllObjectiveCardElementsInColumn(elColumn)
 
     for (let i: number = 0; i < allObjectiveCards.length; i++) {
-      const rect: DOMRect = allObjectiveCards[i].getBoundingClientRect()
+      const rect: DOMRect = safeArrayAccess(allObjectiveCards, i).getBoundingClientRect()
       const midY: number = rect.top + rect.height / 2
 
       if (mouseYPosition < midY) {
@@ -233,7 +234,7 @@ export class ObjectiveKanban {
     // Determine insertion index and order BEFORE removing the dragged card from the DOM/data
     const insertionIndex = this.#determineInsertionIndexFromMousePosition(elColumn, event.clientY, objectiveId)
 
-    let aimColumnData = [...this.kanbanData[targetColumnId]]
+    let aimColumnData = [...safeObjectAccess(this.kanbanData, targetColumnId)]
     if (sourceColumnId === targetColumnId) {
       aimColumnData = aimColumnData.filter(o => o.id !== objectiveId)
     }
@@ -279,7 +280,7 @@ export class ObjectiveKanban {
     if (!objective) return
 
     // remove from source data
-    const sourceData = this.kanbanData[sourceColumnId]
+    const sourceData = safeObjectAccess(this.kanbanData, sourceColumnId)
     const sourceIndex = sourceData.findIndex(o => o.id === objectiveId)
     if (sourceIndex === -1) return
     sourceData.splice(sourceIndex, 1)
@@ -287,7 +288,7 @@ export class ObjectiveKanban {
     // update objective and insert into target data
     objective.order = newOrder
     objective.columnId = targetColumnId
-    this.kanbanData[targetColumnId].splice(insertionIndex, 0, objective)
+    safeObjectAccess(this.kanbanData, targetColumnId).splice(insertionIndex, 0, objective)
 
     // update DOM
     const card = query<HTMLDivElement>(this.objectiveClassName.query + this.controller.idDataset.query(objectiveId)).root(this.el).one()
@@ -305,7 +306,7 @@ export class ObjectiveKanban {
       })
 
       if (refIndex === -1) objectivesContainer.appendChild(card)
-      else objectivesContainer.insertBefore(card, children[refIndex])
+      else objectivesContainer.insertBefore(card, safeArrayAccess(children, refIndex))
 
       this.#updateObjectiveCardsCache(targetColumnId)
 
@@ -334,7 +335,7 @@ export class ObjectiveKanban {
     )
 
     for (let i: number = 0; i < visibleObjectiveCards.length; i++) {
-      const rect: DOMRect = visibleObjectiveCards[i].getBoundingClientRect()
+      const rect: DOMRect = safeArrayAccess(visibleObjectiveCards, i).getBoundingClientRect()
       const midY: number = rect.top + rect.height / 2
       if (clientY < midY) return i
     }
@@ -353,8 +354,8 @@ export class ObjectiveKanban {
     if (!hasObjectiveBelow) return ObjectiveKanban.#getOrderIfAtBottomOfColumn(columnObjectives)
 
     return ObjectiveKanban.#getOrderIfBetweenTwoObjectives(
-      columnObjectives[insertionIndex - 1],
-      columnObjectives[insertionIndex]
+      safeArrayAccess(columnObjectives, insertionIndex - 1),
+      safeArrayAccess(columnObjectives, insertionIndex)
     )
   }
 
@@ -362,7 +363,7 @@ export class ObjectiveKanban {
 
   static #getOrderIfAtTopOfColumn(columnObjectives: QueryObjective[]): number {
     if (columnObjectives.length === 0) return 1
-    const firstObjectiveOrder: number = columnObjectives[0].order
+    const firstObjectiveOrder: number = safeArrayAccess(columnObjectives, 0).order
     return (0 + firstObjectiveOrder) / 2
   }
 
@@ -370,7 +371,7 @@ export class ObjectiveKanban {
 
   static #getOrderIfAtBottomOfColumn(columnObjectives: QueryObjective[]): number {
     if (columnObjectives.length === 0) return 1
-    const lastObjectiveOrder: number = columnObjectives[columnObjectives.length - 1].order
+    const lastObjectiveOrder: number = safeArrayAccess(columnObjectives, columnObjectives.length - 1).order
     return lastObjectiveOrder + 1
   }
 
@@ -382,8 +383,8 @@ export class ObjectiveKanban {
 
 
   #setColumnCount(columnId: number) {
-    const badge = this.columnCounts[columnId - 1]
-    const count = String(this.kanbanData[columnId].length)
+    const badge = safeArrayAccess(this.columnCounts, columnId - 1)
+    const count = String(safeObjectAccess(this.kanbanData, columnId).length)
     badge.textContent = count
   }
 
@@ -434,7 +435,7 @@ export class ObjectiveKanban {
     const columnId = Number(data.columnId)
     const tagIds = this.#getCheckedIds(fieldObjectiveInUpTagIds())
     const assigneeIds = this.#getCheckedIds(fieldObjectiveInUpAssigneeIds())
-    const order = ObjectiveKanban.#getObjectiveOrder(this.kanbanData[columnId], 0)
+    const order = ObjectiveKanban.#getObjectiveOrder(safeObjectAccess(this.kanbanData, columnId), 0)
 
     const json: InferJson<typeof this.controller.rpc.api.objective.$post> = {
       description: data.description,
@@ -478,7 +479,7 @@ export class ObjectiveKanban {
     }
 
     const objective = this.#onInupModalSuccess(result.data, res.objectiveId, json)
-    this.kanbanData[json.columnId].unshift(objective)
+    safeObjectAccess(this.kanbanData, json.columnId).unshift(objective)
     return objective
   }
 
@@ -509,26 +510,28 @@ export class ObjectiveKanban {
 
       if (currentColumnId !== newColumnId) {
         // Remove from current column's data array
-        const currentColumnData = this.kanbanData[currentColumnId]
+        const currentColumnData = safeObjectAccess(this.kanbanData, currentColumnId)
         const index = currentColumnData.findIndex(o => o.id === id)
         if (index !== -1) currentColumnData.splice(index, 1)
 
         // Add to new column's data array at the correct position (order already set)
-        this.kanbanData[newColumnId].push(objective)
-        this.kanbanData[newColumnId].sort((a, b) => a.order - b.order)
+        const newColumn = safeObjectAccess(this.kanbanData, newColumnId)
+        newColumn.push(objective)
+        newColumn.sort((a, b) => a.order - b.order)
 
         // Move DOM node
-        const targetColumn = this.columns[newColumnId - 1]
+        const targetColumn = safeArrayAccess(this.columns, newColumnId - 1)
         const objectivesContainer = targetColumn.querySelector<HTMLDivElement>(this.objectivesClassName.query)
 
         if (objectivesContainer) {
           // Insert at the correct position based on order
           const children = Array.from(objectivesContainer.children) as HTMLDivElement[]
           const refIndex = children.findIndex(child => Number(child.dataset.order) > objective.order)
+
           if (refIndex === -1) {
             objectivesContainer.appendChild(existingCard)
           } else {
-            objectivesContainer.insertBefore(existingCard, children[refIndex])
+            objectivesContainer.insertBefore(existingCard, safeArrayAccess(children, refIndex))
           }
         }
 
@@ -544,7 +547,7 @@ export class ObjectiveKanban {
       }
     } else {
       // New objective – insert at top of its column
-      const columnData = this.kanbanData[objective.columnId]
+      const columnData = safeObjectAccess(this.kanbanData, objective.columnId)
       columnData.unshift(objective)
 
       const card = cloneTemplate(idObjectiveTemplate().query)
@@ -555,7 +558,7 @@ export class ObjectiveKanban {
       })
 
       this.#populateObjectiveCard(card, objective)
-      const objectivesContainer = this.columns[objective.columnId - 1].querySelector<HTMLDivElement>(this.objectivesClassName.query)
+      const objectivesContainer = safeArrayAccess(this.columns, objective.columnId - 1).querySelector<HTMLDivElement>(this.objectivesClassName.query)
 
       if (objectivesContainer) {
         objectivesContainer.insertBefore(card, objectivesContainer.firstChild)

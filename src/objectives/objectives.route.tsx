@@ -320,9 +320,6 @@ const style = css`
               display: flex;
               align-items: center;
               justify-content: center;
-              &.hidden {
-                display: none;
-              }
             }
 
             .top-row {

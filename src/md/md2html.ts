@@ -1,6 +1,7 @@
 // app/src/lib/md2html.ts
 
 import { Marked, type Tokens } from 'marked'
+import { safeArrayAccess } from '@safely-access'
 
 
 /**
@@ -102,7 +103,7 @@ async function onAccordion(marked: Marked, md: string) {
 
   // replace placeholders with accordion HTML
   for (let i = 0; i < accordionData.length; i++) {
-    const { startOpen, headerMd, bodyMd } = accordionData[i]
+    const { startOpen, headerMd, bodyMd } = safeArrayAccess(accordionData, i)
 
     // render header and body separately (they can contain markdown)
     const headerHtml = await marked.parse(headerMd)

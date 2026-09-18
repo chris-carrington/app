@@ -1,4 +1,5 @@
 import svgSmile from '@src/svg/smile.svg?raw'
+import { safeArrayAccess } from '@safely-access'
 import svgPayments from '@src/svg/payments.svg?raw'
 import svgMenuBook from '@src/svg/menuBook.svg?raw'
 import svgStarAward from '@src/svg/starAward.svg?raw'
@@ -20,7 +21,7 @@ export const flowSteps: FlowStep[] = [
       {
         icon: svgToolsClipboard,
         title: 'Request a Service',
-        description: `Provide a <a href="#${jsonHomeForms[0].id}">service request</a> that details the work you'd love done`
+        description: `Provide a <a href="#${safeArrayAccess(jsonHomeForms, 0).id}">service request</a> that details the work you'd love done`
       },
       {
         icon: svgSmile,

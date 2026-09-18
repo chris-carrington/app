@@ -4,8 +4,10 @@ import { Hono } from 'hono'
 import { Style } from 'hono/css'
 import { md2html } from '@src/md/md2html'
 import { mdStyle } from '@src/md/mdStyle'
+import { Tab, Tabs, tabsStyle } from '@hono-tabs'
+import { queryStudyGuide } from './queryStudyGuide'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
-import { mdAccordion, onStudyGuideLoad } from '@hono-directives'
+import { bindAccordionItems, onStudyGuideLoad } from '@hono-directives'
 import mdStudyGuide2025Faq from '@src/mastery/studyGuide2025Faq.md?raw'
 import mdYoutubeUniversity from '@src/mastery/youtubeUniversity.md?raw'
 
@@ -17,21 +19,22 @@ export default new Hono()
     const html = await md2html(current.md, current)
 
     let subHtml = ''
+    let subVerifiedIdQuery = ''
 
     if (current.id === '2025-class-b-study-guide') {
-      const subQuery = c.req.query('sub') ?? ''
-      const subValidQuery = studyGuideSubs.has(subQuery) ? subQuery : 'acronyms'
-      const mdSub = await import(`./studyGuide2025_${subValidQuery}.md?raw`)
-      subHtml = await md2html(mdSub.default, current)
+      const { verifiedId, html } = await queryStudyGuide(c.req.query('sub'))
+      subVerifiedIdQuery = verifiedId
+      subHtml = html
     }
-    
+
     return c.render(
       <>
         <title>Shasta Trades · Mastery · {current.title}</title>
         <Style>{mdStyle}</Style>
+        <Style>{tabsStyle}</Style>
         <Style>{subPageHeroStyle}</Style>
 
-        <div class="mastery" data-directive={mdAccordion()}>
+        <div class="mastery" data-directive={bindAccordionItems()}>
           <div class="sub-page-hero">
             <div class="bg"></div>
             <div class="header">
@@ -46,7 +49,12 @@ export default new Hono()
 
           <div class="md" data-directive={onStudyGuideLoad()}>
             <div dangerouslySetInnerHTML={{ __html: html }}></div>
-            { subHtml && <div dangerouslySetInnerHTML={{ __html: subHtml }}></div> }
+
+            <Tabs variant="underline" name="study-guide-tabs" tabs={[
+              createTab('acronyms', 'Acronyms', subHtml, subVerifiedIdQuery),
+              createTab('random', 'Random', subHtml, subVerifiedIdQuery),
+              createTab('occupancy_classification', 'Occupancy Classification', subHtml, subVerifiedIdQuery),
+            ]} />
           </div>
         </div>
       </>
@@ -62,8 +70,15 @@ const documents = [
   { id: '2025-class-b-study-guide', title: '2025 Class B Study Guide', md: mdStudyGuide2025Faq, wrapTables: false, enableAccordion: true },
 ]
 
-const studyGuideSubs = new Set([
-  'acronyms',
-  'random',
-  'occupancy_classification',
-])
+
+function createTab(id: string, label: string, html: string, subVerifiedIdQuery: string): Tab {
+  return {
+    id,
+    label,
+    isInitiallyActive: subVerifiedIdQuery === id,
+    content: <div
+      style="min-height: 35rem"
+      id={'tabs-content-' + id}
+      dangerouslySetInnerHTML={{ __html: subVerifiedIdQuery === id ? html : '' }}></div>
+  }
+}

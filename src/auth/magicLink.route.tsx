@@ -18,13 +18,16 @@ export default new Hono()
 
     const tokenHash = await hashCreate({ password: c.req.param('token'), ...magicLinkTokenHashCreateProps })
 
-    const [result] = await db // get magicToken
+    const result = await db // get magicToken
       .select()
       .from(MagicToken)
       .innerJoin(Person, eq(MagicToken.personId, Person.id))
       .innerJoin(Contact, eq(Person.id, Contact.personId))
       .where(eq(MagicToken.tokenHash, tokenHash))
       .limit(1)
+      .get()
+
+    if (!result) throw new Error('Magic token is not within our database')
 
     const res = validate(rpc, result.MagicToken)
 
@@ -34,14 +37,15 @@ export default new Hono()
 
       try {
         const session = await db.transaction(async (tx) => {
-          const [[session], [magicToken]] = await Promise.all([
+          const [session, magicToken] = await Promise.all([
             tx.insert(Session) // insert Session
               .values({
                 ipAddress,
                 personId: result.Person.id,
                 expiresAt: new Date(Date.now() + msSessionMaxAge),
               })
-              .returning({ id: Session.id }),
+              .returning({ id: Session.id })
+              .get(),
             tx.update(MagicToken) // MagicToken.used -> true
               .set({ used: true })
               .where(
@@ -50,7 +54,8 @@ export default new Hono()
                   eq(MagicToken.used, false)
                 )
               )
-              .returning({ id: MagicToken.id }),
+              .returning({ id: MagicToken.id })
+              .get(),
             result.Contact.emailVerified === true // Contact.emailVerified -> true
               ? Promise.resolve()
               : tx.update(Contact)

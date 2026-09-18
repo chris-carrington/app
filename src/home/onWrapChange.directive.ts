@@ -1,6 +1,7 @@
 // app/src/home/onWrapChange.directive.ts
 
 import { query } from '@hono-dom'
+import { safeArrayAccess } from '@safely-access'
 import { classNameStep } from '@src/lib/dom'
 
 
@@ -14,7 +15,7 @@ export default (el: HTMLElement) => {
     }
 
     let wrapped = false
-    const firstTop = children[0].getBoundingClientRect().top
+    const firstTop = safeArrayAccess(children, 0).getBoundingClientRect().top
   
     for (const child of children) {
       if (child.getBoundingClientRect().top > firstTop + 1) { // IF any child is lower than the first THEN the row has wrapped

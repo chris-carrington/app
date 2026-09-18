@@ -2,6 +2,7 @@
 
 import { query } from '@hono-dom'
 import { flowSteps } from './flowSteps'
+import { safeArrayAccess } from '@safely-access'
 import { datasetFlowStepButton, datasetFlowStepContainer } from '@src/lib/dom'
 
 
@@ -29,5 +30,5 @@ export default (el: HTMLDivElement) => {
     }
   }
 
-  onFlowChange(flowSteps[0].id)
+  onFlowChange(safeArrayAccess(flowSteps, 0).id)
 }

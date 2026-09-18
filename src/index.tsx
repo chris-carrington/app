@@ -17,6 +17,7 @@ import mastery from '@src/mastery/mastery.route'
 import signInRoute from '@src/auth/signIn.route'
 import signUpRoute from '@src/auth/signUp.route'
 import signOutRoute from '@src/auth/signOut.route'
+import studyGuideApi from '@src/api/studyGuide.api'
 import profileRoute from '@src/profile/profile.route'
 import magicLinkRoute from '@src/auth/magicLink.route'
 import serviceRequest from '@src/api/serviceRequest.api'
@@ -48,6 +49,7 @@ const app = new Hono()
   .route('/api/contact-us', contactUs)
   .route('/transparency', transparency)
   .route('/magic-link', magicLinkRoute)
+  .route('/api/study-guide', studyGuideApi)
   .route('/api/join-leadership', joinLeadership)
   .route('/api/join-newsletter', joinNewsletter)
   .route('/api/service-request', serviceRequest)
