@@ -11,6 +11,8 @@ export const subPageHeroStyle = css`
     background-color: var(--primary);
     padding: var(--space) 0 calc(var(--space) * 1.8) 0;
 
+
+
     .bg {
       position: absolute;
       z-index: var(--z-mask);
@@ -54,6 +56,10 @@ export const subPageHeroStyle = css`
       img {
         height: 1.8rem;
         filter: invert(100%);
+      }
+
+      .big {
+         padding: var(--space-lite) 2.1rem;
       }
     }
   }

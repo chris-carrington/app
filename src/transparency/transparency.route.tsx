@@ -66,10 +66,6 @@ export default new Hono()
 
 
 const style = css`
-  .sub-page-hero .big {
-    padding: var(--space-lite) 2.1rem;
-  }
-
   #download {
     width: 100%;
     display: flex;
