@@ -16,3 +16,5 @@ const searchDirs = ['src', 'npm']
 const allDirectives = searchDirs.flatMap(dir => findDirectives(dir))
 
 writeGeneratedFiles(allDirectives)
+
+console.log('✅ @hono-directives built')

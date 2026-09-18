@@ -6,7 +6,7 @@
     "preview": "$npm_execpath run build && vite preview",
     "deploy": "$npm_execpath run build && wrangler deploy",
 
-    "build": "npm run build:cf-types && build:hono-directives && npm run build:app-types && vite build",
+    "build": "npm run build:cf-types && npm run build:hono-directives && npm run build:app-types && vite build",
     "build:cf-types": "npx wrangler types",
     "build:hono-directives": "npx tsx npm/hono-directives/src/cli.ts",
     "build:app-types": "tsc --noEmit",
