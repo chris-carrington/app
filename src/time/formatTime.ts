@@ -14,7 +14,10 @@ const clockFormat = new Intl.DateTimeFormat(undefined, {
   hour12: true,
 });
 
+// Now includes weekday so absolute dates read like
+// "Wednesday, September 24, 2026"
 const dateFormat = new Intl.DateTimeFormat(undefined, {
+  weekday: 'long',
   year: 'numeric',
   month: 'long',
   day: 'numeric',
@@ -50,26 +53,29 @@ export function formatTime(input: TimeInput, now: Date = new Date()): string {
 
   const elapsed = now.getTime() - date.getTime();
 
-  // Also covers future timestamps (clock skew).
+  // Also covers small future timestamps (clock skew).
   if (elapsed < 30 * SECOND) return 'Just now';
 
-  if (elapsed < HOUR) {
-    const minutes = Math.floor(elapsed / MINUTE);
-    return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
-  }
+  let days = calendarDaysBetween(now, date);
+  // Guard against future timestamps beyond the "Just now" window.
+  if (days < 0) days = 0;
 
-  if (elapsed < DAY) {
+  // Same calendar day → use fine-grained relative time.
+  if (days === 0) {
+    if (elapsed < HOUR) {
+      const minutes = Math.floor(elapsed / MINUTE);
+      return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
+    }
     const hours = Math.floor(elapsed / HOUR);
     return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
   }
 
-  // Past 24h we switch to calendar-day math so "Yesterday" means yesterday.
-  const days = calendarDaysBetween(now, date);
-
+  // Previous calendar day, regardless of how many hours ago that was.
   if (days === 1) return `Yesterday at ${clockFormat.format(date)}`;
 
-  // 2–3 days ago stays relative; 4+ days ago uses the absolute format.
+  // 2–3 days ago stays relative.
   if (days < 4) return `${days} days ago at ${clockFormat.format(date)}`;
 
+  // 4+ days ago → "Wednesday, September 24, 2026 at 9:30 PM"
   return `${dateFormat.format(date)} at ${clockFormat.format(date)}`;
 }

@@ -122,6 +122,9 @@ export const objectiveActivityStyle = css`
 
         .text {
           color: #2b2b2b;
+          /* allow a/span/strong words to break mid-word when needed */
+          overflow-wrap: anywhere;
+          word-break: normal;
 
           a,
           span,
@@ -146,11 +149,15 @@ export const objectiveActivityStyle = css`
           }
 
           .chip {
+            display: inline-block;
+            white-space: nowrap;
+            overflow-wrap: normal;
+            word-break: keep-all;
+            vertical-align: middle;
             padding: 0.3rem 1.2rem;
             border-radius: 99rem;
             font-size: 1.61rem;
             font-weight: 500;
-            white-space: nowrap;
 
             /* tags */
             &.inDevelopment {

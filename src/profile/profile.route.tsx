@@ -1,7 +1,7 @@
 // app/src/profile/profile.route.tsx
 
 import { Hono } from 'hono'
-import { Field } from '@hono-form'
+import { Field, msDay } from '@hono-form'
 import { css, Style } from 'hono/css'
 import { idAvatar } from '@src/lib/dom'
 import { createRPC } from '@hono-api/be'
@@ -9,9 +9,9 @@ import type { AppType } from '@src/index'
 import { getSession } from '@src/auth/getSession'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import { Accordion, type AccordionItem } from '@hono-accordion'
-import { queryStaffPerson, queryObjectiveActivity } from '@src/db'
-import { bindAccordionItems, onProfileUpdateLoad } from '@hono-directives'
+import { bindAccordionItems, onProfileUpdateLoad, tooltip } from '@hono-directives'
 import { ObjectiveActivity, objectiveActivityStyle } from '@src/lib/ObjectiveActivity'
+import { queryStaffPerson, queryObjectiveActivity, type QueryObjectiveActivity } from '@src/db'
 
 
 export default new Hono()
@@ -25,36 +25,29 @@ export default new Hono()
 
     const resStaff = await queryStaffPerson(resSession.response.person.id)
 
-    const accordionItems: AccordionItem[] = [
-      {
-        header: 'Edit Profile',
-        body: <>
-          <form data-directive={onProfileUpdateLoad()} class="form-card bg-white">
-            <div class="title">Edit Profile</div>
-
-            <div class="two">
-              <Field type="text" label="First Name" name="firstName" prefix="profile-update" value={resSession.response.person.firstName} />
-              <Field type="text" label="Last Name" name="lastName" prefix="profile-update" value={resSession.response.person.lastName} />
-            </div>
-
-            <Field type="file" label="Avatar" name="img" prefix="profile-update" />
-            <img id={avatarId.id} class={resSession.response.person.imageId ? '' : 'hidden'} src={`https://r2.shastatrades.org/${resSession.response.person.imageId}.webp`} />
-            <button type="submit" class="primary">Save</button>
-          </form>
-        </>
-      }
-    ]
+    const accordionItems: AccordionItem[] = []
 
     if (resStaff?.positions.length) {
       const resActivity = await queryObjectiveActivity({ variant: 'personal', sessionPersonId: resSession.response.person.id })
+      const resActivityRecentCount = countItemsInLast24Hours(resActivity)
 
       accordionItems.push({
-        header: 'Objective Activity',
+        header: <>
+          <div class="space-between">
+            <span>Objective Activity</span>
+            <span data-directive={tooltip('bottomRight', 'The number of objective activity itmes in the last 24 hours! ✅')}>{resActivityRecentCount}</span>
+          </div>
+        </>,
         body: <ObjectiveActivity res={resActivity} />
       })
 
       accordionItems.push({
-        header: 'Job Leads',
+        header: <>
+          <div class="space-between">
+            <span>Job Leads</span>
+            <span>3</span>
+          </div>
+        </>,
         body: <>
           <section class="bucket service" aria-labelledby="bucket-service">
             <div class="bhead">
@@ -128,7 +121,12 @@ export default new Hono()
       })
 
       accordionItems.push({
-        header: 'Staff Leads',
+        header: <>
+          <div class="space-between">
+            <span>Staff Leads</span>
+            <span>2</span>
+          </div>
+        </>,
         body: <>
           <section class="bucket lead" aria-labelledby="bucket-lead">
             <div class="bhead">
@@ -168,7 +166,57 @@ export default new Hono()
       })
 
       accordionItems.push({
-        header: 'Newsletter Signups',
+        header: <>
+          <div class="space-between">
+            <span>Contact Us Messages</span>
+            <span>2</span>
+          </div>
+        </>,
+        body: <>
+          <section class="bucket contact" aria-labelledby="bucket-contact">
+            <div class="bhead">
+              <span class="dot" aria-hidden="true"></span>
+              <h2 id="bucket-contact">Contact Us Messages</h2>
+              <span class="count">2</span>
+            </div>
+            <div class="entries">
+
+              <article class="entry">
+                <div class="who">
+                  <span class="name">Daniel Cho</span>
+                  <a class="email" href="mailto:daniel.cho@example.com">daniel.cho@example.com</a>
+                  <span class="when">8 hours ago</span>
+                </div>
+                <dl class="fields">
+                  <dt>Message</dt>
+                  <dd>Do you serve Weed and Dunsmuir, or is it Mount Shasta only? Thanks!</dd>
+                </dl>
+              </article>
+
+              <article class="entry">
+                <div class="who">
+                  <span class="name">Grace Lindqvist</span>
+                  <a class="email" href="mailto:grace.lindqvist@example.com">grace.lindqvist@example.com</a>
+                  <span class="when">3 days ago</span>
+                </div>
+                <dl class="fields">
+                  <dt>Message</dt>
+                  <dd>I'd love to volunteer for the next community build day — how do I get on the list?</dd>
+                </dl>
+              </article>
+
+            </div>
+          </section>
+        </>
+      })
+
+      accordionItems.push({
+        header: <>
+          <div class="space-between">
+            <span>Newsletter Signups</span>
+            <span>3</span>
+          </div>
+        </>,
         body: <>
           <section class="bucket news" aria-labelledby="bucket-news">
             <div class="bhead">
@@ -206,47 +254,25 @@ export default new Hono()
           </section>
         </>
       })
-
-      accordionItems.push({
-        header: 'Contact Us Requests',
-        body: <>
-          <section class="bucket contact" aria-labelledby="bucket-contact">
-            <div class="bhead">
-              <span class="dot" aria-hidden="true"></span>
-              <h2 id="bucket-contact">Contact Us</h2>
-              <span class="count">2</span>
-            </div>
-            <div class="entries">
-
-              <article class="entry">
-                <div class="who">
-                  <span class="name">Daniel Cho</span>
-                  <a class="email" href="mailto:daniel.cho@example.com">daniel.cho@example.com</a>
-                  <span class="when">8 hours ago</span>
-                </div>
-                <dl class="fields">
-                  <dt>Message</dt>
-                  <dd>Do you serve Weed and Dunsmuir, or is it Mount Shasta only? Thanks!</dd>
-                </dl>
-              </article>
-
-              <article class="entry">
-                <div class="who">
-                  <span class="name">Grace Lindqvist</span>
-                  <a class="email" href="mailto:grace.lindqvist@example.com">grace.lindqvist@example.com</a>
-                  <span class="when">3 days ago</span>
-                </div>
-                <dl class="fields">
-                  <dt>Message</dt>
-                  <dd>I'd love to volunteer for the next community build day — how do I get on the list?</dd>
-                </dl>
-              </article>
-
-            </div>
-          </section>
-        </>
-      })
     }
+
+    accordionItems.push({
+      header: 'Edit Your Profile',
+      body: <>
+        <form data-directive={onProfileUpdateLoad()} class="form-card bg-white">
+          <div class="title">Edit Your Profile</div>
+
+          <div class="two">
+            <Field type="text" label="First Name" name="firstName" prefix="profile-update" value={resSession.response.person.firstName} />
+            <Field type="text" label="Last Name" name="lastName" prefix="profile-update" value={resSession.response.person.lastName} />
+          </div>
+
+          <Field type="file" label="Avatar" name="img" prefix="profile-update" />
+          <img id={avatarId.id} class={resSession.response.person.imageId ? '' : 'hidden'} src={`https://r2.shastatrades.org/${resSession.response.person.imageId}.webp`} />
+          <button type="submit" class="primary">Save</button>
+        </form>
+      </>
+    })
 
     return c.render(
       <>
@@ -276,8 +302,51 @@ export default new Hono()
 const avatarId = idAvatar()
 
 
+function countItemsInLast24Hours(res: QueryObjectiveActivity): number {
+  let count = 0
+  const nowMs = Date.now()
+  const cutoffMs = nowMs - msDay
+
+  for (const item of res.items) {
+    if (item.createdAtMs >= cutoffMs && item.createdAtMs <= nowMs) count++
+    else break
+  }
+
+  return count
+}
+
+
 export const style = css`
   .profile {
+    .page-content {
+      max-width: 69rem;
+    }
+
+    .accordion-title {
+      .space-between {
+        display: flex;
+        justify-content: space-between;
+
+        span {
+          &:last-child {
+              padding: 0.3rem 1.1rem;
+              font-size: 1.2rem;
+              font-weight: 700;
+              color: var(--white);
+              background: var(--primary);
+              border-radius: 50%;
+              height: 2.1rem;
+              width: 2.1rem;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin-top: 0.3rem;
+              margin-right: 0.6rem;
+          }
+        }
+      }
+    }
+
     .form-card {
       margin-inline: auto !important;
 
