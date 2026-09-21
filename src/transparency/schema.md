@@ -284,12 +284,46 @@ Stores objectives on our Kanban
 | Field       | Type     | Notes                                             |
 |-------------|----------|---------------------------------------------------|
 | id          | INTEGER  | PK, AI                                            |
-| columnId    | INTEGER  | INDEX, NOT NULL, FK &rarr;**ObjectiveColumn(id)** |
-| createdBy   | INTEGER  | NOT NULL, FK &rarr;**Person(id)**, CASCADE DELETE |
+| columnId    | INTEGER  | INDEX, NOT NULL, FK &rarr; **ObjectiveColumn(id)** |
+| createdBy   | INTEGER  | NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE |
 | title       | TEXT     | UNQUE INDEX, NOT NULL                             |
 | description | TEXT     |                                                   |
 | order       | DECIMAL  | INDEX, NOT NULL                                   |
 | createdAt   | DATETIME | NOT NULL, DEFAULT = NOW                           |
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## ObjectiveActivity
+<!--{"accordionBody":true}-->
+Stores activity/events for an **Objective**
+
+| Field        | Type     | Notes                                                     |
+|--------------|----------|-----------------------------------------------------------|
+| id           | INTEGER  | PK, AI                                                    |
+| objectiveId  | INTEGER  | NOT NULL, FK &rarr; **Objective(id)**, CASCADE DELETE     |
+| typeId       | INTEGER  | INDEX, NOT NULL, FK &rarr; **ObjectiveActivityType(id)**  |
+| actorId      | INTEGER  | INDEX, FK &rarr; **Person(id)**                           |
+| assigneeId   | INTEGER  | INDEX, FK &rarr; **Person(id)**,                          |
+| fromColumnId | INTEGER  | FK &rarr; **ObjectiveColumn(id)**                         |
+| toColumnId   | INTEGER  | FK &rarr; **ObjectiveColumn(id)**,                        |
+| tagId        | INTEGER  | INDEX, FK &rarr; **ObjectiveTag(id)**,                    |
+| commentId    | INTEGER  | INDEX, FK &rarr; **ObjectiveComment(id)**,                |
+| createdAt    | DATETIME | INDEX, NOT NULL, DEFAULT = NOW                            |
+| -            | -        | INDEX(objectiveId, createdAt)                             |
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## ObjectiveActivityType
+<!--{"accordionBody":true}-->
+Objective activity types lookup table
+
+| Field    | Type    | Notes                 |
+|----------|---------|-----------------------|
+| id       | INTEGER | PK, AI                |
+| value    | TEXT    | NOT NULL              |
+| isActive | BOOLEAN | NOT NULL, DEFAULT = 1 |
 <!--{"accordionEnd":true}-->
 
 
@@ -357,7 +391,7 @@ Store **Objective** comments
 |-------------|----------|--------------------------------------------------------------|
 | id          | INTEGER  | PK, AI                                                       |
 | objectiveId | INTEGER  | INDEX, NOT NULL, FK &rarr; **Objective(id)**, CASCADE DELETE |
-| createdBy   | INTEGER  | NOT NULL, FK &rarr;**Person(id)**, CASCADE DELETE            |
+| createdBy   | INTEGER  | NOT NULL, FK &rarr; **Person(id)**, CASCADE DELETE            |
 | value       | TEXT     | NOT NULL                                                     |
 | createdAt   | DATETIME | NOT NULL, DEFAULT = NOW                                      |
 <!--{"accordionEnd":true}-->

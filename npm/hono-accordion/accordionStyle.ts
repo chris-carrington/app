@@ -57,11 +57,6 @@ export const accordionStyle = css`
       transition: var(--transition);
       height: 0; /* will be set by JavaScript */
 
-      /* ensure no extra spacing */
-      > *:first-child {
-        margin-top: 0;
-      }
-
       > *:last-child {
         margin-bottom: 0;
       }

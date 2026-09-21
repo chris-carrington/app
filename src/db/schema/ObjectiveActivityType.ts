@@ -2,7 +2,7 @@
 
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
-/** Lookup table for **ObjectiveActivity** types */
+/** Objective activity types lookup table */
 export const ObjectiveActivityType = sqliteTable('ObjectiveActivityType', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   value: text('value').notNull().unique(),
