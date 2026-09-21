@@ -98,7 +98,7 @@ export default new Hono()
                 label: 'Activity',
                 content: <>
                   <div id={idActivity().id}>
-                    <img src="/img/loading.svg" alt="Loading..." />
+                    <img class="feed-loading" src="/img/loading.svg" alt="Loading..." />
                   </div>
                 </>
               }
@@ -175,6 +175,11 @@ const style = css`
   .objectives {
     .feed {
       min-height: 21rem;
+    }
+
+    img.feed-loading {
+      display: block;
+      margin: 0 auto;
     }
   }
 

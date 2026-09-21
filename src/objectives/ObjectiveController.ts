@@ -98,7 +98,7 @@ export class ObjectiveController {
     const elActivity = query(idActivity().query).one()
 
     tabsEvents.on('tabChanged', async (v) => {
-      if (v.id !== 'activity') return elActivity.innerHTML = '<img src="/img/loading.svg" alt = "Loading..." />'
+      if (v.id !== 'activity') return elActivity.innerHTML = '<img class="feed-loading" src="/img/loading.svg" alt = "Loading..." />'
 
       const res = await this.rpc.api['objective-activity'].$get()
       elActivity.innerHTML = await res.text()

@@ -6,6 +6,11 @@ import { css } from 'hono/css'
 export const accordionStyle = css`
   .accordion-item {
     margin-bottom: var(--space-lite);
+    &.open {
+      .accordion-chevron {
+        transform: rotate(90deg);
+      }
+    }
 
     .accordion-header {
       display: flex;
@@ -26,10 +31,6 @@ export const accordionStyle = css`
       height: 2.4rem;
       margin-right: calc(var(--space-lite) / 2);
       transition: var(--transition);
-    }
-
-    &.open .accordion-chevron {
-      transform: rotate(90deg);
     }
 
     .accordion-title {
@@ -56,6 +57,10 @@ export const accordionStyle = css`
       overflow: hidden;
       transition: var(--transition);
       height: 0; /* will be set by JavaScript */
+
+      > *:first-child {
+        margin-block: var(--space-lite);
+      }
 
       > *:last-child {
         margin-bottom: 0;
