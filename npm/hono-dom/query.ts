@@ -27,7 +27,7 @@ export class QueryReturn<T_Element extends HTMLElement> {
   }
 
   /** Get all matches. */
-  many(): NodeListOf<T_Element> {
+  all(): NodeListOf<T_Element> {
     const list = this.#root.querySelectorAll<T_Element>(this.#query);
     if (!list.length) throw new Error('❌ Not found: ' + this.#query);
     return list;

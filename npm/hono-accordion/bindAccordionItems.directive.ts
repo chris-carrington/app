@@ -11,7 +11,7 @@ const contexts = new WeakMap<HTMLDivElement, AccordionContext>()
 
 
 export default (el: HTMLDivElement) => {
-  const elItems = query<HTMLDivElement>('.accordion-item').root(el).many()
+  const elItems = query<HTMLDivElement>('.accordion-item').root(el).all()
 
   for (const elItem of elItems) {
     const header = query<HTMLDivElement>('.accordion-header').root(elItem).one()

@@ -7,7 +7,7 @@ import { classNameStep } from '@src/lib/dom'
 
 export default (el: HTMLElement) => {
   const onWrapChange = () => {
-    const children = query<HTMLDivElement>(classNameStep().query).root(el).many()
+    const children = query<HTMLDivElement>(classNameStep().query).root(el).all()
 
     if (children.length === 0) {
       el.classList.remove('wrapped')

@@ -27,7 +27,7 @@ export default new Hono()
 
           await tx.insert(ObjectiveActivity).values({ // insert activity
             objectiveId: data.objectiveId,
-            typeId: dsObjectiveActivityTypes.comment_added,
+            typeId: dsObjectiveActivityTypes.commentAdded,
             actorId: person.id,
             commentId,
           })

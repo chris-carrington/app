@@ -5,6 +5,7 @@ import { id, field, dataset, className } from '@hono-dom'
 
 // id
 export const idAvatar = () => id('avatar')
+export const idActivity = () => id('activity')
 export const idDownload = () => id('download')
 export const idNavModal = () => id('nav-modal')
 export const idAuthModal = () => id('auth-modal')

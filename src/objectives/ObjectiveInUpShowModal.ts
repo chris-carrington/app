@@ -4,10 +4,10 @@ import { showToast } from '@hono-toast'
 import type { AppType } from '@src/index'
 import { toggleModalDom } from '@hono-modal'
 import { FormUtil, Loading } from '@hono-form'
+import { formatTime } from '@src/time/formatTime'
 import { createRPC, onError } from '@hono-api/fe'
 import { QueryObjective } from '@src/db/queryObjective'
-import { formatTimestamp } from '@src/lib/formatTimestamp'
-import { cloneTemplate, query, type FieldReturn } from '@hono-dom'
+import { dom, query, type FieldReturn } from '@hono-dom'
 import { ObjectiveController } from '@src/objectives/ObjectiveController'
 import { formObjectiveCommentValidator } from '@src/validators/objectiveComment.validator'
 import { idObjectiveInUpModalTitle, idObjectiveInUpModalSubmit, fieldObjectiveInUpTitle, fieldObjectiveInUpColumnId, fieldObjectiveInUpDescription, fieldObjectiveInUpAssigneeIds, fieldObjectiveInUpTagIds, datasetObjectiveInUpShowModal, idObjectiveInUpModalMdToggle, idObjectiveInUpModalMd, idObjectiveInUpModalDelete, idObjectiveInUpModalCommentSpacer, idObjectiveInUpModalCommentForm, idObjectiveInUpModalComments, classNameName, classNameValue, classNameTemporal, idObjectiveInUpModalComment, classNameComment, classNameCount, classNameObjective } from '@src/lib/dom'
@@ -43,7 +43,7 @@ export class ObjectiveInUpShowModal {
 
   constructor(controller: ObjectiveController) {
     this.controller = controller
-    this.showModalButtons = query<HTMLButtonElement>(this.controller.datasetShowModal.query()).many()
+    this.showModalButtons = query<HTMLButtonElement>(this.controller.datasetShowModal.query()).all()
     this.spanModalTitle = query<HTMLSpanElement>(idObjectiveInUpModalTitle().query).root(this.controller.elModal).one()
     this.buttonSubmit = query<HTMLButtonElement>(idObjectiveInUpModalSubmit().query).root(this.controller.elModal).one()
     this.buttonDelete = query<HTMLButtonElement>(idObjectiveInUpModalDelete().query).root(this.controller.elModal).one()
@@ -51,7 +51,7 @@ export class ObjectiveInUpShowModal {
     this.inputMdToggle = query<HTMLInputElement>(idObjectiveInUpModalMdToggle().query).root(this.controller.elModal).one()
     this.textareaDescription = query<HTMLTextAreaElement>(fieldObjectiveInUpDescription().query).root(this.controller.elModal).one()
     this.selectColumn = query<HTMLInputElement>(fieldObjectiveInUpColumnId().query).root(this.controller.elModal).one()
-    this.errorMessages = query<HTMLDivElement>('.error-message').root(this.controller.elModal).many()
+    this.errorMessages = query<HTMLDivElement>('.error-message').root(this.controller.elModal).all()
     this.fieldsetAssignees = query<HTMLFieldSetElement>(this.fieldAssignees.query()).root(this.controller.elModal).one()
     this.fieldsetTags = query<HTMLFieldSetElement>(this.fieldTags.query()).root(this.controller.elModal).one()
     this.divMd = query<HTMLDivElement>(idObjectiveInUpModalMd().query).root(this.controller.elModal).one()
@@ -75,6 +75,8 @@ export class ObjectiveInUpShowModal {
     this.formComment.addEventListener('submit', (e) => {
       this.onAddComment(e)
     })
+
+    this.controller.launchObjective()
   }
 
 
@@ -253,15 +255,16 @@ export class ObjectiveInUpShowModal {
 
 
   #addCommentToDom(firstName: string, lastName: string, comment: string, createdAt: string, imageId: string | null) {
-    const elComment = cloneTemplate(idObjectiveInUpModalComment().query)
-    query<HTMLDivElement>(classNameName().query).root(elComment).one().innerText = firstName + ' ' + lastName
-    query<HTMLDivElement>(classNameValue().query).root(elComment).one().innerText = comment
-    query<HTMLDivElement>(classNameTemporal().query).root(elComment).one().innerText = formatTimestamp(createdAt)
-    
-    if (imageId) query<HTMLImageElement>('img').root(elComment).one().src = `https://r2.shastatrades.org/${imageId}.webp`
-    else query<HTMLImageElement>('img').root(elComment).one().style.display = 'none'
-
-    this.divComments.appendChild(elComment)
+    dom('one', idObjectiveInUpModalComment(), HTMLDivElement)
+      .on(classNameValue(), el => el.textContent = comment)
+      .on(classNameName(), el => el.textContent = `${firstName} ${lastName}`)
+      .on(classNameTemporal(), el => el.textContent = formatTime(createdAt))
+      .on('img', img => {
+        if (imageId) img.setAttribute('src', `https://r2.shastatrades.org/${imageId}.webp`)
+        else img.style.display = 'none'
+      })
+      .clone('append', this.divComments)
+      .run()
   }
 
 
@@ -321,13 +324,13 @@ export class ObjectiveInUpShowModal {
         this.divComments.style.display = 'block'
 
         // update comment count
-        const commentCount = query(classNameComment().query).root(this.divComments).many().length
+        const commentCount = query(classNameComment().query).root(this.divComments).all().length
         const card = this.controller.getObjectiveCard(objectiveId)
         if (!card) throw new Error('!card')
 
         if (commentCount) {
           const elCount = query<HTMLDivElement>(classNameCount().query).root(card).one()
-          elCount.style.display = 'flex'
+          elCount.style.setProperty('display', 'flex', 'important');
           elCount.innerText = String(commentCount)
         }
       }

@@ -11,7 +11,7 @@ export default (el: HTMLDivElement) => {
   const idDataset = datasetId()
 
   const elContents = new Map<string, HTMLDivElement>()
-  const elAnchors = query<HTMLAnchorElement>('a').root(el).many()
+  const elAnchors = query<HTMLAnchorElement>('a').root(el).all()
   const elDownload = query<HTMLDivElement>(idDownload().query).one()
   const elGithubAnchor = query<HTMLAnchorElement>('a:first-child').root(elDownload).one()
   const elPdfAnchor = query<HTMLAnchorElement>('a:last-child').root(elDownload).one()
@@ -22,7 +22,7 @@ export default (el: HTMLDivElement) => {
 
 
 function populateElContents(idDataset: DatasetReturn, elContents: Map<string, HTMLDivElement>) {
-  for (const elContent of query<HTMLDivElement>(classNameMd().query + ' ' + idDataset.query()).many()) {
+  for (const elContent of query<HTMLDivElement>(classNameMd().query + ' ' + idDataset.query()).all()) {
     const mdId = elContent.dataset[idDataset.camel]
     if (!mdId) throw new Error('!mdId')
     elContents.set(mdId, elContent)

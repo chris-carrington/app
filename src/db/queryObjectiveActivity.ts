@@ -1,19 +1,11 @@
 // app/src/db/queryObjectiveActivity.ts
 
-import { eq, and, desc } from 'drizzle-orm'
 import { alias } from 'drizzle-orm/sqlite-core'
-import { prop, leftJoin, createParentShape, createChildren } from '@drizzle-compose'
-import { db, Person, Objective, ObjectiveActivity, ObjectiveActivityType, ObjectiveColumn, ObjectiveComment, ObjectiveTag, Objective__Assignee } from '@src/db'
+import { eq, and, or, lt, desc, isNotNull, inArray } from 'drizzle-orm'
+import { dsObjectiveActivityTypesPerVariant } from '@src/dataStructures/objectiveActivityTypes.ds'
+import { prop, leftJoin, createParentShape, createChildren, type InferQuery } from '@drizzle-compose'
+import { db, Person, Objective, ObjectiveColumn, ObjectiveComment, ObjectiveTag, ObjectiveActivity, ObjectiveActivityType, Objective__Assignee, ObjectiveComment__Assignee } from '@src/db'
 
-
-export async function queryObjectiveActivity(personId: number) {
-  const rows = await getBaseQuery(personId)
-
-  return leftJoin(rows, {
-    parent: { shape: parentShape },
-    children: createChildren(getBaseQuery).fn(),
-  })
-}
 
 
 // vite blows up if alias proxy's are not w/in a function
@@ -21,17 +13,67 @@ const ActorAlias = () => alias(Person, 'Actor')
 const AssigneeAlias = () => alias(Person, 'Assignee')
 const FromColumnAlias = () => alias(ObjectiveColumn, 'FromColumn')
 const ToColumnAlias = () => alias(ObjectiveColumn, 'ToColumn')
+const ObjectiveAssigneeAlias = () => alias(Objective__Assignee, 'ObjectiveAssignee')
+const CommentAssigneeAlias = () => alias(ObjectiveComment__Assignee, 'CommentAssignee')
 
 
-function getBaseQuery(personId: number) {
+// query children
+const children = createChildren(getBaseQuery).fn()
+
+
+/**
+ * @example
+  ```ts
+  const page1 = await queryObjectiveActivity({ variant: 'all' })
+
+  if (page1.nextCursor) {
+    const page2 = await queryObjectiveActivity({
+      variant: 'all',
+      cursor: page1.nextCursor,
+    })
+  }
+  ```
+ */
+export async function queryObjectiveActivity(props: QueryObjectiveActivityProps) {
+  if (props.variant === 'personal' && props.sessionPersonId === undefined) {
+    throw new Error('queryObjectiveActivity: `sessionPersonId` is required when `variant` is "personal"')
+  }
+  
+  const limit = props.limit ?? 10
+  const rows = await getBaseQuery({ ...props, limit: limit + 1, cursor: props.cursor }) // fetch one extra row to detect whether another page exists without a separate COUNT(*) query — this is the standard keyset hasMore trick
+
+  const items = leftJoin(rows, {
+    parent: { shape: parentShape },
+    children,
+  })
+
+  const hasMore = items.length > limit
+  if (hasMore) items.length = limit // drop the sentinel row
+
+  const last = items.at(-1)
+
+  return {
+    items,
+    nextCursor: hasMore && last // `null` = no more pages
+      ? { createdAt: last.createdAtMs, id: last.id }
+      : null,
+  }
+}
+
+
+
+function getBaseQuery(props: QueryObjectiveActivityProps & { limit: number }) {
   const Actor = ActorAlias()
   const Assignee = AssigneeAlias()
   const FromColumn = FromColumnAlias()
   const ToColumn = ToColumnAlias()
+  const ObjectiveAssignee = ObjectiveAssigneeAlias()
+  const CommentAssignee = CommentAssigneeAlias()
 
-  return db
+  let q = db // columns + joins shared by both variants
     .select({
       id: ObjectiveActivity.id,
+      typeId: ObjectiveActivityType.id,
       typeValue: ObjectiveActivityType.value,
       createdAt: ObjectiveActivity.createdAt,
 
@@ -65,28 +107,65 @@ function getBaseQuery(personId: number) {
     .from(ObjectiveActivity)
     .innerJoin(ObjectiveActivityType, eq(ObjectiveActivityType.id, ObjectiveActivity.typeId))
     .innerJoin(Objective, eq(Objective.id, ObjectiveActivity.objectiveId))
-    // only activities on objectives this person is assigned to
-    .innerJoin(
-      Objective__Assignee,
-      and(
-        eq(Objective__Assignee.objectiveId, ObjectiveActivity.objectiveId),
-        eq(Objective__Assignee.personId, personId),
+
+  if (props.variant === 'personal') { // personal-only joins (used purely for filtering)
+    q = q
+      .leftJoin(
+        ObjectiveAssignee,
+        and(
+          eq(ObjectiveAssignee.objectiveId, ObjectiveActivity.objectiveId),
+          eq(ObjectiveAssignee.personId, props.sessionPersonId),
+        ),
+      )
+      .leftJoin(
+        CommentAssignee,
+        and(
+          eq(CommentAssignee.commentId, ObjectiveActivity.commentId),
+          eq(CommentAssignee.personId, props.sessionPersonId),
+        ),
+      )
+  }
+
+  const variantWhere = props.variant === 'all'
+    ? inArray(ObjectiveActivity.typeId, dsObjectiveActivityTypesPerVariant.all)
+    : and(
+      inArray(ObjectiveActivity.typeId, dsObjectiveActivityTypesPerVariant.personal),
+      or(
+        isNotNull(ObjectiveAssignee.id), // path A: objective the person is assigned to
+        isNotNull(CommentAssignee.id),   // path B: comment directly assigned to the person
       ),
     )
+
+  const cursorWhere = props.cursor // Keyset cursor: strictly "older than" the last seen row, using id as tiebreaker. (createdAt, id) is a total order because id is a unique autoincrement.
+    ? or(
+      lt(ObjectiveActivity.createdAt, new Date(props.cursor.createdAt)),
+      and(
+        eq(ObjectiveActivity.createdAt, new Date(props.cursor.createdAt)),
+        lt(ObjectiveActivity.id, props.cursor.id),
+      ),
+    )
+    : undefined
+
+  return q
     .leftJoin(Actor, eq(Actor.id, ObjectiveActivity.actorId))
     .leftJoin(Assignee, eq(Assignee.id, ObjectiveActivity.assigneeId))
     .leftJoin(FromColumn, eq(FromColumn.id, ObjectiveActivity.fromColumnId))
     .leftJoin(ToColumn, eq(ToColumn.id, ObjectiveActivity.toColumnId))
     .leftJoin(ObjectiveTag, eq(ObjectiveTag.id, ObjectiveActivity.tagId))
     .leftJoin(ObjectiveComment, eq(ObjectiveComment.id, ObjectiveActivity.commentId))
-    .orderBy(desc(ObjectiveActivity.createdAt))
+    .where(cursorWhere ? and(variantWhere, cursorWhere) : variantWhere)
+    .orderBy(desc(ObjectiveActivity.createdAt), desc(ObjectiveActivity.id))
+    .limit(props.limit)
 }
+
 
 
 const parentShape = createParentShape(getBaseQuery).fn(row => ({
   id: row.id,
+  typeId: row.typeId,
   type: row.typeValue,
   createdAt: row.createdAt as unknown as string, // post api layer it'll be a string
+  createdAtMs: +row.createdAt, // ms epoch, helpful for nextCursor
 
   objective: {
     id: row.objectiveId,
@@ -129,3 +208,31 @@ const parentShape = createParentShape(getBaseQuery).fn(row => ({
     value: prop(row.commentValue, ObjectiveComment.value),
   },
 }))
+
+
+
+export type QueryObjectiveActivity = InferQuery<typeof queryObjectiveActivity>
+
+export type QueryObjectiveActivityItem = QueryObjectiveActivity['items'][number]
+
+export type QueryObjectiveActivityProps = 
+  | {
+    variant: 'all'
+    limit?: number
+    /** Pass `nextCursor` from the previous page. Omit for the first page. */
+    cursor?: ObjectiveActivityCursor
+  }
+  | {
+    variant: 'personal'
+    sessionPersonId: number
+    limit?: number
+    /** Pass `nextCursor` from the previous page. Omit for the first page. */
+    cursor?: ObjectiveActivityCursor
+  }
+
+export type ObjectiveActivityCursor = {
+  /** ms since epoch — `createdAtMs` on the previous page's last item */
+  createdAt: number
+  /** `id` on the previous page's last item */
+  id: number
+}

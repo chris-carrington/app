@@ -4,13 +4,15 @@ import { Hono } from 'hono'
 import type { FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
 import { ModalConfirm } from '@hono-modal'
+import { tabsStyle, Tabs } from '@hono-tabs'
 import { kanbanColumns } from '@src/lib/vars'
 import { onObjectivesPageLoad } from '@hono-directives'
 import ObjectiveInUp from '@src/objectives/ObjectiveInUp'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import type { ClassNameReturn, DatasetReturn } from '@hono-dom'
+import { objectiveActivityStyle } from '@src/lib/ObjectiveActivity'
 import { queryObjectives, type QueryObjective } from '@src/db/queryObjective'
-import { classNameAssignees, classNameColumn, classNameCount, classNameObjective, classNameObjectives, classNameTags, classNameTitle, datasetColumnId, datasetId, datasetObjectiveInUpShowModal, datasetOrder, classNameSvg, idObjectiveTemplate } from '@src/lib/dom'
+import { classNameAssignees, classNameColumn, classNameCount, classNameObjective, classNameObjectives, classNameTags, classNameTitle, datasetColumnId, datasetId, datasetObjectiveInUpShowModal, datasetOrder, classNameSvg, idObjectiveTemplate, idActivity } from '@src/lib/dom'
 
 
 export default new Hono()
@@ -33,8 +35,10 @@ export default new Hono()
     return c.render(
       <>
         <title>Shasta Trades · Objectives</title>
-        <Style>{style}</Style>
+        <Style>{tabsStyle}</Style>
         <Style>{subPageHeroStyle}</Style>
+        <Style>{objectiveActivityStyle}</Style>
+        <Style>{style}</Style>
 
         <div class="objectives">
           <div class="sub-page-hero">
@@ -50,36 +54,55 @@ export default new Hono()
             </div>
           </div>
 
-          <div data-directive={onObjectivesPageLoad(kanbanData)} class="kanban-board-wrapper">
-            <div class="kanban-board" id="kanbanBoard" aria-label="Kanban Board">
-              <div class="kanban-board-inner">
-                {kanbanColumns.map((column) => (
-                  <section {...columnIdDataset.attr(column.id)} class={columnClassName.className} aria-label={`${column.value} column`}>
-                    <header class="header">
-                      <h2 class="title">{column.value}</h2>
-                      <span class={countClassName.className}>
-                        {kanbanData[column.id]?.length || 0}
-                      </span>
-                    </header>
-                    <div class={objectivesClassName.className} {...columnIdDataset.attr(column.id)}>
-                      {kanbanData[column.id] && kanbanData[column.id]?.map((o) => (
-                        <ObjectiveCard
-                          objective={o}
-                          idDataset={idDataset}
-                          orderDataset={orderDataset}
-                          svgClassName={svgClassName}
-                          tagsClassName={tagsClassName}
-                          countClassName={countClassName}
-                          titleClassName={titleClassName}
-                          datasetShowModal={datasetShowModal}
-                          assigneesClassName={assigneesClassName}
-                          objectiveClassName={objectiveClassName} />
-                      ))}
+          <div class="page-content">
+            <Tabs variant="underline" name="objectives" tabs={[
+              {
+                id: 'kanban',
+                label: 'Kanban',
+                content: <>
+                  <div data-directive={onObjectivesPageLoad(kanbanData)} class="kanban-board-wrapper">
+                    <div class="kanban-board" id="kanbanBoard" aria-label="Kanban Board">
+                      <div class="kanban-board-inner">
+                        {kanbanColumns.map((column) => (
+                          <section {...columnIdDataset.attr(column.id)} class={columnClassName.className} aria-label={`${column.value} column`}>
+                            <header class="header">
+                              <h2 class="title">{column.value}</h2>
+                              <span class={countClassName.className}>
+                                {kanbanData[column.id]?.length || 0}
+                              </span>
+                            </header>
+                            <div class={objectivesClassName.className} {...columnIdDataset.attr(column.id)}>
+                              {kanbanData[column.id] && kanbanData[column.id]?.map((o) => (
+                                <ObjectiveCard
+                                  objective={o}
+                                  idDataset={idDataset}
+                                  orderDataset={orderDataset}
+                                  svgClassName={svgClassName}
+                                  tagsClassName={tagsClassName}
+                                  countClassName={countClassName}
+                                  titleClassName={titleClassName}
+                                  datasetShowModal={datasetShowModal}
+                                  assigneesClassName={assigneesClassName}
+                                  objectiveClassName={objectiveClassName} />
+                              ))}
+                            </div>
+                          </section>
+                        ))}
+                      </div>
                     </div>
-                  </section>
-                ))}
-              </div>
-            </div>
+                  </div>
+                </>
+              },
+              {
+                id: 'activity',
+                label: 'Activity',
+                content: <>
+                  <div id={idActivity().id}>
+                    <img src="/img/loading.svg" alt="Loading..." />
+                  </div>
+                </>
+              }
+            ]} />
           </div>
         </div>
 
@@ -149,6 +172,12 @@ const ObjectiveCard: FC<{
 
 
 const style = css`
+  .objectives {
+    .feed {
+      min-height: 21rem;
+    }
+  }
+
   .kanban-board-wrapper {
     display: flex;
     flex-direction: column;
@@ -157,7 +186,6 @@ const style = css`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     width: 100%;
-    padding: 0 var(--space-lite);
     margin-bottom: var(--space-huge);
   }
 
@@ -196,7 +224,7 @@ const style = css`
         border-radius: 1.4rem;
         box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.06), 0 0.2rem 0.4rem rgba(0, 0, 0, 0.04);
         flex: 0 0 auto;
-        width: 36rem;
+        width: 38.5rem;
         max-width: 84vw;
         display: flex;
         flex-direction: column;

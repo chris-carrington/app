@@ -1,3 +1,5 @@
+// app/npm/hono-api/api.d.ts
+
 /** API Success Response Type */
 export type ApiSuccess<T_Data = undefined> = {
   success: true

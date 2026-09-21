@@ -6,8 +6,8 @@ import { showErrorToast } from '@hono-toast'
 import type { InferJson } from '@hono-api/fe'
 import { FormUtil, Loading } from '@hono-form'
 import { safeObjectAccess, safeArrayAccess } from '@safely-access'
-import { query, cloneTemplate, type FieldReturn } from '@hono-dom'
 import { ObjectiveController } from '@src/objectives/ObjectiveController'
+import { dom, query, type DomBuilder, type FieldReturn } from '@hono-dom'
 import type { QueryObjectives, QueryObjective } from '@src/db/queryObjective'
 import { ObjectiveInUpShowModal } from '@src/objectives/ObjectiveInUpShowModal'
 import { formObjectiveValidator } from '@src/validators/inupObjective.validator'
@@ -44,8 +44,8 @@ export class ObjectiveKanban {
     this.controller = controller
     this.kanbanData = kanbanData
     this.objectiveInUpShowModal = objectiveInUpShowModal
-    this.columns = Array.from(query<HTMLElement>(this.columnClassName.query).root(this.el).many())
-    this.columnCounts = Array.from(query<HTMLSpanElement>('header ' + classNameCount().query).root(this.el).many())
+    this.columns = Array.from(query<HTMLElement>(this.columnClassName.query).root(this.el).all())
+    this.columnCounts = Array.from(query<HTMLSpanElement>('header ' + classNameCount().query).root(this.el).all())
   }
 
 
@@ -499,74 +499,74 @@ export class ObjectiveKanban {
       assignees: this.controller.staff.filter(person => json.assigneeIds.includes(person.id)),
     }
 
-    const existingCard = this.el.querySelector<HTMLDivElement>(this.objectiveClassName.query + this.controller.idDataset.query(id))
+    const existingCard = this.el.querySelector<HTMLDivElement>(
+      this.objectiveClassName.query + this.controller.idDataset.query(id),
+    )
 
-    if (existingCard) {
-      // Update existing card in place
-      this.#populateObjectiveCard(existingCard, objective)
+    if (!existingCard) { // insert
+      const columnData = safeObjectAccess(this.kanbanData, objective.columnId)
+      columnData.unshift(objective)
 
-      // If column changed, move the card to the correct column and position
-      const currentColumnId = Number(existingCard.closest<HTMLElement>(this.columnClassName.query)?.dataset.columnId)
+      const objectivesContainer = safeArrayAccess(this.columns, objective.columnId - 1)
+        .querySelector<HTMLDivElement>(this.objectivesClassName.query)
+
+      if (objectivesContainer) {
+        this.#populateObjective(
+          objective,
+          dom('one', idObjectiveTemplate(), HTMLDivElement)
+            .clone('prepend', objectivesContainer)
+            .on<HTMLButtonElement>(this.svgClassName, button => {
+              button.addEventListener('click', () => {
+                this.objectiveInUpShowModal.showModal(button, id)
+              })
+            }),
+        ).run()
+      }
+
+      this.#updateObjectiveCardsCache(objective.columnId)
+      this.#setColumnCount(objective.columnId)
+    } else { // update
+      this.#populateObjective(objective, dom('one', existingCard)).run()
+
+      const currentColumnId = Number(
+        existingCard.closest<HTMLElement>(this.columnClassName.query)?.dataset.columnId,
+      )
+
       const newColumnId = objective.columnId
 
       if (currentColumnId !== newColumnId) {
-        // Remove from current column's data array
         const currentColumnData = safeObjectAccess(this.kanbanData, currentColumnId)
         const index = currentColumnData.findIndex(o => o.id === id)
+
         if (index !== -1) currentColumnData.splice(index, 1)
 
-        // Add to new column's data array at the correct position (order already set)
         const newColumn = safeObjectAccess(this.kanbanData, newColumnId)
         newColumn.push(objective)
         newColumn.sort((a, b) => a.order - b.order)
 
-        // Move DOM node
         const targetColumn = safeArrayAccess(this.columns, newColumnId - 1)
-        const objectivesContainer = targetColumn.querySelector<HTMLDivElement>(this.objectivesClassName.query)
+        const objectivesContainer = targetColumn.querySelector<HTMLDivElement>(
+          this.objectivesClassName.query,
+        )
 
         if (objectivesContainer) {
-          // Insert at the correct position based on order
+          // Position the moved card by `order`. This is a *move*, not a
+          // clone/insert, so dom() stays out of it — direct insertBefore
+          // keeps the same node (and its listener).
           const children = Array.from(objectivesContainer.children) as HTMLDivElement[]
-          const refIndex = children.findIndex(child => Number(child.dataset.order) > objective.order)
-
-          if (refIndex === -1) {
-            objectivesContainer.appendChild(existingCard)
-          } else {
-            objectivesContainer.insertBefore(existingCard, safeArrayAccess(children, refIndex))
-          }
+          const refIndex = children.findIndex(c => Number(c.dataset.order) > objective.order)
+          if (refIndex === -1) objectivesContainer.appendChild(existingCard)
+          else objectivesContainer.insertBefore(existingCard, safeArrayAccess(children, refIndex))
         }
 
-        // Update caches and counts for both columns
         this.#updateObjectiveCardsCache(currentColumnId)
         this.#updateObjectiveCardsCache(newColumnId)
         this.#setColumnCount(currentColumnId)
         this.#setColumnCount(newColumnId)
       } else {
-        // Column unchanged, just update cache (order may have changed)
         this.#updateObjectiveCardsCache(newColumnId)
         this.#setColumnCount(newColumnId)
       }
-    } else {
-      // New objective – insert at top of its column
-      const columnData = safeObjectAccess(this.kanbanData, objective.columnId)
-      columnData.unshift(objective)
-
-      const card = cloneTemplate(idObjectiveTemplate().query)
-      const button = query<HTMLButtonElement>(this.svgClassName.query).root(card).one()
-
-      button.addEventListener('click', () => {
-        this.objectiveInUpShowModal.showModal(button, id)
-      })
-
-      this.#populateObjectiveCard(card, objective)
-      const objectivesContainer = safeArrayAccess(this.columns, objective.columnId - 1).querySelector<HTMLDivElement>(this.objectivesClassName.query)
-
-      if (objectivesContainer) {
-        objectivesContainer.insertBefore(card, objectivesContainer.firstChild)
-      }
-
-      this.#updateObjectiveCardsCache(objective.columnId)
-      this.#setColumnCount(objective.columnId)
     }
 
     return objective
@@ -631,34 +631,35 @@ export class ObjectiveKanban {
 
 
 
-  #populateObjectiveCard(card: HTMLDivElement, objective: QueryObjective) {
-    card.dataset[this.controller.idDataset.camel] = String(objective.id)
-    card.dataset[this.orderDataset.camel] = String(objective.order)
-
-    query<HTMLSpanElement>(this.titleClassName.query).root(card).one().textContent = objective.title
-
-    const tagsContainer = query<HTMLDivElement>(this.tagsClassName.query).root(card).one()
-
-    tagsContainer.innerHTML = ''
-
-    for (const tag of objective.tags) {
-      const tagEl = document.createElement('span')
-      tagEl.textContent = tag.value
-      tagEl.style.backgroundColor = tag.bgHex
-      tagEl.style.color = tag.fgHex
-      tagsContainer.appendChild(tagEl)
-    }
-
-    const assigneesContainer = query<HTMLDivElement>(this.assigneesClassName.query).root(card).one()
-
-    assigneesContainer.innerHTML = ''
-
-    for (const assignee of objective.assignees) {
-      const img = document.createElement('img')
-      img.src = `https://r2.shastatrades.org/${assignee.imageId}.webp`
-      img.alt = `Assignee ${assignee.id}`
-      assigneesContainer.appendChild(img)
-    }
+  #populateObjective<B extends DomBuilder<'one', HTMLDivElement>>(
+    objective: QueryObjective,
+    b: B,
+  ): B {
+    return b
+      .onSource(card => {
+        card.dataset[this.controller.idDataset.camel] = String(objective.id)
+        card.dataset[this.orderDataset.camel] = String(objective.order)
+      })
+      .on<HTMLSpanElement>(this.titleClassName, el => {
+        el.textContent = objective.title
+      })
+      .on<HTMLDivElement>(this.tagsClassName, el => {
+        el.replaceChildren(...objective.tags.map(tag => {
+          const span = document.createElement('span')
+          span.textContent = tag.value
+          span.style.backgroundColor = tag.bgHex
+          span.style.color = tag.fgHex
+          return span
+        }))
+      })
+      .on<HTMLDivElement>(this.assigneesClassName, el => {
+        el.replaceChildren(...objective.assignees.map(a => {
+          const img = document.createElement('img')
+          img.src = `https://r2.shastatrades.org/${a.imageId}.webp`
+          img.alt = `Assignee ${a.id}`
+          return img
+        }))
+      })
   }
 }
 

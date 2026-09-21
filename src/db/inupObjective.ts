@@ -2,7 +2,7 @@
 
 import { eq, and, inArray } from 'drizzle-orm'
 import { dsObjectiveActivityTypes } from '@src/dataStructures/objectiveActivityTypes.ds'
-import { Objective, Objective__Tag, Objective__Assignee, type Transaction, ObjectiveActivity } from '@src/db'
+import { Objective, ObjectiveActivity, Objective__Tag, Objective__Assignee, type Transaction } from '@src/db'
 import type { insertObjectiveValidator, updateObjectiveValidator } from '@src/validators/inupObjective.validator'
 
 
@@ -16,14 +16,21 @@ export async function insertObjective(actorId: number, tx: Transaction, input: I
     .returning({ id: Objective.id })
     .get()
 
-  await insertObjectiveChildren(actorId, tx, input, objective.id) // insert children
+  await insertObjectiveDependants(actorId, columnId, tx, input, objective.id) // insert children
 
   return objective.id
 }
 
 
-async function insertObjectiveChildren(actorId: number, tx: Transaction, input: InupObjectiveInput<'insert'>, objectiveId: number) {
-  const promises: Promise<unknown>[] = [] // alter db in parallel
+async function insertObjectiveDependants(actorId: number, columnId: number, tx: Transaction, input: InupObjectiveInput<'insert'>, objectiveId: number) {
+  const promises: Promise<any>[] = [
+    tx.insert(ObjectiveActivity).values({
+      objectiveId,
+      typeId: dsObjectiveActivityTypes.objectiveCreated,
+      actorId,
+      toColumnId: columnId
+    })
+  ]
 
   const { assigneeIds, tagIds } = input
 
@@ -32,7 +39,7 @@ async function insertObjectiveChildren(actorId: number, tx: Transaction, input: 
       tx.insert(Objective__Assignee).values(
         assigneeIds.map((personId) => ({
           objectiveId,
-          personId,
+          personId
         })),
       ),
     )
@@ -41,7 +48,7 @@ async function insertObjectiveChildren(actorId: number, tx: Transaction, input: 
       tx.insert(ObjectiveActivity).values(
         assigneeIds.map((assigneeId) => ({
           objectiveId,
-          typeId: dsObjectiveActivityTypes.assignee_added,
+          typeId: dsObjectiveActivityTypes.assigneeAdded,
           actorId,
           assigneeId,
         })),
@@ -54,7 +61,7 @@ async function insertObjectiveChildren(actorId: number, tx: Transaction, input: 
       tx.insert(Objective__Tag).values(
         tagIds.map((tagId) => ({
           objectiveId,
-          tagId,
+          tagId
         })),
       ),
     )
@@ -63,17 +70,15 @@ async function insertObjectiveChildren(actorId: number, tx: Transaction, input: 
       tx.insert(ObjectiveActivity).values(
         tagIds.map((tagId) => ({
           objectiveId,
-          typeId: dsObjectiveActivityTypes.tag_added,
+          typeId: dsObjectiveActivityTypes.tagAdded,
           actorId,
-          tagId,
+          tagId
         })),
       ),
     )
   }
 
-  if (promises.length) {
-    await Promise.all(promises)
-  }
+  await Promise.all(promises)
 }
 
 
@@ -95,7 +100,7 @@ export async function updateObjective(actorId: number, tx: Transaction, input: I
   if (existing && existing.columnId !== columnId) {
     await tx.insert(ObjectiveActivity).values({
       objectiveId: id,
-      typeId: dsObjectiveActivityTypes.column_changed,
+      typeId: dsObjectiveActivityTypes.columnChanged,
       actorId,
       fromColumnId: existing.columnId,
       toColumnId: columnId,
@@ -135,7 +140,7 @@ async function updateAssignees(actorId: number, tx: Transaction, objectiveId: nu
       tx.insert(ObjectiveActivity).values(
         toRemove.map((assigneeId) => ({
           objectiveId,
-          typeId: dsObjectiveActivityTypes.assignee_removed,
+          typeId: dsObjectiveActivityTypes.assigneeRemoved,
           actorId,
           assigneeId,
         })),
@@ -156,7 +161,7 @@ async function updateAssignees(actorId: number, tx: Transaction, objectiveId: nu
       tx.insert(ObjectiveActivity).values(
         toAdd.map((assigneeId) => ({
           objectiveId,
-          typeId: dsObjectiveActivityTypes.assignee_added,
+          typeId: dsObjectiveActivityTypes.assigneeAdded,
           actorId,
           assigneeId,
         })),
@@ -190,7 +195,7 @@ async function updateTags(actorId: number, tx: Transaction, objectiveId: number,
       tx.insert(ObjectiveActivity).values(
         toRemove.map((tagId) => ({
           objectiveId,
-          typeId: dsObjectiveActivityTypes.tag_removed,
+          typeId: dsObjectiveActivityTypes.tagRemoved,
           actorId,
           tagId,
         })),
@@ -212,7 +217,7 @@ async function updateTags(actorId: number, tx: Transaction, objectiveId: number,
       tx.insert(ObjectiveActivity).values(
         toAdd.map((tagId) => ({
           objectiveId,
-          typeId: dsObjectiveActivityTypes.tag_added,
+          typeId: dsObjectiveActivityTypes.tagAdded,
           actorId,
           tagId,
         })),
@@ -222,8 +227,7 @@ async function updateTags(actorId: number, tx: Transaction, objectiveId: number,
 }
 
 
-export type InupObjectiveInput<Mode extends 'insert' | 'update'> =
-  Mode extends 'insert'
+export type InupObjectiveInput<Mode extends 'insert' | 'update'> = Mode extends 'insert'
   ? typeof insertObjectiveValidator.data & { createdBy: number }
   : Mode extends 'update'
   ? typeof updateObjectiveValidator.data

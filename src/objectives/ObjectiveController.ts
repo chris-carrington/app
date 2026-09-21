@@ -4,7 +4,10 @@ import { query } from '@hono-dom'
 import { AppType } from '@src/index'
 import { FormUtil } from '@hono-form'
 import { showToast } from '@hono-toast'
+import { tabsEvents } from '@hono-tabs'
+import { idActivity } from '@src/lib/dom'
 import { createRPC, onError } from '@hono-api/fe'
+import formatTime from '@src/time/formatTime.directive'
 import { QueryObjective } from '@src/db/queryObjective'
 import type { QueryTags, QueryStaffPeople } from '@src/db'
 import { toggleModalDom, onConfirmEvents } from '@hono-modal'
@@ -22,6 +25,7 @@ export class ObjectiveController {
 
   constructor() {
     this.#bindConfirmButtonClickedEvent()
+    this.#bindTabChanged()
   }
 
 
@@ -86,6 +90,22 @@ export class ObjectiveController {
       } finally { // stop confirm modal button loading indicator
         onConfirmEvents.emit('isConfirmActionLoading', false)
       }
+    })
+  }
+
+
+  #bindTabChanged() {
+    const elActivity = query(idActivity().query).one()
+
+    tabsEvents.on('tabChanged', async (v) => {
+      if (v.id !== 'activity') return elActivity.innerHTML = '<img src="/img/loading.svg" alt = "Loading..." />'
+
+      const res = await this.rpc.api['objective-activity'].$get()
+      elActivity.innerHTML = await res.text()
+
+      elActivity.querySelectorAll('time').forEach(elTime => {
+        formatTime(elTime, Number(elTime.textContent))
+      })
     })
   }
 }

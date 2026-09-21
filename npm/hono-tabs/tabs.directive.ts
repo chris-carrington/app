@@ -9,10 +9,10 @@ export default (el: HTMLDivElement) => {
 
   const elInner = query<HTMLElement>('.tabs__inner').one()
   const marker = query<HTMLElement>('.tabs__marker').root(elInner).one()
-  const elTabs = Array.from(query<HTMLElement>('.tabs__tab').root(elInner).many())
+  const elTabs = Array.from(query<HTMLElement>('.tabs__tab').root(elInner).all())
 
   const elContents = Array.from(
-    query<HTMLElement>('.tabs__content').root(el).many()
+    query<HTMLElement>('.tabs__content').root(el).all()
   )
 
   if (elTabs.length === 0) return () => {}

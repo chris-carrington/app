@@ -46,5 +46,6 @@ export const ObjectiveActivity = sqliteTable(
     index('ObjectiveActivity__assigneeId__index').on(table.assigneeId),
     index('ObjectiveActivity__tagId__index').on(table.tagId),
     index('ObjectiveActivity__commentId__index').on(table.commentId),
+    index('ObjectiveActivity__createdAt__index').on(table.createdAt),
   ]
 )
