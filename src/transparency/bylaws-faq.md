@@ -27,4 +27,43 @@
 <!--{"accordionEnd":true}-->
 
 
+<!--{"accordionStart":true}-->
+## What is a President?
+<!--{"accordionBody":true}-->
+- Volunteer
+- Member of the Board of Directors
+- Leads the board
+- Runs board meetings and sets its agenda
+- Sets the Vision
+    - Keeps the board focused on the mission
+    - Makes sure the board's decisions are carried out
+- Works closely with the Executive Director to guide the organization
+- Cannot be the same person as the Secretary or Treasurer
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## What is a Secretary?
+<!--{"accordionBody":true}-->
+- Volunteer
+- Member of the Board of Directors
+- Cannot be the same person as the President
+- Keeps official records and meeting minutes (notes)
+- Handles important paperwork (e.g., government applications)
+- Manages official communications
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## What is a Treasurer?
+<!--{"accordionBody":true}-->
+- Volunteer
+- Member of the Board of Directors
+- Cannot be the same person as the President
+- Oversees finances, approves budget
+- Ensures financial decisions are mission focused
+- Can approve spending, sign checks, make financial decisions
+<!--{"accordionEnd":true}-->
+
+
 ---

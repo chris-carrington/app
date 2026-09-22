@@ -285,7 +285,7 @@ export const style = css`
     }
 
     .page-content {
-      max-width: 75rem;
+      max-width: 90rem;
     }
 
     .accordion-title {
