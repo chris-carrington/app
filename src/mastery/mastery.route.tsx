@@ -2,6 +2,7 @@
 
 import { Hono } from 'hono'
 import { Style } from 'hono/css'
+import { datasetId } from '@src/lib/dom'
 import { md2html } from '@src/md/md2html'
 import { mdStyle } from '@src/md/mdStyle'
 import { tabsStyle,  Tabs, type Tab } from '@hono-tabs'
@@ -70,7 +71,7 @@ function createTab(id: string, label: string, html: string, subVerifiedIdQuery: 
     isInitiallyActive: subVerifiedIdQuery === id,
     content: <div
       style="min-height: 35rem"
-      id={'tabs-content-' + id}
+      {...datasetId().attr(id)}
       dangerouslySetInnerHTML={{ __html: subVerifiedIdQuery === id ? html : '' }}></div>
   }
 }

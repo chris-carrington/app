@@ -4,6 +4,7 @@ import { query } from '@hono-dom'
 import { AppType } from '@src/index'
 import { tabsEvents } from '@hono-tabs'
 import { createRPC } from '@hono-api/fe'
+import { datasetId } from '@src/lib/dom'
 import { bindAccordionItems } from '@hono-accordion'
 import { dsMasteryMarkdownStudyGuideId } from '@src/dataStructures/masteryMarkdowns.ds'
 
@@ -13,8 +14,10 @@ export default (el: HTMLDivElement) => {
 
   // IF the current route is on the study guide page (not youtube mastery)
   if (location.pathname === rpc.mastery[':id?'].$url({ param: { id: dsMasteryMarkdownStudyGuideId }}).pathname) {
+    const idDataset = datasetId()
+
     tabsEvents.on('tabChanged', async ({ id }) => {
-      const elTabContent = query<HTMLDivElement>(`#tabs-content-${id}`).one()
+      const elTabContent = query<HTMLDivElement>(idDataset.query(id)).root(el).one()
 
       if (!elTabContent.innerText) {
         // start loading indicator
