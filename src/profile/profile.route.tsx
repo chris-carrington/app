@@ -28,6 +28,7 @@ export default new Hono()
     const accordionItems: AccordionItem[] = []
 
     if (resStaff?.positions.length) {
+      console.log(JSON.stringify(resStaff.positions, null, 2))
       const resActivity = await queryObjectiveActivity({ variant: 'personal', sessionPersonId: resSession.response.person.id })
       const resActivityRecentCount = countItemsInLast24Hours(resActivity)
 
@@ -286,7 +287,20 @@ export default new Hono()
             <div class="bg"></div>
             <div class="header">
               <h1>Profile</h1>
-              <div class="sub-title">Welcome {resSession.response.person.firstName} {resSession.response.person.lastName}, thank you for being here!</div>
+              <div class="space-between">
+                <div class="sub-title">Welcome {resSession.response.person.firstName} {resSession.response.person.lastName}!</div>
+                <div class="chips">
+                  {
+                    resStaff?.positions && resStaff.positions
+                      .filter((p) => {
+                        if (p.endReasonId) return false
+                        if (!p.endDate) return true
+                        return new Date(p.endDate).getTime() > Date.now()
+                      })
+                      .map((p) => <div className="chip" key={p.id}>{p.value}</div>)
+                  }
+                </div>
+              </div>
             </div>
           </div>
 
@@ -318,6 +332,47 @@ function countItemsInLast24Hours(res: QueryObjectiveActivity): number {
 
 export const style = css`
   .profile {
+    .sub-page-hero {
+      .space-between {
+        display: flex;
+        gap: var(--space);
+        justify-content: space-between;
+
+          @media (max-width: 720px) {
+            flex-direction: column;
+          }
+
+        .chips {
+          display: flex;
+          justify-content: end;
+          flex-grow: 1;
+          gap: calc(var(--space-lite) / 2);
+
+          @media (max-width: 720px) {
+            flex-wrap: wrap;
+            flex-grow: 0;
+            justify-content: center;
+          }
+
+          .chip {
+            white-space: nowrap;
+            border-radius: 33rem;
+            font-weight: 500;
+            padding-inline: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 3rem;
+            opacity: 0.90;
+            background-color: var(--white);
+            -webkit-box-shadow: -4px 5px 8px -2px rgba(0,0,0,0.53); 
+            box-shadow: -4px 5px 8px -2px rgba(0,0,0,0.53);
+            font-size: 81%;
+          }
+        }
+      }
+    }
+
     .page-content {
       max-width: 69rem;
     }
