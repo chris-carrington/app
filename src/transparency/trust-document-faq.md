@@ -40,7 +40,7 @@
 - Shasta Trades Trust has a mission
     - We cannot change the Trust's mission unless it becomes "illegal, impossible, or impracticable" to carry out
 - Shasta Trades Nonprofit has a mission
-    - Current: **To help students become licensed contractors through paid apprenticeships, to offer mentors work they love, and to provide affordable, high-quality trade services, to our lovely Siskiyou County community.**
+    - Current: **To help students become licensed contractors through paid apprenticeships, to offer mentors work they love, and to provide affordable, high-quality trade services to Siskiyou County.**
     - A Nonprofit mission can be changed with a Board vote
 - Our Trust mission is nearly identical to our Nonprofit mission
     - Current: **To help students become licensed contractors through paid apprenticeships, to offer mentors work they love, and to provide affordable, high-quality trade services.**

@@ -10,7 +10,7 @@ import Value from './Value'
 
 export default new Hono()
   .get('/', async (c) => {
-    const description = 'Shasta Trades is a Nonprofit, that provides affordable, high-quality, trade services, to our lovely Siskiyou County community. 💚'
+    const description = 'Shasta Trades is a Nonprofit, that provides affordable, high-quality, trade services to Siskiyou County. 💚'
 
     return c.render(
       <>

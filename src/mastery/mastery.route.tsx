@@ -49,11 +49,13 @@ export default new Hono()
           <div class="md" data-directive={onStudyGuideLoad()}>
             <div dangerouslySetInnerHTML={{ __html: html }}></div>
 
-            <Tabs variant="underline" name="study-guide-tabs" tabs={[
-              createTab('acronyms', 'Acronyms', subHtml, subVerifiedIdQuery),
-              createTab('random', 'Random', subHtml, subVerifiedIdQuery),
-              createTab('occupancy_classification', 'Occupancy Classification', subHtml, subVerifiedIdQuery),
-            ]} />
+            {
+              subHtml && <Tabs variant="underline" name="study-guide-tabs" tabs={[
+                createTab('acronyms', 'Acronyms', subHtml, subVerifiedIdQuery),
+                createTab('random', 'Random', subHtml, subVerifiedIdQuery),
+                createTab('occupancy_classification', 'Occupancy Classification', subHtml, subVerifiedIdQuery),
+              ]} />
+            }
           </div>
         </div>
       </>

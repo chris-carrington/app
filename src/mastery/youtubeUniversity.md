@@ -1,6 +1,5 @@
 ## What is Youtube University?
-- Our curated list of helpful trade tutorials
-- Each entry answers a specific trade question with a YouTube video
+- Our curated list of helpful trade video tutorials
 
 
 ---
