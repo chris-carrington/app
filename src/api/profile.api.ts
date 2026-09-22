@@ -2,22 +2,21 @@
 
 import { Hono } from 'hono'
 import { eq } from 'drizzle-orm'
-import { db, Person } from '@src/db'
+import { Contact, db, Person } from '@src/db'
 import { env } from 'cloudflare:workers'
 import { onError, onSuccess, validator } from '@hono-api/be'
 import { mwSessionPerson } from '@src/middleware/mwSessionPerson'
-import { profileUpdateValidator } from '@src/validators/profileUpdate.validator'
+import { profileUpdateValidatorApi } from '@src/validators/profileUpdate.validator'
 
 
 export default new Hono()
   .put(
     '/',
     mwSessionPerson,
-    validator('form', profileUpdateValidator.schema),
+    validator('form', profileUpdateValidatorApi.schema),
     async (c) => {
       const person = c.get('person')
       const form = c.req.valid('form')
-
       const response: { imageId?: string } = {}
 
       try {
@@ -27,9 +26,15 @@ export default new Hono()
           update.imageId = response.imageId = crypto.randomUUID()
         }
 
-        await db.update(Person) // update db
-          .set(update)
-          .where(eq(Person.id, person.id))
+        await db.transaction(async (tx) => {
+          await tx.update(Person) // update Person
+            .set(update)
+            .where(eq(Person.id, person.id))
+
+          await tx.update(Contact) // update Contact
+            .set({ sendNewsletter: form.newsletter })
+            .where(eq(Contact.personId, person.id))
+        })
 
         if (response.imageId && form.img && env.ENVIRONMENT !== 'local') { // update r2
           await Promise.all([

@@ -7,7 +7,7 @@ import type { AppType } from '@src/index'
 import { FormUtil, Loading } from '@hono-form'
 import { createRPC, onError } from '@hono-api/fe'
 import { imgWebpEvents, onFileChange } from '@img-webp'
-import { profileUpdateValidator } from '@src/validators/profileUpdate.validator'
+import { profileUpdateValidatorForm } from '@src/validators/profileUpdate.validator'
 
 
 export default (el: HTMLFormElement) => {
@@ -15,7 +15,7 @@ export default (el: HTMLFormElement) => {
   const rpc = createRPC<AppType>()
   const imgAvatar = query<HTMLImageElement>(idAvatar().query).one()
   const btnProfileUpdateSaveBtn = query<HTMLButtonElement>('button[type="submit"]').root(el).one()
-  const form = new FormUtil(el, profileUpdateValidator, (input) => onFileChange(input, { aimWidth: 450 }))
+  const form = new FormUtil(el, profileUpdateValidatorForm, (input) => onFileChange(input, { aimWidth: 450 }))
 
 
   el.addEventListener('submit', async e => {
@@ -27,7 +27,12 @@ export default (el: HTMLFormElement) => {
     try {
       loading.start()
 
-      const { res } = await form.rpc(rpc.api['profile'].$put, { form: { firstName: result.data.firstName, lastName: result.data.lastName, img: result.data.img } })
+      const { res } = await form.rpc(rpc.api['profile'].$put, { form: {
+        firstName: result.data.firstName,
+        lastName: result.data.lastName,
+        img: result.data.img,
+        newsletter: result.data.newsletter.length ? 'true' : 'false'
+      }})
 
       if (res.success) {
         if (res.imageId) await setDomImg(imgAvatar, res.imageId)

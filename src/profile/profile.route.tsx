@@ -11,7 +11,7 @@ import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import { Accordion, type AccordionItem } from '@hono-accordion'
 import { bindAccordionItems, onProfileUpdateLoad, tooltip } from '@hono-directives'
 import { ObjectiveActivity, objectiveActivityStyle } from '@src/lib/ObjectiveActivity'
-import { queryStaffPerson, queryObjectiveActivity, type Person, type QueryStaffPerson, type QueryObjectiveActivity } from '@src/db'
+import { queryStaffPerson, queryObjectiveActivity, type Person, type Contact, type QueryStaffPerson, type QueryObjectiveActivity } from '@src/db'
 
 
 export default new Hono()
@@ -25,7 +25,7 @@ export default new Hono()
 
     const resStaff: QueryStaffPerson = await queryStaffPerson(resSession.response.person.id)
 
-    const accordionItems = await getAccordionItems(resSession.response.person, resStaff)
+    const accordionItems = await getAccordionItems(resSession.response.person, resSession.response.contact, resStaff)
 
     return c.render(
       <>
@@ -63,7 +63,7 @@ export default new Hono()
 const avatarId = idAvatar()
 
 
-async function getAccordionItems(person: typeof Person.$inferSelect, resStaff: QueryStaffPerson) {
+async function getAccordionItems(person: typeof Person.$inferSelect, contact: typeof Contact.$inferSelect, resStaff: QueryStaffPerson) {
 
   const accordionItems: AccordionItem[] = []
 
@@ -308,6 +308,7 @@ async function getAccordionItems(person: typeof Person.$inferSelect, resStaff: Q
         </div>
 
         <Field type="file" label="Avatar" name="img" prefix="profile-update" />
+        <Field type="checkbox" label="Newsletter" name="newsletter" options={[{ label: 'Receive one monthy Shasta Trades email', value: 'true'}]} value={contact.sendNewsletter ? 'true' : ''} prefix="profile-update" />
         <img id={avatarId.id} class={person.imageId ? '' : 'hidden'} src={`https://r2.shastatrades.org/${person.imageId}.webp`} />
         <button type="submit" class="primary">Save</button>
       </form>
