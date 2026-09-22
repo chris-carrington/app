@@ -17,10 +17,6 @@ const ObjectiveAssigneeAlias = () => alias(Objective__Assignee, 'ObjectiveAssign
 const CommentAssigneeAlias = () => alias(ObjectiveComment__Assignee, 'CommentAssignee')
 
 
-// query children
-const children = createChildren(getBaseQuery).fn()
-
-
 /**
  * @example
   ```ts
@@ -44,7 +40,6 @@ export async function queryObjectiveActivity(props: QueryObjectiveActivityProps)
 
   const items = leftJoin(rows, {
     parent: { shape: parentShape },
-    children,
   })
 
   const hasMore = items.length > limit

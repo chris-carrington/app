@@ -7,7 +7,7 @@ export function leftJoin<
   ParentKey extends PropertyKey,
   GroupKey extends PropertyKey,
   Parent extends Record<string, any>,
-  const Children extends readonly ChildConfig<Row, any, any>[]
+  const Children extends readonly ChildConfig<Row, any, any>[] = []
 >(
   rows: Row[],
   config: {
@@ -16,7 +16,7 @@ export function leftJoin<
       groupId: (row: Row) => GroupKey,
       shape: (row: Row) => Parent
     },
-    children: Children
+    children?: Children
   }
 ): Record<GroupKey, FinalParent<Parent, Children>[]>
 
@@ -26,7 +26,7 @@ export function leftJoin<
   Row,
   ParentKey extends PropertyKey,
   Parent extends Record<string, any>,
-  const Children extends readonly ChildConfig<Row, any, any>[]
+  const Children extends readonly ChildConfig<Row, any, any>[] = []
 >(
   rows: Row[],
   config: {
@@ -34,7 +34,7 @@ export function leftJoin<
       id?: (row: Row) => PropertyKey,
       shape: (row: Row) => Parent
     },
-    children: Children
+    children?: Children
   }
 ): FinalParent<Parent, Children>[]
 
@@ -79,9 +79,10 @@ export function leftJoin<
       groupId?: (row: Row) => GroupKey,
       shape: (row: Row) => Parent
     }
-    children: Children
+    children?: Children
   }
 ): Record<GroupKey, FinalParent<Parent, Children>[]> | FinalParent<Parent, Children>[] {
+  const children = config.children ?? []
   const hasGrouping = config.parent.groupId !== undefined
 
   const idFn = config.parent.id ?? ((row: Row) => (row as any).id as PropertyKey)
@@ -102,14 +103,14 @@ export function leftJoin<
     if (!parent) {
       const scalarParent = config.parent.shape(row) as Parent
       const augmentedParent = { ...scalarParent } as FinalParent<Parent, Children>
-      for (const child of config.children) {
+      for (const child of children) {
         (augmentedParent as any)[child.prop] = []
       }
       parent = augmentedParent
       parentMap.set(parentKey, parent)
     }
 
-    for (const child of config.children) {
+    for (const child of children) {
       const childKey = child.id(row)
       if (childKey === null || childKey === undefined) continue
 
@@ -173,6 +174,41 @@ type FinalParent<Parent, Children extends readonly ChildConfig<any, any, any>[]>
  */
 export function prop<C>(value: unknown, column: C): ExtractColumnData<C> {
   return value as ExtractColumnData<C>
+}
+
+
+/**
+ * Collapse a nested object to `null` when its identity column is `null`.
+ * Use for 1:1 relations introduced by a `LEFT JOIN` where the join may miss.
+ *
+ * @example
+ * ```ts
+ * job: nested(row.jobId, {
+ *   id: prop(row.jobId, Job.id),
+ *   address: prop(row.jobAddress, Job.address),
+ * })
+ * ```
+ */
+export function nested<K, T>(id: K, obj: T): K extends null | undefined ? null : T {
+  return (id === null || id === undefined ? null : obj) as any
+}
+
+
+/**
+ * Convert a Drizzle `timestamp_ms` column value to an epoch-millisecond number.
+ * Null/undefined pass through untouched so `leftJoin` nullability is preserved.
+ *
+ * @example
+ * ```ts
+ * createdAt: epoch(row.jobCreatedAt)                      // number | null
+ * createdAt: epoch(prop(row.jobCreatedAt, Job.createdAt)) // number (schema non-null)
+ * ```
+ */
+export function epoch(value: Date): number
+export function epoch(value: Date | null): number | null
+export function epoch(value: Date | null | undefined): number | null
+export function epoch(value: Date | null | undefined): number | null {
+  return value == null ? null : +value
 }
 
 

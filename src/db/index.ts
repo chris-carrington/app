@@ -22,6 +22,9 @@ export * from '@src/db/inupObjective'
 export * from '@src/db/queryObjectiveActivity'
 export * from '@src/db/queryObjective'
 export * from '@src/db/putPersonContact'
+export * from '@src/db/queryContactUsMessages'
+export * from '@src/db/queryJobLeads'
+export * from '@src/db/queryStaffLeads'
 
 
 // tables

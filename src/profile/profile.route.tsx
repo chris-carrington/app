@@ -9,9 +9,9 @@ import { msDay, Field } from '@hono-form'
 import { getSession } from '@src/auth/getSession'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import { Accordion, type AccordionItem } from '@hono-accordion'
-import { bindAccordionItems, onProfileUpdateLoad, tooltip } from '@hono-directives'
 import { ObjectiveActivity, objectiveActivityStyle } from '@src/lib/ObjectiveActivity'
-import { queryStaffPerson, queryObjectiveActivity, type Person, type Contact, type QueryStaffPerson, type QueryObjectiveActivity } from '@src/db'
+import { bindAccordionItems, formatTime, onProfileUpdateLoad, tooltip } from '@hono-directives'
+import { queryStaffPerson, queryObjectiveActivity, queryJobLeads, queryStaffLeads, queryContactUsMessages, type Person, type Contact, type QueryStaffPerson, type QueryObjectiveActivity } from '@src/db'
 
 
 export default new Hono()
@@ -64,11 +64,16 @@ const avatarId = idAvatar()
 
 
 async function getAccordionItems(person: typeof Person.$inferSelect, contact: typeof Contact.$inferSelect, resStaff: QueryStaffPerson) {
-
   const accordionItems: AccordionItem[] = []
 
   if (resStaff?.positions.length) {
-    const resActivity = await queryObjectiveActivity({ variant: 'personal', sessionPersonId: person.id })
+    const [resActivity, resJobLeads, resStaffLeads, resContactUsMessages] = await Promise.all([
+      queryObjectiveActivity({ variant: 'personal', sessionPersonId: person.id }),
+      queryJobLeads(),
+      queryStaffLeads(),
+      queryContactUsMessages(),
+    ])
+
     const resActivityRecentCount = countItemsInLast24Hours(resActivity)
 
     accordionItems.push({
@@ -85,7 +90,7 @@ async function getAccordionItems(person: typeof Person.$inferSelect, contact: ty
       header: <>
         <div class="space-between">
           <span>Job Leads</span>
-          <span>3</span>
+          <span>{resJobLeads.length}</span>
         </div>
       </>,
       body: <>
@@ -93,68 +98,30 @@ async function getAccordionItems(person: typeof Person.$inferSelect, contact: ty
           <div class="bhead">
             <span class="dot" aria-hidden="true"></span>
             <h2 id="bucket-service">Job Leads</h2>
-            <span class="count">3</span>
+            <span class="count">{resJobLeads.length}</span>
           </div>
           <div class="entries">
-
-            <article class="entry">
-              <div class="who">
-                <span class="name">Amanda Reyes</span>
-                <a class="email" href="mailto:amanda.reyes@example.com">amanda.reyes@example.com</a>
-                <span class="when">2 hours ago</span>
-              </div>
-              <dl class="fields">
-                <dt>Description</dt>
-                <dd>Guest bathroom remodel — tub-to-shower conversion, new vanity and tile.</dd>
-                <dt>Trades</dt>
-                <dd>
-                  <ul class="chips">
-                    <li>Bathroom</li>
-                    <li>Tiling</li>
-                    <li>Plumbing</li>
-                  </ul>
-                </dd>
-              </dl>
-            </article>
-
-            <article class="entry">
-              <div class="who">
-                <span class="name">Marcus Webb</span>
-                <a class="email" href="mailto:marcus.webb@example.com">marcus.webb@example.com</a>
-                <span class="when">Yesterday</span>
-              </div>
-              <dl class="fields">
-                <dt>Description</dt>
-                <dd>Back deck is soft in two spots. Looking to replace boards and re-stain before winter.</dd>
-                <dt>Trades</dt>
-                <dd>
-                  <ul class="chips">
-                    <li>Deck</li>
-                    <li>Carpentry</li>
-                    <li>Painting</li>
-                  </ul>
-                </dd>
-              </dl>
-            </article>
-
-            <article class="entry">
-              <div class="who">
-                <span class="name">Donald Cooper</span>
-                <a class="email" href="mailto:donald.cooper@example.com">donald.cooper@example.com</a>
-                <span class="when">3 days ago</span>
-              </div>
-              <dl class="fields">
-                <dt>Description</dt>
-                <dd>Kitchen outlets keep tripping the breaker. Hoping someone can take a look this week.</dd>
-                <dt>Trades</dt>
-                <dd>
-                  <ul class="chips">
-                    <li>Electrical</li>
-                  </ul>
-                </dd>
-              </dl>
-            </article>
-
+            {
+              resJobLeads.map(jobLead => <>
+                <article class="entry">
+                  <div class="who">
+                    <span class="name">{jobLead.person.firstName} {jobLead.person.lastName}</span>
+                    <a class="email" href={`mailto${jobLead.person.email}`}>{jobLead.person.email}</a>
+                    <span class="when" data-directive={formatTime(jobLead.createdAt)}></span>
+                  </div>
+                  <dl class="fields">
+                    <dt>Description</dt>
+                    <dd>{jobLead.description}</dd>
+                    <dt>Trades</dt>
+                    <dd>
+                      <ul class="chips">
+                        { jobLead.trades.map(trade => <li>{trade.value}</li>) }
+                      </ul>
+                    </dd>
+                  </dl>
+                </article>
+              </>)
+            }
           </div>
         </section>
       </>
@@ -164,7 +131,7 @@ async function getAccordionItems(person: typeof Person.$inferSelect, contact: ty
       header: <>
         <div class="space-between">
           <span>Staff Leads</span>
-          <span>2</span>
+          <span>{resStaffLeads.length}</span>
         </div>
       </>,
       body: <>
@@ -172,33 +139,25 @@ async function getAccordionItems(person: typeof Person.$inferSelect, contact: ty
           <div class="bhead">
             <span class="dot" aria-hidden="true"></span>
             <h2 id="bucket-lead">Staff Leads</h2>
-            <span class="count">2</span>
+            <span class="count">{resStaffLeads.length}</span>
           </div>
           <div class="entries">
 
-            <article class="entry">
-              <div class="who">
-                <span class="name">Jordan Ellis</span>
-                <a class="email" href="mailto:jordan.ellis@example.com">jordan.ellis@example.com</a>
-                <span class="when">5 hours ago</span>
-              </div>
-              <dl class="fields">
-                <dt>Position</dt>
-                <dd>CFO</dd>
-              </dl>
-            </article>
-
-            <article class="entry">
-              <div class="who">
-                <span class="name">Sofia Nguyen</span>
-                <a class="email" href="mailto:sofia.nguyen@example.com">sofia.nguyen@example.com</a>
-                <span class="when">2 days ago</span>
-              </div>
-              <dl class="fields">
-                <dt>Position</dt>
-                <dd>Tradesperson</dd>
-              </dl>
-            </article>
+            {
+              resStaffLeads.map(staffLead => <>
+                <article class="entry">
+                  <div class="who">
+                    <span class="name">{staffLead.person.firstName} {staffLead.person.lastName}</span>
+                    <a class="email" href={`mailto${staffLead.person.email}`}>{staffLead.person.email}</a>
+                    <span class="when" data-directive={formatTime(staffLead.createdAt)}></span>
+                  </div>
+                  <dl class="fields">
+                    <dt>Position</dt>
+                    <dd>{staffLead.position.value}</dd>
+                  </dl>
+                </article>
+              </>)
+            }
 
           </div>
         </section>
@@ -209,7 +168,7 @@ async function getAccordionItems(person: typeof Person.$inferSelect, contact: ty
       header: <>
         <div class="space-between">
           <span>Contact Us Messages</span>
-          <span>2</span>
+          <span>{resContactUsMessages.length}</span>
         </div>
       </>,
       body: <>
@@ -217,79 +176,24 @@ async function getAccordionItems(person: typeof Person.$inferSelect, contact: ty
           <div class="bhead">
             <span class="dot" aria-hidden="true"></span>
             <h2 id="bucket-contact">Contact Us Messages</h2>
-            <span class="count">2</span>
+            <span class="count">{resContactUsMessages.length}</span>
           </div>
           <div class="entries">
-
-            <article class="entry">
-              <div class="who">
-                <span class="name">Daniel Cho</span>
-                <a class="email" href="mailto:daniel.cho@example.com">daniel.cho@example.com</a>
-                <span class="when">8 hours ago</span>
-              </div>
-              <dl class="fields">
-                <dt>Message</dt>
-                <dd>Do you serve Weed and Dunsmuir, or is it Mount Shasta only? Thanks!</dd>
-              </dl>
-            </article>
-
-            <article class="entry">
-              <div class="who">
-                <span class="name">Grace Lindqvist</span>
-                <a class="email" href="mailto:grace.lindqvist@example.com">grace.lindqvist@example.com</a>
-                <span class="when">3 days ago</span>
-              </div>
-              <dl class="fields">
-                <dt>Message</dt>
-                <dd>I'd love to volunteer for the next community build day — how do I get on the list?</dd>
-              </dl>
-            </article>
-
-          </div>
-        </section>
-      </>
-    })
-
-    accordionItems.push({
-      header: <>
-        <div class="space-between">
-          <span>Newsletter Signups</span>
-          <span>3</span>
-        </div>
-      </>,
-      body: <>
-        <section class="bucket news" aria-labelledby="bucket-news">
-          <div class="bhead">
-            <span class="dot" aria-hidden="true"></span>
-            <h2 id="bucket-news">Newsletter Signups</h2>
-            <span class="count">3</span>
-          </div>
-          <div class="entries">
-
-            <article class="entry">
-              <div class="who">
-                <span class="name">Elena Park</span>
-                <a class="email" href="mailto:elena.park@example.com">elena.park@example.com</a>
-                <span class="when">20 minutes ago</span>
-              </div>
-            </article>
-
-            <article class="entry">
-              <div class="who">
-                <span class="name">Tom Bradley</span>
-                <a class="email" href="mailto:tom.bradley@example.com">tom.bradley@example.com</a>
-                <span class="when">Yesterday</span>
-              </div>
-            </article>
-
-            <article class="entry">
-              <div class="who">
-                <span class="name">Ruth Okafor</span>
-                <a class="email" href="mailto:ruth.okafor@example.com">ruth.okafor@example.com</a>
-                <span class="when">4 days ago</span>
-              </div>
-            </article>
-
+            {
+              resContactUsMessages.map(m => <>
+                <article class="entry">
+                  <div class="who">
+                    <span class="name">{m.person.firstName} {m.person.lastName}</span>
+                    <a class="email" href={`mailto${m.person.email}`}>{m.person.email}</a>
+                    <span class="when" data-directive={formatTime(m.createdAt)}></span>
+                  </div>
+                  <dl class="fields">
+                    <dt>Message</dt>
+                    <dd>{m.message}</dd>
+                  </dl>
+                </article>
+              </>)
+            }
           </div>
         </section>
       </>
@@ -381,7 +285,7 @@ export const style = css`
     }
 
     .page-content {
-      max-width: 69rem;
+      max-width: 75rem;
     }
 
     .accordion-title {
@@ -440,14 +344,9 @@ export const style = css`
         --tint: #eceefc;
       }
 
-      &.news {
+      &.contact {
         --accent: #97650f;
         --tint: #fbf1dd;
-      }
-
-      &.contact {
-        --accent: #b03f68;
-        --tint: #fbe9f0;
       }
 
       .bhead {
@@ -511,7 +410,7 @@ export const style = css`
             font-size: 1.6rem;
             font-weight: 600;
             color: #131b26;
-            min-width: 13.6rem;
+            min-width: 13.3rem;
           }
 
           .email {
@@ -527,7 +426,7 @@ export const style = css`
 
           .when {
             margin-left: auto;
-            font-size: 1.2rem;
+            font-size: 81%;
             color: #98a1ae;
             white-space: nowrap;
           }
