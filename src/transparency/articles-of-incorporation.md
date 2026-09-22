@@ -48,13 +48,13 @@
 
 **Section 5.1 Number of Directors.** The Corporation shall have no fewer than three (3) and no more than fifteen (15) directors. The exact number of directors shall be determined from time to time by resolution of the Board of Directors, subject to the approval of the sole member.
 
-**Section 5.2 Initial Directors.** The names and addresses of the persons who are to serve as the initial directors of the Corporation are:
+**Section 5.2 Initial Directors.** The names of the persons who are to serve as the initial directors of the Corporation are:
 
-| Name | Address |
-|------|---------|
-| **Christopher Carrington** | 816 Davis Place, Mount Shasta, California 96067 |
-| **Megha Marhatta** | 816 Davis Place, Mount Shasta, California 96067 |
-| **Cindi Joy Staller** | 816 Davis Place, Mount Shasta, California 96067 |
+- **Christopher Carrington**
+- **Megha Marhatta**
+- **Cindi Joy Staller**
+
+**Note:** The business or residential addresses of the initial directors are not included in these Articles. Such information shall be provided in the Corporation's Statement of Information (Form SI-100) filed with the California Secretary of State, and in the Corporation's corporate records.
 
 ---
 
@@ -116,19 +116,21 @@
 ---
 
 **IN WITNESS WHEREOF**, the undersigned incorporator has executed these Articles of Incorporation on this 15th day of September, 2026.
-- **Christopher Carringtonr:**
+
+- **Christopher Carrington**, Incorporator:
     - Signature: <span class="signature">Christopher Carrington</span>_____________________
     - Date: <u>09/15/2026</u>_________________________________
 
 **ACKNOWLEDGMENT AND CONSENT OF INITIAL DIRECTORS**
 
 The undersigned, being the persons named as initial directors in Article 5 of these Articles of Incorporation, hereby acknowledge and consent to serve as initial directors of the Corporation.
-- **Christopher Carringtonr:**
+
+- **Christopher Carrington**, Initial Director:
     - Signature: <span class="signature">Christopher Carrington</span>_____________________
     - Date: <u>09/15/2026</u>_________________________________
-- **Megha Marhatta:**
+- **Megha Marhatta**, Initial Director:
     - Signature: ______________________________________
     - Date: __________________________________________
-- **Cindi Joy Staller:**
+- **Cindi Joy Staller**, Initial Director:
     - Signature: ______________________________________
     - Date: __________________________________________
