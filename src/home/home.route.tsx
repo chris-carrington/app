@@ -1,14 +1,16 @@
 import { Hono } from 'hono'
-import Pattern from './Pattern'
+import PatternFlow from './PatternFlow'
+import PatternConnect from './PatternConnect'
 import Building from './Building'
 import Hero from '@src/home/Hero'
 import Mission from '@src/home/Mission'
 import { env } from 'cloudflare:workers'
+import Value from './Value'
 
 
 export default new Hono()
   .get('/', async (c) => {
-    const description = 'Shasta Trades is a Nonprofit, that provides affordable, high-quality, trade services, to our lovely Mount Shasta community. 💚'
+    const description = 'Shasta Trades is a Nonprofit, that provides affordable, high-quality, trade services, to our lovely Siskiyou County community. 💚'
 
     return c.render(
       <>
@@ -21,7 +23,9 @@ export default new Hono()
 
         <Hero />
         <Mission />
-        <Pattern />
+        <PatternFlow />
+        <Value />
+        <PatternConnect />
         <Building />
       </>
     )

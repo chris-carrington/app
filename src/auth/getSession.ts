@@ -128,7 +128,7 @@ export async function getSession<V extends Variant = typeof defaultSessionVarian
 
 type Variant = 'just-session' | 'include-person' | 'include-person-and-contact' | 'include-staff'
 
-type GetSessionResult<V extends Variant> =
+export type GetSessionResult<V extends Variant> =
   | { status: 401, message: string }
   | (
       V extends 'just-session'

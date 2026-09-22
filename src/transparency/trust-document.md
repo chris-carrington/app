@@ -134,7 +134,7 @@
 
 **8.1 Dissolution.** Upon the dissolution of the Trust, or upon the impossibility of performing the specific charitable purposes of the Trust, the Trustees shall, after paying or making provision for payment of all debts and liabilities of the Trust, distribute all remaining Trust assets to one or more organizations that are exempt from federal income tax under Section 501(c)(3) of the Internal Revenue Code of 1986, as amended (or any successor provision), and that have a charitable purpose substantially similar to the Mission of the Trust.
 
-**8.2 Successor Organizations.** In selecting successor organizations, the Trustees shall give preference to organizations serving the Mount Shasta community or organizations focused on trades education and workforce development.
+**8.2 Successor Organizations.** In selecting successor organizations, the Trustees shall give preference to organizations serving the Siskiyou County community or organizations focused on trades education and workforce development.
 
 **8.3 Court Approval.** Any distribution upon dissolution shall be made in accordance with applicable California law and, if required, with the approval of a court of competent jurisdiction.
 

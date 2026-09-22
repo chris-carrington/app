@@ -1,17 +1,17 @@
 // app/src/profile/profile.route.tsx
 
 import { Hono } from 'hono'
-import { Field, msDay } from '@hono-form'
 import { css, Style } from 'hono/css'
 import { idAvatar } from '@src/lib/dom'
 import { createRPC } from '@hono-api/be'
 import type { AppType } from '@src/index'
+import { msDay, Field } from '@hono-form'
 import { getSession } from '@src/auth/getSession'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import { Accordion, type AccordionItem } from '@hono-accordion'
 import { bindAccordionItems, onProfileUpdateLoad, tooltip } from '@hono-directives'
 import { ObjectiveActivity, objectiveActivityStyle } from '@src/lib/ObjectiveActivity'
-import { queryStaffPerson, queryObjectiveActivity, type QueryObjectiveActivity } from '@src/db'
+import { queryStaffPerson, queryObjectiveActivity, type Person, type QueryStaffPerson, type QueryObjectiveActivity } from '@src/db'
 
 
 export default new Hono()
@@ -23,257 +23,9 @@ export default new Hono()
       return c.redirect(redirect)
     }
 
-    const resStaff = await queryStaffPerson(resSession.response.person.id)
+    const resStaff: QueryStaffPerson = await queryStaffPerson(resSession.response.person.id)
 
-    const accordionItems: AccordionItem[] = []
-
-    if (resStaff?.positions.length) {
-      console.log(JSON.stringify(resStaff.positions, null, 2))
-      const resActivity = await queryObjectiveActivity({ variant: 'personal', sessionPersonId: resSession.response.person.id })
-      const resActivityRecentCount = countItemsInLast24Hours(resActivity)
-
-      accordionItems.push({
-        header: <>
-          <div class="space-between">
-            <span>Objective Activity</span>
-            <span data-directive={tooltip('bottomRight', 'The number of objective activity itmes in the last 24 hours! ✅')}>{resActivityRecentCount}</span>
-          </div>
-        </>,
-        body: <ObjectiveActivity res={resActivity} />
-      })
-
-      accordionItems.push({
-        header: <>
-          <div class="space-between">
-            <span>Job Leads</span>
-            <span>3</span>
-          </div>
-        </>,
-        body: <>
-          <section class="bucket service" aria-labelledby="bucket-service">
-            <div class="bhead">
-              <span class="dot" aria-hidden="true"></span>
-              <h2 id="bucket-service">Job Leads</h2>
-              <span class="count">3</span>
-            </div>
-            <div class="entries">
-
-              <article class="entry">
-                <div class="who">
-                  <span class="name">Amanda Reyes</span>
-                  <a class="email" href="mailto:amanda.reyes@example.com">amanda.reyes@example.com</a>
-                  <span class="when">2 hours ago</span>
-                </div>
-                <dl class="fields">
-                  <dt>Description</dt>
-                  <dd>Guest bathroom remodel — tub-to-shower conversion, new vanity and tile.</dd>
-                  <dt>Trades</dt>
-                  <dd>
-                    <ul class="chips">
-                      <li>Bathroom</li>
-                      <li>Tiling</li>
-                      <li>Plumbing</li>
-                    </ul>
-                  </dd>
-                </dl>
-              </article>
-
-              <article class="entry">
-                <div class="who">
-                  <span class="name">Marcus Webb</span>
-                  <a class="email" href="mailto:marcus.webb@example.com">marcus.webb@example.com</a>
-                  <span class="when">Yesterday</span>
-                </div>
-                <dl class="fields">
-                  <dt>Description</dt>
-                  <dd>Back deck is soft in two spots. Looking to replace boards and re-stain before winter.</dd>
-                  <dt>Trades</dt>
-                  <dd>
-                    <ul class="chips">
-                      <li>Deck</li>
-                      <li>Carpentry</li>
-                      <li>Painting</li>
-                    </ul>
-                  </dd>
-                </dl>
-              </article>
-
-              <article class="entry">
-                <div class="who">
-                  <span class="name">Donald Cooper</span>
-                  <a class="email" href="mailto:priya.shah@example.com">donald.cooper@example.com</a>
-                  <span class="when">3 days ago</span>
-                </div>
-                <dl class="fields">
-                  <dt>Description</dt>
-                  <dd>Kitchen outlets keep tripping the breaker. Hoping someone can take a look this week.</dd>
-                  <dt>Trades</dt>
-                  <dd>
-                    <ul class="chips">
-                      <li>Electrical</li>
-                    </ul>
-                  </dd>
-                </dl>
-              </article>
-
-            </div>
-          </section>
-        </>
-      })
-
-      accordionItems.push({
-        header: <>
-          <div class="space-between">
-            <span>Staff Leads</span>
-            <span>2</span>
-          </div>
-        </>,
-        body: <>
-          <section class="bucket lead" aria-labelledby="bucket-lead">
-            <div class="bhead">
-              <span class="dot" aria-hidden="true"></span>
-              <h2 id="bucket-lead">Staff Leads</h2>
-              <span class="count">2</span>
-            </div>
-            <div class="entries">
-
-              <article class="entry">
-                <div class="who">
-                  <span class="name">Jordan Ellis</span>
-                  <a class="email" href="mailto:jordan.ellis@example.com">jordan.ellis@example.com</a>
-                  <span class="when">5 hours ago</span>
-                </div>
-                <dl class="fields">
-                  <dt>Position</dt>
-                  <dd>CFO</dd>
-                </dl>
-              </article>
-
-              <article class="entry">
-                <div class="who">
-                  <span class="name">Sofia Nguyen</span>
-                  <a class="email" href="mailto:sofia.nguyen@example.com">sofia.nguyen@example.com</a>
-                  <span class="when">2 days ago</span>
-                </div>
-                <dl class="fields">
-                  <dt>Position</dt>
-                  <dd>Tradesperson</dd>
-                </dl>
-              </article>
-
-            </div>
-          </section>
-        </>
-      })
-
-      accordionItems.push({
-        header: <>
-          <div class="space-between">
-            <span>Contact Us Messages</span>
-            <span>2</span>
-          </div>
-        </>,
-        body: <>
-          <section class="bucket contact" aria-labelledby="bucket-contact">
-            <div class="bhead">
-              <span class="dot" aria-hidden="true"></span>
-              <h2 id="bucket-contact">Contact Us Messages</h2>
-              <span class="count">2</span>
-            </div>
-            <div class="entries">
-
-              <article class="entry">
-                <div class="who">
-                  <span class="name">Daniel Cho</span>
-                  <a class="email" href="mailto:daniel.cho@example.com">daniel.cho@example.com</a>
-                  <span class="when">8 hours ago</span>
-                </div>
-                <dl class="fields">
-                  <dt>Message</dt>
-                  <dd>Do you serve Weed and Dunsmuir, or is it Mount Shasta only? Thanks!</dd>
-                </dl>
-              </article>
-
-              <article class="entry">
-                <div class="who">
-                  <span class="name">Grace Lindqvist</span>
-                  <a class="email" href="mailto:grace.lindqvist@example.com">grace.lindqvist@example.com</a>
-                  <span class="when">3 days ago</span>
-                </div>
-                <dl class="fields">
-                  <dt>Message</dt>
-                  <dd>I'd love to volunteer for the next community build day — how do I get on the list?</dd>
-                </dl>
-              </article>
-
-            </div>
-          </section>
-        </>
-      })
-
-      accordionItems.push({
-        header: <>
-          <div class="space-between">
-            <span>Newsletter Signups</span>
-            <span>3</span>
-          </div>
-        </>,
-        body: <>
-          <section class="bucket news" aria-labelledby="bucket-news">
-            <div class="bhead">
-              <span class="dot" aria-hidden="true"></span>
-              <h2 id="bucket-news">Newsletter Signups</h2>
-              <span class="count">3</span>
-            </div>
-            <div class="entries">
-
-              <article class="entry">
-                <div class="who">
-                  <span class="name">Elena Park</span>
-                  <a class="email" href="mailto:elena.park@example.com">elena.park@example.com</a>
-                  <span class="when">20 minutes ago</span>
-                </div>
-              </article>
-
-              <article class="entry">
-                <div class="who">
-                  <span class="name">Tom Bradley</span>
-                  <a class="email" href="mailto:tom.bradley@example.com">tom.bradley@example.com</a>
-                  <span class="when">Yesterday</span>
-                </div>
-              </article>
-
-              <article class="entry">
-                <div class="who">
-                  <span class="name">Ruth Okafor</span>
-                  <a class="email" href="mailto:ruth.okafor@example.com">ruth.okafor@example.com</a>
-                  <span class="when">4 days ago</span>
-                </div>
-              </article>
-
-            </div>
-          </section>
-        </>
-      })
-    }
-
-    accordionItems.push({
-      header: 'Edit Your Profile',
-      body: <>
-        <form data-directive={onProfileUpdateLoad()} class="form-card bg-white">
-          <div class="title">Edit Your Profile</div>
-
-          <div class="two">
-            <Field type="text" label="First Name" name="firstName" prefix="profile-update" value={resSession.response.person.firstName} />
-            <Field type="text" label="Last Name" name="lastName" prefix="profile-update" value={resSession.response.person.lastName} />
-          </div>
-
-          <Field type="file" label="Avatar" name="img" prefix="profile-update" />
-          <img id={avatarId.id} class={resSession.response.person.imageId ? '' : 'hidden'} src={`https://r2.shastatrades.org/${resSession.response.person.imageId}.webp`} />
-          <button type="submit" class="primary">Save</button>
-        </form>
-      </>
-    })
+    const accordionItems = await getAccordionItems(resSession.response.person, resStaff)
 
     return c.render(
       <>
@@ -292,11 +44,6 @@ export default new Hono()
                 <div class="chips">
                   {
                     resStaff?.positions && resStaff.positions
-                      .filter((p) => {
-                        if (p.endReasonId) return false
-                        if (!p.endDate) return true
-                        return new Date(p.endDate).getTime() > Date.now()
-                      })
                       .map((p) => <div className="chip" key={p.id}>{p.value}</div>)
                   }
                 </div>
@@ -316,6 +63,262 @@ export default new Hono()
 const avatarId = idAvatar()
 
 
+async function getAccordionItems(person: typeof Person.$inferSelect, resStaff: QueryStaffPerson) {
+
+  const accordionItems: AccordionItem[] = []
+
+  if (resStaff?.positions.length) {
+    const resActivity = await queryObjectiveActivity({ variant: 'personal', sessionPersonId: person.id })
+    const resActivityRecentCount = countItemsInLast24Hours(resActivity)
+
+    accordionItems.push({
+      header: <>
+        <div class="space-between">
+          <span>Objective Activity</span>
+          <span data-directive={tooltip('bottomRight', 'The number of objective activity itmes in the last 24 hours! ✅')}>{resActivityRecentCount}</span>
+        </div>
+      </>,
+      body: <ObjectiveActivity res={resActivity} />
+    })
+
+    accordionItems.push({
+      header: <>
+        <div class="space-between">
+          <span>Job Leads</span>
+          <span>3</span>
+        </div>
+      </>,
+      body: <>
+        <section class="bucket service" aria-labelledby="bucket-service">
+          <div class="bhead">
+            <span class="dot" aria-hidden="true"></span>
+            <h2 id="bucket-service">Job Leads</h2>
+            <span class="count">3</span>
+          </div>
+          <div class="entries">
+
+            <article class="entry">
+              <div class="who">
+                <span class="name">Amanda Reyes</span>
+                <a class="email" href="mailto:amanda.reyes@example.com">amanda.reyes@example.com</a>
+                <span class="when">2 hours ago</span>
+              </div>
+              <dl class="fields">
+                <dt>Description</dt>
+                <dd>Guest bathroom remodel — tub-to-shower conversion, new vanity and tile.</dd>
+                <dt>Trades</dt>
+                <dd>
+                  <ul class="chips">
+                    <li>Bathroom</li>
+                    <li>Tiling</li>
+                    <li>Plumbing</li>
+                  </ul>
+                </dd>
+              </dl>
+            </article>
+
+            <article class="entry">
+              <div class="who">
+                <span class="name">Marcus Webb</span>
+                <a class="email" href="mailto:marcus.webb@example.com">marcus.webb@example.com</a>
+                <span class="when">Yesterday</span>
+              </div>
+              <dl class="fields">
+                <dt>Description</dt>
+                <dd>Back deck is soft in two spots. Looking to replace boards and re-stain before winter.</dd>
+                <dt>Trades</dt>
+                <dd>
+                  <ul class="chips">
+                    <li>Deck</li>
+                    <li>Carpentry</li>
+                    <li>Painting</li>
+                  </ul>
+                </dd>
+              </dl>
+            </article>
+
+            <article class="entry">
+              <div class="who">
+                <span class="name">Donald Cooper</span>
+                <a class="email" href="mailto:donald.cooper@example.com">donald.cooper@example.com</a>
+                <span class="when">3 days ago</span>
+              </div>
+              <dl class="fields">
+                <dt>Description</dt>
+                <dd>Kitchen outlets keep tripping the breaker. Hoping someone can take a look this week.</dd>
+                <dt>Trades</dt>
+                <dd>
+                  <ul class="chips">
+                    <li>Electrical</li>
+                  </ul>
+                </dd>
+              </dl>
+            </article>
+
+          </div>
+        </section>
+      </>
+    })
+
+    accordionItems.push({
+      header: <>
+        <div class="space-between">
+          <span>Staff Leads</span>
+          <span>2</span>
+        </div>
+      </>,
+      body: <>
+        <section class="bucket lead" aria-labelledby="bucket-lead">
+          <div class="bhead">
+            <span class="dot" aria-hidden="true"></span>
+            <h2 id="bucket-lead">Staff Leads</h2>
+            <span class="count">2</span>
+          </div>
+          <div class="entries">
+
+            <article class="entry">
+              <div class="who">
+                <span class="name">Jordan Ellis</span>
+                <a class="email" href="mailto:jordan.ellis@example.com">jordan.ellis@example.com</a>
+                <span class="when">5 hours ago</span>
+              </div>
+              <dl class="fields">
+                <dt>Position</dt>
+                <dd>CFO</dd>
+              </dl>
+            </article>
+
+            <article class="entry">
+              <div class="who">
+                <span class="name">Sofia Nguyen</span>
+                <a class="email" href="mailto:sofia.nguyen@example.com">sofia.nguyen@example.com</a>
+                <span class="when">2 days ago</span>
+              </div>
+              <dl class="fields">
+                <dt>Position</dt>
+                <dd>Tradesperson</dd>
+              </dl>
+            </article>
+
+          </div>
+        </section>
+      </>
+    })
+
+    accordionItems.push({
+      header: <>
+        <div class="space-between">
+          <span>Contact Us Messages</span>
+          <span>2</span>
+        </div>
+      </>,
+      body: <>
+        <section class="bucket contact" aria-labelledby="bucket-contact">
+          <div class="bhead">
+            <span class="dot" aria-hidden="true"></span>
+            <h2 id="bucket-contact">Contact Us Messages</h2>
+            <span class="count">2</span>
+          </div>
+          <div class="entries">
+
+            <article class="entry">
+              <div class="who">
+                <span class="name">Daniel Cho</span>
+                <a class="email" href="mailto:daniel.cho@example.com">daniel.cho@example.com</a>
+                <span class="when">8 hours ago</span>
+              </div>
+              <dl class="fields">
+                <dt>Message</dt>
+                <dd>Do you serve Weed and Dunsmuir, or is it Mount Shasta only? Thanks!</dd>
+              </dl>
+            </article>
+
+            <article class="entry">
+              <div class="who">
+                <span class="name">Grace Lindqvist</span>
+                <a class="email" href="mailto:grace.lindqvist@example.com">grace.lindqvist@example.com</a>
+                <span class="when">3 days ago</span>
+              </div>
+              <dl class="fields">
+                <dt>Message</dt>
+                <dd>I'd love to volunteer for the next community build day — how do I get on the list?</dd>
+              </dl>
+            </article>
+
+          </div>
+        </section>
+      </>
+    })
+
+    accordionItems.push({
+      header: <>
+        <div class="space-between">
+          <span>Newsletter Signups</span>
+          <span>3</span>
+        </div>
+      </>,
+      body: <>
+        <section class="bucket news" aria-labelledby="bucket-news">
+          <div class="bhead">
+            <span class="dot" aria-hidden="true"></span>
+            <h2 id="bucket-news">Newsletter Signups</h2>
+            <span class="count">3</span>
+          </div>
+          <div class="entries">
+
+            <article class="entry">
+              <div class="who">
+                <span class="name">Elena Park</span>
+                <a class="email" href="mailto:elena.park@example.com">elena.park@example.com</a>
+                <span class="when">20 minutes ago</span>
+              </div>
+            </article>
+
+            <article class="entry">
+              <div class="who">
+                <span class="name">Tom Bradley</span>
+                <a class="email" href="mailto:tom.bradley@example.com">tom.bradley@example.com</a>
+                <span class="when">Yesterday</span>
+              </div>
+            </article>
+
+            <article class="entry">
+              <div class="who">
+                <span class="name">Ruth Okafor</span>
+                <a class="email" href="mailto:ruth.okafor@example.com">ruth.okafor@example.com</a>
+                <span class="when">4 days ago</span>
+              </div>
+            </article>
+
+          </div>
+        </section>
+      </>
+    })
+  }
+
+  accordionItems.push({
+    header: 'Edit Your Profile',
+    body: <>
+      <form data-directive={onProfileUpdateLoad()} class="form-card bg-white">
+        <div class="title">Edit Your Profile</div>
+
+        <div class="two">
+          <Field type="text" label="First Name" name="firstName" prefix="profile-update" value={person.firstName} />
+          <Field type="text" label="Last Name" name="lastName" prefix="profile-update" value={person.lastName} />
+        </div>
+
+        <Field type="file" label="Avatar" name="img" prefix="profile-update" />
+        <img id={avatarId.id} class={person.imageId ? '' : 'hidden'} src={`https://r2.shastatrades.org/${person.imageId}.webp`} />
+        <button type="submit" class="primary">Save</button>
+      </form>
+    </>
+  })
+
+  return accordionItems
+}
+
+
+
 function countItemsInLast24Hours(res: QueryObjectiveActivity): number {
   let count = 0
   const nowMs = Date.now()
@@ -330,6 +333,7 @@ function countItemsInLast24Hours(res: QueryObjectiveActivity): number {
 }
 
 
+
 export const style = css`
   .profile {
     .sub-page-hero {
@@ -338,9 +342,9 @@ export const style = css`
         gap: var(--space);
         justify-content: space-between;
 
-          @media (max-width: 720px) {
-            flex-direction: column;
-          }
+        @media (max-width: 720px) {
+          flex-direction: column;
+        }
 
         .chips {
           display: flex;
@@ -355,19 +359,21 @@ export const style = css`
           }
 
           .chip {
-            white-space: nowrap;
-            border-radius: 33rem;
-            font-weight: 500;
-            padding-inline: 0.9rem;
             display: flex;
             align-items: center;
             justify-content: center;
             height: 3rem;
             opacity: 0.90;
-            background-color: var(--white);
+            background-color: var(--primary);
+            border: 1px solid rgba(249, 251, 249, 0.24);
+            color: #f9fbf9;
             -webkit-box-shadow: -4px 5px 8px -2px rgba(0,0,0,0.53); 
             box-shadow: -4px 5px 8px -2px rgba(0,0,0,0.53);
             font-size: 81%;
+            transition: var(--fast-transition);
+            padding: 0.1rem 0.9rem;
+            border-radius: calc(var(--radius) * 3);
+            white-space: nowrap;
           }
         }
       }

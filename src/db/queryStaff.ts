@@ -181,7 +181,7 @@ export async function queryStaffPersonSession(sessionId: number) {
 
 
 
-export type QueryStaffPerson = InferQuery<typeof queryStaffPerson>
+export type QueryStaffPerson = InferQuery<typeof queryStaffPerson> | undefined
 
 export type QueryStaffPeople = InferQuery<typeof queryStaffPeople>
 

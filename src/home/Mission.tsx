@@ -10,7 +10,7 @@ export default (() => {
 
     <div class="mission">
       <div class="key">OUR MISSION</div>
-      <div class="value">To provide affordable, high-quality trade services, to our lovely Mount Shasta community, to offer mentors work they love and to help the next generation, become licensed contractors, through paid apprenticeships. 💚</div>
+      <div class="value">To provide affordable, high-quality trade services, to our lovely Siskiyou County community, to offer mentors work they love and to help the next generation, become licensed contractors, through paid apprenticeships. 💚</div>
     </div>
   </>
 }) satisfies FC
@@ -21,7 +21,7 @@ const style = css`
     text-align: center;
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: calc(var(--space-huge) / 1.8) var(--space-lite);
+    padding: calc(var(--space-huge) / 1.5) var(--space-lite);
 
     .key {
       font-weight: 600;

@@ -19,7 +19,7 @@ export default (() => {
     <footer>
       <div class="left">
         <div class="title">Shasta Trades</div>
-        <div class="dedication">We are dedicated to help students become licensed contractors through paid apprenticeships, to offer mentors work they love, and to provide affordable, high-quality trade services, to our lovely Mount Shasta community. 💚</div>
+        <div class="dedication">We are dedicated to help students become licensed contractors through paid apprenticeships, to offer mentors work they love, and to provide affordable, high-quality trade services, to our lovely Siskiyou County community. 💚</div>
       </div>
       <div class="right">
         <div class="site-map">

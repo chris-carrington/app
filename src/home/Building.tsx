@@ -46,6 +46,8 @@ export default (() => {
 
 const style = css`
   .building {
+    margin-top: var(--space-huge);
+
     .header {
       margin: 0 auto;
       max-width: var(--max-width);

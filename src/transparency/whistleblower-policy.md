@@ -6,7 +6,7 @@
 
 ## ARTICLE 1: INTRODUCTION AND PURPOSE
 
-**Section 1.1 Commitment to Integrity.** Shasta Trades Nonprofit (the "Corporation") is committed to the highest standards of integrity, transparency, and accountability in all aspects of its operations. This commitment is essential to fulfilling our mission: *to provide affordable, high-quality trade services to our lovely Mount Shasta community, to offer mentors work they love, and to help the next generation become licensed contractors through paid apprenticeships.*
+**Section 1.1 Commitment to Integrity.** Shasta Trades Nonprofit (the "Corporation") is committed to the highest standards of integrity, transparency, and accountability in all aspects of its operations. This commitment is essential to fulfilling our mission: *to provide affordable, high-quality trade services to our lovely Siskiyou Countycommunity, to offer mentors work they love, and to help the next generation become licensed contractors through paid apprenticeships.*
 
 **Section 1.2 Purpose.** This Whistleblower Policy (the "Policy") is intended to:
 
