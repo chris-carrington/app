@@ -21,7 +21,7 @@ export default (() => {
       <div class="header">
         <div class="title">Building the Foundation</div>
         <div class="flex">
-          <div class="sub-title">Before we train our first apprentice, we must secure the organizational pillars that will support our Shasta Trades Nonprofit Organization.</div>
+          <div class="sub-title">Before we train our first apprentice, we must secure the organizational pillars that will support Shasta Trades Nonprofit. Our current focus is:</div>
           <div class="hr"></div>
         </div>
       </div>

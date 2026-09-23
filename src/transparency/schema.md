@@ -23,6 +23,25 @@
 <!--{"accordionEnd":true}-->
 
 
+<!--{"accordionStart":true}-->
+## Why is our schema public?
+<!--{"accordionBody":true}-->
+- The security of our system does not rely uppon keeping our schema secret, we rely on best practice:
+    - Encryption
+    - Authorization
+    - Authentication
+    - SQL Injection Protection
+- Can lead to valuable feedback, improvements, and collaborative projects
+- Knowledgeable stakeholder, partners and customers may help us identify potential issues
+- Signals technical competence and a culture of openness which helps us recruit skilled volunteers and staff
+- Provides a verifiable commitment to transparency
+    - Increases donor confidence and contributions
+    - Funders love organizations that track impact rigorously
+    - Our public schema shows that we have the infrastructure to report outcomes at a detailed level
+- If another organization starts up, our schema can serve as their template, which accelerates their impact and grows our network of like-minded organizations
+<!--{"accordionEnd":true}-->
+
+
 ---
 
 # Database Schema 

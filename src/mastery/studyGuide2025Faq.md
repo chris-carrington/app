@@ -1,3 +1,12 @@
+## What is the 2025 Class B Study Guide?
+- To be a General Contractor in California you must pass a test that proves you know the California Business and Professions Code
+- The California Business and Professions Code is written in dense legal language, so here, we translate it into simple English
+- $1,000 class sign up's has been the standard way for years that people would receive a study guide like this, happy studying!
+
+
+---
+
+
 ## 2025 Class B Study Guide Sources?
 - <a href="https://www.youtube.com/user/ContractorsBoard/videos" target="_blank">CSLB YouTube Channel</a>
 - <a href="https://www.cslb.ca.gov/resources/studyguides/bstudyguide.pdf" target="_blank">CSLB Class B Study Guide</a>
@@ -7,11 +16,3 @@
 
 ---
 
-
-## What is the 2025 Class B Study Guide?
-- To be a General Contractor in California you must pass a test that proves you know the California Business and Professions Code
-- The California Business and Professions Code is written in dense legal language, so here, we translate it into simple English
-- $1,000 class sign up's has been the standard way for years that people would receive a study guide like this, happy studying!
-
-
----
