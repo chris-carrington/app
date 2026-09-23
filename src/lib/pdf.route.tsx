@@ -6,9 +6,9 @@ import { md2html } from '@src/md/md2html'
 import { mdStyle } from '@src/md/mdStyle'
 import RendererHead from '@src/renderer/RendererHead'
 
-// import md from '@src/transparency/bylaws.md?raw'
+import md from '@src/transparency/bylaws.md?raw'
 // import md from '@src/transparency/trust-document.md?raw'
-import md from '@src/transparency/whistleblower-policy.md?raw'
+// import md from '@src/transparency/whistleblower-policy.md?raw'
 // import md from '@src/transparency/articles-of-incorporation.md?raw'
 // import md from '@src/transparency/conflict-of-interest-policy.md?raw'
 
