@@ -9,7 +9,6 @@ import svgPersonAdd from '@src/svg/personAdd.svg?raw'
 import svgStoreFront from '@src/svg/storeFront.svg?raw'
 import svgSupervisor from '@src/svg/supervisor.svg?raw'
 import svgConstruction from '@src/svg/construction.svg?raw'
-import svgBarLineChart from '@src/svg/barLineChart.svg?raw'
 import svgLineMagnifier from '@src/svg/lineMagnifier.svg?raw'
 import { dsHomeForms } from '@src/dataStructures/homeForms.ds'
 import svgToolsClipboard from '@src/svg/toolsClipboard.svg?raw'
@@ -39,17 +38,17 @@ export const dsFlowSteps: FlowStep[] = [
       {
         icon: svgPersonAdd,
         title: 'Apply + Accept',
-        description: 'Provide your <a href="#join-leadership">application</a> & join our team of skilled tradespeople'
+        description: 'Provide your <a href="#join-leadership">application</a> and ace our interview process'
       },
       {
         icon: svgConstruction,
         title: 'Paid to Learn',
-        description: 'Receive guidance from experienced mentors and gain California exam experience hours'
+        description: 'Receive a salary, experience and guidance from skilled mentors'
       },
       {
         icon: svgMenuBook,
         title: 'Free Study Guide',
-        description: 'Other courses charge over $1,000 to get their license study guide'
+        description: `No signing up for a $1,000 course to get a study guide required`
       },
       {
         icon: svgStarAward,
@@ -70,7 +69,7 @@ export const dsFlowSteps: FlowStep[] = [
       {
         icon: svgPersonAdd,
         title: 'Apply + Accept',
-        description: 'Provide your <a href="#join-leadership">application</a> & join our team of skilled mentors'
+        description: 'Provide your <a href="#join-leadership">application</a> and ace our interview process'
       },
       {
         icon: svgSupervisor,
@@ -86,17 +85,12 @@ export const dsFlowSteps: FlowStep[] = [
       {
         icon: svgPayments,
         title: 'Support',
-        description: 'Direct your donation to specific trade programs (tools, apprentices, low income families, etc.)'
-      },
-      {
-        icon: svgBarLineChart,
-        title: 'Track Spending',
-        description: 'Monitor how your contribution is used in real-time'
+        description: 'Direct your donation to specific cohorts (tools, low income families, etc.)'
       },
       {
         icon: svgLineMagnifier,
         title: 'Impact Analytics',
-        description: 'Receive detailed reports on the community value and careers created thanks to your support'
+        description: `Receive detailed, real-time reports, to monitor your contribution's impact`
       },
     ]
   }

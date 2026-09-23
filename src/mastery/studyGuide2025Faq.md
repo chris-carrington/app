@@ -11,7 +11,7 @@
 ## What is the 2025 Class B Study Guide?
 - To be a General Contractor in California you must pass a test that proves you know the California Business and Professions Code
 - The California Business and Professions Code is written in dense legal language, so here, we translate it into simple English
-- Study guides typically require a $1,000+ class sign up but our study guide is free, happy studying!
+- $1,000 class sign up's has been the standard way for years that people would receive a study guide like this, happy studying!
 
 
 ---
