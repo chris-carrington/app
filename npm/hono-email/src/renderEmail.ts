@@ -47,6 +47,7 @@ function parse(template: string): Node[] {
       const close = template.indexOf('-->', i + 4)
       if (close === -1) break
       const comment = template.slice(i + 4, close).trim()
+
       i = close + 3
 
       // Check for closing tag
@@ -61,12 +62,31 @@ function parse(template: string): Node[] {
       // Parse directive
       const parts = comment.split(/\s+/)
       let cmd = parts[0]
-      if (!cmd) throw new Error('!cmd')
+
+      // Empty / whitespace-only comment — just emit it as text
+      if (!cmd) {
+        result.push({ type: 'text', content: `<!--${comment}-->` })
+        continue
+      }
 
       if (cmd.endsWith(':')) cmd = cmd.slice(0, -1) // strip colon
 
-      // For 'each', we need to parse "var of array"
-      if (cmd === 'each') {
+      if (cmd === 'add') {
+        const path = parts[1]
+        if (!path) {
+          result.push({ type: 'text', content: `<!--${comment}-->` })
+          continue
+        }
+        result.push({ type: 'add', path })
+      } else if (cmd === 'if') {
+        const path = parts[1]
+        if (!path) {
+          result.push({ type: 'text', content: `<!--${comment}-->` })
+          continue
+        }
+        const children = parseUntil('if')
+        result.push({ type: 'if', condition: path, children })
+      } else if (cmd === 'each') {
         // The rest of the comment after the command (e.g., "product of cart.items")
         const rest = parts.slice(1).join(' ')
         const ofIndex = rest.indexOf(' of ')
@@ -82,19 +102,8 @@ function parse(template: string): Node[] {
           result.push({ type: 'each', varName, arrayPath, children })
         }
         continue
-      }
-
-      // Other directives (add, if)
-      const path = parts[1]
-      if (!path) throw new Error('!path')
-
-      if (cmd === 'add') {
-        result.push({ type: 'add', path })
-      } else if (cmd === 'if') {
-        const children = parseUntil('if')
-        result.push({ type: 'if', condition: path, children })
       } else {
-        // unknown directive – keep as text
+        // Unknown directive or plain comment — keep verbatim
         result.push({ type: 'text', content: `<!--${comment}-->` })
       }
     }

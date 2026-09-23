@@ -25,23 +25,29 @@ export async function signIn(email: string): Promise<SignInResult> {
     const token = createPassword()
     const tokenHash = await hashCreate({ password: token, ...magicLinkTokenHashCreateProps }) // no salt makes the hash deterministic (db queryable) & 1 iteration is fine b/c this is a random password (hard to guess, not password123)
 
-    await db // insert magic token
-      .insert(MagicToken)
-      .values({
-        personId: result.Person.id,
-        tokenHash,
-        expiresAt: new Date(Date.now() + magicTokenMaxAge)
+    await db.transaction(async (tx) => {
+      await tx
+        .insert(MagicToken)
+        .values({
+          personId: result.Person.id,
+          tokenHash,
+          expiresAt: new Date(Date.now() + magicTokenMaxAge),
+        })
+
+      const magicLink = createRPC<AppType>()['magic-link'][':token']
+        .$url({ param: { token } })
+        .href
+
+      await sendEmail({
+        from: emailFrom,
+        to: result.Contact.email,
+        subject: 'Sign in!',
+        html: renderEmail(emailTemplate, {
+          magicLink,
+          firstName: result.Person.firstName,
+          lastName: result.Person.lastName,
+        }),
       })
-
-    const magicLink = createRPC<AppType>()['magic-link'][':token']
-      .$url({ param: {token} })
-      .href
-
-    await sendEmail({
-      from: emailFrom,
-      to: result.Contact.email,
-      subject: 'Sign in!',
-      html: renderEmail(emailTemplate, { magicLink, firstName: result.Person.firstName, lastName: result.Person.lastName })
     })
   } catch (e) {
     console.error(e)
