@@ -72,22 +72,5 @@
 <!--{"accordionEnd":true}-->
 
 
-<!--{"accordionStart":true}-->
-## An optimal Trust Document must include:
-<!--{"accordionBody":true}-->
-- Statement of intent explaining why we are creating the trust
-- Broad, specific & clear Mission Statement
-    - Broad enough to allow for future growth but specific enough to guide the Trustees
-- Explicitly name the initial Trustees and Settlor
-- Include a clear process for appointing successor trustees in case a trustee is unable or unwilling to serve
-- Grant the Trustees the necessary authority to manage the trust's assets and carry out its mission
-- Establish the public as the ultimate beneficiary
-- State that we are transferring an initial asset ($100) to the trust to officially bring it into existence. This is the seed that starts the trust. A trust must hold identifiable property to be valid. 
-- Declare the Trust as irrevocable (it cannot be easily changed or terminated) to protect the mission permanently
-- Prohibit Private Benefit
-- Dissolution Clause
-- A clause specifying that the trust is created under and will be governed by the laws of the State of California
-- Amendments: provision allowing the Trustees to amend the document to conform to future changes in the law
-<!--{"accordionEnd":true}-->
-
 ---
+
