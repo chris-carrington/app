@@ -43,7 +43,7 @@
     - Current: **To provide affordable, high-quality trade services to Siskiyou County, to offer mentors work they love and to help the next generation, become licensed contractors, through paid apprenticeships.**
     - A Nonprofit mission can be changed with a Board vote
 - Our Trust mission is nearly identical to our Nonprofit mission
-    - Current: **To provide affordable, high-quality trade services, to offer mentors work they love and to help the next generation, become licensed contractors, through paid apprenticeships. 💚**
+    - Current: **To provide affordable, high-quality trade services, to offer mentors work they love and to help the next generation, become licensed contractors, through paid apprenticeships.**
     - The Trust mission is more broad (**any community**) than the Nonprofit mission (**Mt. Shasta community**)
     - This way, if we ever want to expand Shasta Trades beyond Mt. Shasta (Yreka, Dusmuir, etc.) then we change our Nonprofit's mission (more focused) and the Trust's mission remains the same (more broad)
 - Shasta Trades Trust has 2 Trustees who can veto any Nonprofit idea (e.g., change Nonprofit mission, hire someone, alter a salary, start working on a new project) that does not align with our Trusts mission
