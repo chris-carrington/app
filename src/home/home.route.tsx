@@ -1,11 +1,12 @@
+import Value from './Value'
 import { Hono } from 'hono'
-import PatternFlow from './PatternFlow'
-import PatternConnect from './PatternConnect'
 import Building from './Building'
 import Hero from '@src/home/Hero'
 import Mission from '@src/home/Mission'
+import PatternFlow from './PatternFlow'
 import { env } from 'cloudflare:workers'
-import Value from './Value'
+import PatternConnect from './PatternConnect'
+import { onHomeHashClick } from '@hono-directives'
 
 
 export default new Hono()
@@ -21,12 +22,14 @@ export default new Hono()
         <meta property="og:description" content={description} />
         <meta name="description" content={description} />
 
-        <Hero />
-        <Mission />
-        <PatternFlow />
-        <Value />
-        <PatternConnect />
-        <Building />
+        <div data-directive={onHomeHashClick()}>
+          <Hero />
+          <Mission />
+          <PatternFlow />
+          <Value />
+          <PatternConnect />
+          <Building />
+        </div>
       </>
     )
   })

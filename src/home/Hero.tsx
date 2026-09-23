@@ -3,10 +3,13 @@
 import type{ FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
 import { patience } from '@src/lib/vars'
-import { tooltip } from '@hono-directives'
+import { datasetScroll } from '@src/lib/dom'
+import { onHomeHashClick, tooltip } from '@hono-directives'
 
 
 export default (() => {
+  const scrollDataset = datasetScroll()
+
   return <>
     <Style>{style}</Style>
 
@@ -34,8 +37,8 @@ export default (() => {
           </div>
 
           <div class="ctas">
-            <a href="#service-request-scroll" class="orange big">SERVICE REQUEST</a>
-            <a href="#join-leadership-scroll" class="transparent big">JOIN LEADERSHIP</a>
+            <a {...scrollDataset.attr('true')} href="#service-request" class="orange big">SERVICE REQUEST</a>
+            <a {...scrollDataset.attr('true')} href="#join-leadership" class="transparent big">JOIN LEADERSHIP</a>
           </div>
         </div>
         <div class="right">

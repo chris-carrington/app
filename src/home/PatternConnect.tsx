@@ -6,14 +6,15 @@ import { patience } from '@src/lib/vars'
 import svgLock from '@src/svg/lock.svg?raw'
 import svgFrequency from '@src/svg/frequency.svg?raw'
 import { dsStaff } from '@src/dataStructures/staff.ds'
+import { datasetScroll, idHomeForm } from '@src/lib/dom'
 import { dsTrades } from '@src/dataStructures/trades.ds'
 import { dsHomeFormIds, dsHomeForms } from '@src/dataStructures/homeForms.ds'
-import { onHashChange, onContactUsSubmit, onServiceRequestSubmit, onJoinLeadershipSubmit, onJoinNewsletterSubmit, tooltip } from '@hono-directives'
+import { onContactUsSubmit, onServiceRequestSubmit, onJoinLeadershipSubmit, onJoinNewsletterSubmit, tooltip, onHomeHashLoad, onHomeHashClick } from '@hono-directives'
 
 
 export default (() => {
   return <>
-    <div class="pattern">
+    <div class="pattern" data-directive={onHomeHashLoad()}>
       <div class="bg" />
       <Forms />
     </div>
@@ -22,12 +23,14 @@ export default (() => {
 
 
 const Forms: FC = () => {
+  const scrollDataset = datasetScroll()
+
   return <>
-    <div class="forms" data-directive={onHashChange()}>
+    <div id={idHomeForm().id} class="forms" data-directive={onHomeHashClick()}>
       <div class="explain">🤝 Want to connect with us?</div>
 
       <div class="buttons">
-        {dsHomeForms.map(a => <a href={'#' + a.id} class="transparent big">{a.title}</a>)}
+        {dsHomeForms.map(a => <a {...scrollDataset.attr('false')} href={'#' + a.id} class="transparent big">{a.title}</a>)}
       </div>
 
       <ServiceRequest />

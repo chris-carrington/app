@@ -22,7 +22,7 @@ export const dsFlowSteps: FlowStep[] = [
       {
         icon: svgToolsClipboard,
         title: 'Request a Service',
-        description: `Provide a <a href="#${safeArrayAccess(dsHomeForms, 0).id}">service request</a> that details the work you'd love done`
+        description: `Provide a <a href="#${safeArrayAccess(dsHomeForms, 0).id}" data-scroll="true">service request</a> that details the work you'd love done`
       },
       {
         icon: svgSmile,
@@ -38,7 +38,7 @@ export const dsFlowSteps: FlowStep[] = [
       {
         icon: svgPersonAdd,
         title: 'Apply + Accept',
-        description: 'Provide your <a href="#join-leadership">application</a> and ace our interview process'
+        description: `Provide your <a href="#${safeArrayAccess(dsHomeForms, 1).id}" data-scroll="true">application</a> and ace our interview process`
       },
       {
         icon: svgConstruction,

@@ -5,6 +5,7 @@ import { id, field, dataset, className } from '@hono-dom'
 
 // id
 export const idAvatar = () => id('avatar')
+export const idHomeForm = () => id('home-form')
 export const idActivity = () => id('activity')
 export const idDownload = () => id('download')
 export const idNavModal = () => id('nav-modal')
@@ -34,6 +35,7 @@ export const fieldObjectiveInUpDescription = () => field('textarea', 'descriptio
 export const datasetId = () => dataset('id')
 export const datasetAuth = () => dataset('auth')
 export const datasetOrder = () => dataset('order')
+export const datasetScroll = () => dataset('scroll')
 export const datasetContent = () => dataset('content')
 export const datasetColumnId = () => dataset('columnId')
 export const datasetFlowStepButton = () => dataset('flowStepButton')
