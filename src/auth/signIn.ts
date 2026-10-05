@@ -38,7 +38,7 @@ export async function signIn(email: string): Promise<SignInResult> {
         .$url({ param: { token } })
         .href
 
-      await sendEmail({
+      const resEmail = await sendEmail({
         from: emailFrom,
         to: result.Contact.email,
         subject: 'Sign in!',
@@ -48,6 +48,10 @@ export async function signIn(email: string): Promise<SignInResult> {
           lastName: result.Person.lastName,
         }),
       })
+
+      if (!resEmail.success) {
+        throw new Error(JSON.stringify(resEmail, null, 2))
+      }
     })
   } catch (e) {
     console.error(e)
