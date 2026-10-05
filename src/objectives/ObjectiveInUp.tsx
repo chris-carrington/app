@@ -5,8 +5,8 @@ import type { FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
 import { mdStyle } from '@src/md/mdStyle'
 import svgClose from '@src/svg/close.svg?raw'
-import { kanbanColumns } from '@src/lib/vars'
 import { onModalToggle, onMarkdownChecked } from '@hono-directives'
+import { dsKanbanColumns } from '@src/dataStructures/kanbanColumns.ds'
 import { fieldObjectiveInUpColumnId, fieldObjectiveInUpTitle, fieldObjectiveInUpDescription, fieldObjectiveInUpAssigneeIds, fieldObjectiveInUpTagIds, idObjectiveInUpModal, idObjectiveInUpModalSubmit, idObjectiveInUpModalTitle, idObjectiveInUpModalMd, idObjectiveInUpModalMdToggle, idObjectiveInUpForm, idObjectiveInUpModalDelete, idObjectiveInUpModalCommentSpacer, idObjectiveInUpModalCommentForm, idObjectiveInUpModalComment, classNameName, classNameValue, classNameTemporal, idObjectiveInUpModalComments, classNameComment } from '@src/lib/dom'
 
 
@@ -36,7 +36,7 @@ export default (() => {
             <div class="columns">
               <div class="left">
                 <Field {...fieldObjectiveInUpTitle().attr()} label="Title" />
-                <Field {...fieldObjectiveInUpColumnId().attr()} label="Column" options={kanbanColumns.map(c => ({ value: String(c.id), label: c.value }))} />
+                <Field {...fieldObjectiveInUpColumnId().attr()} label="Column" options={dsKanbanColumns.map(c => ({ value: String(c.id), label: c.value }))} />
                 <Field {...fieldObjectiveInUpAssigneeIds().attr()} label="Assignees" options={[]} />
               </div>
               <div class="right">

@@ -4,15 +4,15 @@ import { eq } from 'drizzle-orm'
 import { createRPC } from '@hono-api/be'
 import type { AppType } from '@src/index'
 import { sendEmail, renderEmail } from '@hono-email'
+import { createPassword, hashCreate } from '@hono-form'
 import { db, Person, Contact, MagicToken } from '@src/db'
 import emailTemplate from '@src/emails/magicLink.html?raw'
-import { createPassword, hashCreate } from '@hono-form'
 import { emailFrom, magicTokenMaxAge, magicLinkTokenHashCreateProps } from '@src/lib/vars'
 
 
 export async function signIn(email: string): Promise<SignInResult> {
   try {
-    const result = await db
+    const resPersonContact = await db
       .select()
       .from(Person)
       .innerJoin(Contact, eq(Contact.personId, Person.id))
@@ -20,16 +20,16 @@ export async function signIn(email: string): Promise<SignInResult> {
       .limit(1)
       .get()
 
-    if (!result) return { status: 200 } // prevent email enumeration
+    if (!resPersonContact) return { status: 200 } // prevent email enumeration
 
     const token = createPassword()
-    const tokenHash = await hashCreate({ password: token, ...magicLinkTokenHashCreateProps }) // no salt makes the hash deterministic (db queryable) & 1 iteration is fine b/c this is a random password (hard to guess, not password123)
+    const tokenHash = await hashCreate({ password: token, ...magicLinkTokenHashCreateProps })
 
     await db.transaction(async (tx) => {
       await tx
         .insert(MagicToken)
         .values({
-          personId: result.Person.id,
+          personId: resPersonContact.Person.id,
           tokenHash,
           expiresAt: new Date(Date.now() + magicTokenMaxAge),
         })
@@ -40,12 +40,12 @@ export async function signIn(email: string): Promise<SignInResult> {
 
       const resEmail = await sendEmail({
         from: emailFrom,
-        to: result.Contact.email,
+        to: resPersonContact.Contact.email,
         subject: 'Sign in!',
         html: renderEmail(emailTemplate, {
           magicLink,
-          firstName: result.Person.firstName,
-          lastName: result.Person.lastName,
+          firstName: resPersonContact.Person.firstName,
+          lastName: resPersonContact.Person.lastName,
         }),
       })
 

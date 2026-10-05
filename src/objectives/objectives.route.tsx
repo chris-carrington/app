@@ -5,12 +5,12 @@ import type { FC } from 'hono/jsx'
 import { css, Style } from 'hono/css'
 import { ModalConfirm } from '@hono-modal'
 import { tabsStyle, Tabs } from '@hono-tabs'
-import { kanbanColumns } from '@src/lib/vars'
 import { onObjectivesPageLoad } from '@hono-directives'
 import ObjectiveInUp from '@src/objectives/ObjectiveInUp'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
 import type { ClassNameReturn, DatasetReturn } from '@hono-dom'
 import { objectiveActivityStyle } from '@src/lib/ObjectiveActivity'
+import { dsKanbanColumns } from '@src/dataStructures/kanbanColumns.ds'
 import { queryObjectives, type QueryObjective } from '@src/db/queryObjective'
 import { classNameAssignees, classNameColumn, classNameCount, classNameObjective, classNameObjectives, classNameTags, classNameTitle, datasetColumnId, datasetId, datasetObjectiveInUpShowModal, datasetOrder, classNameSvg, idObjectiveTemplate, idActivity } from '@src/lib/dom'
 
@@ -63,7 +63,7 @@ export default new Hono()
                   <div data-directive={onObjectivesPageLoad(kanbanData)} class="kanban-board-wrapper">
                     <div class="kanban-board" id="kanbanBoard" aria-label="Kanban Board">
                       <div class="kanban-board-inner">
-                        {kanbanColumns.map((column) => (
+                        {dsKanbanColumns.map((column) => (
                           <section {...columnIdDataset.attr(column.id)} class={columnClassName.className} aria-label={`${column.value} column`}>
                             <header class="header">
                               <h2 class="title">{column.value}</h2>
