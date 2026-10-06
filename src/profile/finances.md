@@ -1,7 +1,7 @@
 <!--{"accordionStart":true}-->
 ## What is a donation?
 <!--{"accordionBody":true}-->
-- A donation is a gift of cash or cash-equivalent from a donor to Shasta Trades.
+- A donation is a gift of cash or cash-equivalent from a donor to Shasta Trades
 - Donation statuses:
 | Status | Meaning | Revenue recognized? | Spendable? | Receipt issued? |
 |---|---|---|---|---|
@@ -16,9 +16,7 @@
 <!--{"accordionStart":true}-->
 ## What is a pledge?
 <!--{"accordionBody":true}-->
-- A pledge is a promise to give
-- Not cash
-- Separate lifecycle from Donation
+- A pledge is a promise to give, so it's never cash
 - Pledge statuses:
 | Status | Meaning | Revenue recognized? | Cash received? | Notes |
 |---|---|---|---|---|
@@ -28,6 +26,26 @@
 | `overdue` | Past due date. | Yes (if unconditional) | No | Follow-up required |
 | `written_off` | Deemed uncollectible. | Reversed | No | Board approval recommended |
 | `canceled` | Donor withdrew the promise. | Reversed | No | Log reason |
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## What is a grant?
+<!--{"accordionBody":true}-->
+- Institutional funding (e.g., COYA, Home Depot, foundations, government)
+- Separate lifecycle from Donation because grants have reporting and compliance
+- Grant statuses:
+| Status | Meaning | Funds received? | Spendable? | Reporting due? |
+|---|---|---|---|---|
+| `prospect` | Identified, not yet applied. | No | No | No |
+| `applied` | Application submitted. | No | No | No |
+| `declined` | Application rejected. | No | No | No |
+| `awarded` | Approved, award letter signed. | No | No | Soon |
+| `pending_funds` | Waiting for disbursement. | No | No | Soon |
+| `active` | Funds received and spendable per grant terms. | Yes | Yes | Yes |
+| `reporting` | Spending underway or complete; reports due. | Yes | Yes | Yes |
+| `closed` | All reports accepted. Funds fully spent or returned. | Yes | No | No |
+| `terminated` | Ended early by grantor or grantee. | Partial | No | Final report |
 <!--{"accordionEnd":true}-->
 
 
