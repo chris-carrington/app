@@ -61,7 +61,7 @@ export const ObjectiveActivityItem = (({ item }) => {
 export const objectiveActivityStyle = css`
   .feed {
     margin: 0 auto;
-    max-width: 87rem;
+    max-width: 75rem;
     position: relative;
     padding-top: var(--space-lite);
     &::before {

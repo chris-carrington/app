@@ -15,7 +15,7 @@ export default (el: HTMLDivElement) => {
     query<HTMLElement>('.tabs__content').root(el).all()
   )
 
-  if (elTabs.length === 0) return () => {}
+  if (elTabs.length === 0) return () => { }
 
   const isUnderline = el.dataset.tabsVariant === 'underline'
 
@@ -74,6 +74,10 @@ class Tabs {
     const tabEl = this.elTabs[this.active]
     if (!tabEl) return
 
+    // Anchor the marker to `.tabs__inner`.
+    // With center alignment, CSS centers the tabs inside `.tabs__inner`,
+    // so `tabEl.offsetLeft` already includes the centering offset.
+    this.marker.style.left = '0'
     this.marker.style.width = `${tabEl.offsetWidth}px`
     this.marker.style.transform = `translateX(${tabEl.offsetLeft}px)`
 
@@ -116,7 +120,7 @@ class Tabs {
   }
 
 
-  #tabIdAt( index: number): string {
+  #tabIdAt(index: number): string {
     const tabId = this.elTabs[index]?.dataset.tabId
     if (!tabId) throw new Error('!tabId')
     return tabId

@@ -33,6 +33,7 @@ export const tabsStyle = css`
   .tabs--underline {
     .tabs__marker {
       position: absolute;
+      left: 0;
       z-index: var(--z-content);
       bottom: 0;
       border-radius: calc(var(--radius) * 6);
@@ -65,6 +66,16 @@ export const tabsStyle = css`
     }
   }
 
+  .tabs[data-tabs-align='center'] .tabs__inner {
+    justify-content: center;
+  }
+
+  @supports (justify-content: safe center) {
+    .tabs[data-tabs-align='center'] .tabs__inner {
+      justify-content: safe center;
+    }
+  }
+
   .tabs__tab {
     position: relative;
     z-index: var(--z-content);
@@ -85,4 +96,4 @@ export const tabsStyle = css`
       display: block;
     }
   }
-` 
+`

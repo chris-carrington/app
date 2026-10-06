@@ -1,17 +1,20 @@
 // app/src/profile/profile.route.tsx
 
 import { Hono } from 'hono'
+import { Field } from '@hono-form'
 import { css, Style } from 'hono/css'
-import { idAvatar } from '@src/lib/dom'
 import { createRPC } from '@hono-api/be'
 import type { AppType } from '@src/index'
-import { msDay, Field } from '@hono-form'
+import { md2html } from '@src/md/md2html'
+import { mdStyle } from '@src/md/mdStyle'
 import { getSession } from '@src/auth/getSession'
+import mdFinances from '@src/profile/finances.md?raw'
+import { tabsStyle, Tabs, type Tab } from '@hono-tabs'
 import { subPageHeroStyle } from '@src/lib/subPageHeroStyle'
-import { Accordion, type AccordionItem } from '@hono-accordion'
-import { ObjectiveActivity, objectiveActivityStyle } from '@src/lib/ObjectiveActivity'
-import { bindAccordionItems, formatTime, onProfileUpdateLoad, tooltip } from '@hono-directives'
-import { queryStaffPerson, queryObjectiveActivity, queryJobLeads, queryStaffLeads, queryContactUsMessages, type Person, type Contact, type QueryStaffPerson, type QueryObjectiveActivity } from '@src/db'
+import { bindAccordionItems, onProfileLoad } from '@hono-directives'
+import { objectiveActivityStyle } from '@src/lib/ObjectiveActivity'
+import { queryStaffPerson, type Person, type Contact, type QueryStaffPerson } from '@src/db'
+import { idAvatar, idContactUsMessages, idEditYourProfile, idFinances, idJobLeads, idObjectiveActivity, idStaffLeads } from '@src/lib/dom'
 
 
 export default new Hono()
@@ -25,16 +28,22 @@ export default new Hono()
 
     const resStaff: QueryStaffPerson = await queryStaffPerson(resSession.response.person.id)
 
-    const accordionItems = await getAccordionItems(resSession.response.person, resSession.response.contact, resStaff)
+    const tabs: Tab[] = (!resStaff?.positions.length)
+      ? []
+      : await getStaffTabs(resSession.response.person) 
+
+    tabs.push(getEditProfileTab(resSession.response.person, resSession.response.contact))
 
     return c.render(
       <>
         <title>Shasta Trades · Profile</title>
+        <Style>{tabsStyle}</Style>
         <Style>{subPageHeroStyle}</Style>
         <Style>{objectiveActivityStyle}</Style>
+        <Style>{mdStyle}</Style>
         <Style>{style}</Style>
 
-        <div class="profile" data-directive={bindAccordionItems()}>
+        <div class="profile">
           <div class="sub-page-hero">
             <div class="bg"></div>
             <div class="header">
@@ -51,8 +60,8 @@ export default new Hono()
             </div>
           </div>
 
-          <div class="page-content">
-            <Accordion items={accordionItems} />
+          <div data-directive={onProfileLoad()} class="page-content">
+            <Tabs variant="underline" align="center" name="profile" tabs={tabs} />
           </div>
         </div>
       </>
@@ -61,149 +70,15 @@ export default new Hono()
 
 
 const avatarId = idAvatar()
+const financesId = idFinances()
 
 
-async function getAccordionItems(person: typeof Person.$inferSelect, contact: typeof Contact.$inferSelect, resStaff: QueryStaffPerson) {
-  const accordionItems: AccordionItem[] = []
-
-  if (resStaff?.positions.length) {
-    const [resActivity, resJobLeads, resStaffLeads, resContactUsMessages] = await Promise.all([
-      queryObjectiveActivity({ variant: 'personal', sessionPersonId: person.id }),
-      queryJobLeads(),
-      queryStaffLeads(),
-      queryContactUsMessages(),
-    ])
-
-    const resActivityRecentCount = countItemsInLast24Hours(resActivity)
-
-    accordionItems.push({
-      header: <>
-        <div class="space-between">
-          <span>Objective Activity</span>
-          <span data-directive={tooltip('bottomRight', 'The number of objective activity itmes in the last 24 hours! ✅')}>{resActivityRecentCount}</span>
-        </div>
-      </>,
-      body: <ObjectiveActivity res={resActivity} />
-    })
-
-    accordionItems.push({
-      header: <>
-        <div class="space-between">
-          <span>Job Leads</span>
-          <span>{resJobLeads.length}</span>
-        </div>
-      </>,
-      body: <>
-        <section class="bucket service" aria-labelledby="bucket-service">
-          <div class="bhead">
-            <span class="dot" aria-hidden="true"></span>
-            <h2 id="bucket-service">Job Leads</h2>
-            <span class="count">{resJobLeads.length}</span>
-          </div>
-          <div class="entries">
-            {
-              resJobLeads.map(jobLead => <>
-                <article class="entry">
-                  <div class="who">
-                    <span class="name">{jobLead.person.firstName} {jobLead.person.lastName}</span>
-                    <a class="email" href={`mailto${jobLead.person.email}`}>{jobLead.person.email}</a>
-                    <span class="when" data-directive={formatTime(jobLead.createdAt)}></span>
-                  </div>
-                  <dl class="fields">
-                    <dt>Description</dt>
-                    <dd>{jobLead.description}</dd>
-                    <dt>Trades</dt>
-                    <dd>
-                      <ul class="chips">
-                        { jobLead.trades.map(trade => <li>{trade.value}</li>) }
-                      </ul>
-                    </dd>
-                  </dl>
-                </article>
-              </>)
-            }
-          </div>
-        </section>
-      </>
-    })
-
-    accordionItems.push({
-      header: <>
-        <div class="space-between">
-          <span>Staff Leads</span>
-          <span>{resStaffLeads.length}</span>
-        </div>
-      </>,
-      body: <>
-        <section class="bucket lead" aria-labelledby="bucket-lead">
-          <div class="bhead">
-            <span class="dot" aria-hidden="true"></span>
-            <h2 id="bucket-lead">Staff Leads</h2>
-            <span class="count">{resStaffLeads.length}</span>
-          </div>
-          <div class="entries">
-
-            {
-              resStaffLeads.map(staffLead => <>
-                <article class="entry">
-                  <div class="who">
-                    <span class="name">{staffLead.person.firstName} {staffLead.person.lastName}</span>
-                    <a class="email" href={`mailto${staffLead.person.email}`}>{staffLead.person.email}</a>
-                    <span class="when" data-directive={formatTime(staffLead.createdAt)}></span>
-                  </div>
-                  <dl class="fields">
-                    <dt>Position</dt>
-                    <dd>{staffLead.position.value}</dd>
-                  </dl>
-                </article>
-              </>)
-            }
-
-          </div>
-        </section>
-      </>
-    })
-
-    accordionItems.push({
-      header: <>
-        <div class="space-between">
-          <span>Contact Us Messages</span>
-          <span>{resContactUsMessages.length}</span>
-        </div>
-      </>,
-      body: <>
-        <section class="bucket contact" aria-labelledby="bucket-contact">
-          <div class="bhead">
-            <span class="dot" aria-hidden="true"></span>
-            <h2 id="bucket-contact">Contact Us Messages</h2>
-            <span class="count">{resContactUsMessages.length}</span>
-          </div>
-          <div class="entries">
-            {
-              resContactUsMessages.map(m => <>
-                <article class="entry">
-                  <div class="who">
-                    <span class="name">{m.person.firstName} {m.person.lastName}</span>
-                    <a class="email" href={`mailto${m.person.email}`}>{m.person.email}</a>
-                    <span class="when" data-directive={formatTime(m.createdAt)}></span>
-                  </div>
-                  <dl class="fields">
-                    <dt>Message</dt>
-                    <dd>{m.message}</dd>
-                  </dl>
-                </article>
-              </>)
-            }
-          </div>
-        </section>
-      </>
-    })
-  }
-
-  accordionItems.push({
-    header: 'Edit Your Profile',
-    body: <>
-      <form data-directive={onProfileUpdateLoad()} class="form-card bg-white">
+function getEditProfileTab(person: typeof Person.$inferSelect, contact: typeof Contact.$inferSelect): Tab {
+  return {
+    id: 'edit-your-profile',
+    label: 'Edit Your Profile',
+    content: <>
+      <form id={idEditYourProfile().id} class="form-card bg-white">
         <div class="title">Edit Your Profile</div>
 
         <div class="two">
@@ -212,30 +87,54 @@ async function getAccordionItems(person: typeof Person.$inferSelect, contact: ty
         </div>
 
         <Field type="file" label="Avatar" name="img" prefix="profile-update" />
-        <Field type="checkbox" label="Newsletter" name="newsletter" options={[{ label: 'Receive one monthy Shasta Trades email', value: 'true'}]} value={contact.sendNewsletter ? 'true' : ''} prefix="profile-update" />
+        <Field type="checkbox" label="Newsletter" name="newsletter" options={[{ label: 'Receive one monthy Shasta Trades email', value: 'true' }]} value={contact.sendNewsletter ? 'true' : ''} prefix="profile-update" />
         <img id={avatarId.id} class={person.imageId ? '' : 'hidden'} src={`https://r2.shastatrades.org/${person.imageId}.webp`} />
         <button type="submit" class="primary">Save</button>
       </form>
     </>
-  })
-
-  return accordionItems
-}
-
-
-
-function countItemsInLast24Hours(res: QueryObjectiveActivity): number {
-  let count = 0
-  const nowMs = Date.now()
-  const cutoffMs = nowMs - msDay
-
-  for (const item of res.items) {
-    if (item.createdAtMs >= cutoffMs && item.createdAtMs <= nowMs) count++
-    else break
   }
-
-  return count
 }
+
+
+async function getStaffTabs(person: typeof Person.$inferSelect): Promise<Tab[]> {
+  const jobLeads = idJobLeads()
+  const staffLeads = idStaffLeads()
+  const objectiveActivity = idObjectiveActivity()
+  const contactUsMessages = idContactUsMessages()
+  const elLoading = <img src="/img/loading.svg" class="loading" alt="Loading..." />
+
+  return [
+    {
+      id: financesId.id,
+      label: 'Finances',
+      content: <>
+        <div data-directive={bindAccordionItems()} id={financesId.id} class="md" dangerouslySetInnerHTML={{ __html: await md2html(mdFinances, { wrapTables: true, enableAccordion: true }) }}></div>
+      </>
+    },
+    {
+      id: objectiveActivity.id,
+      label: 'Objective Activity',
+      content: <div id={objectiveActivity.id}>{elLoading}</div>
+    },
+    {
+      id: jobLeads.id,
+      label: 'Job Leads',
+      content: <div id={jobLeads.id}>{elLoading}</div>
+    },
+    {
+      id: staffLeads.id,
+      label: 'Staff Leads',
+      content: <div id={staffLeads.id}>{elLoading}</div>
+    },
+    {
+      id: contactUsMessages.id,
+      label: 'Contact Us Messagese',
+      content: <div id={contactUsMessages.id}>{elLoading}</div>
+    },
+  ]
+}
+
+
 
 
 
@@ -284,36 +183,8 @@ export const style = css`
       }
     }
 
-    .page-content {
-      max-width: 90rem;
-    }
-
-    .accordion-title {
-      .space-between {
-        display: flex;
-        justify-content: space-between;
-
-        span {
-          &:last-child {
-              padding: 0.3rem 1.1rem;
-              font-size: 1.2rem;
-              font-weight: 700;
-              color: var(--white);
-              background: var(--primary);
-              border-radius: 50%;
-              height: 2.1rem;
-              width: 2.1rem;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              margin-top: 0.3rem;
-              margin-right: 0.6rem;
-          }
-        }
-      }
-    }
-
     .form-card {
+      margin-top: 0;
       margin-inline: auto !important;
 
       #${avatarId.id} {
@@ -479,6 +350,17 @@ export const style = css`
             border-radius: 999rem;
           }
         }
+      }
+    }
+
+    .tabs__contents {
+      .loading {
+        display: block;
+        margin: 0 auto;
+      }
+
+      #${financesId.id} {
+        max-width: 108rem;
       }
     }
   }

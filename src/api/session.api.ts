@@ -16,8 +16,7 @@ export default new Hono()
         values: ['just-session', 'include-person', 'include-person-and-contact'],
         errorInvalid: 'Please select a valid variant',
       })
-    }),
-    ),
+    })),
     async (c) => {
       const res = await getSession(c, c.req.valid('param').variant)
 

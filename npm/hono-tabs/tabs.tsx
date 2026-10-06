@@ -1,11 +1,12 @@
 // app/npm/hono-tabs/tabs.tsx
 
-
 import type { Child } from 'hono/jsx'
 import { tabs } from '@hono-directives'
 
 
 export function Tabs(props: TabsProps) {
+  const align = props.align ?? 'left'
+
   let initialIndex = props.tabs.findIndex((tab) => tab.isInitiallyActive)
   if (initialIndex < 0) initialIndex = 0
 
@@ -14,6 +15,7 @@ export function Tabs(props: TabsProps) {
       data-directive={tabs()}
       data-tabs={props.name ?? ''}
       data-tabs-variant={props.variant}
+      data-tabs-align={align}
       class={`tabs tabs--${props.variant}`}
     >
       <div class="tabs__inner" role="tablist" aria-orientation="horizontal">
@@ -66,6 +68,8 @@ function idFor(name: string | undefined, prefix: string, id: string) {
 
 export type TabsVariant = 'pill' | 'classic' | 'underline'
 
+export type TabsAlign = 'left' | 'center'
+
 
 export type Tab = {
   /** Helpful for setting DOM id's and for knowing what tab is active when listening to tabsEvents  */
@@ -86,4 +90,6 @@ export type TabsProps = {
   name?: string
   /** Optional, defaults to `pill`. `underline` is google style, `classic` is bootstrap style */
   variant?: TabsVariant
+  /** Optional, defaults to `left` */
+  align?: TabsAlign
 }
