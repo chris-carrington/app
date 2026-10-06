@@ -136,8 +136,6 @@ async function getStaffTabs(person: typeof Person.$inferSelect): Promise<Tab[]> 
 
 
 
-
-
 export const style = css`
   .profile {
     .sub-page-hero {
@@ -361,6 +359,10 @@ export const style = css`
 
       #${financesId.id} {
         max-width: 108rem;
+      }
+
+      .responsive {
+        margin-bottom: var(--space-lite);
       }
     }
   }

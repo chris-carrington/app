@@ -7,7 +7,8 @@ import type { AppType } from '@src/index'
 import { FormUtil, Loading } from '@hono-form'
 import { bindAccordionItems } from '@hono-accordion'
 import { imgWebpEvents, onFileChange } from '@img-webp'
-import { createRPC, InferRpc, onError } from '@hono-api/fe'
+import { createRPC, onError, type InferRpc } from '@hono-api/fe'
+import formatTimeDirective from '@src/time/formatTime.directive'
 import { profileUpdateValidatorForm } from '@src/validators/profileUpdate.validator'
 import { idAvatar, idJobLeads, idContactUsMessages, idEditYourProfile, idStaffLeads, idObjectiveActivity } from '@src/lib/dom'
 
@@ -18,29 +19,30 @@ export default (el: HTMLDivElement) => {
 
   tabsEvents.on('tabChanged', async (v) => {
     switch (v.id) {
-      case 'finances': return onFinancesTabChange(el)
-      case 'job-leads': return onApiHtmlTabChange(rpc, v.id, idJobLeads().query)
-      case 'staff-leads': return onApiHtmlTabChange(rpc, v.id, idStaffLeads().query)
-      case 'objective-activity': return onApiHtmlTabChange(rpc, v.id, idObjectiveActivity().query)
-      case 'contact-us-messages': return onApiHtmlTabChange(rpc, v.id, idContactUsMessages().query)
+      case 'finances': return bindAccordionItems(el)
+      case 'job-leads': return onApiHtmlTabChange(rpc, el, v.id, idJobLeads().query)
+      case 'staff-leads': return onApiHtmlTabChange(rpc, el, v.id, idStaffLeads().query)
+      case 'objective-activity': return onApiHtmlTabChange(rpc, el, v.id, idObjectiveActivity().query)
+      case 'contact-us-messages': return onApiHtmlTabChange(rpc, el, v.id, idContactUsMessages().query)
       case 'edit-your-profile': return editProfileBound = onEditProfileTabChange(rpc, el, editProfileBound)
     }
   })
 }
 
 
-async function onApiHtmlTabChange(rpc: InferRpc<AppType>, apiRoute: 'job-leads' | 'staff-leads' | 'contact-us-messages' | 'objective-activity', $query: string) {
+async function onApiHtmlTabChange(rpc: InferRpc<AppType>, el: HTMLDivElement, apiRoute: 'job-leads' | 'staff-leads' | 'contact-us-messages' | 'objective-activity', $query: string) {
   const container = query<HTMLDivElement>($query).one()
 
   if (container.firstElementChild instanceof HTMLImageElement) { // IF showing loading icon THEN add content
     const response = apiRoute === 'objective-activity' ? await rpc.api['objective-activity'][':variant'].$get({ param: { variant: 'personal' } }) : await rpc.api[apiRoute].$get()
     container.innerHTML = await response.text()
+
+    if (apiRoute === 'objective-activity') {
+      el.querySelectorAll('time').forEach(elTime => {
+        formatTimeDirective(elTime, Number(elTime.textContent))
+      })
+    }
   }
-}
-
-
-function onFinancesTabChange(el: HTMLDivElement) {
-  bindAccordionItems(el)
 }
 
 

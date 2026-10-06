@@ -1,8 +1,34 @@
 <!--{"accordionStart":true}-->
+## What is a transaction?
+<!--{"accordionBody":true}-->
+- Transactions describe movement (cash in, cash out)
+- **Transaction statuses:**
+| Status | Meaning | Cash in bank? | Revenue real? | Spendable? |
+|---|---|---|---|---|
+| `expected` | Known incoming or outgoing, not initiated | No | No | No |
+| `in_flight` | Payment sent, waiting to settle | No | No | No |
+| `received` | Cash hit the bank, not booked yet | Yes | No | No |
+| `recognized` | Booked to general ledger | Yes | Yes | Yes, per fund |
+| `reconciled` | Matched to statement, locked | Yes | Yes | Yes |
+| `reversed` | Refunded or charged back | Reversed | Reversed | No |
+- **Transaction Types:**
+| Type | Direction | Example at Shasta Trades |
+|---|---|---|
+| `donation` | in | Supporter gives $500 to Community Repair |
+| `pledge_payment` | in | Monthly installment against a $10k pledge |
+| `grant_disbursement` | in | COYA sends $250,000 tranche |
+| `service_fee` | in | Betty pays $21/hr for her sink repair |
+| `disbursement` | out | Apprentice wage / Mentor wage |
+| `refund` | out | Donor asks for money back |
+| `chargeback` | out | Bank reverses a card donation |
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
 ## What is a donation?
 <!--{"accordionBody":true}-->
 - A donation is a gift of cash or cash-equivalent from a donor to Shasta Trades
-- Donation statuses:
+- **Donation statuses:**
 | Status | Meaning | Revenue recognized? | Spendable? | Receipt issued? |
 |---|---|---|---|---|
 | `draft` | Created internally, not submitted. Editable. | No | No | No |
@@ -17,7 +43,7 @@
 ## What is a pledge?
 <!--{"accordionBody":true}-->
 - A pledge is a promise to give, so it's never cash
-- Pledge statuses:
+- **Pledge statuses:**
 | Status | Meaning | Revenue recognized? | Cash received? | Notes |
 |---|---|---|---|---|
 | `pledged` | Donor promised a gift. No cash yet. | Only if unconditional | No | GAAP: unconditional = revenue now |
@@ -32,9 +58,9 @@
 <!--{"accordionStart":true}-->
 ## What is a grant?
 <!--{"accordionBody":true}-->
-- Institutional funding (e.g., COYA, Home Depot, foundations, government)
+- Institutional funding (e.g., Government, Foundations, Home Depot)
 - Separate lifecycle from Donation because grants have reporting and compliance
-- Grant statuses:
+- **Grant statuses:**
 | Status | Meaning | Funds received? | Spendable? | Reporting due? |
 |---|---|---|---|---|
 | `prospect` | Identified, not yet applied. | No | No | No |
