@@ -30,8 +30,8 @@
 - Notes:
     - `recognized` is the moment money becomes real. Everything before is a promise.
     - `reconciled` is we proved the money is real by matching it to our bank statement
-        - Before reconciled, you *believe* the money moved
-        - After reconciled, you *know* it did, because the bank agrees
+        - Before reconciled, we *believe* the money moved
+        - After reconciled, we *know* it did, because the bank agrees
     - `locked` means the row can no longer be edited
         - If something changes, you add a new row instead
         - An unlocked ledger is a story. A locked ledger is evidence.
