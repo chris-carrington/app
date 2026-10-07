@@ -178,7 +178,7 @@
     - Cash set aside by the **Board** (not a donor) to cover 3–6 months of operating expenses if revenue drops or a crisis hits
     - This fund is not a different pile of cash, it's the same cash with a governance label that the Board cannot casually undo.
     - Answers "can we survive a crisis"?
-- The** Capital & Equipment** fund is for **replacing**:
+- The **Capital & Equipment** fund is for **replacing**:
     - Money set aside to **buy or replace things that last more than a year** (e.g., trucks, tools, computers, a training facility)
     - This fund is not a different pile of cash, it's the same cash with a governance label that the Board cannot casually undo.
     - Answers "can we replace the truck before it dies"?
