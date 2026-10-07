@@ -29,6 +29,14 @@
 | `reversed` | Refunded or charged back | Reversed | Reversed | No |
 - Notes:
     - `recognized` is the moment money becomes real. Everything before is a promise.
+    - `reconciled` is we proved the money is real by matching it to your bank statement
+        - Before reconciled, you *believe* the money moved
+        - After reconciled, you *know* it did, because the bank agrees
+    - `locked` means the row can no longer be edited
+        - If something changes, you add a new row instead
+        - An unlocked ledger is a story. A locked ledger is evidence.
+        - We can **add**, we can never **rewrite**
+        - Locked post reconciled
     - `reversed` is a new row, not a status edit.
 <!--{"accordionEnd":true}-->
 
@@ -45,6 +53,8 @@
 | `disbursement` | out | Apprentice wage / Mentor wage |
 | `refund` | out | Donor asks for money back |
 | `chargeback` | out | Bank reverses a card donation |
+- Notes:
+    - Tranche comes from the French word for "slice." A $1,000,000 grant paid in four tranches is just that grant cut into four slices.
 <!--{"accordionEnd":true}-->
 
 
@@ -96,6 +106,8 @@
 | `reporting` | Spending underway or complete; reports due. | Yes | Yes | Yes |
 | `closed` | All reports accepted. Funds fully spent or returned. | Yes | No | No |
 | `terminated` | Ended early by grantor or grantee. | Partial | No | Final report |
+- Notes:
+    - `terminated` is when the grant ended early, before it was supposed to (e.g., we missed a milestone, they ran out of money)
 <!--{"accordionEnd":true}-->
 
 
