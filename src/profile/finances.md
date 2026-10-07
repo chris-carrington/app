@@ -1,18 +1,42 @@
 <!--{"accordionStart":true}-->
+## What are our fundamental finance principles?
+<!--{"accordionBody":true}-->
+- Transactions describe **movement** (cash in, cash out)
+- Agreements describe **intent** (Donation, Pledge, Grant)
+- Funds describe **destination** (which bucket based on legal/accounting restrictions)
+- Receipts describe **paperwork** (tax docs)
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
 ## What is a transaction?
 <!--{"accordionBody":true}-->
 - Transactions describe movement (cash in, cash out)
-- **Transaction statuses:**
+- Helps answer the question: Where is the money right now?
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## What are the transaction statuses?
+<!--{"accordionBody":true}-->
 | Status | Meaning | Cash in bank? | Revenue real? | Spendable? |
 |---|---|---|---|---|
-| `expected` | Known incoming or outgoing, not initiated | No | No | No |
+| `expected` | Known to be incoming or outgoing but not initiated | No | No | No |
 | `in_flight` | Payment sent, waiting to settle | No | No | No |
-| `received` | Cash hit the bank, not booked yet | Yes | No | No |
+| `received` | Cash arrived @ bank but not booked yet | Yes | No | No |
 | `recognized` | Booked to general ledger | Yes | Yes | Yes, per fund |
 | `reconciled` | Matched to statement, locked | Yes | Yes | Yes |
 | `reversed` | Refunded or charged back | Reversed | Reversed | No |
-- **Transaction Types:**
-| Type | Direction | Example at Shasta Trades |
+- Notes:
+    - `recognized` is the moment money becomes real. Everything before is a promise.
+    - `reversed` is a new row, not a status edit.
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## What are the transaction types?
+<!--{"accordionBody":true}-->
+| Type | Direction | Example |
 |---|---|---|
 | `donation` | in | Supporter gives $500 to Community Repair |
 | `pledge_payment` | in | Monthly installment against a $10k pledge |
@@ -108,7 +132,51 @@
 - Our accounting system is where we achieve the strict fund separation required by us, donors and grants
 - Our bank accounts is for managing cash flow
 - Open additional bank accounts only when it serves a practical purpose, such as:
-    - **Safeguarding a Reserve:** To prevent the board from accidentally spending our 6-month operating cushion, it can be in a separate savings or investment account
+    - **Safeguarding a Reserve:** To prevent the Board from accidentally spending our 6-month operating cushion, it can be in a separate savings or investment account
     - **Maximizing Earning:** Long-term or endowed funds can be in investment accounts, not a checking account, to generate returns
     - **Funder Mandate:** A rare grant might explicitly require a dedicated account. If so, we must weigh the administrative burden against the value of the grant
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## What are our funds?
+<!--{"accordionBody":true}-->
+| Fund | Type |
+|---|---|
+| General Operating | Unrestricted |
+| Operating Reserve | Board-Designated |
+| Capital & Equipment | Board-Designated |
+| Workforce Development | Restricted |
+| Opportunity Youth | Restricted |
+| Apprenticeship Training | Restricted |
+| Mentor Development | Restricted |
+| Low & Moderate Income | Restricted |
+| Elderly Assistance | Restricted |
+| Community Repair | Restricted |
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## Why have "Board-Designated" funds?
+<!--{"accordionBody":true}-->
+- The **General Operating** fund is for **spending**:
+    - General Operating is the source. Reserve and Capital are destinations the Board funds when there is surplus
+    - Answers "can we pay this month's bills"?
+- The **Operating Reserve** fund is for **surviving**:
+    - Cash set aside by the **Board** (not a donor) to cover 3–6 months of operating expenses if revenue drops or a crisis hits
+    - This fund is not a different pile of cash, it's the same cash with a governance label that the Board cannot casually undo.
+    - Answers "can we survive a crisis"?
+- The** Capital & Equipment** fund is for **replacing**:
+    - Money set aside to **buy or replace things that last more than a year** (e.g., trucks, tools, computers, a training facility)
+    - This fund is not a different pile of cash, it's the same cash with a governance label that the Board cannot casually undo.
+    - Answers "can we replace the truck before it dies"?
+
+| Without separation | With separation |
+|---|---|
+| One number hides everything | Three numbers tell the real story |
+| Crisis forces layoffs | Reserve absorbs the shock |
+| Truck breaks, work stops | Capital fund already has the cash |
+| Board can't govern what it can't see | Board votes on release, not vibes |
+| Funders see a fragile org | Funders see a resilient org |
+| Audit = stress | Audit = routine |
 <!--{"accordionEnd":true}-->

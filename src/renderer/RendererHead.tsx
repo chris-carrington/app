@@ -131,6 +131,10 @@ const style = css`
     display: none !important;
   }
 
+  code {
+    font-size: 90%;
+  }
+
   @font-face {
     font-family: ProximaNova;
     font-weight: 400;
