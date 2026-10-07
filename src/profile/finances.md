@@ -29,7 +29,7 @@
 | `reversed` | Refunded or charged back | Reversed | Reversed | No |
 - Notes:
     - `recognized` is the moment money becomes real. Everything before is a promise.
-    - `reconciled` is we proved the money is real by matching it to your bank statement
+    - `reconciled` is we proved the money is real by matching it to our bank statement
         - Before reconciled, you *believe* the money moved
         - After reconciled, you *know* it did, because the bank agrees
     - `locked` means the row can no longer be edited
