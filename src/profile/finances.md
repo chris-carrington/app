@@ -269,7 +269,7 @@
 <!--{"accordionStart":true}-->
 ## What is our investment strategy?
 <!--{"accordionBody":true}-->
-| Level | What it is | Example for Shasta Trades | Effort |
+| Level | What it is | Example | Effort |
 |---|---|---|---|
 | **Don't invest yet** | Keep money in a savings account | Operating Reserve in a high-yield savings account | None |
 | **Negative screening** | Just avoid bad stuff | "We won't invest in fossil fuels or predatory lenders" | Low |
