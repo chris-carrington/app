@@ -68,7 +68,7 @@
 - A functional class is a column on the transaction's table that answers "Was this spending for our mission, for admin, or for fundraising?"
 - Required by the IRS on **Form 990 Part IX** (Statement of Functional Expenses)
 - Every transaction gets exactly one functional class
-- Helps us tell the IRS (and your board) whether each dollar we spent was on the `mission`, on `admin`, or on `fundraising`
+- Helps us tell the IRS (and our board) whether each dollar we spent was on the `mission`, on `admin`, or on `fundraising`
     | Class | Meaning | Examples |
     |---|---|---|
     | `mission` | Directly advances the mission | Apprentice wages, mentor wages, tools & materials |
