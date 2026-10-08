@@ -24,20 +24,24 @@
 | `expected` | Known to be incoming or outgoing but not initiated | No | No | No |
 | `in_flight` | Payment sent, waiting to settle | No | No | No |
 | `received` | Cash arrived @ bank but not booked yet | Yes | No | No |
-| `recognized` | Booked to general ledger | Yes | Yes | Yes, per fund |
-| `reconciled` | Matched to statement, locked | Yes | Yes | Yes |
-| `reversed` | Refunded or charged back | Reversed | Reversed | No |
-- Notes:
-    - `recognized` is the moment money becomes real. Everything before is a promise.
-    - `reconciled` is we proved the money is real by matching it to our bank statement
-        - Before reconciled, we *believe* the money moved
-        - After reconciled, we *know* it did, because the bank agrees
-    - `locked` means the row can no longer be edited
-        - If something changes, you add a new row instead
-        - An unlocked ledger is a story. A locked ledger is evidence.
-        - We can **add**, we can never **rewrite**
-        - Locked post reconciled
-    - `reversed` is a new row, not a status edit.
+| `recognized` | Booked to general ledger, the moment money becomes real, all before is a promise | Yes | Yes | Yes, per fund |
+| `reconciled` | Matched to statement, locked,  we proved the money is real by matching it to our bank statement | Yes | Yes | Yes |
+| `reversed` | Refunded or charged back, a new row, not an existing row status edit | Reversed | Reversed | No |
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## What does locked mean from a transaction perspective?
+<!--{"accordionBody":true}-->
+- Locked = a row in the `transactions` table can no longer be changed
+- Locked is not a status we manually set. Locked is an automatic consequence of reconciliation.
+- Once a transaction is locked, all rows are immutable (not allowed to be changed) & enforced via database triggers
+- If something changes, we add a new row instead
+    | Event | What Happens |
+    |---|---|
+    | Transaction status reaches `reconciled` | The row is matched to the bank statement & the row becomes locked |
+    | The accounting period is **permanently closed** | All transactions in that period become locked |
+    | A **trigger** fires on UPDATE or DELETE | Database rejects any attempt to modify the row |
 <!--{"accordionEnd":true}-->
 
 
@@ -59,17 +63,32 @@
 
 
 <!--{"accordionStart":true}-->
+## What is a functional class?
+<!--{"accordionBody":true}-->
+- A functional class is a column on the transaction's table that answers "Was this spending for our mission, for admin, or for fundraising?"
+- Required by the IRS on **Form 990 Part IX** (Statement of Functional Expenses)
+- Every transaction gets exactly one functional class
+- Helps us tell the IRS (and your board) whether each dollar we spent was on the `mission`, on `admin`, or on `fundraising`
+    | Class | Meaning | Examples |
+    |---|---|---|
+    | `mission` | Directly advances the mission | Apprentice wages, mentor wages, tools & materials |
+    | `admin` | Keeps the lights on | Rent, insurance, accounting software, CTO salary, board meetings |
+    | `fundraising` | Raises money | Donor emails, grant writing, event costs, thank-you cards |
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
 ## What is a donation?
 <!--{"accordionBody":true}-->
 - A donation is a gift of cash or cash-equivalent from a donor to Shasta Trades
 - **Donation statuses:**
-| Status | Meaning | Revenue recognized? | Spendable? | Receipt issued? |
-|---|---|---|---|---|
-| `draft` | Created internally, not submitted. Editable. | No | No | No |
-| `pending` | Submitted, awaiting payment, verification, or review. | No | No | No |
-| `posted` | Finalized. Money recognized and fund allocated. | Yes | Yes | Yes |
-| `failed` | Rejected, declined, or verification failed. | No | No | No |
-| `canceled` | Withdrawn before completion. | No | No | No |
+    | Status | Meaning | Revenue recognized? | Spendable? | Receipt issued? |
+    |---|---|---|---|---|
+    | `draft` | Created internally, not submitted. Editable. | No | No | No |
+    | `pending` | Submitted, awaiting payment, verification, or review. | No | No | No |
+    | `posted` | Finalized. Money recognized and fund allocated. | Yes | Yes | Yes |
+    | `failed` | Rejected, declined, or verification failed. | No | No | No |
+    | `canceled` | Withdrawn before completion. | No | No | No |
 <!--{"accordionEnd":true}-->
 
 
@@ -78,14 +97,14 @@
 <!--{"accordionBody":true}-->
 - A pledge is a promise to give, so it's never cash
 - **Pledge statuses:**
-| Status | Meaning | Revenue recognized? | Cash received? | Notes |
-|---|---|---|---|---|
-| `pledged` | Donor promised a gift. No cash yet. | Only if unconditional | No | GAAP: unconditional = revenue now |
-| `partially_fulfilled` | Some of the pledge has been paid. | Proportional | Partial | Track remaining balance |
-| `fulfilled` | Pledge paid in full. | Yes | Yes | Convert to Donation |
-| `overdue` | Past due date. | Yes (if unconditional) | No | Follow-up required |
-| `written_off` | Deemed uncollectible. | Reversed | No | Board approval recommended |
-| `canceled` | Donor withdrew the promise. | Reversed | No | Log reason |
+    | Status | Meaning | Revenue recognized? | Cash received? | Notes |
+    |---|---|---|---|---|
+    | `pledged` | Donor promised a gift. No cash yet. | Only if unconditional | No | GAAP: unconditional = revenue now |
+    | `partially_fulfilled` | Some of the pledge has been paid. | Proportional | Partial | Track remaining balance |
+    | `fulfilled` | Pledge paid in full. | Yes | Yes | Convert to Donation |
+    | `overdue` | Past due date. | Yes (if unconditional) | No | Follow-up required |
+    | `written_off` | Deemed uncollectible. | Reversed | No | Board approval recommended |
+    | `canceled` | Donor withdrew the promise. | Reversed | No | Log reason |
 <!--{"accordionEnd":true}-->
 
 
@@ -95,17 +114,17 @@
 - Institutional funding (e.g., Government, Foundations, Home Depot)
 - Separate lifecycle from Donation because grants have reporting and compliance
 - **Grant statuses:**
-| Status | Meaning | Funds received? | Spendable? | Reporting due? |
-|---|---|---|---|---|
-| `prospect` | Identified, not yet applied. | No | No | No |
-| `applied` | Application submitted. | No | No | No |
-| `declined` | Application rejected. | No | No | No |
-| `awarded` | Approved, award letter signed. | No | No | Soon |
-| `pending_funds` | Waiting for disbursement. | No | No | Soon |
-| `active` | Funds received and spendable per grant terms. | Yes | Yes | Yes |
-| `reporting` | Spending underway or complete; reports due. | Yes | Yes | Yes |
-| `closed` | All reports accepted. Funds fully spent or returned. | Yes | No | No |
-| `terminated` | Ended early by grantor or grantee. | Partial | No | Final report |
+    | Status | Meaning | Funds received? | Spendable? | Reporting due? |
+    |---|---|---|---|---|
+    | `prospect` | Identified, not yet applied. | No | No | No |
+    | `applied` | Application submitted. | No | No | No |
+    | `declined` | Application rejected. | No | No | No |
+    | `awarded` | Approved, award letter signed. | No | No | Soon |
+    | `pending_funds` | Waiting for disbursement. | No | No | Soon |
+    | `active` | Funds received and spendable per grant terms. | Yes | Yes | Yes |
+    | `reporting` | Spending underway or complete; reports due. | Yes | Yes | Yes |
+    | `closed` | All reports accepted. Funds fully spent or returned. | Yes | No | No |
+    | `terminated` | Ended early by grantor or grantee. | Partial | No | Final report |
 - Notes:
     - `terminated` is when the grant ended early, before it was supposed to (e.g., we missed a milestone, they ran out of money)
 <!--{"accordionEnd":true}-->
@@ -169,7 +188,7 @@
 
 
 <!--{"accordionStart":true}-->
-## Why have "Board-Designated" funds?
+## Why not only have a General Operating fund, why have "Board-Designated" funds?
 <!--{"accordionBody":true}-->
 - The **General Operating** fund is for **spending**:
     - General Operating is the source. Reserve and Capital are destinations the Board funds when there is surplus
@@ -183,7 +202,7 @@
     - This fund is not a different pile of cash, it's the same cash with a governance label that the Board cannot casually undo.
     - Answers "can we replace the truck before it dies"?
 
-| Without separation | With separation |
+| Only General Operating Fund | With Board-Designated funds |
 |---|---|
 | One number hides everything | Three numbers tell the real story |
 | Crisis forces layoffs | Reserve absorbs the shock |
@@ -191,4 +210,69 @@
 | Board can't govern what it can't see | Board votes on release, not vibes |
 | Funders see a fragile org | Funders see a resilient org |
 | Audit = stress | Audit = routine |
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## What are receipts?
+<!--{"accordionBody":true}-->
+- A receipt is the legal document that proves a donation happened
+- Without it, our donor cannot claim a tax deduction and we expose the organization to compliance risk
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## When is a receipt required?
+<!--{"accordionBody":true}-->
+- When a donation is for $250 or more
+- When a donor receives goods or services worth more than $75
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## What must a receipt include?
+<!--{"accordionBody":true}-->
+- Name of our organization
+- Date of the contribution
+- Amount of the contribution (cash) or description of property (noncash)
+- Whether any goods or services were provided in exchange
+- If goods/services were provided, a description and good-faith estimate of their value
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## What is Federal IRS Form 990?
+<!--{"accordionBody":true}-->
+-  A public disclosure document that tells the IRS (and the public) how we earn and spend money
+- Due the 15th day of the 5th month after our tax year ends (May 15 for calendar-year filers)
+- Failure to file for 3 consecutive years = automatic loss of tax-exempt status
+    | Form | Gross receipts | Total assets |
+    |---| --- | --- |
+    | 990-N | ≤ $50,000 | N/A |
+    | 990-EZ | < $200,000 | < $500,000 |
+    | 990 (full) | ≥ $200,000 | ≥ $500,000 |
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## What is the California Form 199?
+<!--{"accordionBody":true}-->
+- California's version of Form 990
+- Due the 15th day of the 5th month after our tax year ends (May 15 for calendar-year filers)
+    | Form | Gross receipts |
+    |---| --- |
+    | FTB 199N  | Normally ≤ $50,000 |
+    | Form 199 | > $50,000, or private foundations / trusts regardless of size |
+<!--{"accordionEnd":true}-->
+
+
+<!--{"accordionStart":true}-->
+## What is our investment strategy?
+<!--{"accordionBody":true}-->
+| Level | What it is | Example for Shasta Trades | Effort |
+|---|---|---|---|
+| **Don't invest yet** | Keep money in a savings account | Operating Reserve in a high-yield savings account | None |
+| **Negative screening** | Just avoid bad stuff | "We won't invest in fossil fuels or predatory lenders" | Low |
+| **Positive screening** | Prefer good stuff | "We'll look for affordable housing bonds" | Low |
+| **Mission-related investments** | Investments that also help the mission | Loan to a nonprofit that builds affordable homes | Medium |
 <!--{"accordionEnd":true}-->
