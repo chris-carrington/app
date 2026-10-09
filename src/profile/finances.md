@@ -8,6 +8,9 @@
 <!--{"accordionEnd":true}-->
 
 
+---
+
+
 <!--{"accordionStart":true}-->
 ## What is a transaction?
 <!--{"accordionBody":true}-->
@@ -77,6 +80,9 @@
 <!--{"accordionEnd":true}-->
 
 
+---
+
+
 <!--{"accordionStart":true}-->
 ## What is a donation?
 <!--{"accordionBody":true}-->
@@ -128,6 +134,9 @@
 - Notes:
     - `terminated` is when the grant ended early, before it was supposed to (e.g., we missed a milestone, they ran out of money)
 <!--{"accordionEnd":true}-->
+
+
+---
 
 
 <!--{"accordionStart":true}-->
@@ -214,6 +223,9 @@
 <!--{"accordionEnd":true}-->
 
 
+---
+
+
 <!--{"accordionStart":true}-->
 ## What are receipts?
 <!--{"accordionBody":true}-->
@@ -241,6 +253,9 @@
 <!--{"accordionEnd":true}-->
 
 
+---
+
+
 <!--{"accordionStart":true}-->
 ## What is Federal IRS Form 990?
 <!--{"accordionBody":true}-->
@@ -265,6 +280,9 @@
     | FTB 199N  | Normally ≤ $50,000 |
     | Form 199 | > $50,000, or private foundations / trusts regardless of size |
 <!--{"accordionEnd":true}-->
+
+
+---
 
 
 <!--{"accordionStart":true}-->
