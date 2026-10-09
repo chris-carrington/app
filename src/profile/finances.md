@@ -112,7 +112,7 @@
 ## What is a grant?
 <!--{"accordionBody":true}-->
 - Institutional funding (e.g., Government, Foundations, Home Depot)
-- Separate lifecycle from Donation because grants have reporting and compliance
+- Separate lifecycle from Donation b/c grants have reporting and compliance
 - **Grant statuses:**
     | Status | Meaning | Funds received? | Spendable? | Reporting due? |
     |---|---|---|---|---|
@@ -172,18 +172,19 @@
 <!--{"accordionStart":true}-->
 ## What are our funds?
 <!--{"accordionBody":true}-->
-| Fund | Type |
-|---|---|
-| General Operating | Unrestricted |
-| Operating Reserve | Board-Designated |
-| Capital & Equipment | Board-Designated |
-| Workforce Development | Restricted |
-| Opportunity Youth | Restricted |
-| Apprenticeship Training | Restricted |
-| Mentor Development | Restricted |
-| Low & Moderate Income | Restricted |
-| Elderly Assistance | Restricted |
-| Community Repair | Restricted |
+| Fund | Type | Why does this fund exist? |
+|---|---|---|
+| General Operating | Unrestricted | **General Operating** pays the bills that no grant will cover (e.g., rent, insurance, software) and the staff time that holds everything together |
+| Operating Reserve | Board-Designated | **Operating Reserve** holds 3 months of operating expenses so a lost grant or a slow quarter never forces us to lay off apprentices mid-cohort. It is the same cash as General Operating, but with a governance lock the board cannot casually undo. |
+| Capital & Equipment | Board-Designated | **Capital & Equipment** buys and replaces the trucks, tools, laptops, and training-space buildout that outlive a single year. It turns a broken truck from a crisis into a scheduled line item the board already planned for. |
+| Workforce Development | Restricted | **Workforce Development** lets us recruit, train, and pay skilled tradespeople. Foundations focused on **optimal community employment** love this fund. |
+| Opportunity Youth | Restricted | **Opportunity Youth** are young adults (age 16-24) who are not in school and not working. Foundations focused on **opportunity youth** love this fund. |
+| Apprenticeship Training | Restricted | **Apprenticeship Training** lets us cover the structured training costs that sit outside or inside wages (e.g., study guide creation, safety certifications, exam prep). Foundations focused on **apprenticeship programs** love this fund. |
+| Mentor Development | Restricted | **Mentor Development** lets us recruit, train, and compensate the experienced tradespeople who make apprenticeships work, including remote Zoom mentors. Foundations focused on **mentorship** and **teacher quality** love this fund. |
+| Low & Moderate Income | Restricted | **Low & Moderate Income** lets us subsidize repair and renovation work for households that cannot afford market rates, so no one is priced out of a safe home. Foundations focused on **economic mobility** and **housing equity** love this fund. |
+| Elderly Assistance | Restricted | **Elderly Assistance** lets us serve seniors on fixed incomes who need help before their home repairs become hazards. Foundations focused on **aging gracefully** and **senior safety** love this fund. |
+| Community Repair | Restricted | **Community Repair** lets us deliver affordable, high-quality trade services across Siskiyou County for neighbors who would otherwise go without. Foundations focused on **community revitalization** love this fund. |
+| Wildfire Repair | Restricted | **Wildfire Repair** lets us harden homes against wildfire (e.g., replacing dry wood roofs, bad siding, other hazards that put our neighborhoods at risk). Foundations focused on **wildfire resilience** love this fund. |
 <!--{"accordionEnd":true}-->
 
 
@@ -194,7 +195,7 @@
     - General Operating is the source. Reserve and Capital are destinations the Board funds when there is surplus
     - Answers "can we pay this month's bills"?
 - The **Operating Reserve** fund is for **surviving**:
-    - Cash set aside by the **Board** (not a donor) to cover 3–6 months of operating expenses if revenue drops or a crisis hits
+    - Cash set aside by the **Board** (not a donor) to cover 3 months of operating expenses if revenue drops or a crisis hits
     - This fund is not a different pile of cash, it's the same cash with a governance label that the Board cannot casually undo.
     - Answers "can we survive a crisis"?
 - The **Capital & Equipment** fund is for **replacing**:
