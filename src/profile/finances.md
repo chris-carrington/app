@@ -189,10 +189,10 @@
 | Workforce Development | Restricted | **Workforce Development** lets us recruit, train, and pay skilled tradespeople. Foundations focused on **optimal community employment** love this fund. |
 | Opportunity Youth | Restricted | **Opportunity Youth** are young adults (age 16-24) who are not in school and not working. Foundations focused on **opportunity youth** love this fund. |
 | Apprenticeship Training | Restricted | **Apprenticeship Training** lets us cover the structured training costs that sit outside or inside wages (e.g., study guide creation, safety certifications, exam prep). Foundations focused on **apprenticeship programs** love this fund. |
-| Mentor Development | Restricted | **Mentor Development** lets us recruit, train, and compensate the experienced tradespeople who make apprenticeships work, including remote Zoom mentors. Foundations focused on **mentorship** and **teacher quality** love this fund. |
-| Low & Moderate Income | Restricted | **Low & Moderate Income** lets us subsidize repair and renovation work for households that cannot afford market rates, so no one is priced out of a safe home. Foundations focused on **economic mobility** and **housing equity** love this fund. |
+| Mentor Development | Restricted | **Mentor Development** lets us recruit, train, and compensate the experienced tradespeople who make apprenticeships work. Foundations focused on **mentorship** and **teacher quality** love this fund. |
+| Low & Moderate Income | Restricted | **Low & Moderate Income** lets us subsidize repair and renovation work for households that cannot afford market rates. Foundations focused on **economic mobility** and **housing equity** love this fund. |
 | Elderly Assistance | Restricted | **Elderly Assistance** lets us serve seniors on fixed incomes who need help before their home repairs become hazards. Foundations focused on **aging gracefully** and **senior safety** love this fund. |
-| Community Repair | Restricted | **Community Repair** lets us deliver affordable, high-quality trade services across Siskiyou County for neighbors who would otherwise go without. Foundations focused on **community revitalization** love this fund. |
+| Community Repair | Restricted | **Community Repair** lets us deliver affordable, high-quality trade services across Siskiyou County. Foundations focused on **community revitalization** love this fund. |
 | Wildfire Repair | Restricted | **Wildfire Repair** lets us harden homes against wildfire (e.g., replacing dry wood roofs, bad siding, other hazards that put our neighborhoods at risk). Foundations focused on **wildfire resilience** love this fund. |
 <!--{"accordionEnd":true}-->
 
